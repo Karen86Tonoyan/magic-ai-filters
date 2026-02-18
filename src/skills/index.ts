@@ -10,6 +10,7 @@ import type { Skill, Session } from "../types/index.js";
 import { dateTimeSkill } from "./datetime.js";
 import { calculatorSkill } from "./calculator.js";
 import { rememberSkill } from "./remember.js";
+import { memorySkill } from "./memory-skill.js";
 
 export class SkillRegistry {
   private skills: Map<string, Skill> = new Map();
@@ -18,6 +19,7 @@ export class SkillRegistry {
     this.register(dateTimeSkill);
     this.register(calculatorSkill);
     this.register(rememberSkill);
+    this.register(memorySkill);
     logger.info("SkillRegistry initialized", { skills: this.skills.size });
   }
 

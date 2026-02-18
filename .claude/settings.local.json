@@ -14,7 +14,10 @@
       "Bash(cmd /c \"where node && node --version && where npm && npm --version\")",
       "Bash(cmd /c \"node --version\")",
       "Bash(cmd /c \"npm --version\")",
-      "Bash(powershell -Command:*)"
+      "Bash(powershell -Command:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nInitial CLAW BOT — Ethical self-hosted AI assistant\n\nCore features:\n- Telegram + Discord bots \\(grammY, discord.js\\)\n- Local LLM: Ollama \\(llama3.2\\) + OpenAI router\n- Piper TTS: Natural Polish voice synthesis\n- Security: Whitelist, rate limiting, prompt injection defense\n- Cerber Guardian: Intent + Risk analysis \\(from ALFA\\)\n- UI TAR: UI automation framework \\(foundation\\)\n- Skills: datetime, calculator, remember\n- Full audit logging\n\nArchitecture:\n- Gateway: WebSocket hub \\(localhost only\\)\n- Agent: Ollama/OpenAI router with history\n- Channels: Telegram, Discord adapters\n- Security: Multi-layer defense \\(sanitize → Cerber → LLM\\)\n- TTS: espeak/piper/elevenlabs support\n- Logging: Winston \\(console + files + audit\\)\n\nReady for: npm install && npm run dev\n\nCo-Authored-By: Claude Haiku 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ]
   }
 }
