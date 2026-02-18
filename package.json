@@ -1,0 +1,43 @@
+{
+  "name": "claw-bot",
+  "version": "0.1.0",
+  "description": "Ethical self-hosted personal AI assistant with Telegram, Discord, and local LLM support",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx watch src/index.ts",
+    "lint": "eslint src/",
+    "typecheck": "tsc --noEmit",
+    "setup": "node scripts/setup.js"
+  },
+  "dependencies": {
+    "grammy": "^1.31.0",
+    "discord.js": "^14.18.0",
+    "ws": "^8.18.0",
+    "ollama": "^0.5.11",
+    "zod": "^3.23.8",
+    "dotenv": "^16.4.7",
+    "winston": "^3.17.0",
+    "node-cron": "^3.0.3",
+    "chalk": "^5.4.1",
+    "inquirer": "^12.4.2",
+    "express": "^4.21.2",
+    "rate-limiter-flexible": "^5.0.5",
+    "uuid": "^11.0.5"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3",
+    "tsx": "^4.19.2",
+    "@types/node": "^22.13.4",
+    "@types/ws": "^8.5.13",
+    "@types/express": "^5.0.0",
+    "@types/uuid": "^10.0.0",
+    "@types/node-cron": "^3.0.11"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "MIT"
+}
