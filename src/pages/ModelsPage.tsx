@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Plus, Trash2, Power, Eye, EyeOff, Bot } from 'lucide-react';
 import { useModels } from '@/hooks/useStore';
 import { PROVIDER_INFO, type AIProvider } from '@/types/ai-filters';
