@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import type { AIModel, Filter, FilterChain, ChatSession } from '@/types/ai-filters';
+import type { AIModel, Filter, FilterChain, ChatSession, FilterConfig } from '@/types/ai-filters';
 
 function loadFromStorage<T>(key: string, fallback: T): T {
   try {
