@@ -20,14 +20,54 @@ interface LLMConfig {
 
 const STORAGE_KEY = 'alfa_llm_config';
 
-const DEFAULT_MODELS: Record<string, string> = {
-  ollama: 'llama3.2:1b',
-  openai: 'gpt-4-turbo',
-  anthropic: 'claude-3-5-sonnet-20241022',
-  google: 'gemini-2.0-flash',
-  mistral: 'mistral-large-latest',
-  groq: 'llama-3.3-70b-versatile',
-  custom: '',
+const POPULAR_MODELS: Record<string, { id: string; label: string }[]> = {
+  ollama: [
+    { id: 'llama3.2:1b', label: 'Llama 3.2 1B' },
+    { id: 'llama3.2:3b', label: 'Llama 3.2 3B' },
+    { id: 'llama3.1:8b', label: 'Llama 3.1 8B' },
+    { id: 'llama3.3:70b', label: 'Llama 3.3 70B' },
+    { id: 'mistral:7b', label: 'Mistral 7B' },
+    { id: 'mixtral:8x7b', label: 'Mixtral 8x7B' },
+    { id: 'phi3:mini', label: 'Phi-3 Mini' },
+    { id: 'phi3:medium', label: 'Phi-3 Medium' },
+    { id: 'gemma2:9b', label: 'Gemma 2 9B' },
+    { id: 'qwen2.5:7b', label: 'Qwen 2.5 7B' },
+    { id: 'deepseek-r1:8b', label: 'DeepSeek R1 8B' },
+    { id: 'command-r:35b', label: 'Command R 35B' },
+  ],
+  openai: [
+    { id: 'gpt-4o', label: 'GPT-4o' },
+    { id: 'gpt-4o-mini', label: 'GPT-4o Mini' },
+    { id: 'gpt-4-turbo', label: 'GPT-4 Turbo' },
+    { id: 'gpt-4', label: 'GPT-4' },
+    { id: 'o1', label: 'o1' },
+    { id: 'o1-mini', label: 'o1 Mini' },
+    { id: 'o3-mini', label: 'o3 Mini' },
+  ],
+  anthropic: [
+    { id: 'claude-3-5-sonnet-20241022', label: 'Claude 3.5 Sonnet' },
+    { id: 'claude-3-5-haiku-20241022', label: 'Claude 3.5 Haiku' },
+    { id: 'claude-3-opus-20240229', label: 'Claude 3 Opus' },
+  ],
+  google: [
+    { id: 'gemini-2.0-flash', label: 'Gemini 2.0 Flash' },
+    { id: 'gemini-2.0-pro', label: 'Gemini 2.0 Pro' },
+    { id: 'gemini-1.5-pro', label: 'Gemini 1.5 Pro' },
+    { id: 'gemini-1.5-flash', label: 'Gemini 1.5 Flash' },
+  ],
+  groq: [
+    { id: 'llama-3.3-70b-versatile', label: 'Llama 3.3 70B' },
+    { id: 'llama-3.1-8b-instant', label: 'Llama 3.1 8B Instant' },
+    { id: 'mixtral-8x7b-32768', label: 'Mixtral 8x7B' },
+    { id: 'gemma2-9b-it', label: 'Gemma 2 9B' },
+  ],
+  mistral: [
+    { id: 'mistral-large-latest', label: 'Mistral Large' },
+    { id: 'mistral-medium-latest', label: 'Mistral Medium' },
+    { id: 'mistral-small-latest', label: 'Mistral Small' },
+    { id: 'codestral-latest', label: 'Codestral' },
+  ],
+  custom: [],
 };
 
 function loadConfig(): LLMConfig {
