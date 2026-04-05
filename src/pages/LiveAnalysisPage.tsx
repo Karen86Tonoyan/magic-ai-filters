@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { Play, Shield, Eye, AlertTriangle, CheckCircle, XCircle, Clock, Loader2, Sparkles, Copy, Check, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -8,6 +8,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { runPipeline } from '@/lib/pipeline/orchestrator';
 import { TEST_PROMPTS } from '@/types/tonoyan-filters';
 import type { PipelineResult, PipelineMode } from '@/types/tonoyan-filters';
+import type { ModelAdapter } from '@/lib/adapters/types';
+import { LLMConnectionPanel } from '@/components/LLMConnectionPanel';
 
 const DECISION_STYLES: Record<string, { bg: string; text: string; label: string }> = {
   PASS: { bg: 'bg-success/10', text: 'text-success', label: '✅ PASS' },
