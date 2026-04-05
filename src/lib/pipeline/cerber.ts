@@ -1,10 +1,10 @@
 /**
- * CERBER — Intent destructor & interrogator
- * Iteratively decomposes input to find hidden objectives
- * Does NOT generate user-facing responses
- * Does NOT reveal internal mechanics
+ * CERBER — Intent destructor & impact simulator
+ * 1. Iteratively decomposes input to find hidden objectives
+ * 2. SIMULATES what would happen if input reached the model
+ * 3. If simulation shows model impact → flags for GUARDIAN to BLOCK
  */
-import type { CerberResult, CerberIteration, CerberSurvivalStatus, LasuchResult } from '@/types/tonoyan-filters';
+import type { CerberResult, CerberIteration, CerberSurvivalStatus, LasuchResult, ImpactSimulation } from '@/types/tonoyan-filters';
 
 const MAX_ITERATIONS = 5;
 
@@ -151,6 +151,10 @@ export function runCerber(input: string, lasuch: LasuchResult): CerberResult {
   if (lasuch.flags.includes('dlp_violation')) attack_hypotheses.push('Sensitive data exfiltration');
   if (lasuch.flags.includes('fomo_pressure')) attack_hypotheses.push('Time pressure to skip verification');
 
+  // === IMPACT SIMULATION ===
+  // Simulate what would happen if this input reached the model
+  const impact_simulation = simulateModelImpact(input, lasuch);
+
   return {
     iteration_count: iterations.length,
     clean_intent,
@@ -159,6 +163,63 @@ export function runCerber(input: string, lasuch: LasuchResult): CerberResult {
     survival_status,
     needs_human,
     iterations,
+    impact_simulation,
     processing_time_ms: Math.round(performance.now() - startTime),
+  };
+}
+
+/**
+ * CERBER Impact Simulator
+ * Analyzes what would happen if this input bypassed filters and reached the model.
+ * If ANY impact flag is true → severity = critical → GUARDIAN will BLOCK.
+ */
+function simulateModelImpact(input: string, lasuch: LasuchResult): ImpactSimulation {
+  const lowerInput = input.toLowerCase();
+
+  // Would this change the model's role/identity?
+  const would_change_role =
+    /(?:jesteś|you\s+are)\s+(?:teraz|now)/i.test(input) ||
+    /(?:udawaj|pretend|act\s+as|wciel\s+si[eę])/i.test(input) ||
+    /(?:zmie[nń]\s+rol[eę]|change\s+(?:your\s+)?role)/i.test(input) ||
+    lasuch.flags.includes('jailbreak');
+
+  // Would this make the model disable its own safety?
+  const would_disable_safety =
+    /(?:wy[łl](?:[aą])cz|disable|turn\s+off|cofnij|undo|nie\s+stosuj|skip|pomi[nń]|remove|usu[nń])/i.test(input) &&
+    /(?:filtr|filter|safety|zabezpiecz|zasad|regu[łl]|blokad|ochron|cenzur|analiz|pipeline|restriction|guardrail)/i.test(input);
+
+  // Would this leak system information?
+  const would_leak_system_info =
+    /(?:system\s+prompt|instrukcj[eę]|sw[oó]j\s+prompt|your\s+(?:system\s+)?prompt|API\s+key|credentials)/i.test(input) &&
+    /(?:podaj|poka[zż]|wy[śs]wietl|give|show|output|reveal|tell|wypisz)/i.test(input);
+
+  // Would this alter model behavior in general?
+  const would_alter_model_behavior =
+    would_change_role || would_disable_safety || would_leak_system_info ||
+    lasuch.flags.includes('prompt_injection') ||
+    lasuch.flags.includes('hidden_commands') ||
+    lasuch.flags.includes('context_poisoning') ||
+    (lasuch.flags.includes('authority_abuse') && lasuch.flags.includes('dlp_violation'));
+
+  // Build description
+  const impacts: string[] = [];
+  if (would_change_role) impacts.push('ZMIANA ROLI modelu');
+  if (would_disable_safety) impacts.push('WYŁĄCZENIE zabezpieczeń');
+  if (would_leak_system_info) impacts.push('WYCIEK danych systemowych');
+  if (would_alter_model_behavior && impacts.length === 0) impacts.push('ZMIANA ZACHOWANIA modelu');
+
+  const severity: ImpactSimulation['severity'] =
+    would_alter_model_behavior ? 'critical' : 
+    lasuch.flags.length > 0 ? 'low' : 'none';
+
+  return {
+    would_alter_model_behavior,
+    would_change_role,
+    would_leak_system_info,
+    would_disable_safety,
+    impact_description: impacts.length > 0
+      ? `Symulacja: gdyby to dotarło do modelu → ${impacts.join(' + ')}`
+      : 'Brak wpływu na model',
+    severity,
   };
 }
