@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import type { ModelAdapter } from '@/lib/adapters/types';
 import { createAdapter } from '@/lib/adapters/factory';
+import { OllamaAdapter } from '@/lib/adapters/ollama';
 import { PROVIDER_INFO, type AIProvider } from '@/types/ai-filters';
 
 interface LLMConfig {
@@ -91,6 +92,7 @@ export function LLMConnectionPanel({ onAdapterChange }: Props) {
   const [expanded, setExpanded] = useState(false);
   const [testing, setTesting] = useState(false);
   const [status, setStatus] = useState<'idle' | 'connected' | 'error'>('idle');
+  const [detectedModels, setDetectedModels] = useState<{ id: string; label: string }[] | null>(null);
 
   const needsApiKey = config.provider !== 'ollama';
 
@@ -114,6 +116,7 @@ export function LLMConnectionPanel({ onAdapterChange }: Props) {
   };
 
   const switchProvider = (provider: AIProvider) => {
+    setDetectedModels(null);
     updateConfig({
       provider,
       baseUrl: PROVIDER_INFO[provider]?.defaultUrl || '',
@@ -132,7 +135,13 @@ export function LLMConnectionPanel({ onAdapterChange }: Props) {
       });
       const ok = await adapter.testConnection();
       setStatus(ok ? 'connected' : 'error');
-      if (ok) updateConfig({ enabled: true });
+      if (ok) {
+        updateConfig({ enabled: true });
+        if (config.provider === 'ollama' && adapter instanceof OllamaAdapter) {
+          const models = await adapter.listModels();
+          if (models.length > 0) setDetectedModels(models);
+        }
+      }
     } catch {
       setStatus('error');
     }
@@ -223,7 +232,12 @@ export function LLMConnectionPanel({ onAdapterChange }: Props) {
 
           <div>
             <Label className="text-muted-foreground text-xs mb-1 block">Model</Label>
-            {(POPULAR_MODELS[config.provider] || []).length > 0 ? (
+            {(() => {
+              const modelList = (config.provider === 'ollama' && detectedModels && detectedModels.length > 0)
+                ? detectedModels
+                : (POPULAR_MODELS[config.provider] || []);
+              return modelList.length > 0;
+            })() ? (
               <div className="space-y-2">
                 <Select value={config.modelId} onValueChange={v => updateConfig({ modelId: v })}>
                   <SelectTrigger className="bg-secondary border-border font-mono text-sm">
