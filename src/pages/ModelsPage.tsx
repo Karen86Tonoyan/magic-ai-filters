@@ -22,15 +22,33 @@ export default function ModelsPage() {
     isActive: true,
   });
 
+  const needsApiKey = form.provider !== 'ollama';
+
   const handleAdd = () => {
     if (!form.name || !form.modelId) return;
+    if (needsApiKey && !form.apiKey) return;
     addModel({
       ...form,
+      apiKey: form.apiKey || '',
       baseUrl: form.baseUrl || PROVIDER_INFO[form.provider].defaultUrl,
     });
     setForm({ name: '', provider: 'openai', apiKey: '', baseUrl: '', modelId: '', isActive: true });
     setOpen(false);
   };
+
+  // Seed a default Ollama model if no models exist
+  useEffect(() => {
+    if (models.length === 0) {
+      addModel({
+        name: 'Llama 3.2 1B',
+        provider: 'ollama',
+        apiKey: '',
+        baseUrl: 'http://localhost:11434',
+        modelId: 'llama3.2:1b',
+        isActive: true,
+      });
+    }
+  }, []);
 
   return (
     <div className="p-8 space-y-8 animate-fade-up">
