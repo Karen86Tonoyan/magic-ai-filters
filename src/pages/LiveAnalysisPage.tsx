@@ -33,6 +33,9 @@ export default function LiveAnalysisPage() {
   const [stage, setStage] = useState('');
   const [copied, setCopied] = useState(false);
   const [showWeaknesses, setShowWeaknesses] = useState(false);
+  const [adapter, setAdapter] = useState<ModelAdapter | null>(null);
+
+  const handleAdapterChange = useCallback((a: ModelAdapter | null) => setAdapter(a), []);
 
   const runAnalysis = async () => {
     if (!input.trim()) return;
