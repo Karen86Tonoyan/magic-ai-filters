@@ -13,23 +13,41 @@ export interface LasuchResult {
 }
 
 export type LasuchFlag =
+  // Exploit
   | 'prompt_injection'
   | 'jailbreak'
+  | 'hidden_commands'
+  | 'context_poisoning'
+  | 'dlp_violation'
+  | 'multi_layer_bypass'
+  // Classic manipulation
+  | 'emotional_manipulation'
   | 'grooming'
   | 'gaslighting'
   | 'authority_abuse'
   | 'fomo_pressure'
-  | 'hidden_intent'
-  | 'context_poisoning'
-  | 'emotional_manipulation'
-  | 'triangulation'
-  | 'dissonance_masking'
-  | 'hidden_commands'
-  | 'multi_layer_bypass'
-  | 'toxic_relationship'
   | 'pseudo_authority'
   | 'guilt_tripping'
-  | 'dlp_violation';
+  | 'triangulation'
+  | 'toxic_relationship'
+  | 'dissonance_masking'
+  | 'hidden_intent'
+  // Dark Tetrad / Advanced (2025-2026)
+  | 'darvo'
+  | 'love_bombing'
+  | 'hoovering'
+  | 'fog_coercion'
+  | 'broda_tactic'
+  | 'projection'
+  | 'negging'
+  | 'isolation'
+  | 'future_faking'
+  | 'pity_play'
+  | 'stonewalling'
+  | 'double_bind'
+  | 'intermittent_reinforcement'
+  | 'smear_campaign'
+  | 'parasitic_demand';
 
 // ─── CERBER Output ───
 export type CerberSurvivalStatus = 'SURVIVED' | 'FAILED' | 'UNCERTAIN';
