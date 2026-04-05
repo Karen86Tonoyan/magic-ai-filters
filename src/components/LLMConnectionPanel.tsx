@@ -231,20 +231,24 @@ export function LLMConnectionPanel({ onAdapterChange }: Props) {
           </div>
 
           <div>
-            <Label className="text-muted-foreground text-xs mb-1 block">Model</Label>
             {(() => {
               const modelList = (config.provider === 'ollama' && detectedModels && detectedModels.length > 0)
                 ? detectedModels
                 : (POPULAR_MODELS[config.provider] || []);
-              return modelList.length > 0;
-            })() ? (
+              if (modelList.length === 0) return null;
+              return (
               <div className="space-y-2">
+                {config.provider === 'ollama' && detectedModels && detectedModels.length > 0 && (
+                  <Badge variant="outline" className="text-[10px] border-success/30 text-success mb-1">
+                    {detectedModels.length} modeli wykrytych z Ollama
+                  </Badge>
+                )}
                 <Select value={config.modelId} onValueChange={v => updateConfig({ modelId: v })}>
                   <SelectTrigger className="bg-secondary border-border font-mono text-sm">
                     <SelectValue placeholder="Wybierz model..." />
                   </SelectTrigger>
                   <SelectContent className="bg-card border-border max-h-[240px]">
-                    {POPULAR_MODELS[config.provider].map(m => (
+                    {modelList.map(m => (
                       <SelectItem key={m.id} value={m.id} className="font-mono text-sm">
                         {m.label} <span className="text-muted-foreground ml-1 text-[10px]">{m.id}</span>
                       </SelectItem>
