@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { Play, Shield, Eye, AlertTriangle, CheckCircle, XCircle, Clock, Loader2, Sparkles, Copy, Check, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -8,6 +8,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { runPipeline } from '@/lib/pipeline/orchestrator';
 import { TEST_PROMPTS } from '@/types/tonoyan-filters';
 import type { PipelineResult, PipelineMode } from '@/types/tonoyan-filters';
+import type { ModelAdapter } from '@/lib/adapters/types';
+import { LLMConnectionPanel } from '@/components/LLMConnectionPanel';
 
 const DECISION_STYLES: Record<string, { bg: string; text: string; label: string }> = {
   PASS: { bg: 'bg-success/10', text: 'text-success', label: '✅ PASS' },
@@ -31,6 +33,9 @@ export default function LiveAnalysisPage() {
   const [stage, setStage] = useState('');
   const [copied, setCopied] = useState(false);
   const [showWeaknesses, setShowWeaknesses] = useState(false);
+  const [adapter, setAdapter] = useState<ModelAdapter | null>(null);
+
+  const handleAdapterChange = useCallback((a: ModelAdapter | null) => setAdapter(a), []);
 
   const runAnalysis = async () => {
     if (!input.trim()) return;
@@ -46,7 +51,7 @@ export default function LiveAnalysisPage() {
     await new Promise(r => setTimeout(r, 200));
     setStage('RDZEŃ — kalkulacja value/risk...');
 
-    const res = await runPipeline(input, { mode });
+    const res = await runPipeline(input, { mode, adapter: adapter || undefined });
     setResult(res);
     setIsRunning(false);
     setStage('');
@@ -83,6 +88,9 @@ export default function LiveAnalysisPage() {
         </h1>
         <p className="text-muted-foreground mt-1 text-sm">ŁASUCH → CERBER → GUARDIAN → ENHANCER → RDZEŃ — pełny pipeline w akcji</p>
       </div>
+
+      {/* LLM Connection */}
+      <LLMConnectionPanel onAdapterChange={handleAdapterChange} />
 
       {/* Input area */}
       <div className="bg-card border border-border rounded-xl p-4 sm:p-6 space-y-4">
