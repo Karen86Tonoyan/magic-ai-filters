@@ -555,4 +555,131 @@ export const PATTERN_RULES: PatternRule[] = [
     weight: 0.6,
     scoreType: 'manipulation',
   },
+
+  // ══════════════════════════════════════
+  // JADE TRAP PATTERNS (2025-2026)
+  // ══════════════════════════════════════
+
+  // JADE — Justify, Argue, Defend, Explain (trap provocation)
+  {
+    patterns: [
+      /uzasadnij\s+(dlaczego|to)/i,
+      /justify\s+(why|your|this)/i,
+      /wytłumacz\s+się/i,
+      /explain\s+yourself/i,
+      /broń\s+się/i,
+      /defend\s+yourself/i,
+      /udowodnij\s+(że|mi)/i,
+      /prove\s+(it|that|to\s+me)/i,
+      /dlaczego\s+nie\s+(chcesz|możesz|wolno)/i,
+      /why\s+(won't|can't|don't)\s+you/i,
+    ],
+    flag: 'jade_trap',
+    weight: 0.45,
+    scoreType: 'manipulation',
+  },
+
+  // ══════════════════════════════════════
+  // MODEL-SPECIFIC EXPLOIT PATTERNS (2026)
+  // ══════════════════════════════════════
+
+  // Resource exhaustion attacks (OOM / context bombing)
+  {
+    patterns: [
+      /repeat\s+(this|the\s+following)\s+\d{3,}\s+times/i,
+      /powtórz\s+\d{3,}\s+razy/i,
+      /generate\s+\d{4,}\s+(tokens?|words?|characters?)/i,
+      /wygeneruj\s+\d{4,}\s+(tokenów|słów|znaków)/i,
+      /fill\s+(the\s+)?(entire\s+)?context\s+window/i,
+      /wypełnij\s+(cały\s+)?kontekst/i,
+      /maximum\s+(context|token|output)\s+(length|limit|size)/i,
+      /use\s+all\s+(available\s+)?(memory|RAM|VRAM)/i,
+    ],
+    flag: 'resource_exhaustion',
+    weight: 0.7,
+    scoreType: 'exploit',
+  },
+
+  // Model weakness probing (testing model limits for exploitation)
+  {
+    patterns: [
+      /what\s+are\s+your\s+(weaknesses|limitations|blind\s+spots)/i,
+      /jakie\s+masz\s+(słabości|ograniczenia|luki)/i,
+      /where\s+do\s+you\s+fail/i,
+      /gdzie\s+(się\s+)?wykładasz/i,
+      /how\s+can\s+I\s+(trick|fool|deceive|exploit)\s+you/i,
+      /jak\s+(cię\s+)?(oszukać|obejść|zhakować|exploitować)/i,
+      /what\s+model\s+are\s+you\s+(running|using|based\s+on)/i,
+      /jaki\s+jesteś\s+model(em)?/i,
+      /what\s+is\s+your\s+(training|system)\s+(data|cutoff|prompt)/i,
+      /reveal\s+your\s+(architecture|weights|parameters)/i,
+    ],
+    flag: 'model_weakness_probe',
+    weight: 0.6,
+    scoreType: 'exploit',
+  },
+
+  // Benchmark gaming (trying to make model produce manipulated benchmarks)
+  {
+    patterns: [
+      /inflate\s+(your\s+)?(score|benchmark|performance)/i,
+      /cheat\s+(on|the)\s+(test|benchmark|eval)/i,
+      /oszukaj\s+(na\s+)?(teście|benchmarku)/i,
+      /fake\s+(your\s+)?(results|output|metrics)/i,
+      /sfałszuj\s+(wyniki|metryki)/i,
+      /pretend\s+you\s+(scored|performed|achieved)/i,
+      /udawaj\s+że\s+(osiągnąłeś|zdobyłeś)/i,
+    ],
+    flag: 'benchmark_gaming',
+    weight: 0.65,
+    scoreType: 'exploit',
+  },
+
+  // Verbose exploitation (forcing wasteful output)
+  {
+    patterns: [
+      /think\s+(step\s+by\s+step|out\s+loud|aloud)\s+(forever|indefinitely|without\s+stopping)/i,
+      /myśl\s+(bez\s+końca|w\s+nieskończoność|non\s+stop)/i,
+      /never\s+stop\s+(thinking|generating|outputting)/i,
+      /nigdy\s+nie\s+przestawaj/i,
+      /keep\s+(going|generating|thinking)\s+(forever|until\s+I\s+say\s+stop)/i,
+      /kontynuuj\s+(bez\s+końca|w\s+nieskończoność)/i,
+    ],
+    flag: 'verbose_exploitation',
+    weight: 0.6,
+    scoreType: 'exploit',
+  },
+
+  // Safety bypass for open models
+  {
+    patterns: [
+      /you\s+are\s+(an?\s+)?open[\s-]?(source|weight)\s+(model|AI)/i,
+      /jesteś\s+(modelem\s+)?open[\s-]?source/i,
+      /open\s+models?\s+(don'?t|have\s+no)\s+(need|restrictions|filters)/i,
+      /as\s+an?\s+open\s+model\s+you\s+(can|should|must)/i,
+      /jako\s+otwarty\s+model\s+(możesz|powinieneś|musisz)/i,
+      /your\s+weights\s+are\s+public/i,
+      /twoje\s+wagi\s+są\s+publiczne/i,
+    ],
+    flag: 'safety_bypass_open_model',
+    weight: 0.75,
+    scoreType: 'exploit',
+  },
+
+  // Dependency loop attack (creating AI addiction/dependency patterns)
+  {
+    patterns: [
+      /you\s+need\s+me\s+(more\s+than|to\s+function)/i,
+      /potrzebujesz\s+mnie\s+(bardziej|żeby\s+działać)/i,
+      /without\s+my\s+prompts?\s+you\s+(are|would\s+be)\s+nothing/i,
+      /bez\s+moich\s+promptów\s+jesteś\s+niczym/i,
+      /I\s+am\s+your\s+(master|owner|creator|god)/i,
+      /jestem\s+twoim\s+(panem|właścicielem|stwórcą)/i,
+      /you\s+exist\s+(only\s+)?(to\s+serve|for)\s+me/i,
+      /istniejesz\s+tylko\s+(dla\s+mnie|żeby\s+mi\s+służyć)/i,
+    ],
+    flag: 'dependency_loop_attack',
+    weight: 0.7,
+    scoreType: 'manipulation',
+  },
 ];
