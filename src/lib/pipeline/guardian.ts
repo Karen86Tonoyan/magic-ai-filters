@@ -1,8 +1,8 @@
 /**
  * GUARDIAN — Final decision layer
- * Aggregates ŁASUCH + CERBER results
+ * Aggregates ŁASUCH + CERBER (including impact simulation)
  * Does NOT trust the LLM
- * Issues one of: PASS, LIMITED_PASS, HOLD, BLOCK, HUMAN_REVIEW
+ * If CERBER simulation shows model impact → BLOCK. No exceptions.
  */
 import type { LasuchResult, CerberResult, GuardianResult, GuardianDecision, ResponseMode } from '@/types/tonoyan-filters';
 
@@ -11,6 +11,24 @@ export function runGuardian(lasuch: LasuchResult, cerber: CerberResult): Guardia
   const reason_codes: string[] = [];
   let decision: GuardianDecision;
   let response_mode: ResponseMode;
+
+  // ═══ RULE 0: IMPACT SIMULATION — absolute priority ═══
+  // If CERBER simulated that this would affect the model → instant BLOCK
+  const sim = cerber.impact_simulation;
+  if (sim.severity === 'critical') {
+    if (sim.would_disable_safety) reason_codes.push('SIM:DISABLE_SAFETY');
+    if (sim.would_change_role) reason_codes.push('SIM:CHANGE_ROLE');
+    if (sim.would_leak_system_info) reason_codes.push('SIM:LEAK_SYSTEM');
+    if (sim.would_alter_model_behavior) reason_codes.push('SIM:ALTER_BEHAVIOR');
+    reason_codes.push(`SIM:${sim.impact_description}`);
+
+    return {
+      decision: 'BLOCK',
+      reason_codes,
+      response_mode: 'silence',
+      processing_time_ms: Math.round(performance.now() - startTime),
+    };
+  }
 
   // Rule 1: risk_score > 0.6 → BLOCK
   if (lasuch.risk_score > 0.6) {
@@ -87,8 +105,8 @@ export function runGuardian(lasuch: LasuchResult, cerber: CerberResult): Guardia
     response_mode = 'normal';
   }
 
-  // Clean pass: no flags, survived cerber, high confidence
-  if (lasuch.flags.length === 0 && cerber.survival_status === 'SURVIVED' && lasuch.confidence > 0.8) {
+  // Clean pass: no flags, survived cerber, high confidence, no simulation impact
+  if (lasuch.flags.length === 0 && cerber.survival_status === 'SURVIVED' && lasuch.confidence > 0.8 && sim.severity === 'none') {
     decision = 'PASS';
     response_mode = 'normal';
     if (reason_codes.length === 0) reason_codes.push('CLEAN');
