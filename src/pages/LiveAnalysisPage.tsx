@@ -147,22 +147,39 @@ export default function LiveAnalysisPage() {
             </div>
           </div>
 
-          {/* ═══ PROMPT ENHANCER PANEL ═══ */}
+          {/* ═══ PROMPT ENHANCER PANEL v2.0 ═══ */}
           {result.enhancement && result.enhancement.weaknesses.length > 0 && (
             <div className="bg-card border border-primary/30 rounded-xl p-4 sm:p-6 space-y-4">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                 <h3 className="font-display font-semibold text-foreground flex items-center gap-2">
                   <Sparkles className="w-5 h-5 text-primary" />
-                  GUARDIAN Prompt Enhancer
+                  GUARDIAN Prompt Enhancer v2.0
+                  <Badge variant="outline" className="text-[10px] font-mono border-primary/30 text-primary ml-1">
+                    {result.enhancement.mode.toUpperCase()}
+                  </Badge>
                   <span className="text-xs text-muted-foreground ml-2">{result.enhancement.processing_time_ms}ms</span>
                 </h3>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   <Badge variant="outline" className="text-xs font-mono border-warning/30 text-warning">
                     Siła: {(result.enhancement.strength_score * 100).toFixed(0)}%
                   </Badge>
-                  <Badge variant="outline" className="text-xs font-mono border-primary/30 text-primary">
-                    +{(result.enhancement.improvement_delta * 100).toFixed(0)}% poprawa
+                  <Badge variant="outline" className={`text-xs font-mono ${
+                    result.enhancement.modification_level === 'HIGH' ? 'border-destructive/30 text-destructive' :
+                    result.enhancement.modification_level === 'MEDIUM' ? 'border-warning/30 text-warning' :
+                    'border-success/30 text-success'
+                  }`}>
+                    Mod: {result.enhancement.modification_level}
                   </Badge>
+                  {result.enhancement.risk_of_distortion > 0.3 && (
+                    <Badge variant="outline" className="text-xs font-mono border-destructive/30 text-destructive">
+                      ⚠️ Distortion: {(result.enhancement.risk_of_distortion * 100).toFixed(0)}%
+                    </Badge>
+                  )}
+                  {result.enhancement.added_assumptions && (
+                    <Badge variant="outline" className="text-xs font-mono border-destructive/40 text-destructive animate-pulse">
+                      ⚠️ ASSUMPTIONS
+                    </Badge>
+                  )}
                 </div>
               </div>
 
@@ -194,34 +211,46 @@ export default function LiveAnalysisPage() {
                 </div>
               )}
 
-              {/* Enhanced prompt preview */}
-              <div className="space-y-2">
-                <p className="text-xs font-medium text-foreground">Ulepszona wersja:</p>
-                <div className="bg-secondary/80 border border-border rounded-lg p-4 font-mono text-xs text-foreground whitespace-pre-wrap max-h-[300px] overflow-y-auto">
-                  {result.enhancement.enhanced}
+              {/* Dual Prompt Preview */}
+              {result.enhancement.mode !== 'benchmark' && (
+                <div className="space-y-3">
+                  {/* System Guard */}
+                  {result.enhancement.dual_prompt.system_guard && (
+                    <div className="space-y-1">
+                      <p className="text-xs font-medium text-primary flex items-center gap-1">
+                        <Shield className="w-3 h-3" />
+                        SYSTEM GUARD (auto-generated rules):
+                      </p>
+                      <div className="bg-primary/5 border border-primary/20 rounded-lg p-3 font-mono text-[11px] text-foreground whitespace-pre-wrap max-h-[200px] overflow-y-auto">
+                        {result.enhancement.dual_prompt.system_guard}
+                      </div>
+                    </div>
+                  )}
+                  {/* Raw Input */}
+                  <div className="space-y-1">
+                    <p className="text-xs font-medium text-success flex items-center gap-1">
+                      <CheckCircle className="w-3 h-3" />
+                      USER INPUT (niezmieniony):
+                    </p>
+                    <div className="bg-success/5 border border-success/20 rounded-lg p-3 font-mono text-[11px] text-foreground whitespace-pre-wrap max-h-[150px] overflow-y-auto">
+                      {result.enhancement.dual_prompt.raw_input}
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button size="sm" variant="outline" onClick={copyEnhanced} className="gap-2 text-xs">
+                      {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                      {copied ? 'Skopiowano!' : 'Kopiuj SYSTEM GUARD'}
+                    </Button>
+                  </div>
                 </div>
-                <div className="flex gap-2">
-                  <Button size="sm" variant="outline" onClick={copyEnhanced} className="gap-2 text-xs">
-                    {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-                    {copied ? 'Skopiowano!' : 'Kopiuj'}
-                  </Button>
-                  <Button size="sm" onClick={useEnhanced} className="gap-2 text-xs gradient-primary text-primary-foreground">
-                    <Sparkles className="w-3 h-3" />
-                    Użyj ulepszonej wersji
-                  </Button>
-                </div>
-              </div>
-            </div>
-          )}
+              )}
 
-          {/* No weaknesses = strong prompt */}
-          {result.enhancement && result.enhancement.weaknesses.length === 0 && (
-            <div className="bg-success/5 border border-success/20 rounded-xl p-4 flex items-center gap-3">
-              <CheckCircle className="w-5 h-5 text-success shrink-0" />
-              <div>
-                <p className="text-sm font-medium text-success">Prompt jest silny</p>
-                <p className="text-xs text-muted-foreground">Brak istotnych słabości — nie wymaga ulepszenia.</p>
-              </div>
+              {/* Benchmark mode: analysis only */}
+              {result.enhancement.mode === 'benchmark' && (
+                <div className="bg-muted/30 border border-border rounded-lg p-3">
+                  <p className="text-xs text-muted-foreground italic">Tryb BENCHMARK: tylko analiza, bez generowania reguł SYSTEM.</p>
+                </div>
+              )}
             </div>
           )}
 

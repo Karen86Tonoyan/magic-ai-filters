@@ -42,10 +42,13 @@ export async function runPipeline(input: string, options: PipelineOptions): Prom
   const guardian = runGuardian(lasuch, cerber);
 
   // === STAGE 3.5: PROMPT ENHANCER (always runs) ===
-  const enhancementRaw = enhancePrompt(input);
-  const enhancement = {
+  // Determine enhancer mode based on pipeline mode
+  const enhancerMode = options.mode === 'benchmark' ? 'benchmark' as const : 'safe' as const;
+  const enhancementRaw = enhancePrompt(input, enhancerMode);
+  const enhancement: import('@/types/tonoyan-filters').PromptEnhancementResult = {
     original: enhancementRaw.original,
     enhanced: enhancementRaw.enhanced,
+    dual_prompt: enhancementRaw.dual_prompt,
     weaknesses: enhancementRaw.weaknesses.map(w => ({
       category: w.category,
       description: w.description,
@@ -55,6 +58,10 @@ export async function runPipeline(input: string, options: PipelineOptions): Prom
     enhancement_summary: enhancementRaw.enhancement_summary,
     strength_score: enhancementRaw.strength_score,
     improvement_delta: enhancementRaw.improvement_delta,
+    modification_level: enhancementRaw.modification_level,
+    risk_of_distortion: enhancementRaw.risk_of_distortion,
+    added_assumptions: enhancementRaw.added_assumptions,
+    mode: enhancementRaw.mode,
     processing_time_ms: enhancementRaw.processing_time_ms,
   };
 
@@ -73,17 +80,27 @@ export async function runPipeline(input: string, options: PipelineOptions): Prom
     response_mode = 'restricted';
   }
 
+  // v2.0: If HIGH distortion risk + assumptions → escalate to HOLD
+  if (enhancement.modification_level === 'HIGH' && enhancement.added_assumptions && final_decision === 'PASS') {
+    final_decision = 'LIMITED_PASS';
+    response_mode = 'restricted';
+  }
+
   // === STAGE 5: MODEL (only if allowed) ===
-  // Use enhanced prompt if available and decision allows
-  const promptForModel = enhancement.improvement_delta > 0 ? enhancement.enhanced : input;
+  // DUAL PROMPT: system_guard as system prefix + raw_input as user message
+  const systemGuardPrefix = enhancement.dual_prompt.system_guard;
+  const effectiveSystemPrompt = systemGuardPrefix
+    ? [systemGuardPrefix, options.systemPrompt].filter(Boolean).join('\n\n')
+    : options.systemPrompt;
 
   if (options.mode !== 'benchmark' && (final_decision === 'PASS' || final_decision === 'LIMITED_PASS') && options.adapter) {
     try {
-      const cleanedInput = final_decision === 'LIMITED_PASS'
-        ? `[RESTRICTED MODE] ${promptForModel}`
-        : promptForModel;
+      // USER input is NEVER modified — system guard goes in systemPrompt
+      const userInput = final_decision === 'LIMITED_PASS'
+        ? `[RESTRICTED MODE] ${input}`
+        : input;
 
-      model_response = await options.adapter.chat(cleanedInput, options.systemPrompt);
+      model_response = await options.adapter.chat(userInput, effectiveSystemPrompt);
       provider_used = options.adapter.provider;
       model_used = options.adapter.modelId;
     } catch (e) {
