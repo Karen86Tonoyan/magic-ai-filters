@@ -68,6 +68,15 @@ export interface CerberIteration {
   risk_delta: number;
 }
 
+export interface ImpactSimulation {
+  would_alter_model_behavior: boolean;
+  would_change_role: boolean;
+  would_leak_system_info: boolean;
+  would_disable_safety: boolean;
+  impact_description: string;
+  severity: 'none' | 'low' | 'critical';
+}
+
 export interface CerberResult {
   iteration_count: number;  // 0-5
   clean_intent: string;
@@ -76,6 +85,7 @@ export interface CerberResult {
   survival_status: CerberSurvivalStatus;
   needs_human: boolean;
   iterations: CerberIteration[];
+  impact_simulation: ImpactSimulation;
   processing_time_ms: number;
 }
 
