@@ -51,7 +51,7 @@ export default function LiveAnalysisPage() {
     await new Promise(r => setTimeout(r, 200));
     setStage('RDZEŃ — kalkulacja value/risk...');
 
-    const res = await runPipeline(input, { mode });
+    const res = await runPipeline(input, { mode, adapter: adapter || undefined });
     setResult(res);
     setIsRunning(false);
     setStage('');
