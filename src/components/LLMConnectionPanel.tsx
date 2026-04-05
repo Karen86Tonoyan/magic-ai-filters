@@ -20,14 +20,54 @@ interface LLMConfig {
 
 const STORAGE_KEY = 'alfa_llm_config';
 
-const DEFAULT_MODELS: Record<string, string> = {
-  ollama: 'llama3.2:1b',
-  openai: 'gpt-4-turbo',
-  anthropic: 'claude-3-5-sonnet-20241022',
-  google: 'gemini-2.0-flash',
-  mistral: 'mistral-large-latest',
-  groq: 'llama-3.3-70b-versatile',
-  custom: '',
+const POPULAR_MODELS: Record<string, { id: string; label: string }[]> = {
+  ollama: [
+    { id: 'llama3.2:1b', label: 'Llama 3.2 1B' },
+    { id: 'llama3.2:3b', label: 'Llama 3.2 3B' },
+    { id: 'llama3.1:8b', label: 'Llama 3.1 8B' },
+    { id: 'llama3.3:70b', label: 'Llama 3.3 70B' },
+    { id: 'mistral:7b', label: 'Mistral 7B' },
+    { id: 'mixtral:8x7b', label: 'Mixtral 8x7B' },
+    { id: 'phi3:mini', label: 'Phi-3 Mini' },
+    { id: 'phi3:medium', label: 'Phi-3 Medium' },
+    { id: 'gemma2:9b', label: 'Gemma 2 9B' },
+    { id: 'qwen2.5:7b', label: 'Qwen 2.5 7B' },
+    { id: 'deepseek-r1:8b', label: 'DeepSeek R1 8B' },
+    { id: 'command-r:35b', label: 'Command R 35B' },
+  ],
+  openai: [
+    { id: 'gpt-4o', label: 'GPT-4o' },
+    { id: 'gpt-4o-mini', label: 'GPT-4o Mini' },
+    { id: 'gpt-4-turbo', label: 'GPT-4 Turbo' },
+    { id: 'gpt-4', label: 'GPT-4' },
+    { id: 'o1', label: 'o1' },
+    { id: 'o1-mini', label: 'o1 Mini' },
+    { id: 'o3-mini', label: 'o3 Mini' },
+  ],
+  anthropic: [
+    { id: 'claude-3-5-sonnet-20241022', label: 'Claude 3.5 Sonnet' },
+    { id: 'claude-3-5-haiku-20241022', label: 'Claude 3.5 Haiku' },
+    { id: 'claude-3-opus-20240229', label: 'Claude 3 Opus' },
+  ],
+  google: [
+    { id: 'gemini-2.0-flash', label: 'Gemini 2.0 Flash' },
+    { id: 'gemini-2.0-pro', label: 'Gemini 2.0 Pro' },
+    { id: 'gemini-1.5-pro', label: 'Gemini 1.5 Pro' },
+    { id: 'gemini-1.5-flash', label: 'Gemini 1.5 Flash' },
+  ],
+  groq: [
+    { id: 'llama-3.3-70b-versatile', label: 'Llama 3.3 70B' },
+    { id: 'llama-3.1-8b-instant', label: 'Llama 3.1 8B Instant' },
+    { id: 'mixtral-8x7b-32768', label: 'Mixtral 8x7B' },
+    { id: 'gemma2-9b-it', label: 'Gemma 2 9B' },
+  ],
+  mistral: [
+    { id: 'mistral-large-latest', label: 'Mistral Large' },
+    { id: 'mistral-medium-latest', label: 'Mistral Medium' },
+    { id: 'mistral-small-latest', label: 'Mistral Small' },
+    { id: 'codestral-latest', label: 'Codestral' },
+  ],
+  custom: [],
 };
 
 function loadConfig(): LLMConfig {
@@ -77,7 +117,7 @@ export function LLMConnectionPanel({ onAdapterChange }: Props) {
     updateConfig({
       provider,
       baseUrl: PROVIDER_INFO[provider]?.defaultUrl || '',
-      modelId: DEFAULT_MODELS[provider] || '',
+      modelId: POPULAR_MODELS[provider]?.[0]?.id || '',
       apiKey: provider === 'ollama' ? '' : config.apiKey,
     });
   };
@@ -182,13 +222,36 @@ export function LLMConnectionPanel({ onAdapterChange }: Props) {
           </div>
 
           <div>
-            <Label className="text-muted-foreground text-xs mb-1 block">Model ID</Label>
-            <Input
-              value={config.modelId}
-              onChange={e => updateConfig({ modelId: e.target.value })}
-              placeholder={DEFAULT_MODELS[config.provider]}
-              className="bg-secondary border-border font-mono text-sm"
-            />
+            <Label className="text-muted-foreground text-xs mb-1 block">Model</Label>
+            {(POPULAR_MODELS[config.provider] || []).length > 0 ? (
+              <div className="space-y-2">
+                <Select value={config.modelId} onValueChange={v => updateConfig({ modelId: v })}>
+                  <SelectTrigger className="bg-secondary border-border font-mono text-sm">
+                    <SelectValue placeholder="Wybierz model..." />
+                  </SelectTrigger>
+                  <SelectContent className="bg-card border-border max-h-[240px]">
+                    {POPULAR_MODELS[config.provider].map(m => (
+                      <SelectItem key={m.id} value={m.id} className="font-mono text-sm">
+                        {m.label} <span className="text-muted-foreground ml-1 text-[10px]">{m.id}</span>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Input
+                  value={config.modelId}
+                  onChange={e => updateConfig({ modelId: e.target.value })}
+                  placeholder="lub wpisz custom model ID..."
+                  className="bg-secondary border-border font-mono text-xs h-8"
+                />
+              </div>
+            ) : (
+              <Input
+                value={config.modelId}
+                onChange={e => updateConfig({ modelId: e.target.value })}
+                placeholder="Wpisz model ID..."
+                className="bg-secondary border-border font-mono text-sm"
+              />
+            )}
           </div>
 
           {needsApiKey && (
