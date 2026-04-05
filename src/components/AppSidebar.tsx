@@ -1,5 +1,6 @@
 import { NavLink, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Bot, Eye, BarChart3, AlertTriangle, Filter } from 'lucide-react';
+import { LayoutDashboard, Bot, Eye, BarChart3, AlertTriangle } from 'lucide-react';
+import alfaWolfLogo from '@/assets/alfa-wolf-logo.png';
 
 const navItems = [
   { to: '/', icon: LayoutDashboard, label: 'Dashboard' },
@@ -16,12 +17,10 @@ export function AppSidebar() {
     <aside className="w-64 min-h-screen bg-sidebar border-r border-sidebar-border flex flex-col">
       <div className="p-6 border-b border-sidebar-border">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg gradient-primary flex items-center justify-center">
-            <Filter className="w-5 h-5 text-primary-foreground" />
-          </div>
+          <img src={alfaWolfLogo} alt="ALFA" className="w-10 h-10 object-contain" width={512} height={512} />
           <div>
-            <h1 className="font-display text-lg font-bold text-foreground">Filtry Tonoyana</h1>
-            <p className="text-xs text-muted-foreground">ALFA Core MVP</p>
+            <h1 className="font-display text-lg font-bold text-primary tracking-wider">ALFA</h1>
+            <p className="text-[10px] text-muted-foreground tracking-widest uppercase">Pipeline Control</p>
           </div>
         </div>
       </div>
@@ -35,11 +34,11 @@ export function AppSidebar() {
               to={to}
               className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
                 isActive
-                  ? 'bg-sidebar-accent text-primary glow-primary'
+                  ? 'bg-sidebar-accent text-primary glow-primary border border-primary/10'
                   : 'text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
               }`}
             >
-              <Icon className="w-5 h-5" />
+              <Icon className="w-4 h-4" />
               {label}
             </NavLink>
           );
@@ -48,8 +47,8 @@ export function AppSidebar() {
 
       <div className="p-4 border-t border-sidebar-border">
         <div className="glass rounded-lg p-4">
-          <p className="text-xs text-muted-foreground font-mono">ŁASUCH → CERBER → GUARDIAN</p>
-          <p className="text-xs text-muted-foreground mt-1">Model-agnostic · 2 adaptery</p>
+          <p className="text-[10px] text-muted-foreground font-mono tracking-wide">LASUCH — CERBER — GUARDIAN</p>
+          <p className="text-[10px] text-muted-foreground mt-1">Model-agnostic pipeline</p>
         </div>
       </div>
     </aside>

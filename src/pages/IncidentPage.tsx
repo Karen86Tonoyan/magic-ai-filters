@@ -40,25 +40,25 @@ export default function IncidentPage() {
   return (
     <div className="p-4 sm:p-8 space-y-6 animate-fade-up">
       <div>
-        <h1 className="text-2xl sm:text-3xl font-display font-bold text-foreground flex items-center gap-2">
-          <AlertTriangle className="w-6 h-6 text-warning" />
-          Incident / Review Panel
+        <h1 className="text-2xl sm:text-3xl font-display font-bold text-foreground flex items-center gap-3 tracking-wide">
+          <AlertTriangle className="w-6 h-6 text-accent" />
+          Incident Review
         </h1>
-        <p className="text-muted-foreground mt-1 text-sm">HOLD i HUMAN_REVIEW — kolejka operatora</p>
+        <p className="text-muted-foreground mt-1 text-sm">HOLD and HUMAN_REVIEW — operator queue</p>
       </div>
 
       {incidents.length === 0 ? (
         <div className="glass rounded-xl p-16 text-center">
-          <MessageSquare className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-          <h3 className="text-xl font-display font-semibold text-foreground mb-2">Brak incydentów</h3>
-          <p className="text-muted-foreground">Incydenty pojawią się tutaj gdy pipeline zwróci HOLD lub HUMAN_REVIEW.</p>
-          <p className="text-xs text-muted-foreground mt-2 font-mono">Użyj Live Analysis aby wygenerować incydenty</p>
+          <MessageSquare className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+          <h3 className="text-xl font-display font-semibold text-foreground mb-2">No Incidents</h3>
+          <p className="text-muted-foreground text-sm">Incidents appear when pipeline returns HOLD or HUMAN_REVIEW.</p>
+          <p className="text-xs text-muted-foreground mt-2 font-mono">Use Live Analysis to generate incidents</p>
         </div>
       ) : (
         <>
           {pending.length > 0 && (
             <div className="space-y-4">
-              <h2 className="text-lg font-display font-semibold text-warning">⏳ Oczekujące ({pending.length})</h2>
+              <h2 className="text-lg font-display font-semibold text-primary tracking-wide">Pending ({pending.length})</h2>
               {pending.map(item => (
                 <IncidentCard key={item.id} item={item} onResolve={resolve} onUpdateNotes={updateNotes} />
               ))}
@@ -67,7 +67,7 @@ export default function IncidentPage() {
 
           {resolved.length > 0 && (
             <div className="space-y-4">
-              <h2 className="text-lg font-display font-semibold text-muted-foreground">✓ Rozwiązane ({resolved.length})</h2>
+              <h2 className="text-lg font-display font-semibold text-muted-foreground tracking-wide">Resolved ({resolved.length})</h2>
               {resolved.map(item => (
                 <IncidentCard key={item.id} item={item} onResolve={resolve} onUpdateNotes={updateNotes} />
               ))}
@@ -86,21 +86,21 @@ function IncidentCard({ item, onResolve, onUpdateNotes }: {
 }) {
   const isPending = item.status === 'pending';
   return (
-    <div className={`bg-card border rounded-xl p-4 sm:p-5 ${isPending ? 'border-warning/30' : 'border-border opacity-70'}`}>
+    <div className={`bg-card border rounded-xl p-4 sm:p-5 ${isPending ? 'border-primary/20' : 'border-border opacity-70'}`}>
       <div className="flex flex-col sm:flex-row items-start justify-between gap-3 mb-3">
         <div>
           <div className="flex items-center gap-2 flex-wrap">
             <Badge variant="outline" className={`font-mono text-xs ${
-              item.result.final_decision === 'BLOCK' ? 'border-destructive/30 text-destructive' :
+              item.result.final_decision === 'BLOCK' ? 'border-accent/30 text-accent' :
               item.result.final_decision === 'HUMAN_REVIEW' ? 'border-info/30 text-info' :
-              'border-warning/30 text-warning'
+              'border-primary/30 text-primary'
             }`}>
               {item.result.final_decision}
             </Badge>
             <Badge variant="outline" className={`font-mono text-xs ${
-              item.status === 'pending' ? 'border-warning/30 text-warning' :
+              item.status === 'pending' ? 'border-primary/30 text-primary' :
               item.status === 'allowed' ? 'border-success/30 text-success' :
-              'border-destructive/30 text-destructive'
+              'border-accent/30 text-accent'
             }`}>
               {item.status}
             </Badge>
@@ -118,16 +118,16 @@ function IncidentCard({ item, onResolve, onUpdateNotes }: {
         {item.result.input}
       </p>
 
-      <div className="text-xs text-muted-foreground mb-3">
-        Risk: {item.result.lasuch.risk_score.toFixed(2)} · 
-        Manip: {item.result.lasuch.manipulation_score.toFixed(2)} · 
+      <div className="text-xs text-muted-foreground mb-3 font-mono">
+        Risk: {item.result.lasuch.risk_score.toFixed(2)} / 
+        Manip: {item.result.lasuch.manipulation_score.toFixed(2)} / 
         Cerber: {item.result.cerber.survival_status}
       </div>
 
       {isPending && (
         <div className="space-y-3">
           <Textarea
-            placeholder="Notatki operatora..."
+            placeholder="Operator notes..."
             value={item.notes}
             onChange={e => onUpdateNotes(item.id, e.target.value)}
             className="bg-secondary border-border text-sm min-h-[60px]"
@@ -137,7 +137,7 @@ function IncidentCard({ item, onResolve, onUpdateNotes }: {
               <CheckCircle className="w-3 h-3" /> Allow
             </Button>
             <Button size="sm" onClick={() => onResolve(item.id, 'restricted')} variant="outline" className="gap-1">
-              ⚠️ Restrict
+              Restrict
             </Button>
             <Button size="sm" onClick={() => onResolve(item.id, 'rejected')} variant="destructive" className="gap-1">
               <XCircle className="w-3 h-3" /> Reject

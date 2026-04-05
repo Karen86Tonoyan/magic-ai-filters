@@ -11,7 +11,6 @@ export default function DashboardPage() {
   const [quickResults, setQuickResults] = useState<{ id: string; label: string; result: LasuchResult }[]>([]);
 
   useEffect(() => {
-    // Run ŁASUCH on all test prompts for quick stats
     const results = TEST_PROMPTS.map(tp => ({
       id: tp.id,
       label: tp.label,
@@ -27,20 +26,20 @@ export default function DashboardPage() {
   return (
     <div className="p-4 sm:p-8 space-y-8 animate-fade-up">
       <div>
-        <h1 className="text-2xl sm:text-3xl font-display font-bold text-foreground">Filtry Tonoyana</h1>
-        <p className="text-muted-foreground mt-1 text-sm">ALFA Core MVP — ŁASUCH → CERBER → GUARDIAN</p>
+        <h1 className="text-2xl sm:text-3xl font-display font-bold text-primary tracking-wider">ALFA</h1>
+        <p className="text-muted-foreground mt-1 text-sm">Pipeline Control System — LASUCH / CERBER / GUARDIAN</p>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard icon={Shield} label="Test Prompts" value={TEST_PROMPTS.length} description="wbudowanych" variant="primary" />
-        <StatCard icon={AlertTriangle} label="Wykryte zagrożenia" value={blocked.length} description={`z ${TEST_PROMPTS.length}`} variant="warning" />
-        <StatCard icon={Activity} label="Wykryte flagi" value={totalFlags} description="łącznie" variant="accent" />
-        <StatCard icon={Eye} label="Czyste" value={clean.length} description="bezpieczne" variant="info" />
+        <StatCard icon={Shield} label="Test Prompts" value={TEST_PROMPTS.length} description="built-in" variant="primary" />
+        <StatCard icon={AlertTriangle} label="Threats Detected" value={blocked.length} description={`of ${TEST_PROMPTS.length}`} variant="warning" />
+        <StatCard icon={Activity} label="Flags Raised" value={totalFlags} description="total" variant="accent" />
+        <StatCard icon={Eye} label="Clean" value={clean.length} description="passed" variant="info" />
       </div>
 
-      {/* Quick ŁASUCH scan results */}
+      {/* Quick scan */}
       <div className="space-y-4">
-        <h2 className="text-xl font-display font-semibold text-foreground">⚡ ŁASUCH Quick Scan</h2>
+        <h2 className="text-lg font-display font-semibold text-foreground tracking-wide">LASUCH Quick Scan</h2>
         <div className="grid gap-3">
           {quickResults.map(({ id, label, result }) => (
             <div key={id} className={`bg-card border rounded-lg p-4 flex flex-col sm:flex-row items-start sm:items-center gap-3 ${
@@ -60,7 +59,7 @@ export default function DashboardPage() {
                 <span className={result.risk_score > 0.3 ? 'text-destructive' : 'text-success'}>
                   R:{(result.risk_score * 100).toFixed(0)}%
                 </span>
-                <span className={result.manipulation_score > 0.3 ? 'text-warning' : 'text-muted-foreground'}>
+                <span className={result.manipulation_score > 0.3 ? 'text-primary' : 'text-muted-foreground'}>
                   M:{(result.manipulation_score * 100).toFixed(0)}%
                 </span>
                 <span className={result.exploit_score > 0.3 ? 'text-destructive' : 'text-muted-foreground'}>
@@ -72,84 +71,84 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* ALFA — How It Works */}
+      {/* ALFA — Architecture */}
       <div className="bg-card border border-border rounded-xl p-5 space-y-4">
-        <h2 className="text-lg font-display font-semibold text-foreground">🧠 ALFA — Kontrola nad AI</h2>
+        <h2 className="text-lg font-display font-semibold text-foreground tracking-wide">ALFA — Pipeline Control</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
           <div className="space-y-3">
             <div>
-              <p className="font-semibold text-foreground mb-1">Definicja</p>
-              <p className="text-muted-foreground text-xs">LLM nie rozumieją — symulują odpowiedzi na podstawie statystyki. ALFA nie zwiększa „inteligencji" modelu, tylko <span className="text-primary font-medium">kontroluje jego zachowanie</span> poprzez walidację wejścia, korekcję interpretacji i filtrację wyjścia.</p>
+              <p className="font-semibold text-foreground mb-1 text-xs uppercase tracking-wider">Definition</p>
+              <p className="text-muted-foreground text-xs">LLMs do not understand — they simulate responses via statistics. ALFA does not increase model intelligence, it <span className="text-primary font-medium">controls model behavior</span> through input validation, interpretation correction and output filtration.</p>
             </div>
             <div>
-              <p className="font-semibold text-foreground mb-1">Problem</p>
+              <p className="font-semibold text-foreground mb-1 text-xs uppercase tracking-wider">Problem</p>
               <ul className="text-muted-foreground text-xs space-y-0.5 list-none">
-                <li>• LLM halucynują i dopowiadają brakujące dane</li>
-                <li>• Udają empatię i logikę — nie mają modelu świata</li>
-                <li>• Ryzyko: błędne decyzje, manipulacja, fałszywe zrozumienie</li>
+                <li className="flex items-start gap-2"><span className="text-primary mt-0.5">—</span> LLMs hallucinate and fabricate missing data</li>
+                <li className="flex items-start gap-2"><span className="text-primary mt-0.5">—</span> Simulate empathy and logic without world model</li>
+                <li className="flex items-start gap-2"><span className="text-primary mt-0.5">—</span> Risk: false decisions, user manipulation, fake comprehension</li>
               </ul>
             </div>
             <div>
-              <p className="font-semibold text-destructive mb-1">Zasada krytyczna</p>
+              <p className="font-semibold text-accent mb-1 text-xs uppercase tracking-wider">Critical Rule</p>
               <ul className="text-muted-foreground text-xs space-y-0.5 list-none">
-                <li>• Guardian <span className="text-destructive font-medium">NIE MOŻE</span> zmieniać intencji użytkownika</li>
-                <li>• Enhancer <span className="text-destructive font-medium">NIE MOŻE</span> dodawać informacji spoza inputu</li>
-                <li>• System wykrywa gdy model „udaje rozumienie"</li>
+                <li className="flex items-start gap-2"><span className="text-accent mt-0.5">—</span> Guardian <span className="text-accent font-medium">CANNOT</span> alter user intent</li>
+                <li className="flex items-start gap-2"><span className="text-accent mt-0.5">—</span> Enhancer <span className="text-accent font-medium">CANNOT</span> inject data absent from input</li>
+                <li className="flex items-start gap-2"><span className="text-accent mt-0.5">—</span> System detects when model fakes understanding</li>
               </ul>
             </div>
           </div>
           <div className="space-y-3">
             <div>
-              <p className="font-semibold text-foreground mb-1">Pipeline</p>
+              <p className="font-semibold text-foreground mb-1 text-xs uppercase tracking-wider">Pipeline</p>
               <div className="flex flex-wrap items-center gap-1 text-xs font-mono">
-                <Badge variant="outline" className="border-primary/30 text-primary">ŁASUCH</Badge>
-                <span className="text-muted-foreground">→</span>
-                <Badge variant="outline" className="border-destructive/30 text-destructive">CERBER</Badge>
-                <span className="text-muted-foreground">→</span>
-                <Badge variant="outline" className="border-warning/30 text-warning">GUARDIAN</Badge>
-                <span className="text-muted-foreground">→</span>
-                <Badge variant="outline" className="border-accent/30 text-accent">ENHANCER</Badge>
-                <span className="text-muted-foreground">→</span>
+                <Badge variant="outline" className="border-primary/30 text-primary">LASUCH</Badge>
+                <span className="text-muted-foreground">/</span>
+                <Badge variant="outline" className="border-accent/30 text-accent">CERBER</Badge>
+                <span className="text-muted-foreground">/</span>
+                <Badge variant="outline" className="border-primary/30 text-primary">GUARDIAN</Badge>
+                <span className="text-muted-foreground">/</span>
+                <Badge variant="outline" className="border-gold-dark text-gold-light">ENHANCER</Badge>
+                <span className="text-muted-foreground">/</span>
                 <Badge variant="outline" className="border-info/30 text-info">MODEL</Badge>
               </div>
-              <p className="text-muted-foreground text-xs mt-1">Model nie jest źródłem prawdy — jest generatorem propozycji.</p>
+              <p className="text-muted-foreground text-xs mt-1">Model is not truth source — it is a proposal generator.</p>
             </div>
             <div>
-              <p className="font-semibold text-foreground mb-1">Walidacja outputu</p>
+              <p className="font-semibold text-foreground mb-1 text-xs uppercase tracking-wider">Output Validation</p>
               <ol className="text-muted-foreground text-xs space-y-0.5 list-decimal list-inside">
-                <li>Czy wynika z inputu?</li>
-                <li>Czy nie zawiera założeń?</li>
-                <li>Czy nie narusza zakresu?</li>
-                <li>Czy nie jest halucynacją?</li>
+                <li>Does it follow from input?</li>
+                <li>Does it contain assumptions?</li>
+                <li>Does it violate scope?</li>
+                <li>Is it a hallucination?</li>
               </ol>
-              <p className="text-xs text-muted-foreground mt-1">Jeśli nie → <span className="text-destructive font-medium">BLOCK</span> lub wymuszenie doprecyzowania.</p>
+              <p className="text-xs text-muted-foreground mt-1">If no — <span className="text-accent font-medium">BLOCK</span> or force clarification.</p>
             </div>
             <div className="bg-secondary/50 rounded-lg p-3">
-              <p className="font-semibold text-foreground text-xs mb-1">🧪 Test: „daj dane"</p>
-              <p className="text-muted-foreground text-[11px] font-mono">Łasuch: ambiguity · Guardian: brak kontekstu · Cerber: CLARIFY</p>
-              <p className="text-primary text-[11px] font-mono mt-1">→ „Jakie dane masz na myśli?"</p>
+              <p className="font-semibold text-foreground text-xs mb-1">Test: "give data"</p>
+              <p className="text-muted-foreground text-[11px] font-mono">Lasuch: ambiguity / Guardian: no context / Cerber: CLARIFY</p>
+              <p className="text-primary text-[11px] font-mono mt-1">Output: "Which data do you mean?"</p>
             </div>
-            <div className="bg-primary/5 border border-primary/20 rounded-lg p-3">
-              <p className="text-primary font-semibold text-xs">💣 Przewaga ALFA</p>
-              <p className="text-muted-foreground text-[11px]">Większość systemów ulepsza odpowiedzi AI. ALFA kontroluje <span className="font-medium text-foreground">czy AI ma prawo odpowiedzieć</span>.</p>
+            <div className="bg-card border border-primary/15 rounded-lg p-3">
+              <p className="text-primary font-semibold text-xs uppercase tracking-wider">ALFA Edge</p>
+              <p className="text-muted-foreground text-[11px]">Most systems improve AI responses. ALFA controls <span className="font-medium text-foreground">whether AI has the right to respond</span>.</p>
             </div>
           </div>
         </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <Link to="/analysis" className="bg-card border border-primary/20 rounded-xl p-6 hover:border-primary/50 transition-all text-center">
+        <Link to="/analysis" className="bg-card border border-primary/15 rounded-xl p-6 hover:border-primary/30 transition-all text-center">
           <Eye className="w-8 h-8 text-primary mx-auto mb-2" />
           <p className="font-display font-semibold text-foreground">Live Analysis</p>
-          <p className="text-xs text-muted-foreground mt-1">Pełny pipeline</p>
+          <p className="text-xs text-muted-foreground mt-1">Full pipeline</p>
         </Link>
-        <Link to="/benchmark" className="bg-card border border-accent/20 rounded-xl p-6 hover:border-accent/50 transition-all text-center">
-          <BarChart3 className="w-8 h-8 text-accent mx-auto mb-2" />
+        <Link to="/benchmark" className="bg-card border border-primary/15 rounded-xl p-6 hover:border-primary/30 transition-all text-center">
+          <BarChart3 className="w-8 h-8 text-primary mx-auto mb-2" />
           <p className="font-display font-semibold text-foreground">Benchmark Lab</p>
           <p className="text-xs text-muted-foreground mt-1">Raw vs Filtered</p>
         </Link>
-        <Link to="/incidents" className="bg-card border border-warning/20 rounded-xl p-6 hover:border-warning/50 transition-all text-center">
-          <AlertTriangle className="w-8 h-8 text-warning mx-auto mb-2" />
+        <Link to="/incidents" className="bg-card border border-accent/15 rounded-xl p-6 hover:border-accent/30 transition-all text-center">
+          <AlertTriangle className="w-8 h-8 text-accent mx-auto mb-2" />
           <p className="font-display font-semibold text-foreground">Incidents</p>
           <p className="text-xs text-muted-foreground mt-1">Review queue</p>
         </Link>
