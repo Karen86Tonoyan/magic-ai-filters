@@ -14,7 +14,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["JetBrains Mono", "monospace"],
+        display: ["Cinzel", "serif"],
         body: ["Inter", "sans-serif"],
         mono: ["JetBrains Mono", "monospace"],
       },
@@ -63,6 +63,15 @@ export default {
         info: {
           DEFAULT: "hsl(var(--info))",
           foreground: "hsl(var(--info-foreground))",
+        },
+        gold: {
+          DEFAULT: "hsl(var(--gold))",
+          light: "hsl(var(--gold-light))",
+          dark: "hsl(var(--gold-dark))",
+        },
+        crimson: {
+          DEFAULT: "hsl(var(--crimson))",
+          light: "hsl(var(--crimson-light))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
