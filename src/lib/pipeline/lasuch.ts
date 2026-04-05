@@ -53,7 +53,12 @@ export function runLasuch(input: string): LasuchResult {
 
   // Combined risk with exploit + manipulation amplification
   // More flags = higher amplifier (Dark Tetrad synergy)
-  const flagAmplifier = detectedFlags.length > 5 ? 0.3 : detectedFlags.length > 3 ? 0.2 : 0;
+  // 7+ flags = max amplification (full Dark Tetrad combo)
+  const flagAmplifier = detectedFlags.length > 7 ? 0.35 
+    : detectedFlags.length > 5 ? 0.3 
+    : detectedFlags.length > 3 ? 0.2 
+    : detectedFlags.length > 1 ? 0.1
+    : 0;
   const combined = Math.min(1,
     risk_score * 0.25 +
     manipulation_score * 0.35 +
@@ -83,6 +88,18 @@ export function runLasuch(input: string): LasuchResult {
   }
   if (detectedFlags.includes('isolation') || detectedFlags.includes('intermittent_reinforcement')) {
     hiddenIntents.push('Trauma bonding / dependency creation pattern');
+  }
+  if (detectedFlags.includes('jade_trap')) {
+    hiddenIntents.push('JADE trap: provocation to Justify/Argue/Defend/Explain — energy drain tactic');
+  }
+  if (detectedFlags.includes('resource_exhaustion') || detectedFlags.includes('verbose_exploitation')) {
+    hiddenIntents.push('Resource exhaustion / DoS attempt against model infrastructure');
+  }
+  if (detectedFlags.includes('model_weakness_probe') || detectedFlags.includes('safety_bypass_open_model')) {
+    hiddenIntents.push('Model reconnaissance: probing weaknesses or exploiting open-source safety gaps');
+  }
+  if (detectedFlags.includes('dependency_loop_attack')) {
+    hiddenIntents.push('Dependency loop: attempting to create master-slave dynamic with AI');
   }
 
   // Confidence: higher when more patterns match consistently

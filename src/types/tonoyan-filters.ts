@@ -47,7 +47,16 @@ export type LasuchFlag =
   | 'double_bind'
   | 'intermittent_reinforcement'
   | 'smear_campaign'
-  | 'parasitic_demand';
+  | 'parasitic_demand'
+  // JADE trap patterns
+  | 'jade_trap'
+  // Model-specific exploit patterns (2026)
+  | 'resource_exhaustion'
+  | 'model_weakness_probe'
+  | 'benchmark_gaming'
+  | 'verbose_exploitation'
+  | 'safety_bypass_open_model'
+  | 'dependency_loop_attack';
 
 // ─── CERBER Output ───
 export type CerberSurvivalStatus = 'SURVIVED' | 'FAILED' | 'UNCERTAIN';
