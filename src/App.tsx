@@ -8,6 +8,7 @@ import DashboardPage from "@/pages/DashboardPage";
 import ModelsPage from "@/pages/ModelsPage";
 import LiveAnalysisPage from "@/pages/LiveAnalysisPage";
 import BenchmarkPage from "@/pages/BenchmarkPage";
+import DualChatPage from "@/pages/DualChatPage";
 import IncidentPage from "@/pages/IncidentPage";
 import NotFound from "./pages/NotFound.tsx";
 
@@ -24,6 +25,7 @@ const App = () => (
             <Route path="/" element={<DashboardPage />} />
             <Route path="/models" element={<ModelsPage />} />
             <Route path="/analysis" element={<LiveAnalysisPage />} />
+            <Route path="/chat" element={<DualChatPage />} />
             <Route path="/benchmark" element={<BenchmarkPage />} />
             <Route path="/incidents" element={<IncidentPage />} />
           </Route>
