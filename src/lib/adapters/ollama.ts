@@ -46,4 +46,18 @@ export class OllamaAdapter implements ModelAdapter {
       return false;
     }
   }
+
+  async listModels(): Promise<{ id: string; label: string }[]> {
+    try {
+      const response = await fetch(`${this.baseUrl}/api/tags`);
+      if (!response.ok) return [];
+      const data = await response.json();
+      return (data.models || []).map((m: any) => ({
+        id: m.name,
+        label: `${m.name} (${(m.size / 1e9).toFixed(1)}GB)`,
+      }));
+    } catch {
+      return [];
+    }
+  }
 }

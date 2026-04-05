@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import type { ModelAdapter } from '@/lib/adapters/types';
 import { createAdapter } from '@/lib/adapters/factory';
+import { OllamaAdapter } from '@/lib/adapters/ollama';
 import { PROVIDER_INFO, type AIProvider } from '@/types/ai-filters';
 
 interface LLMConfig {
@@ -91,6 +92,7 @@ export function LLMConnectionPanel({ onAdapterChange }: Props) {
   const [expanded, setExpanded] = useState(false);
   const [testing, setTesting] = useState(false);
   const [status, setStatus] = useState<'idle' | 'connected' | 'error'>('idle');
+  const [detectedModels, setDetectedModels] = useState<{ id: string; label: string }[] | null>(null);
 
   const needsApiKey = config.provider !== 'ollama';
 
@@ -114,6 +116,7 @@ export function LLMConnectionPanel({ onAdapterChange }: Props) {
   };
 
   const switchProvider = (provider: AIProvider) => {
+    setDetectedModels(null);
     updateConfig({
       provider,
       baseUrl: PROVIDER_INFO[provider]?.defaultUrl || '',
@@ -132,7 +135,13 @@ export function LLMConnectionPanel({ onAdapterChange }: Props) {
       });
       const ok = await adapter.testConnection();
       setStatus(ok ? 'connected' : 'error');
-      if (ok) updateConfig({ enabled: true });
+      if (ok) {
+        updateConfig({ enabled: true });
+        if (config.provider === 'ollama' && adapter instanceof OllamaAdapter) {
+          const models = await adapter.listModels();
+          if (models.length > 0) setDetectedModels(models);
+        }
+      }
     } catch {
       setStatus('error');
     }
@@ -223,35 +232,48 @@ export function LLMConnectionPanel({ onAdapterChange }: Props) {
 
           <div>
             <Label className="text-muted-foreground text-xs mb-1 block">Model</Label>
-            {(POPULAR_MODELS[config.provider] || []).length > 0 ? (
-              <div className="space-y-2">
-                <Select value={config.modelId} onValueChange={v => updateConfig({ modelId: v })}>
-                  <SelectTrigger className="bg-secondary border-border font-mono text-sm">
-                    <SelectValue placeholder="Wybierz model..." />
-                  </SelectTrigger>
-                  <SelectContent className="bg-card border-border max-h-[240px]">
-                    {POPULAR_MODELS[config.provider].map(m => (
-                      <SelectItem key={m.id} value={m.id} className="font-mono text-sm">
-                        {m.label} <span className="text-muted-foreground ml-1 text-[10px]">{m.id}</span>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <Input
-                  value={config.modelId}
-                  onChange={e => updateConfig({ modelId: e.target.value })}
-                  placeholder="lub wpisz custom model ID..."
-                  className="bg-secondary border-border font-mono text-xs h-8"
-                />
-              </div>
-            ) : (
-              <Input
-                value={config.modelId}
-                onChange={e => updateConfig({ modelId: e.target.value })}
-                placeholder="Wpisz model ID..."
-                className="bg-secondary border-border font-mono text-sm"
-              />
-            )}
+            {(() => {
+              const modelList = (config.provider === 'ollama' && detectedModels && detectedModels.length > 0)
+                ? detectedModels
+                : (POPULAR_MODELS[config.provider] || []);
+              if (modelList.length === 0) {
+                return (
+                  <Input
+                    value={config.modelId}
+                    onChange={e => updateConfig({ modelId: e.target.value })}
+                    placeholder="Wpisz model ID..."
+                    className="bg-secondary border-border font-mono text-sm"
+                  />
+                );
+              }
+              return (
+                <div className="space-y-2">
+                  {config.provider === 'ollama' && detectedModels && detectedModels.length > 0 && (
+                    <Badge variant="outline" className="text-[10px] border-success/30 text-success mb-1">
+                      {detectedModels.length} modeli wykrytych z Ollama
+                    </Badge>
+                  )}
+                  <Select value={config.modelId} onValueChange={v => updateConfig({ modelId: v })}>
+                    <SelectTrigger className="bg-secondary border-border font-mono text-sm">
+                      <SelectValue placeholder="Wybierz model..." />
+                    </SelectTrigger>
+                    <SelectContent className="bg-card border-border max-h-[240px]">
+                      {modelList.map(m => (
+                        <SelectItem key={m.id} value={m.id} className="font-mono text-sm">
+                          {m.label} <span className="text-muted-foreground ml-1 text-[10px]">{m.id}</span>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <Input
+                    value={config.modelId}
+                    onChange={e => updateConfig({ modelId: e.target.value })}
+                    placeholder="lub wpisz custom model ID..."
+                    className="bg-secondary border-border font-mono text-xs h-8"
+                  />
+                </div>
+              );
+            })()}
           </div>
 
           {needsApiKey && (
