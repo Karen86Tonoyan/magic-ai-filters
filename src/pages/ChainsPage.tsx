@@ -86,7 +86,12 @@ export default function ChainsPage() {
                         <span className="text-lg">{FILTER_TYPE_INFO[filter.type].icon}</span>
                         <div className="flex-1">
                           <p className="text-sm font-medium text-foreground">{filter.name}</p>
-                          <p className="text-xs text-muted-foreground">{FILTER_TYPE_INFO[filter.type].label}</p>
+                          <p className="text-xs text-muted-foreground">
+                            <span className={filter.phase === 'pre_model' ? 'text-destructive' : 'text-info'}>
+                              {filter.phase === 'pre_model' ? '⬆ PRE-MODEL' : '⬇ POST-MODEL'}
+                            </span>
+                            {' · '}{FILTER_TYPE_INFO[filter.type].label}
+                          </p>
                         </div>
                         {form.filterIds.includes(filter.id) && (
                           <span className="text-xs font-mono text-primary">#{form.filterIds.indexOf(filter.id) + 1}</span>
@@ -154,16 +159,24 @@ export default function ChainsPage() {
                 {/* Pipeline visualization */}
                 <div className="flex items-center gap-2 flex-wrap mb-4">
                   <span className="text-xs font-mono text-muted-foreground bg-secondary px-2 py-1 rounded">INPUT</span>
-                  {chainFilters.map((filter, i) => (
+                  {chainFilters.filter(f => f!.phase === 'pre_model').map((filter) => (
                     <div key={filter!.id} className="flex items-center gap-2">
-                      <ArrowRight className="w-4 h-4 text-primary" />
-                      <span className="text-xs font-mono bg-accent/10 text-accent px-3 py-1 rounded-full border border-accent/20">
+                      <ArrowRight className="w-4 h-4 text-destructive" />
+                      <span className="text-xs font-mono bg-destructive/10 text-destructive px-3 py-1 rounded-full border border-destructive/20">
                         {FILTER_TYPE_INFO[filter!.type].icon} {filter!.name}
                       </span>
                     </div>
                   ))}
                   <ArrowRight className="w-4 h-4 text-primary" />
-                  <span className="text-xs font-mono text-muted-foreground bg-secondary px-2 py-1 rounded">AI MODEL</span>
+                  <span className="text-xs font-mono text-primary bg-primary/10 border border-primary/20 px-3 py-1 rounded-full font-bold">🤖 MODEL</span>
+                  {chainFilters.filter(f => f!.phase === 'post_model').map((filter) => (
+                    <div key={filter!.id} className="flex items-center gap-2">
+                      <ArrowRight className="w-4 h-4 text-info" />
+                      <span className="text-xs font-mono bg-info/10 text-info px-3 py-1 rounded-full border border-info/20">
+                        {FILTER_TYPE_INFO[filter!.type].icon} {filter!.name}
+                      </span>
+                    </div>
+                  ))}
                   <ArrowRight className="w-4 h-4 text-primary" />
                   <span className="text-xs font-mono text-muted-foreground bg-secondary px-2 py-1 rounded">OUTPUT</span>
                 </div>
