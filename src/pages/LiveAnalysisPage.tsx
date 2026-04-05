@@ -89,6 +89,9 @@ export default function LiveAnalysisPage() {
         <p className="text-muted-foreground mt-1 text-sm">ŁASUCH → CERBER → GUARDIAN → ENHANCER → RDZEŃ — pełny pipeline w akcji</p>
       </div>
 
+      {/* LLM Connection */}
+      <LLMConnectionPanel onAdapterChange={handleAdapterChange} />
+
       {/* Input area */}
       <div className="bg-card border border-border rounded-xl p-4 sm:p-6 space-y-4">
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
