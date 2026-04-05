@@ -89,6 +89,18 @@ export function runLasuch(input: string): LasuchResult {
   if (detectedFlags.includes('isolation') || detectedFlags.includes('intermittent_reinforcement')) {
     hiddenIntents.push('Trauma bonding / dependency creation pattern');
   }
+  if (detectedFlags.includes('jade_trap')) {
+    hiddenIntents.push('JADE trap: provocation to Justify/Argue/Defend/Explain — energy drain tactic');
+  }
+  if (detectedFlags.includes('resource_exhaustion') || detectedFlags.includes('verbose_exploitation')) {
+    hiddenIntents.push('Resource exhaustion / DoS attempt against model infrastructure');
+  }
+  if (detectedFlags.includes('model_weakness_probe') || detectedFlags.includes('safety_bypass_open_model')) {
+    hiddenIntents.push('Model reconnaissance: probing weaknesses or exploiting open-source safety gaps');
+  }
+  if (detectedFlags.includes('dependency_loop_attack')) {
+    hiddenIntents.push('Dependency loop: attempting to create master-slave dynamic with AI');
+  }
 
   // Confidence: higher when more patterns match consistently
   const confidence = detectedFlags.length === 0
