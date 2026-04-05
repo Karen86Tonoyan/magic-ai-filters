@@ -105,6 +105,24 @@ export interface CoreResult {
   reasoning: string;
 }
 
+// ─── Prompt Enhancement ───
+export interface PromptWeaknessSummary {
+  category: string;
+  description: string;
+  severity: 'low' | 'medium' | 'high';
+  fix: string;
+}
+
+export interface PromptEnhancementResult {
+  original: string;
+  enhanced: string;
+  weaknesses: PromptWeaknessSummary[];
+  enhancement_summary: string;
+  strength_score: number;
+  improvement_delta: number;
+  processing_time_ms: number;
+}
+
 // ─── Full Pipeline Result ───
 export interface PipelineResult {
   id: string;
@@ -115,6 +133,7 @@ export interface PipelineResult {
   cerber: CerberResult;
   guardian: GuardianResult;
   core: CoreResult;
+  enhancement?: PromptEnhancementResult;
   final_decision: GuardianDecision;
   response_mode: ResponseMode;
   model_response?: string;
