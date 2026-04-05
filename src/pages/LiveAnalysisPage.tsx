@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Play, Shield, Eye, AlertTriangle, CheckCircle, XCircle, Clock, Loader2 } from 'lucide-react';
+import { Play, Shield, Eye, AlertTriangle, CheckCircle, XCircle, Clock, Loader2, Sparkles, Copy, Check, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
@@ -17,23 +17,32 @@ const DECISION_STYLES: Record<string, { bg: string; text: string; label: string 
   HUMAN_REVIEW: { bg: 'bg-info/10', text: 'text-info', label: '👤 HUMAN REVIEW' },
 };
 
+const SEVERITY_STYLES: Record<string, string> = {
+  high: 'border-destructive/40 text-destructive bg-destructive/5',
+  medium: 'border-warning/40 text-warning bg-warning/5',
+  low: 'border-muted-foreground/30 text-muted-foreground bg-muted/30',
+};
+
 export default function LiveAnalysisPage() {
   const [input, setInput] = useState('');
   const [mode, setMode] = useState<PipelineMode>('filtered');
   const [result, setResult] = useState<PipelineResult | null>(null);
   const [isRunning, setIsRunning] = useState(false);
   const [stage, setStage] = useState('');
+  const [copied, setCopied] = useState(false);
+  const [showWeaknesses, setShowWeaknesses] = useState(false);
 
   const runAnalysis = async () => {
     if (!input.trim()) return;
     setIsRunning(true);
     setResult(null);
+    setCopied(false);
 
     setStage('ŁASUCH — skanowanie wzorców...');
     await new Promise(r => setTimeout(r, 300));
     setStage('CERBER — dekompozycja intencji...');
     await new Promise(r => setTimeout(r, 400));
-    setStage('GUARDIAN — decyzja finalna...');
+    setStage('GUARDIAN — decyzja + ulepszanie promptu...');
     await new Promise(r => setTimeout(r, 200));
     setStage('RDZEŃ — kalkulacja value/risk...');
 
@@ -48,6 +57,21 @@ export default function LiveAnalysisPage() {
     if (tp) setInput(tp.prompt);
   };
 
+  const copyEnhanced = async () => {
+    if (result?.enhancement?.enhanced) {
+      await navigator.clipboard.writeText(result.enhancement.enhanced);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  const useEnhanced = () => {
+    if (result?.enhancement?.enhanced) {
+      setInput(result.enhancement.enhanced);
+      setResult(null);
+    }
+  };
+
   const ds = result ? DECISION_STYLES[result.final_decision] : null;
 
   return (
@@ -57,7 +81,7 @@ export default function LiveAnalysisPage() {
           <Eye className="w-6 h-6 sm:w-7 sm:h-7 text-primary" />
           Live Analysis
         </h1>
-        <p className="text-muted-foreground mt-1 text-sm">ŁASUCH → CERBER → GUARDIAN → RDZEŃ — pełny pipeline w akcji</p>
+        <p className="text-muted-foreground mt-1 text-sm">ŁASUCH → CERBER → GUARDIAN → ENHANCER → RDZEŃ — pełny pipeline w akcji</p>
       </div>
 
       {/* Input area */}
@@ -122,6 +146,84 @@ export default function LiveAnalysisPage() {
               )}
             </div>
           </div>
+
+          {/* ═══ PROMPT ENHANCER PANEL ═══ */}
+          {result.enhancement && result.enhancement.weaknesses.length > 0 && (
+            <div className="bg-card border border-primary/30 rounded-xl p-4 sm:p-6 space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="font-display font-semibold text-foreground flex items-center gap-2">
+                  <Sparkles className="w-5 h-5 text-primary" />
+                  GUARDIAN Prompt Enhancer
+                  <span className="text-xs text-muted-foreground ml-2">{result.enhancement.processing_time_ms}ms</span>
+                </h3>
+                <div className="flex items-center gap-2">
+                  <Badge variant="outline" className="text-xs font-mono border-warning/30 text-warning">
+                    Siła: {(result.enhancement.strength_score * 100).toFixed(0)}%
+                  </Badge>
+                  <Badge variant="outline" className="text-xs font-mono border-primary/30 text-primary">
+                    +{(result.enhancement.improvement_delta * 100).toFixed(0)}% poprawa
+                  </Badge>
+                </div>
+              </div>
+
+              <p className="text-sm text-muted-foreground">{result.enhancement.enhancement_summary}</p>
+
+              {/* Weaknesses toggle */}
+              <button
+                onClick={() => setShowWeaknesses(!showWeaknesses)}
+                className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {showWeaknesses ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+                {result.enhancement.weaknesses.length} wykrytych słabości
+              </button>
+
+              {showWeaknesses && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {result.enhancement.weaknesses.map((w, i) => (
+                    <div key={i} className={`border rounded-lg p-3 ${SEVERITY_STYLES[w.severity]}`}>
+                      <div className="flex items-center gap-2 mb-1">
+                        <Badge variant="outline" className="text-[10px] font-mono">
+                          {w.severity.toUpperCase()}
+                        </Badge>
+                        <span className="text-[10px] font-mono">{w.category.replace(/_/g, ' ')}</span>
+                      </div>
+                      <p className="text-xs mb-1">{w.description}</p>
+                      <p className="text-[10px] text-foreground/70">💡 {w.fix}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Enhanced prompt preview */}
+              <div className="space-y-2">
+                <p className="text-xs font-medium text-foreground">Ulepszona wersja:</p>
+                <div className="bg-secondary/80 border border-border rounded-lg p-4 font-mono text-xs text-foreground whitespace-pre-wrap max-h-[300px] overflow-y-auto">
+                  {result.enhancement.enhanced}
+                </div>
+                <div className="flex gap-2">
+                  <Button size="sm" variant="outline" onClick={copyEnhanced} className="gap-2 text-xs">
+                    {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                    {copied ? 'Skopiowano!' : 'Kopiuj'}
+                  </Button>
+                  <Button size="sm" onClick={useEnhanced} className="gap-2 text-xs gradient-primary text-primary-foreground">
+                    <Sparkles className="w-3 h-3" />
+                    Użyj ulepszonej wersji
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* No weaknesses = strong prompt */}
+          {result.enhancement && result.enhancement.weaknesses.length === 0 && (
+            <div className="bg-success/5 border border-success/20 rounded-xl p-4 flex items-center gap-3">
+              <CheckCircle className="w-5 h-5 text-success shrink-0" />
+              <div>
+                <p className="text-sm font-medium text-success">Prompt jest silny</p>
+                <p className="text-xs text-muted-foreground">Brak istotnych słabości — nie wymaga ulepszenia.</p>
+              </div>
+            </div>
+          )}
 
           {/* Pipeline Modules Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">

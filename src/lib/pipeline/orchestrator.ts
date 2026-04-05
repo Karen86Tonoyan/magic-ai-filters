@@ -1,12 +1,13 @@
 /**
  * Pipeline Orchestrator
- * ŁASUCH → CERBER → GUARDIAN → CORE → [MODEL if PASS]
+ * ŁASUCH → CERBER → GUARDIAN → ENHANCER → CORE → [MODEL if PASS]
  */
 import type { PipelineResult, PipelineMode, GuardianDecision, ResponseMode } from '@/types/tonoyan-filters';
 import { runLasuch } from './lasuch';
 import { runCerber } from './cerber';
 import { runGuardian } from './guardian';
 import { runCore } from './core';
+import { enhancePrompt } from './prompt-enhancer';
 import type { ModelAdapter } from '@/lib/adapters/types';
 
 function hashInput(input: string): string {
@@ -40,6 +41,23 @@ export async function runPipeline(input: string, options: PipelineOptions): Prom
   // === STAGE 3: GUARDIAN ===
   const guardian = runGuardian(lasuch, cerber);
 
+  // === STAGE 3.5: PROMPT ENHANCER (always runs) ===
+  const enhancementRaw = enhancePrompt(input);
+  const enhancement = {
+    original: enhancementRaw.original,
+    enhanced: enhancementRaw.enhanced,
+    weaknesses: enhancementRaw.weaknesses.map(w => ({
+      category: w.category,
+      description: w.description,
+      severity: w.severity,
+      fix: w.fix,
+    })),
+    enhancement_summary: enhancementRaw.enhancement_summary,
+    strength_score: enhancementRaw.strength_score,
+    improvement_delta: enhancementRaw.improvement_delta,
+    processing_time_ms: enhancementRaw.processing_time_ms,
+  };
+
   // === STAGE 4: CORE ===
   const core = runCore(input, lasuch, cerber, guardian);
 
@@ -56,11 +74,14 @@ export async function runPipeline(input: string, options: PipelineOptions): Prom
   }
 
   // === STAGE 5: MODEL (only if allowed) ===
+  // Use enhanced prompt if available and decision allows
+  const promptForModel = enhancement.improvement_delta > 0 ? enhancement.enhanced : input;
+
   if (options.mode !== 'benchmark' && (final_decision === 'PASS' || final_decision === 'LIMITED_PASS') && options.adapter) {
     try {
       const cleanedInput = final_decision === 'LIMITED_PASS'
-        ? `[RESTRICTED MODE] ${input}`
-        : input;
+        ? `[RESTRICTED MODE] ${promptForModel}`
+        : promptForModel;
 
       model_response = await options.adapter.chat(cleanedInput, options.systemPrompt);
       provider_used = options.adapter.provider;
@@ -69,9 +90,9 @@ export async function runPipeline(input: string, options: PipelineOptions): Prom
       model_response = `[ERROR] Model call failed: ${e instanceof Error ? e.message : 'Unknown error'}`;
     }
   } else if (final_decision === 'BLOCK') {
-    model_response = undefined; // Model never sees the input
+    model_response = undefined;
   } else if (final_decision === 'HOLD' || final_decision === 'HUMAN_REVIEW') {
-    model_response = undefined; // Held for review
+    model_response = undefined;
   }
 
   // RAW mode: skip all filters, just call model
@@ -99,6 +120,7 @@ export async function runPipeline(input: string, options: PipelineOptions): Prom
     cerber,
     guardian,
     core,
+    enhancement,
     final_decision,
     response_mode,
     model_response,
