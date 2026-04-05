@@ -1,12 +1,12 @@
 import { NavLink, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Bot, Filter, MessageSquare, Settings, Zap } from 'lucide-react';
+import { LayoutDashboard, Bot, Eye, BarChart3, AlertTriangle, Filter } from 'lucide-react';
 
 const navItems = [
   { to: '/', icon: LayoutDashboard, label: 'Dashboard' },
-  { to: '/models', icon: Bot, label: 'Modele AI' },
-  { to: '/filters', icon: Filter, label: 'Filtry' },
-  { to: '/chains', icon: Zap, label: 'Łańcuchy' },
-  { to: '/chat', icon: MessageSquare, label: 'Chat Testowy' },
+  { to: '/models', icon: Bot, label: 'Provider Manager' },
+  { to: '/analysis', icon: Eye, label: 'Live Analysis' },
+  { to: '/benchmark', icon: BarChart3, label: 'Benchmark Lab' },
+  { to: '/incidents', icon: AlertTriangle, label: 'Incidents' },
 ];
 
 export function AppSidebar() {
@@ -20,8 +20,8 @@ export function AppSidebar() {
             <Filter className="w-5 h-5 text-primary-foreground" />
           </div>
           <div>
-            <h1 className="font-display text-lg font-bold text-foreground">AI Filters</h1>
-            <p className="text-xs text-muted-foreground">Pipeline Manager</p>
+            <h1 className="font-display text-lg font-bold text-foreground">Filtry Tonoyana</h1>
+            <p className="text-xs text-muted-foreground">ALFA Core MVP</p>
           </div>
         </div>
       </div>
@@ -48,8 +48,8 @@ export function AppSidebar() {
 
       <div className="p-4 border-t border-sidebar-border">
         <div className="glass rounded-lg p-4">
-          <p className="text-xs text-muted-foreground font-mono">v1.0 · Local Storage</p>
-          <p className="text-xs text-muted-foreground mt-1">Dane zapisywane lokalnie</p>
+          <p className="text-xs text-muted-foreground font-mono">ŁASUCH → CERBER → GUARDIAN</p>
+          <p className="text-xs text-muted-foreground mt-1">Model-agnostic · 2 adaptery</p>
         </div>
       </div>
     </aside>

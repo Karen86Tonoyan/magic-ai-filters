@@ -6,9 +6,9 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AppLayout } from "@/components/AppLayout";
 import DashboardPage from "@/pages/DashboardPage";
 import ModelsPage from "@/pages/ModelsPage";
-import FiltersPage from "@/pages/FiltersPage";
-import ChainsPage from "@/pages/ChainsPage";
-import ChatPage from "@/pages/ChatPage";
+import LiveAnalysisPage from "@/pages/LiveAnalysisPage";
+import BenchmarkPage from "@/pages/BenchmarkPage";
+import IncidentPage from "@/pages/IncidentPage";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -23,9 +23,9 @@ const App = () => (
           <Route element={<AppLayout />}>
             <Route path="/" element={<DashboardPage />} />
             <Route path="/models" element={<ModelsPage />} />
-            <Route path="/filters" element={<FiltersPage />} />
-            <Route path="/chains" element={<ChainsPage />} />
-            <Route path="/chat" element={<ChatPage />} />
+            <Route path="/analysis" element={<LiveAnalysisPage />} />
+            <Route path="/benchmark" element={<BenchmarkPage />} />
+            <Route path="/incidents" element={<IncidentPage />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
