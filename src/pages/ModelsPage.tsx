@@ -89,10 +89,12 @@ export default function ModelsPage() {
                 <Label className="text-muted-foreground">Model ID</Label>
                 <Input value={form.modelId} onChange={e => setForm(f => ({ ...f, modelId: e.target.value }))} placeholder="np. gpt-4-turbo" className="bg-secondary border-border font-mono text-sm" />
               </div>
+              {needsApiKey && (
               <div>
                 <Label className="text-muted-foreground">Klucz API</Label>
                 <Input type="password" value={form.apiKey} onChange={e => setForm(f => ({ ...f, apiKey: e.target.value }))} placeholder="sk-..." className="bg-secondary border-border font-mono text-sm" />
               </div>
+              )}
               <div>
                 <Label className="text-muted-foreground">Base URL (opcjonalnie)</Label>
                 <Input value={form.baseUrl} onChange={e => setForm(f => ({ ...f, baseUrl: e.target.value }))} placeholder={PROVIDER_INFO[form.provider].defaultUrl} className="bg-secondary border-border font-mono text-sm" />
