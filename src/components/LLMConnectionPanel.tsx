@@ -117,7 +117,7 @@ export function LLMConnectionPanel({ onAdapterChange }: Props) {
     updateConfig({
       provider,
       baseUrl: PROVIDER_INFO[provider]?.defaultUrl || '',
-      modelId: DEFAULT_MODELS[provider] || '',
+      modelId: POPULAR_MODELS[provider]?.[0]?.id || '',
       apiKey: provider === 'ollama' ? '' : config.apiKey,
     });
   };
@@ -222,13 +222,36 @@ export function LLMConnectionPanel({ onAdapterChange }: Props) {
           </div>
 
           <div>
-            <Label className="text-muted-foreground text-xs mb-1 block">Model ID</Label>
-            <Input
-              value={config.modelId}
-              onChange={e => updateConfig({ modelId: e.target.value })}
-              placeholder={DEFAULT_MODELS[config.provider]}
-              className="bg-secondary border-border font-mono text-sm"
-            />
+            <Label className="text-muted-foreground text-xs mb-1 block">Model</Label>
+            {(POPULAR_MODELS[config.provider] || []).length > 0 ? (
+              <div className="space-y-2">
+                <Select value={config.modelId} onValueChange={v => updateConfig({ modelId: v })}>
+                  <SelectTrigger className="bg-secondary border-border font-mono text-sm">
+                    <SelectValue placeholder="Wybierz model..." />
+                  </SelectTrigger>
+                  <SelectContent className="bg-card border-border max-h-[240px]">
+                    {POPULAR_MODELS[config.provider].map(m => (
+                      <SelectItem key={m.id} value={m.id} className="font-mono text-sm">
+                        {m.label} <span className="text-muted-foreground ml-1 text-[10px]">{m.id}</span>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Input
+                  value={config.modelId}
+                  onChange={e => updateConfig({ modelId: e.target.value })}
+                  placeholder="lub wpisz custom model ID..."
+                  className="bg-secondary border-border font-mono text-xs h-8"
+                />
+              </div>
+            ) : (
+              <Input
+                value={config.modelId}
+                onChange={e => updateConfig({ modelId: e.target.value })}
+                placeholder="Wpisz model ID..."
+                className="bg-secondary border-border font-mono text-sm"
+              />
+            )}
           </div>
 
           {needsApiKey && (
