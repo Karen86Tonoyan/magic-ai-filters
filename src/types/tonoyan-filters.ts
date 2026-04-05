@@ -106,6 +106,9 @@ export interface CoreResult {
 }
 
 // ─── Prompt Enhancement ───
+export type EnhancerMode = 'safe' | 'aggressive' | 'benchmark';
+export type ModificationLevel = 'NONE' | 'LOW' | 'MEDIUM' | 'HIGH';
+
 export interface PromptWeaknessSummary {
   category: string;
   description: string;
@@ -113,13 +116,28 @@ export interface PromptWeaknessSummary {
   fix: string;
 }
 
+export interface DualPromptResult {
+  /** Original user input — NEVER modified */
+  raw_input: string;
+  /** Generated system-level guard rails */
+  system_guard: string;
+  /** Full display version for comparison */
+  enhanced_display: string;
+}
+
 export interface PromptEnhancementResult {
   original: string;
   enhanced: string;
+  dual_prompt: DualPromptResult;
   weaknesses: PromptWeaknessSummary[];
   enhancement_summary: string;
   strength_score: number;
   improvement_delta: number;
+  // v2.0 distortion risk flags
+  modification_level: ModificationLevel;
+  risk_of_distortion: number;
+  added_assumptions: boolean;
+  mode: EnhancerMode;
   processing_time_ms: number;
 }
 
