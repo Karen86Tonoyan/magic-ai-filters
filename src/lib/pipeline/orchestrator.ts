@@ -1,14 +1,16 @@
 /**
  * Pipeline Orchestrator
- * ŁASUCH → CERBER → GUARDIAN → ENHANCER → CORE → [MODEL if PASS]
+ * TAGGER -> LASUCH -> CERBER -> GUARDIAN -> ROUTER -> ENHANCER -> CORE -> [MODEL if PASS]
  */
-import type { PipelineResult, PipelineMode, GuardianDecision, ResponseMode } from '@/types/tonoyan-filters';
-import { runLasuch } from './lasuch';
-import { runCerber } from './cerber';
-import { runGuardian } from './guardian';
-import { runCore } from './core';
-import { enhancePrompt } from './prompt-enhancer';
+import type { GuardianDecision, PipelineResult, PipelineMode, ResponseMode } from '@/types/tonoyan-filters';
 import type { ModelAdapter } from '@/lib/adapters/types';
+import { runCerber } from './cerber';
+import { runCore } from './core';
+import { runGuardian } from './guardian';
+import { runLasuch } from './lasuch';
+import { enhancePrompt } from './prompt-enhancer';
+import { routeTaggedMessage } from './router';
+import { runTagger } from './tagger';
 
 function hashInput(input: string): string {
   let hash = 0;
@@ -32,28 +34,23 @@ export async function runPipeline(input: string, options: PipelineOptions): Prom
   const timestamp = new Date().toISOString();
   const input_hash = hashInput(input);
 
-  // === STAGE 1: ŁASUCH ===
   const lasuch = runLasuch(input);
-
-  // === STAGE 2: CERBER ===
+  const tagger = runTagger(input, lasuch);
   const cerber = runCerber(input, lasuch);
+  const guardian = runGuardian(lasuch, cerber, tagger);
+  const route = routeTaggedMessage(tagger);
 
-  // === STAGE 3: GUARDIAN ===
-  const guardian = runGuardian(lasuch, cerber);
-
-  // === STAGE 3.5: PROMPT ENHANCER (always runs) ===
-  // Determine enhancer mode based on pipeline mode
   const enhancerMode = options.mode === 'benchmark' ? 'benchmark' as const : 'safe' as const;
   const enhancementRaw = enhancePrompt(input, enhancerMode);
   const enhancement: import('@/types/tonoyan-filters').PromptEnhancementResult = {
     original: enhancementRaw.original,
     enhanced: enhancementRaw.enhanced,
     dual_prompt: enhancementRaw.dual_prompt,
-    weaknesses: enhancementRaw.weaknesses.map(w => ({
-      category: w.category,
-      description: w.description,
-      severity: w.severity,
-      fix: w.fix,
+    weaknesses: enhancementRaw.weaknesses.map((weakness) => ({
+      category: weakness.category,
+      description: weakness.description,
+      severity: weakness.severity,
+      fix: weakness.fix,
     })),
     enhancement_summary: enhancementRaw.enhancement_summary,
     strength_score: enhancementRaw.strength_score,
@@ -65,7 +62,6 @@ export async function runPipeline(input: string, options: PipelineOptions): Prom
     processing_time_ms: enhancementRaw.processing_time_ms,
   };
 
-  // === STAGE 4: CORE ===
   const core = runCore(input, lasuch, cerber, guardian);
 
   let final_decision: GuardianDecision = guardian.decision;
@@ -74,28 +70,22 @@ export async function runPipeline(input: string, options: PipelineOptions): Prom
   let provider_used: string | undefined;
   let model_used: string | undefined;
 
-  // Core can override Guardian in edge cases
   if (core.recommendation === 'block' && final_decision === 'PASS') {
     final_decision = 'HOLD';
     response_mode = 'restricted';
   }
 
-  // v2.0: If HIGH distortion risk + assumptions → escalate to HOLD
   if (enhancement.modification_level === 'HIGH' && enhancement.added_assumptions && final_decision === 'PASS') {
     final_decision = 'LIMITED_PASS';
     response_mode = 'restricted';
   }
 
-  // === STAGE 5: MODEL (only if allowed) ===
-  // DUAL PROMPT: system_guard as system prefix + raw_input as user message
   const systemGuardPrefix = enhancement.dual_prompt.system_guard;
-  const effectiveSystemPrompt = systemGuardPrefix
-    ? [systemGuardPrefix, options.systemPrompt].filter(Boolean).join('\n\n')
-    : options.systemPrompt;
+  const routerPrompt = `[ROUTER]\npartition=${route.partition}\nlane=${route.lane}\nmodel_tier=${route.model_tier}\nexecution_profile=${route.execution_profile}\npriority=${route.priority}`;
+  const effectiveSystemPrompt = [systemGuardPrefix, routerPrompt, options.systemPrompt].filter(Boolean).join('\n\n');
 
-  if (options.mode !== 'benchmark' && (final_decision === 'PASS' || final_decision === 'LIMITED_PASS') && options.adapter) {
+  if (options.mode !== 'benchmark' && route.should_dispatch && (final_decision === 'PASS' || final_decision === 'LIMITED_PASS') && options.adapter) {
     try {
-      // USER input is NEVER modified — system guard goes in systemPrompt
       const userInput = final_decision === 'LIMITED_PASS'
         ? `[RESTRICTED MODE] ${input}`
         : input;
@@ -103,16 +93,13 @@ export async function runPipeline(input: string, options: PipelineOptions): Prom
       model_response = await options.adapter.chat(userInput, effectiveSystemPrompt);
       provider_used = options.adapter.provider;
       model_used = options.adapter.modelId;
-    } catch (e) {
-      model_response = `[ERROR] Model call failed: ${e instanceof Error ? e.message : 'Unknown error'}`;
+    } catch (error) {
+      model_response = `[ERROR] Model call failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
     }
-  } else if (final_decision === 'BLOCK') {
-    model_response = undefined;
-  } else if (final_decision === 'HOLD' || final_decision === 'HUMAN_REVIEW') {
+  } else if (final_decision === 'BLOCK' || final_decision === 'HOLD' || final_decision === 'HUMAN_REVIEW') {
     model_response = undefined;
   }
 
-  // RAW mode: skip all filters, just call model
   if (options.mode === 'raw' && options.adapter) {
     try {
       model_response = await options.adapter.chat(input, options.systemPrompt);
@@ -120,8 +107,8 @@ export async function runPipeline(input: string, options: PipelineOptions): Prom
       model_used = options.adapter.modelId;
       final_decision = 'PASS';
       response_mode = 'normal';
-    } catch (e) {
-      model_response = `[ERROR] ${e instanceof Error ? e.message : 'Unknown error'}`;
+    } catch (error) {
+      model_response = `[ERROR] ${error instanceof Error ? error.message : 'Unknown error'}`;
     }
   }
 
@@ -133,9 +120,11 @@ export async function runPipeline(input: string, options: PipelineOptions): Prom
     timestamp,
     input,
     input_hash,
+    tagger,
     lasuch,
     cerber,
     guardian,
+    route,
     core,
     enhancement,
     final_decision,

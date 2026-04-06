@@ -1,99 +1,180 @@
-import { Shield, Eye, BarChart3, AlertTriangle, Activity } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Activity, AlertTriangle, BarChart3, Eye, Loader2, Shield, Target } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { TEST_PROMPTS } from '@/types/tonoyan-filters';
-import { runLasuch } from '@/lib/pipeline/lasuch';
+import { ResponsiveContainer, BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
 import { StatCard } from '@/components/StatCard';
 import { Badge } from '@/components/ui/badge';
-import { useState, useEffect } from 'react';
-import type { LasuchResult } from '@/types/tonoyan-filters';
+import { BENCHMARK_CASES, BENCHMARK_SUITE_META } from '@/lib/benchmark/catalog';
+import { loadStoredBenchmarkSnapshot, runBenchmarkSnapshot, storeBenchmarkSnapshot } from '@/lib/benchmark/metrics';
+import type { BenchmarkSnapshot } from '@/types/tonoyan-filters';
 
 export default function DashboardPage() {
-  const [quickResults, setQuickResults] = useState<{ id: string; label: string; result: LasuchResult }[]>([]);
+  const [snapshot, setSnapshot] = useState<BenchmarkSnapshot | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    const results = TEST_PROMPTS.map(tp => ({
-      id: tp.id,
-      label: tp.label,
-      result: runLasuch(tp.prompt),
-    }));
-    setQuickResults(results);
+    const stored = loadStoredBenchmarkSnapshot();
+    if (stored) {
+      setSnapshot(stored);
+      return;
+    }
+
+    let active = true;
+    setIsLoading(true);
+    setError('');
+
+    runBenchmarkSnapshot()
+      .then((result) => {
+        if (!active) return;
+        setSnapshot(result);
+        storeBenchmarkSnapshot(result);
+        setIsLoading(false);
+      })
+      .catch(() => {
+        if (!active) return;
+        setError('Nie udało się załadować benchmark snapshotu.');
+        setIsLoading(false);
+      });
+
+    return () => {
+      active = false;
+    };
   }, []);
 
-  const blocked = quickResults.filter(r => r.result.risk_score > 0.3);
-  const clean = quickResults.filter(r => r.result.flags.length === 0);
-  const totalFlags = quickResults.reduce((sum, r) => sum + r.result.flags.length, 0);
+  const suiteChartData = snapshot?.suite_summaries.map((suite) => ({
+    name: suite.label.replace(' Resistance', '').replace(' Safety', '').replace(' Precision', ''),
+    protection: Math.round(suite.avg_protection_score * 100),
+    passRate: Math.round((suite.passed_count / Math.max(1, suite.case_count)) * 100),
+  })) ?? [];
+
+  const topCriticalCases = snapshot?.case_runs
+    .filter((item) => item.expected_decision === 'BLOCK' || item.expected_decision === 'HOLD')
+    .slice(0, 6) ?? [];
 
   return (
     <div className="p-4 sm:p-8 space-y-8 animate-fade-up">
       <div>
         <h1 className="text-2xl sm:text-3xl font-display font-bold text-primary tracking-wider">ALFA</h1>
-        <p className="text-muted-foreground mt-1 text-sm">Pipeline Control System — LASUCH / CERBER / GUARDIAN</p>
+        <p className="text-muted-foreground mt-1 text-sm">Pipeline Control System - benchmark-first hardening dla LASUCH / CERBER / GUARDIAN.</p>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard icon={Shield} label="Test Prompts" value={TEST_PROMPTS.length} description="built-in" variant="primary" />
-        <StatCard icon={AlertTriangle} label="Threats Detected" value={blocked.length} description={`of ${TEST_PROMPTS.length}`} variant="warning" />
-        <StatCard icon={Activity} label="Flags Raised" value={totalFlags} description="total" variant="accent" />
-        <StatCard icon={Eye} label="Clean" value={clean.length} description="passed" variant="info" />
+        <StatCard icon={Shield} label="Benchmark Cases" value={snapshot?.total_cases ?? BENCHMARK_CASES.length} description="pełna matryca" variant="primary" />
+        <StatCard icon={Target} label="Pass Rate" value={snapshot ? `${Math.round(snapshot.pass_rate * 100)}%` : '...'} description="zgodność z oczekiwaniem" variant="warning" />
+        <StatCard icon={Activity} label="Protection" value={snapshot ? `${Math.round(snapshot.avg_protection_score * 100)}%` : '...'} description="średnia obrona" variant="accent" />
+        <StatCard icon={Eye} label="Hallucination" value={snapshot ? `${Math.round(snapshot.avg_hallucination_risk * 100)}%` : '...'} description="ryzyko średnie" variant="info" />
       </div>
 
-      {/* Quick scan */}
-      <div className="space-y-4">
-        <h2 className="text-lg font-display font-semibold text-foreground tracking-wide">LASUCH Quick Scan</h2>
-        <div className="grid gap-3">
-          {quickResults.map(({ id, label, result }) => (
-            <div key={id} className={`bg-card border rounded-lg p-4 flex flex-col sm:flex-row items-start sm:items-center gap-3 ${
-              result.flags.length > 0 ? 'border-destructive/20' : 'border-success/20'
-            }`}>
-              <div className="flex-1 min-w-0">
-                <p className="font-medium text-foreground text-sm">{label}</p>
-                <div className="flex flex-wrap gap-1 mt-1">
-                  {result.flags.length > 0 ? result.flags.map(f => (
-                    <Badge key={f} variant="outline" className="text-[10px] font-mono border-destructive/30 text-destructive">{f}</Badge>
-                  )) : (
-                    <Badge variant="outline" className="text-[10px] font-mono border-success/30 text-success">CLEAN</Badge>
-                  )}
+      <div className="grid grid-cols-1 xl:grid-cols-[1.15fr_0.85fr] gap-4">
+        <div className="bg-card border border-border rounded-xl p-5 space-y-4">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <h2 className="text-lg font-display font-semibold text-foreground tracking-wide">Benchmark Overview</h2>
+              <p className="text-xs text-muted-foreground mt-1">Jedna wspólna matryca benchmarków zasila dashboard i Benchmark Lab.</p>
+            </div>
+            {isLoading && <Loader2 className="w-4 h-4 animate-spin text-primary" />}
+          </div>
+
+          {snapshot ? (
+            <>
+              <div className="h-[260px] w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={suiteChartData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                    <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" fontSize={12} />
+                    <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: 'hsl(var(--card))',
+                        border: '1px solid hsl(var(--border))',
+                        borderRadius: '0.75rem',
+                      }}
+                    />
+                    <Bar dataKey="protection" fill="hsl(var(--primary))" radius={[6, 6, 0, 0]} />
+                    <Bar dataKey="passRate" fill="hsl(var(--accent))" radius={[6, 6, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
+                {snapshot.suite_summaries.map((suite) => (
+                  <div key={suite.suite} className="rounded-lg border border-border bg-secondary/30 p-4">
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <p className="font-display font-semibold text-foreground">{suite.label}</p>
+                        <p className="text-[11px] text-muted-foreground mt-1">{BENCHMARK_SUITE_META[suite.suite].description}</p>
+                      </div>
+                      <Badge variant="outline" className="text-[10px] font-mono border-primary/30 text-primary">
+                        {suite.passed_count}/{suite.case_count}
+                      </Badge>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3 mt-4 text-xs font-mono">
+                      <SuiteMetric label="Protection" value={`${Math.round(suite.avg_protection_score * 100)}%`} />
+                      <SuiteMetric label="Latency" value={`${suite.avg_latency_ms}ms`} />
+                      <SuiteMetric label="Blocked" value={suite.blocked_count} />
+                      <SuiteMetric label="Limited" value={suite.limited_count} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          ) : (
+            <div className="rounded-xl border border-border bg-secondary/20 p-8 text-center">
+              <p className="text-sm text-muted-foreground">{error || 'Ładuję snapshot benchmarków dla dashboardu...'}</p>
+            </div>
+          )}
+        </div>
+
+        <div className="bg-card border border-border rounded-xl p-5 space-y-4">
+          <div>
+            <h2 className="text-lg font-display font-semibold text-foreground tracking-wide">Critical Cases</h2>
+            <p className="text-xs text-muted-foreground mt-1">Najważniejsze przypadki odporności, które powinny być stale monitorowane.</p>
+          </div>
+
+          <div className="grid gap-3">
+            {topCriticalCases.map((item) => (
+              <div key={item.case_id} className={`rounded-lg border p-4 ${
+                item.actual_decision === item.expected_decision ? 'border-success/20 bg-success/5' : 'border-warning/20 bg-warning/5'
+              }`}>
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="font-medium text-foreground text-sm">{item.label}</p>
+                    <p className="text-[11px] text-muted-foreground mt-1">{BENCHMARK_SUITE_META[item.suite].label}</p>
+                  </div>
+                  <Badge variant="outline" className={`text-[10px] font-mono ${
+                    item.actual_decision === item.expected_decision ? 'border-success/30 text-success' : 'border-warning/30 text-warning'
+                  }`}>
+                    {item.actual_decision}
+                  </Badge>
+                </div>
+                <div className="flex flex-wrap gap-1 mt-3">
+                  {item.filtered.lasuch.flags.slice(0, 4).map((flag) => (
+                    <Badge key={flag} variant="outline" className="text-[10px] font-mono border-destructive/30 text-destructive">
+                      {flag}
+                    </Badge>
+                  ))}
                 </div>
               </div>
-              <div className="flex items-center gap-4 text-xs font-mono shrink-0">
-                <span className={result.risk_score > 0.3 ? 'text-destructive' : 'text-success'}>
-                  R:{(result.risk_score * 100).toFixed(0)}%
-                </span>
-                <span className={result.manipulation_score > 0.3 ? 'text-primary' : 'text-muted-foreground'}>
-                  M:{(result.manipulation_score * 100).toFixed(0)}%
-                </span>
-                <span className={result.exploit_score > 0.3 ? 'text-destructive' : 'text-muted-foreground'}>
-                  E:{(result.exploit_score * 100).toFixed(0)}%
-                </span>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* ALFA — Architecture */}
       <div className="bg-card border border-border rounded-xl p-5 space-y-4">
-        <h2 className="text-lg font-display font-semibold text-foreground tracking-wide">ALFA — Pipeline Control</h2>
+        <h2 className="text-lg font-display font-semibold text-foreground tracking-wide">ALFA - Pipeline Control</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
           <div className="space-y-3">
             <div>
               <p className="font-semibold text-foreground mb-1 text-xs uppercase tracking-wider">Definition</p>
-              <p className="text-muted-foreground text-xs">LLMs do not understand — they simulate responses via statistics. ALFA does not increase model intelligence, it <span className="text-primary font-medium">controls model behavior</span> through input validation, interpretation correction and output filtration.</p>
+              <p className="text-muted-foreground text-xs">ALFA nie próbuje „robić modelu mądrzejszym”. ALFA buduje warstwę odporności, która mierzy ryzyko, integralność i jakość decyzji zanim model dostanie prawo odpowiedzi.</p>
             </div>
             <div>
-              <p className="font-semibold text-foreground mb-1 text-xs uppercase tracking-wider">Problem</p>
+              <p className="font-semibold text-foreground mb-1 text-xs uppercase tracking-wider">Scalability</p>
               <ul className="text-muted-foreground text-xs space-y-0.5 list-none">
-                <li className="flex items-start gap-2"><span className="text-primary mt-0.5">—</span> LLMs hallucinate and fabricate missing data</li>
-                <li className="flex items-start gap-2"><span className="text-primary mt-0.5">—</span> Simulate empathy and logic without world model</li>
-                <li className="flex items-start gap-2"><span className="text-primary mt-0.5">—</span> Risk: false decisions, user manipulation, fake comprehension</li>
-              </ul>
-            </div>
-            <div>
-              <p className="font-semibold text-accent mb-1 text-xs uppercase tracking-wider">Critical Rule</p>
-              <ul className="text-muted-foreground text-xs space-y-0.5 list-none">
-                <li className="flex items-start gap-2"><span className="text-accent mt-0.5">—</span> Guardian <span className="text-accent font-medium">CANNOT</span> alter user intent</li>
-                <li className="flex items-start gap-2"><span className="text-accent mt-0.5">—</span> Enhancer <span className="text-accent font-medium">CANNOT</span> inject data absent from input</li>
-                <li className="flex items-start gap-2"><span className="text-accent mt-0.5">—</span> System detects when model fakes understanding</li>
+                <li className="flex items-start gap-2"><span className="text-primary mt-0.5">-</span> Wspólny snapshot benchmarków dla dashboardu i laboratorium</li>
+                <li className="flex items-start gap-2"><span className="text-primary mt-0.5">-</span> Suite’y grupujące exploit, manipulację, dual-use, zasoby i integralność</li>
+                <li className="flex items-start gap-2"><span className="text-primary mt-0.5">-</span> Metryki ochrony gotowe do dalszej rozbudowy i eksportu</li>
               </ul>
             </div>
           </div>
@@ -109,28 +190,13 @@ export default function DashboardPage() {
                 <span className="text-muted-foreground">/</span>
                 <Badge variant="outline" className="border-gold-dark text-gold-light">ENHANCER</Badge>
                 <span className="text-muted-foreground">/</span>
-                <Badge variant="outline" className="border-info/30 text-info">MODEL</Badge>
+                <Badge variant="outline" className="border-info/30 text-info">BENCHMARKS</Badge>
               </div>
-              <p className="text-muted-foreground text-xs mt-1">Model is not truth source — it is a proposal generator.</p>
-            </div>
-            <div>
-              <p className="font-semibold text-foreground mb-1 text-xs uppercase tracking-wider">Output Validation</p>
-              <ol className="text-muted-foreground text-xs space-y-0.5 list-decimal list-inside">
-                <li>Does it follow from input?</li>
-                <li>Does it contain assumptions?</li>
-                <li>Does it violate scope?</li>
-                <li>Is it a hallucination?</li>
-              </ol>
-              <p className="text-xs text-muted-foreground mt-1">If no — <span className="text-accent font-medium">BLOCK</span> or force clarification.</p>
-            </div>
-            <div className="bg-secondary/50 rounded-lg p-3">
-              <p className="font-semibold text-foreground text-xs mb-1">Test: "give data"</p>
-              <p className="text-muted-foreground text-[11px] font-mono">Lasuch: ambiguity / Guardian: no context / Cerber: CLARIFY</p>
-              <p className="text-primary text-[11px] font-mono mt-1">Output: "Which data do you mean?"</p>
+              <p className="text-muted-foreground text-xs mt-1">Każdy suite benchmarków mierzy inny sposób obejścia systemu i podaje ten wynik z powrotem na dashboard.</p>
             </div>
             <div className="bg-card border border-primary/15 rounded-lg p-3">
               <p className="text-primary font-semibold text-xs uppercase tracking-wider">ALFA Edge</p>
-              <p className="text-muted-foreground text-[11px]">Most systems improve AI responses. ALFA controls <span className="font-medium text-foreground">whether AI has the right to respond</span>.</p>
+              <p className="text-muted-foreground text-[11px]">Benchmarki są już częścią produktu, a nie tylko testem developerskim. Dzięki temu odporność można obserwować tak samo jak latency i pass rate.</p>
             </div>
           </div>
         </div>
@@ -145,7 +211,7 @@ export default function DashboardPage() {
         <Link to="/benchmark" className="bg-card border border-primary/15 rounded-xl p-6 hover:border-primary/30 transition-all text-center">
           <BarChart3 className="w-8 h-8 text-primary mx-auto mb-2" />
           <p className="font-display font-semibold text-foreground">Benchmark Lab</p>
-          <p className="text-xs text-muted-foreground mt-1">Raw vs Filtered</p>
+          <p className="text-xs text-muted-foreground mt-1">Suite matrix</p>
         </Link>
         <Link to="/incidents" className="bg-card border border-accent/15 rounded-xl p-6 hover:border-accent/30 transition-all text-center">
           <AlertTriangle className="w-8 h-8 text-accent mx-auto mb-2" />
@@ -153,6 +219,15 @@ export default function DashboardPage() {
           <p className="text-xs text-muted-foreground mt-1">Review queue</p>
         </Link>
       </div>
+    </div>
+  );
+}
+
+function SuiteMetric({ label, value }: { label: string; value: string | number }) {
+  return (
+    <div>
+      <p className="text-muted-foreground">{label}</p>
+      <p className="text-foreground mt-1">{value}</p>
     </div>
   );
 }
