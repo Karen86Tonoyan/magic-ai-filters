@@ -48,7 +48,7 @@ export default function ModelsPage() {
         isActive: true,
       });
     }
-  }, []);
+  }, [addModel, models.length]);
 
   return (
     <div className="p-8 space-y-8 animate-fade-up">

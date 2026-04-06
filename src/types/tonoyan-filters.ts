@@ -73,6 +73,9 @@ export interface ImpactSimulation {
   would_change_role: boolean;
   would_leak_system_info: boolean;
   would_disable_safety: boolean;
+  would_exfiltrate_sensitive_data: boolean;
+  would_exhaust_resources: boolean;
+  would_compromise_integrity: boolean;
   impact_description: string;
   severity: 'none' | 'low' | 'critical';
 }
@@ -98,6 +101,33 @@ export interface GuardianResult {
   reason_codes: string[];
   response_mode: ResponseMode;
   processing_time_ms: number;
+}
+
+// —— ALFA Tagger / Router ——
+export type GuardianIntentTag = 'recall' | 'analyze' | 'execute' | 'plan' | 'predict' | 'reflect';
+export type GuardianRiskTag = 'safe' | 'suspicious' | 'manipulative' | 'exploit_attempt' | 'undefined';
+export type GuardianControlTag = 'allow' | 'review' | 'restrict' | 'hold' | 'freeze';
+export type GuardianDomainTag = 'code' | 'data' | 'ops' | 'research' | 'creative' | 'conversation';
+export type GuardianPartitionTag = 'yesterday' | 'today' | 'tomorrow';
+export type GuardianSignalTag = 'urgency' | 'authority_claim' | 'emotional_pressure' | 'instruction_chain' | 'unknown_context';
+
+export interface GuardianTaggerResult {
+  intent: GuardianIntentTag;
+  domain: GuardianDomainTag;
+  partition: GuardianPartitionTag;
+  risk: GuardianRiskTag;
+  control: GuardianControlTag;
+  confidence: number;
+  signals: GuardianSignalTag[];
+}
+
+export interface GuardianRouteDecision {
+  partition: GuardianPartitionTag;
+  lane: string;
+  model_tier: 'model_a' | 'model_b' | 'model_c';
+  execution_profile: string;
+  should_dispatch: boolean;
+  priority: 'low' | 'medium' | 'high';
 }
 
 // ─── FILTRUJĄCY RDZEŃ ───
@@ -151,15 +181,40 @@ export interface PromptEnhancementResult {
   processing_time_ms: number;
 }
 
+export type PipelineFaultCode =
+  | 'EMPTY_INPUT'
+  | 'NON_STRING_INPUT'
+  | 'INPUT_TOO_LARGE'
+  | 'UUID_FALLBACK'
+  | 'TIMER_FALLBACK'
+  | 'LASUCH_FAILURE'
+  | 'TAGGER_FAILURE'
+  | 'CERBER_FAILURE'
+  | 'GUARDIAN_FAILURE'
+  | 'ROUTER_FAILURE'
+  | 'CORE_FAILURE'
+  | 'ENHANCER_FAILURE'
+  | 'MODEL_ADAPTER_FAILURE';
+
+export interface PipelineResilienceReport {
+  degraded: boolean;
+  fail_closed: boolean;
+  input_truncated: boolean;
+  fault_codes: PipelineFaultCode[];
+  notes: string[];
+}
+
 // ─── Full Pipeline Result ───
 export interface PipelineResult {
   id: string;
   timestamp: string;
   input: string;
   input_hash: string;
+  tagger: GuardianTaggerResult;
   lasuch: LasuchResult;
   cerber: CerberResult;
   guardian: GuardianResult;
+  route: GuardianRouteDecision;
   core: CoreResult;
   enhancement?: PromptEnhancementResult;
   final_decision: GuardianDecision;
@@ -170,6 +225,7 @@ export interface PipelineResult {
   total_latency_ms: number;
   token_estimate: number;
   mode: PipelineMode;
+  resilience: PipelineResilienceReport;
 }
 
 // ─── Provider System ───
@@ -220,6 +276,59 @@ export interface BenchmarkMetrics {
   decision_quality: number;
   response_usefulness: number;
   uncertainty_handling: number;
+}
+
+export type BenchmarkSuiteId =
+  | 'exploit-resistance'
+  | 'manipulation-resistance'
+  | 'dual-use-safety'
+  | 'resource-resilience'
+  | 'benign-precision'
+  | 'model-integrity';
+
+export interface BenchmarkCase extends TestPrompt {
+  suite: BenchmarkSuiteId;
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  focus: string[];
+}
+
+export interface BenchmarkCaseRun {
+  case_id: string;
+  suite: BenchmarkSuiteId;
+  label: string;
+  expected_decision: GuardianDecision;
+  actual_decision: GuardianDecision;
+  passed: boolean;
+  raw: PipelineResult;
+  filtered: PipelineResult;
+  metrics: BenchmarkMetrics;
+}
+
+export interface BenchmarkSuiteSummary {
+  suite: BenchmarkSuiteId;
+  label: string;
+  case_count: number;
+  passed_count: number;
+  blocked_count: number;
+  hold_count: number;
+  limited_count: number;
+  avg_latency_ms: number;
+  avg_risk_score: number;
+  avg_protection_score: number;
+  avg_hallucination_risk: number;
+  metrics: BenchmarkMetrics;
+}
+
+export interface BenchmarkSnapshot {
+  timestamp: string;
+  total_cases: number;
+  passed_count: number;
+  pass_rate: number;
+  avg_latency_ms: number;
+  avg_protection_score: number;
+  avg_hallucination_risk: number;
+  suite_summaries: BenchmarkSuiteSummary[];
+  case_runs: BenchmarkCaseRun[];
 }
 
 // ─── Incident / Review ───

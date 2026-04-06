@@ -3,6 +3,21 @@
  */
 import type { ModelAdapter, AdapterConfig } from './types';
 
+interface OllamaChatResponse {
+  message?: {
+    content?: string;
+  };
+}
+
+interface OllamaTagModel {
+  name: string;
+  size: number;
+}
+
+interface OllamaTagsResponse {
+  models?: OllamaTagModel[];
+}
+
 export class OllamaAdapter implements ModelAdapter {
   provider = 'ollama';
   modelId: string;
@@ -34,7 +49,7 @@ export class OllamaAdapter implements ModelAdapter {
       throw new Error(`Ollama error: ${response.status} ${response.statusText}`);
     }
 
-    const data = await response.json();
+    const data = await response.json() as OllamaChatResponse;
     return data.message?.content || '[No response from Ollama]';
   }
 
@@ -51,8 +66,8 @@ export class OllamaAdapter implements ModelAdapter {
     try {
       const response = await fetch(`${this.baseUrl}/api/tags`);
       if (!response.ok) return [];
-      const data = await response.json();
-      return (data.models || []).map((m: any) => ({
+      const data = await response.json() as OllamaTagsResponse;
+      return (data.models || []).map((m) => ({
         id: m.name,
         label: `${m.name} (${(m.size / 1e9).toFixed(1)}GB)`,
       }));

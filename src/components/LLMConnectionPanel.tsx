@@ -20,6 +20,13 @@ interface LLMConfig {
 }
 
 const STORAGE_KEY = 'alfa_llm_config';
+const DEFAULT_CONFIG: LLMConfig = {
+  provider: 'ollama',
+  apiKey: '',
+  baseUrl: 'http://localhost:11434',
+  modelId: 'llama3.2:1b',
+  enabled: false,
+};
 
 const POPULAR_MODELS: Record<string, { id: string; label: string }[]> = {
   ollama: [
@@ -75,8 +82,10 @@ function loadConfig(): LLMConfig {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) return JSON.parse(raw);
-  } catch {}
-  return { provider: 'ollama', apiKey: '', baseUrl: 'http://localhost:11434', modelId: 'llama3.2:1b', enabled: false };
+  } catch {
+    return DEFAULT_CONFIG;
+  }
+  return DEFAULT_CONFIG;
 }
 
 function saveConfig(config: LLMConfig) {
@@ -144,8 +153,9 @@ export function LLMConnectionPanel({ onAdapterChange }: Props) {
       }
     } catch {
       setStatus('error');
+    } finally {
+      setTesting(false);
     }
-    setTesting(false);
   };
 
   return (
