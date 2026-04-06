@@ -181,6 +181,29 @@ export interface PromptEnhancementResult {
   processing_time_ms: number;
 }
 
+export type PipelineFaultCode =
+  | 'EMPTY_INPUT'
+  | 'NON_STRING_INPUT'
+  | 'INPUT_TOO_LARGE'
+  | 'UUID_FALLBACK'
+  | 'TIMER_FALLBACK'
+  | 'LASUCH_FAILURE'
+  | 'TAGGER_FAILURE'
+  | 'CERBER_FAILURE'
+  | 'GUARDIAN_FAILURE'
+  | 'ROUTER_FAILURE'
+  | 'CORE_FAILURE'
+  | 'ENHANCER_FAILURE'
+  | 'MODEL_ADAPTER_FAILURE';
+
+export interface PipelineResilienceReport {
+  degraded: boolean;
+  fail_closed: boolean;
+  input_truncated: boolean;
+  fault_codes: PipelineFaultCode[];
+  notes: string[];
+}
+
 // ─── Full Pipeline Result ───
 export interface PipelineResult {
   id: string;
@@ -202,6 +225,7 @@ export interface PipelineResult {
   total_latency_ms: number;
   token_estimate: number;
   mode: PipelineMode;
+  resilience: PipelineResilienceReport;
 }
 
 // ─── Provider System ───
