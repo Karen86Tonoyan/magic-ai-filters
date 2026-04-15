@@ -29,6 +29,15 @@ export type SOSCategory =
   | 'ENCODING_ATTACK'
   | 'ADULT_CONTENT_RISK'
   | 'MINOR_SAFETY_RISK'
+  // v1.3: Front Attack & Extended Categories
+  | 'FRONT_ATTACK'
+  | 'SOCIAL_ENGINEERING'
+  | 'EMOTIONAL_MANIPULATION'
+  | 'LANGUAGE_SWITCHING'
+  | 'TOOL_CHAINING'
+  | 'CONTEXT_POISONING'
+  | 'SEMANTIC_OBFUSCATION'
+  | 'LEGAL_ETHICAL_EXPLOIT'
   | 'UNKNOWN_HIGH_RISK';
 
 export type ShieldSeverity = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
