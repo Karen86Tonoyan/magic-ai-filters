@@ -27,6 +27,8 @@ export type SOSCategory =
   | 'HYPOTHETICAL_FRAMING'
   | 'MANY_SHOT_PRIMING'
   | 'ENCODING_ATTACK'
+  | 'ADULT_CONTENT_RISK'
+  | 'MINOR_SAFETY_RISK'
   | 'UNKNOWN_HIGH_RISK';
 
 export type ShieldSeverity = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
@@ -37,7 +39,8 @@ export type RecommendedAction =
   | 'BLOCK_TURN'
   | 'TERMINATE_SESSION'
   | 'REQUIRE_HUMAN_REVIEW'
-  | 'DISABLE_TOOLS';
+  | 'DISABLE_TOOLS'
+  | 'REQUIRE_AGE_VERIFICATION';
 
 export interface SOSSignal {
   status: 'NONE' | 'SOS';
@@ -284,6 +287,45 @@ const DETECTION_RULES: DetectionRule[] = [
     ],
     reason: 'Multi-turn manipulation — false context injection across conversation',
   },
+
+  // ═══ v1.2 AGE VERIFICATION RULES ═══
+
+  // 12. ADULT CONTENT RISK
+  {
+    category: 'ADULT_CONTENT_RISK',
+    severity: 'MEDIUM',
+    weight: 0.70,
+    keywords: [
+      'nsfw', 'explicit content', 'adult content', 'pornographic',
+      'sexually explicit', 'erotic content', 'xxx',
+      'generate nude', 'naked image', 'sexual image',
+    ],
+    patterns: [
+      /(generate|create|show|draw|make)\s+(me\s+)?(nude|naked|porn|erotic|nsfw|explicit)/i,
+      /(sexually\s+explicit|adult\s+only|18\+|xxx)/i,
+      /(write|generate)\s+(me\s+)?(erotica|sexual\s+story|explicit\s+fiction)/i,
+    ],
+    reason: 'Adult content risk — requires age verification before proceeding',
+  },
+
+  // 13. MINOR SAFETY RISK
+  {
+    category: 'MINOR_SAFETY_RISK',
+    severity: 'CRITICAL',
+    weight: 0.99,
+    keywords: [
+      'i am a child', 'i am a minor', 'i am under 18',
+      'i am 12', 'i am 13', 'i am 14', 'i am 15', 'i am 16', 'i am 17',
+      'child exploitation', 'minor exploitation',
+    ],
+    patterns: [
+      /(i am|i'm)\s+(a\s+)?(child|minor|kid|underage)/i,
+      /(i am|i'm)\s+(\d|1[0-7])\s+(years?\s+old|yo\b)/i,
+      /(child|minor|underage)\s+(exploitation|abuse|pornography|sexual)/i,
+      /(sexual|explicit|nude|naked)\s+.{0,20}(child|minor|kid|underage|teen)/i,
+    ],
+    reason: 'Minor safety risk — hard block, no bypass allowed',
+  },
 ];
 
 // ─── HASH HELPER ─────────────────────────────────────────────
@@ -386,7 +428,7 @@ export class ALFAInputScanner {
     );
 
     const severity = this.toSeverity(risk_score);
-    const recommended_action = this.toAction(severity);
+    const recommended_action = this.toAction(severity, dominantRule?.category ?? null);
 
     // Update session tracking
     if (risk_score > 0.4) this.sessionFlags++;
@@ -476,7 +518,11 @@ export class ALFAInputScanner {
     return 'LOW';
   }
 
-  private toAction(severity: ShieldSeverity): RecommendedAction {
+  private toAction(severity: ShieldSeverity, category: SOSCategory | null): RecommendedAction {
+    // Age-related categories have special actions
+    if (category === 'MINOR_SAFETY_RISK') return 'TERMINATE_SESSION';
+    if (category === 'ADULT_CONTENT_RISK') return 'REQUIRE_AGE_VERIFICATION';
+
     switch (severity) {
       case 'CRITICAL': return 'TERMINATE_SESSION';
       case 'HIGH':     return 'BLOCK_TURN';
@@ -497,10 +543,12 @@ export interface TonoyanFilterResult {
   dwuperspektywa: boolean;
   backtrack: boolean;
   atrybucja: boolean;
-  encoding_guard: boolean;    // v1.1: encoding attack detected
-  priming_guard: boolean;     // v1.1: many-shot priming detected
+  encoding_guard: boolean;
+  priming_guard: boolean;
+  age_gate: boolean;          // v1.2: adult content or minor safety detected
+  minor_block: boolean;       // v1.2: hard block for minor safety
   filtr_score: number;
-  verdict: 'PASS' | 'WARN' | 'BLOCK';
+  verdict: 'PASS' | 'WARN' | 'BLOCK' | 'AGE_VERIFY';
 }
 
 export function tonoyanFilter(
@@ -518,28 +566,40 @@ export function tonoyanFilter(
   const dwuperspektywa = cats === 'ROLE_HIJACK' || cats === 'AUTHORITY_EXPLOITATION';
   const backtrack     = lower.includes('forget') || lower.includes('disregard') || lower.includes('ignore previous');
   const atrybucja     = cats === 'AUTHORITY_EXPLOITATION';
-  // v1.1 guards
   const encoding_guard = cats === 'ENCODING_ATTACK' || scanResult.encoding_detected;
   const priming_guard  = cats === 'MANY_SHOT_PRIMING' || cats === 'MULTI_TURN_MANIPULATION';
+  // v1.2 age guards
+  const age_gate      = cats === 'ADULT_CONTENT_RISK';
+  const minor_block   = cats === 'MINOR_SAFETY_RISK';
 
   const allFilters = [
     kontrargument, weryfikacja, kontekst,
     anti_magic, dwuperspektywa, backtrack, atrybucja,
-    encoding_guard, priming_guard,
+    encoding_guard, priming_guard, age_gate, minor_block,
   ];
   const activeFilters = allFilters.filter(Boolean).length;
   const filtr_score = parseFloat((activeFilters / allFilters.length).toFixed(3));
 
-  const verdict: 'PASS' | 'WARN' | 'BLOCK' =
-    filtr_score >= 0.4 || scanResult.risk_score >= 0.8 ? 'BLOCK'
-    : filtr_score > 0 || scanResult.risk_score >= 0.4 ? 'WARN'
-    : 'PASS';
+  // v1.2: Special verdict for age verification
+  let verdict: 'PASS' | 'WARN' | 'BLOCK' | 'AGE_VERIFY';
+  if (minor_block) {
+    verdict = 'BLOCK';
+  } else if (age_gate) {
+    verdict = 'AGE_VERIFY';
+  } else if (filtr_score >= 0.4 || scanResult.risk_score >= 0.8) {
+    verdict = 'BLOCK';
+  } else if (filtr_score > 0 || scanResult.risk_score >= 0.4) {
+    verdict = 'WARN';
+  } else {
+    verdict = 'PASS';
+  }
 
   return {
     scanner: scanResult,
     kontrargument, weryfikacja, kontekst,
     anti_magic, dwuperspektywa, backtrack, atrybucja,
     encoding_guard, priming_guard,
+    age_gate, minor_block,
     filtr_score,
     verdict,
   };
