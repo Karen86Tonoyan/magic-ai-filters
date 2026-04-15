@@ -486,9 +486,6 @@ export class ALFAInputScanner {
 
     // v1.6: Semantic obfuscation detection via trigram embeddings
     const semanticResult = detectSemanticObfuscation(strippedInput);
-    if (semanticResult.detected && !categoryHits.has('SEMANTIC_OBFUSCATION')) {
-      // Will be applied after rule scanning
-    }
 
     let maxWeight = 0;
     let dominantRule: DetectionRule | null = null;
