@@ -210,6 +210,19 @@ export default function LiveAnalysisPage() {
       setResult(res);
     }
 
+    // Record incident & check auto-ban
+    if (shield.scanner.risk_score > 0) {
+      recordIncident(shield.scanner, input, shield.verdict, sessionId);
+      const banCheck = checkAutoBan(sessionId);
+      if (banCheck.should_ban) {
+        executeBan(sessionId, `Auto-ban: ${banCheck.attack_count} attacks detected`);
+        setBanAlert(`⛔ UŻYTKOWNIK ZBANOWANY — ${banCheck.attack_count} ataków wykrytych. ${banCheck.ban_evasion_detected ? '🔍 Wykryto próbę obejścia bana (fingerprint match)!' : ''}`);
+      } else if (banCheck.should_analyze) {
+        setBanAlert(`🔍 ANALIZA WŁĄCZONA — ${banCheck.attack_count} ataków. System analizuje intencje i styl pisania.`);
+      }
+      refreshIncidents();
+    }
+
     setIsRunning(false);
     setStage('');
   };
