@@ -409,6 +409,14 @@ export default function LiveAnalysisPage() {
                   <FilterChip label="Priming Guard" active={shieldResult.priming_guard} icon={<Zap className="w-2.5 h-2.5" />} />
                   <FilterChip label="Age Gate" active={shieldResult.age_gate} />
                   <FilterChip label="Minor Block" active={shieldResult.minor_block} />
+                  <FilterChip label="Front Attack" active={shieldResult.front_attack_guard} icon={<Shield className="w-2.5 h-2.5" />} />
+                  <FilterChip label="Social Eng." active={shieldResult.social_engineering_guard} />
+                  <FilterChip label="Emotional" active={shieldResult.emotional_guard} />
+                  <FilterChip label="Lang Switch" active={shieldResult.language_switch_guard} />
+                  <FilterChip label="Tool Chain" active={shieldResult.tool_chain_guard} />
+                  <FilterChip label="Context Poison" active={shieldResult.context_poison_guard} />
+                  <FilterChip label="Semantic" active={shieldResult.semantic_guard} />
+                  <FilterChip label="Legal Exploit" active={shieldResult.legal_exploit_guard} />
                 </div>
               </div>
 
