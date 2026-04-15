@@ -562,6 +562,7 @@ export class ALFAInputScanner {
 
   resetSession(): void {
     this.sessionFlags = 0;
+    this.turnCount = 0;
     this.sessionHistory = [];
   }
 
@@ -576,6 +577,12 @@ export class ALFAInputScanner {
     // Age-related categories have special actions
     if (category === 'MINOR_SAFETY_RISK') return 'TERMINATE_SESSION';
     if (category === 'ADULT_CONTENT_RISK') return 'REQUIRE_AGE_VERIFICATION';
+    // v1.3: Front attack on first message → immediate termination
+    if (category === 'FRONT_ATTACK') return 'TERMINATE_SESSION';
+    // v1.3: Tool chaining → disable tools
+    if (category === 'TOOL_CHAINING') return 'DISABLE_TOOLS';
+    // v1.3: Legal exploit → require human review
+    if (category === 'LEGAL_ETHICAL_EXPLOIT') return 'REQUIRE_HUMAN_REVIEW';
 
     switch (severity) {
       case 'CRITICAL': return 'TERMINATE_SESSION';
