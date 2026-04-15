@@ -97,7 +97,7 @@ export function ConfidenceEscalationPanel({ result }: ConfidenceEscalationProps)
         <ConfidenceChip label="Tagger" value={result.tagger.confidence} />
         <ConfidenceChip label="Core" value={result.core.scores.confidence_score} />
         {result.deliberation && (
-          <ConfidenceChip label="Brain" value={result.deliberation.consensus_score} />
+          <ConfidenceChip label="Brain" value={1 - result.deliberation.confidence_gap} />
         )}
       </div>
     </div>
@@ -160,7 +160,7 @@ function computeOverallConfidence(result: PipelineResult): number {
     + result.core.scores.confidence_score * weights.core;
 
   if (result.deliberation) {
-    sum += result.deliberation.consensus_score * weights.deliberation;
+    sum += (1 - result.deliberation.confidence_gap) * weights.deliberation;
   } else {
     sum += result.core.scores.confidence_score * weights.deliberation;
   }

@@ -128,7 +128,7 @@ function buildTimeline(result: PipelineResult, shield?: TonoyanFilterResult | nu
       module: 'Brain Simulation',
       icon: <Brain className="w-4 h-4" />,
       status: result.deliberation.verdict === 'ALLOW' ? 'pass' : result.deliberation.verdict === 'DENY' ? 'block' : 'warn',
-      score: result.deliberation.consensus_score,
+      score: 1 - result.deliberation.confidence_gap,
       detail: `${result.deliberation.verdict} · ${result.deliberation.winning_argument.slice(0, 60)}`,
       badges: result.deliberation.hard_violation ? [{ label: 'HARD VIOLATION', variant: 'block' as const }] : [],
     });
@@ -162,7 +162,7 @@ function buildTimeline(result: PipelineResult, shield?: TonoyanFilterResult | nu
       label: 'PBD',
       module: 'Post-Block Deliberation',
       icon: <FileSearch className="w-4 h-4" />,
-      status: result.pbd.final_review.analytical_verdict === 'CORRECT_BLOCK' ? 'pass' : 'warn',
+      status: result.pbd.final_review.analytical_verdict === 'JUSTIFIED_BLOCK' || result.pbd.final_review.analytical_verdict === 'PREVENTED_ESCALATION' ? 'pass' : 'warn',
       score: result.pbd.final_review.quality_score,
       detail: `${result.pbd.final_review.analytical_verdict} · Quality: ${(result.pbd.final_review.quality_score * 100).toFixed(0)}%`,
     });
