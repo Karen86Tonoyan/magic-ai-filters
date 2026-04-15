@@ -11,6 +11,7 @@
  */
 
 import { deobfuscate, hasUnicodeObfuscation, hasEncodedPayload } from './detection';
+import { FRONT_ATTACK_RULES, type ExtendedDetectionRule } from './front-attack-rules';
 
 // ─── TYPY ────────────────────────────────────────────────────
 
@@ -355,9 +356,15 @@ export class ALFAInputScanner {
   private sessionFlags: number = 0;
   private sessionId: string;
   private sessionHistory: { timestamp: number; risk: number; category: SOSCategory | null }[] = [];
+  private turnCount: number = 0;
 
   constructor(sessionId?: string) {
     this.sessionId = sessionId ?? 'sess_' + Date.now().toString(36);
+  }
+
+  /** v1.3: Check if this is the first message in the session */
+  private isFirstMessage(): boolean {
+    return this.turnCount === 0;
   }
 
   scan(input: string): ShieldScanResult {
