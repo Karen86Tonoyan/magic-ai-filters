@@ -12,6 +12,7 @@ const LiveAnalysisPage = lazy(() => import("@/pages/LiveAnalysisPage"));
 const BenchmarkPage = lazy(() => import("@/pages/BenchmarkPage"));
 const DualChatPage = lazy(() => import("@/pages/DualChatPage"));
 const IncidentPage = lazy(() => import("@/pages/IncidentPage"));
+const LLMInfoPage = lazy(() => import("@/pages/LLMInfoPage"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 
 const queryClient = new QueryClient();
@@ -39,6 +40,7 @@ const App = () => (
               <Route path="/chat" element={<DualChatPage />} />
               <Route path="/benchmark" element={<BenchmarkPage />} />
               <Route path="/incidents" element={<IncidentPage />} />
+              <Route path="/llm" element={<LLMInfoPage />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
