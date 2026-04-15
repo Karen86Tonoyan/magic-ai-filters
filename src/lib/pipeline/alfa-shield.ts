@@ -460,6 +460,7 @@ export class ALFAInputScanner {
         steganography_detected: false,
         command_density: 0,
         invisible_chars_stripped: 0,
+        context_shift: { similarity: 0, shift_detected: false, shift_penalty: 0, consecutive_shifts: 0, shift_type: 'none' },
       };
     }
 
