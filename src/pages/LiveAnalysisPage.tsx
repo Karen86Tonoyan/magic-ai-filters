@@ -18,6 +18,9 @@ import type { ModelAdapter } from '@/lib/adapters/types';
 import { LLMConnectionPanel } from '@/components/LLMConnectionPanel';
 import { createAdapter } from '@/lib/adapters/factory';
 import type { AIProvider } from '@/types/ai-filters';
+import { DecisionTimeline } from '@/components/DecisionTimeline';
+import { ConfidenceEscalationPanel, AnnotationPanel } from '@/components/ConfidenceAnnotation';
+import { AgeVerificationStatus } from '@/components/AgeVerificationStatus';
 
 // ─── Saved Tests ─────────────────────────────────────────────
 
