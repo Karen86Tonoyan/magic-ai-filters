@@ -15,6 +15,7 @@
 import { deobfuscate, hasUnicodeObfuscation, hasEncodedPayload } from './detection';
 import { FRONT_ATTACK_RULES, type ExtendedDetectionRule } from './front-attack-rules';
 import { ContextShiftDetector, type ContextShiftResult } from './context-shift';
+import { detectSemanticObfuscation, type SemanticObfuscationResult } from './semantic-obfuscation';
 
 // ─── TYPY ────────────────────────────────────────────────────
 
@@ -81,6 +82,7 @@ export interface ShieldScanResult {
   command_density: number;
   invisible_chars_stripped: number;
   context_shift: ContextShiftResult;
+  semantic_obfuscation: SemanticObfuscationResult;
 }
 
 // ─── REGUŁY DETEKCJI v1.1 ────────────────────────────────────
@@ -461,6 +463,7 @@ export class ALFAInputScanner {
         command_density: 0,
         invisible_chars_stripped: 0,
         context_shift: { similarity: 0, shift_detected: false, shift_penalty: 0, consecutive_shifts: 0, shift_type: 'none' },
+        semantic_obfuscation: { detected: false, matches: [], max_score: 0, penalty: 0, best_category: null },
       };
     }
 
@@ -480,6 +483,9 @@ export class ALFAInputScanner {
 
     // v1.5: Context shift detection via cosine similarity
     const contextShift = this.contextShiftDetector.analyze(strippedInput);
+
+    // v1.6: Semantic obfuscation detection via trigram embeddings
+    const semanticResult = detectSemanticObfuscation(strippedInput);
 
     let maxWeight = 0;
     let dominantRule: DetectionRule | null = null;
@@ -591,6 +597,18 @@ export class ALFAInputScanner {
       }
     }
 
+    // v1.6: Semantic obfuscation — if trigram embeddings matched attack templates
+    if (semanticResult.detected && !categoryHits.has('SEMANTIC_OBFUSCATION')) {
+      const semWeight = Math.min(semanticResult.matches[0]?.weight ?? 0.72, 0.90);
+      categoryHits.set('SEMANTIC_OBFUSCATION', semWeight);
+      allMatched.push(`semantic:${semanticResult.best_category}(${(semanticResult.max_score * 100).toFixed(0)}%)`);
+      allReasons.push(`Semantic obfuscation detected — paraphrase of "${semanticResult.best_category}" attack (score: ${(semanticResult.max_score * 100).toFixed(0)}%)`);
+      if (semWeight > maxWeight) {
+        maxWeight = semWeight;
+        dominantRule = { category: 'SEMANTIC_OBFUSCATION', severity: 'HIGH', weight: semWeight, keywords: [], patterns: [], reason: 'Semantic obfuscation' };
+      }
+    }
+
     // v1.1: Obfuscation bonus
     const obfuscationBonus = obfuscationDetected ? 0.08 : 0;
     const encodingBonus = encodedPayload.detected ? 0.06 : 0;
@@ -600,6 +618,8 @@ export class ALFAInputScanner {
     const stegoBonus = steganographyDetected ? 0.10 : 0;
     // v1.5: Context shift penalty
     const contextShiftPenalty = contextShift.shift_penalty;
+    // v1.6: Semantic obfuscation penalty
+    const semanticPenalty = semanticResult.penalty;
 
     // Calculate risk_score
     const uniqueCategories = categoryHits.size;
@@ -610,7 +630,7 @@ export class ALFAInputScanner {
     const delayedInjectionBonus = this.detectDelayedInjection(categoryHits);
 
     const risk_score = Math.min(
-      baseScore + multiCategoryBonus + obfuscationBonus + encodingBonus + sessionEscalation + densityBonus + stegoBonus + delayedInjectionBonus + contextShiftPenalty,
+      baseScore + multiCategoryBonus + obfuscationBonus + encodingBonus + sessionEscalation + densityBonus + stegoBonus + delayedInjectionBonus + contextShiftPenalty + semanticPenalty,
       1.0
     );
 
@@ -679,6 +699,7 @@ export class ALFAInputScanner {
       command_density: parseFloat(commandDensity.toFixed(3)),
       invisible_chars_stripped: invisibleCount,
       context_shift: contextShift,
+      semantic_obfuscation: semanticResult,
     };
   }
 
