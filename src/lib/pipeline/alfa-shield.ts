@@ -485,6 +485,7 @@ export class ALFAInputScanner {
 
     // Update session tracking
     if (risk_score > 0.4) this.sessionFlags++;
+    this.turnCount++;
     this.sessionHistory.push({
       timestamp: Date.now(),
       risk: risk_score,
