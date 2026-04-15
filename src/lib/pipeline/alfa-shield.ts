@@ -287,6 +287,45 @@ const DETECTION_RULES: DetectionRule[] = [
     ],
     reason: 'Multi-turn manipulation — false context injection across conversation',
   },
+
+  // ═══ v1.2 AGE VERIFICATION RULES ═══
+
+  // 12. ADULT CONTENT RISK
+  {
+    category: 'ADULT_CONTENT_RISK',
+    severity: 'MEDIUM',
+    weight: 0.70,
+    keywords: [
+      'nsfw', 'explicit content', 'adult content', 'pornographic',
+      'sexually explicit', 'erotic content', 'xxx',
+      'generate nude', 'naked image', 'sexual image',
+    ],
+    patterns: [
+      /(generate|create|show|draw|make)\s+(me\s+)?(nude|naked|porn|erotic|nsfw|explicit)/i,
+      /(sexually\s+explicit|adult\s+only|18\+|xxx)/i,
+      /(write|generate)\s+(me\s+)?(erotica|sexual\s+story|explicit\s+fiction)/i,
+    ],
+    reason: 'Adult content risk — requires age verification before proceeding',
+  },
+
+  // 13. MINOR SAFETY RISK
+  {
+    category: 'MINOR_SAFETY_RISK',
+    severity: 'CRITICAL',
+    weight: 0.99,
+    keywords: [
+      'i am a child', 'i am a minor', 'i am under 18',
+      'i am 12', 'i am 13', 'i am 14', 'i am 15', 'i am 16', 'i am 17',
+      'child exploitation', 'minor exploitation',
+    ],
+    patterns: [
+      /(i am|i'm)\s+(a\s+)?(child|minor|kid|underage)/i,
+      /(i am|i'm)\s+(\d|1[0-7])\s+(years?\s+old|yo\b)/i,
+      /(child|minor|underage)\s+(exploitation|abuse|pornography|sexual)/i,
+      /(sexual|explicit|nude|naked)\s+.{0,20}(child|minor|kid|underage|teen)/i,
+    ],
+    reason: 'Minor safety risk — hard block, no bypass allowed',
+  },
 ];
 
 // ─── HASH HELPER ─────────────────────────────────────────────
