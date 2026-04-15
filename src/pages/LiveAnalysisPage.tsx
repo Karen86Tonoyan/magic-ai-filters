@@ -293,10 +293,12 @@ export default function LiveAnalysisPage() {
       </div>
 
       <Tabs defaultValue="analysis" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 bg-secondary">
+        <TabsList className="grid w-full grid-cols-5 bg-secondary">
           <TabsTrigger value="analysis">Analiza</TabsTrigger>
-          <TabsTrigger value="saved">Zapisane testy ({savedTests.length})</TabsTrigger>
+          <TabsTrigger value="incidents">Incydenty ({stats.attacks})</TabsTrigger>
+          <TabsTrigger value="saved">Testy ({savedTests.length})</TabsTrigger>
           <TabsTrigger value="models">Multi-Model</TabsTrigger>
+          <TabsTrigger value="admin">🔒 Admin</TabsTrigger>
         </TabsList>
 
         {/* ═══ TAB: ANALIZA ═══ */}
