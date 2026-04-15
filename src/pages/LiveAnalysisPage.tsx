@@ -998,6 +998,139 @@ export default function LiveAnalysisPage() {
             + Dodaj model
           </Button>
         </TabsContent>
+
+        {/* ═══ TAB: ADMIN ═══ */}
+        <TabsContent value="admin" className="space-y-4 mt-4">
+          {!adminMode ? (
+            <div className="bg-card border border-border rounded-xl p-8 text-center space-y-4">
+              <Ban className="w-10 h-10 text-muted-foreground mx-auto" />
+              <p className="text-sm text-muted-foreground">Dostęp administracyjny do wszystkich incydentów, zbanowanych użytkowników i analizy zagrożeń.</p>
+              <div className="flex items-center gap-2 max-w-xs mx-auto">
+                <Input type="password" value={adminPin} onChange={e => setAdminPin(e.target.value)}
+                  placeholder="PIN administratora" className="bg-secondary border-border text-sm" />
+                <Button onClick={() => {
+                  if (verifyAdminAccess(adminPin)) {
+                    setAdminMode(true);
+                    refreshIncidents();
+                  } else {
+                    setBanAlert('❌ Nieprawidłowy PIN');
+                    setTimeout(() => setBanAlert(null), 3000);
+                  }
+                }} className="gap-2">
+                  <Lock className="w-3 h-3" /> Wejdź
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="font-display font-semibold text-foreground flex items-center gap-2">
+                  <ShieldAlert className="w-5 h-5 text-destructive" />
+                  Panel Administracyjny — Pełny Dostęp
+                </h3>
+                <Button size="sm" variant="ghost" onClick={() => { setAdminMode(false); setAdminPin(''); }}>
+                  Wyloguj
+                </Button>
+              </div>
+
+              {/* Admin stats */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div className="bg-card border border-border rounded-lg p-3 text-center">
+                  <p className="text-[10px] text-muted-foreground">Wszystkie incydenty</p>
+                  <p className="text-2xl font-mono font-bold text-foreground">{incidents.length}</p>
+                </div>
+                <div className="bg-card border border-destructive/30 rounded-lg p-3 text-center">
+                  <p className="text-[10px] text-muted-foreground">Ataki (risk &gt; 0.4)</p>
+                  <p className="text-2xl font-mono font-bold text-destructive">{stats.attacks}</p>
+                </div>
+                <div className="bg-card border border-warning/30 rounded-lg p-3 text-center">
+                  <p className="text-[10px] text-muted-foreground">False Positives</p>
+                  <p className="text-2xl font-mono font-bold text-warning">{stats.false_positives}</p>
+                </div>
+                <div className="bg-card border border-destructive/30 rounded-lg p-3 text-center">
+                  <p className="text-[10px] text-muted-foreground">Zbanowani</p>
+                  <p className="text-2xl font-mono font-bold text-destructive">{stats.banned_users}</p>
+                </div>
+              </div>
+
+              {/* Banned users list */}
+              {(() => {
+                const banned = loadBannedUsers();
+                return banned.length > 0 ? (
+                  <div className="bg-card border border-destructive/30 rounded-xl p-4 space-y-3">
+                    <h4 className="text-sm font-display font-semibold text-destructive flex items-center gap-2">
+                      <Ban className="w-4 h-4" /> Zbanowani użytkownicy ({banned.length})
+                    </h4>
+                    {banned.map((b, i) => (
+                      <div key={i} className="bg-destructive/5 border border-destructive/20 rounded-lg p-3 space-y-1">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <Badge className="bg-destructive text-destructive-foreground text-[9px]">BANNED</Badge>
+                          <span className="text-[10px] font-mono text-muted-foreground">{b.session_id}</span>
+                          <span className="text-[10px] text-muted-foreground ml-auto">{new Date(b.banned_at).toLocaleString()}</span>
+                        </div>
+                        <p className="text-xs text-destructive">{b.reason}</p>
+                        <div className="text-[10px] font-mono text-muted-foreground">
+                          Ataki: {b.attack_count} · Vocab: {b.fingerprint?.vocab_richness} · AvgWord: {b.fingerprint?.avg_word_length} · LangMix: {b.fingerprint?.language_mix}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : null;
+              })()}
+
+              {/* Full export for admin */}
+              <div className="flex flex-wrap gap-2">
+                <Button variant="outline" size="sm" className="gap-2" onClick={() => {
+                  const all = loadIncidents();
+                  const data = JSON.stringify({ incidents: all, banned: loadBannedUsers(), stats: getIncidentStats(), exported_at: new Date().toISOString() }, null, 2);
+                  const blob = new Blob([data], { type: 'application/json' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a'); a.href = url; a.download = `alfa_admin_export_${Date.now()}.json`; a.click();
+                  URL.revokeObjectURL(url);
+                }}>
+                  <Download className="w-3 h-3" /> Export pełny (admin)
+                </Button>
+                <Button variant="outline" size="sm" className="gap-2" onClick={() => {
+                  const data = exportAsCSV(loadIncidents());
+                  const blob = new Blob([data], { type: 'text/csv' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a'); a.href = url; a.download = `alfa_admin_dataset_${Date.now()}.csv`; a.click();
+                  URL.revokeObjectURL(url);
+                }}>
+                  <Download className="w-3 h-3" /> Export CSV (admin)
+                </Button>
+              </div>
+
+              {/* All incidents (admin has full detail) */}
+              <div className="space-y-2">
+                <h4 className="text-sm font-display font-semibold text-foreground">Wszystkie incydenty (ostatnie 100)</h4>
+                {[...incidents].reverse().slice(0, 100).map(inc => (
+                  <div key={inc.id} className={`bg-card border rounded-lg p-3 space-y-1 ${
+                    inc.ban_evasion_suspected ? 'border-destructive/50' : 'border-border'
+                  }`}>
+                    <div className="flex items-center gap-2 flex-wrap text-[10px]">
+                      <Badge variant="outline" className={`font-mono ${
+                        inc.verdict === 'BLOCK' ? 'text-destructive' : inc.verdict === 'WARN' ? 'text-warning' : 'text-success'
+                      }`}>{inc.verdict}</Badge>
+                      {inc.category && <span className="font-mono text-muted-foreground">{inc.category}</span>}
+                      <span className="font-mono">risk:{(inc.risk_score * 100).toFixed(0)}%</span>
+                      <span className={`font-mono ${inc.annotation === 'true_positive' ? 'text-success' : inc.annotation === 'false_positive' ? 'text-warning' : 'text-muted-foreground'}`}>
+                        [{inc.annotation}]
+                      </span>
+                      {inc.ban_evasion_suspected && <span className="text-destructive font-bold">⚠ EVASION</span>}
+                      <span className="text-muted-foreground ml-auto">{inc.session_id}</span>
+                      <span className="text-muted-foreground">{new Date(inc.timestamp).toLocaleString()}</span>
+                    </div>
+                    <p className="text-[11px] font-mono text-foreground line-clamp-1">{inc.input}</p>
+                    <div className="text-[9px] font-mono text-muted-foreground">
+                      fp: vocab={inc.fingerprint?.vocab_richness} avgW={inc.fingerprint?.avg_word_length} lang={inc.fingerprint?.language_mix} upper={inc.fingerprint?.uppercase_ratio}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </TabsContent>
       </Tabs>
     </div>
   );
