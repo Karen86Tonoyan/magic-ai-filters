@@ -145,8 +145,7 @@ export default function LiveAnalysisPage() {
       for (const slot of enabledSlots) {
         setStage(`${slot.label} (${slot.modelId}) — pipeline...`);
         try {
-          const slotAdapter = createAdapter({
-            provider: slot.provider,
+          const slotAdapter = createAdapter(slot.provider, {
             apiKey: slot.apiKey,
             baseUrl: slot.baseUrl,
             modelId: slot.modelId,
