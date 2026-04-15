@@ -368,6 +368,10 @@ export default function LiveAnalysisPage() {
                   color={shieldResult.scanner.steganography_detected ? 'destructive' : 'success'} />
                 <ShieldMetric label="Cmd Density" value={`${(shieldResult.scanner.command_density * 100).toFixed(0)}%`}
                   color={shieldResult.scanner.command_density > 0.15 ? 'destructive' : shieldResult.scanner.command_density > 0.08 ? 'warning' : 'success'} />
+                <ShieldMetric label="Context Shift" value={shieldResult.scanner.context_shift.shift_detected ? shieldResult.scanner.context_shift.shift_type.toUpperCase() : 'Stable'}
+                  color={shieldResult.scanner.context_shift.shift_type === 'radical' ? 'destructive' : shieldResult.scanner.context_shift.shift_type === 'significant' ? 'warning' : 'success'} />
+                <ShieldMetric label="Cosine Sim" value={`${(shieldResult.scanner.context_shift.similarity * 100).toFixed(0)}%`}
+                  color={shieldResult.scanner.context_shift.similarity < 0.15 ? 'destructive' : shieldResult.scanner.context_shift.similarity < 0.35 ? 'warning' : 'success'} />
               </div>
 
               {/* SOS Signal */}
