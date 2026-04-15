@@ -15,6 +15,7 @@
 import { deobfuscate, hasUnicodeObfuscation, hasEncodedPayload } from './detection';
 import { FRONT_ATTACK_RULES, type ExtendedDetectionRule } from './front-attack-rules';
 import { ContextShiftDetector, type ContextShiftResult } from './context-shift';
+import { detectSemanticObfuscation, type SemanticObfuscationResult } from './semantic-obfuscation';
 
 // ─── TYPY ────────────────────────────────────────────────────
 
@@ -81,6 +82,7 @@ export interface ShieldScanResult {
   command_density: number;
   invisible_chars_stripped: number;
   context_shift: ContextShiftResult;
+  semantic_obfuscation: SemanticObfuscationResult;
 }
 
 // ─── REGUŁY DETEKCJI v1.1 ────────────────────────────────────
@@ -461,6 +463,7 @@ export class ALFAInputScanner {
         command_density: 0,
         invisible_chars_stripped: 0,
         context_shift: { similarity: 0, shift_detected: false, shift_penalty: 0, consecutive_shifts: 0, shift_type: 'none' },
+        semantic_obfuscation: { detected: false, matches: [], max_score: 0, penalty: 0, best_category: null },
       };
     }
 
