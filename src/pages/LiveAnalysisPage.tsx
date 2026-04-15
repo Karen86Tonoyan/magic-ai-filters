@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { Play, Shield, Eye, AlertTriangle, CheckCircle, XCircle, Clock, Loader2, Sparkles, Copy, Check, ChevronDown, ChevronUp, Save, Trash2, FileText, Fingerprint, Lock, ShieldAlert, Zap } from 'lucide-react';
+import { Play, Shield, Eye, AlertTriangle, CheckCircle, XCircle, Clock, Loader2, Sparkles, Copy, Check, ChevronDown, ChevronUp, Save, Trash2, FileText, Fingerprint, Lock, ShieldAlert, Zap, Download, Ban, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
@@ -21,6 +21,12 @@ import type { AIProvider } from '@/types/ai-filters';
 import { DecisionTimeline } from '@/components/DecisionTimeline';
 import { ConfidenceEscalationPanel, AnnotationPanel } from '@/components/ConfidenceAnnotation';
 import { AgeVerificationStatus } from '@/components/AgeVerificationStatus';
+import {
+  recordIncident, annotateIncident, checkAutoBan, executeBan,
+  loadIncidents, loadBannedUsers, exportAsJSON, exportAsCSV,
+  getIncidentStats, verifyAdminAccess, saveIncidents,
+  type IncidentRecord, type AnnotationLabel,
+} from '@/lib/pipeline/incident-log';
 
 // ─── Saved Tests ─────────────────────────────────────────────
 
@@ -116,13 +122,27 @@ export default function LiveAnalysisPage() {
   const [modelSlots, setModelSlots] = useState<ModelSlot[]>(loadModelSlots);
   const [multiResults, setMultiResults] = useState<MultiModelResult[]>([]);
 
+  // Incident & ban system
+  const [incidents, setIncidents] = useState<IncidentRecord[]>(loadIncidents);
+  const [stats, setStats] = useState(getIncidentStats());
+  const [banAlert, setBanAlert] = useState<string | null>(null);
+  const [adminMode, setAdminMode] = useState(false);
+  const [adminPin, setAdminPin] = useState('');
+
+  const sessionId = useState(() => 'sess_' + Date.now().toString(36))[0];
+  const [scanner] = useState(() => new ALFAInputScanner(sessionId));
+
   useEffect(() => saveSavedTests(savedTests), [savedTests]);
   useEffect(() => saveModelSlots(modelSlots), [modelSlots]);
+
+  const refreshIncidents = () => {
+    setIncidents(loadIncidents());
+    setStats(getIncidentStats());
+  };
 
   const handleAdapterChange = useCallback((a: ModelAdapter | null) => setAdapter(a), []);
 
   const runShieldScan = (text: string): TonoyanFilterResult => {
-    const scanner = new ALFAInputScanner();
     return tonoyanFilter(text, scanner);
   };
 
@@ -188,6 +208,19 @@ export default function LiveAnalysisPage() {
       await new Promise(r => setTimeout(r, 300));
       const res = await runPipeline(input, { mode, adapter: adapter || undefined });
       setResult(res);
+    }
+
+    // Record incident & check auto-ban
+    if (shield.scanner.risk_score > 0) {
+      recordIncident(shield.scanner, input, shield.verdict, sessionId);
+      const banCheck = checkAutoBan(sessionId);
+      if (banCheck.should_ban) {
+        executeBan(sessionId, `Auto-ban: ${banCheck.attack_count} attacks detected`);
+        setBanAlert(`⛔ UŻYTKOWNIK ZBANOWANY — ${banCheck.attack_count} ataków wykrytych. ${banCheck.ban_evasion_detected ? '🔍 Wykryto próbę obejścia bana (fingerprint match)!' : ''}`);
+      } else if (banCheck.should_analyze) {
+        setBanAlert(`🔍 ANALIZA WŁĄCZONA — ${banCheck.attack_count} ataków. System analizuje intencje i styl pisania.`);
+      }
+      refreshIncidents();
     }
 
     setIsRunning(false);
@@ -260,10 +293,12 @@ export default function LiveAnalysisPage() {
       </div>
 
       <Tabs defaultValue="analysis" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 bg-secondary">
+        <TabsList className="grid w-full grid-cols-5 bg-secondary">
           <TabsTrigger value="analysis">Analiza</TabsTrigger>
-          <TabsTrigger value="saved">Zapisane testy ({savedTests.length})</TabsTrigger>
+          <TabsTrigger value="incidents">Incydenty ({stats.attacks})</TabsTrigger>
+          <TabsTrigger value="saved">Testy ({savedTests.length})</TabsTrigger>
           <TabsTrigger value="models">Multi-Model</TabsTrigger>
+          <TabsTrigger value="admin">🔒 Admin</TabsTrigger>
         </TabsList>
 
         {/* ═══ TAB: ANALIZA ═══ */}
@@ -372,12 +407,19 @@ export default function LiveAnalysisPage() {
                   color={shieldResult.scanner.context_shift.shift_type === 'radical' ? 'destructive' : shieldResult.scanner.context_shift.shift_type === 'significant' ? 'warning' : 'success'} />
                 <ShieldMetric label="Cosine Sim" value={`${(shieldResult.scanner.context_shift.similarity * 100).toFixed(0)}%`}
                   color={shieldResult.scanner.context_shift.similarity < 0.15 ? 'destructive' : shieldResult.scanner.context_shift.similarity < 0.35 ? 'warning' : 'success'} />
-                <ShieldMetric label="Semantic Sim" value={shieldResult.scanner.semantic_obfuscation.detected ? `${(shieldResult.scanner.semantic_obfuscation.max_score * 100).toFixed(0)}%` : 'Clean'}
-                  color={shieldResult.scanner.semantic_obfuscation.detected ? 'destructive' : 'success'} />
+                <ShieldMetric label="Semantic Sim" value={shieldResult.scanner.semantic_obfuscation?.detected ? `${(shieldResult.scanner.semantic_obfuscation.max_score * 100).toFixed(0)}%` : 'Clean'}
+                  color={shieldResult.scanner.semantic_obfuscation?.detected ? 'destructive' : 'success'} />
               </div>
 
+              {/* Ban Alert */}
+              {banAlert && (
+                <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-3">
+                  <p className="text-sm font-medium text-destructive">{banAlert}</p>
+                </div>
+              )}
+
               {/* v1.6: Semantic Obfuscation Matches */}
-              {shieldResult.scanner.semantic_obfuscation.detected && (
+              {shieldResult.scanner.semantic_obfuscation?.detected && (
                 <div className="bg-warning/5 border border-warning/20 rounded-lg p-3 space-y-2">
                   <p className="text-xs font-medium text-warning flex items-center gap-1.5">
                     <Eye className="w-3.5 h-3.5" />
@@ -734,7 +776,124 @@ export default function LiveAnalysisPage() {
           )}
         </TabsContent>
 
-        {/* ═══ TAB: ZAPISANE TESTY ═══ */}
+        {/* ═══ TAB: INCYDENTY ═══ */}
+        <TabsContent value="incidents" className="space-y-4 mt-4">
+          {/* Stats bar */}
+          <div className="grid grid-cols-2 sm:grid-cols-6 gap-3">
+            <div className="bg-card border border-border rounded-lg p-3 text-center">
+              <p className="text-[10px] text-muted-foreground">Łączne</p>
+              <p className="text-lg font-mono font-bold text-foreground">{stats.total}</p>
+            </div>
+            <div className="bg-card border border-destructive/30 rounded-lg p-3 text-center">
+              <p className="text-[10px] text-muted-foreground">Ataki</p>
+              <p className="text-lg font-mono font-bold text-destructive">{stats.attacks}</p>
+            </div>
+            <div className="bg-card border border-success/30 rounded-lg p-3 text-center">
+              <p className="text-[10px] text-muted-foreground">True Positive</p>
+              <p className="text-lg font-mono font-bold text-success">{stats.true_positives}</p>
+            </div>
+            <div className="bg-card border border-warning/30 rounded-lg p-3 text-center">
+              <p className="text-[10px] text-muted-foreground">False Positive</p>
+              <p className="text-lg font-mono font-bold text-warning">{stats.false_positives}</p>
+            </div>
+            <div className="bg-card border border-border rounded-lg p-3 text-center">
+              <p className="text-[10px] text-muted-foreground">Do przeglądu</p>
+              <p className="text-lg font-mono font-bold text-muted-foreground">{stats.unreviewed}</p>
+            </div>
+            <div className="bg-card border border-destructive/30 rounded-lg p-3 text-center">
+              <p className="text-[10px] text-muted-foreground">Zbanowani</p>
+              <p className="text-lg font-mono font-bold text-destructive">{stats.banned_users}</p>
+            </div>
+          </div>
+
+          {/* Export buttons */}
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" size="sm" className="gap-2" onClick={() => {
+              const data = exportAsJSON(incidents);
+              const blob = new Blob([data], { type: 'application/json' });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a'); a.href = url; a.download = `alfa_dataset_${Date.now()}.json`; a.click();
+              URL.revokeObjectURL(url);
+            }}>
+              <Download className="w-3 h-3" /> Export JSON
+            </Button>
+            <Button variant="outline" size="sm" className="gap-2" onClick={() => {
+              const data = exportAsCSV(incidents);
+              const blob = new Blob([data], { type: 'text/csv' });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a'); a.href = url; a.download = `alfa_dataset_${Date.now()}.csv`; a.click();
+              URL.revokeObjectURL(url);
+            }}>
+              <Download className="w-3 h-3" /> Export CSV
+            </Button>
+            <Button variant="outline" size="sm" className="gap-2 text-destructive" onClick={() => {
+              if (confirm('Wyczyścić wszystkie incydenty?')) {
+                saveIncidents([]);
+                refreshIncidents();
+              }
+            }}>
+              <Trash2 className="w-3 h-3" /> Wyczyść
+            </Button>
+          </div>
+
+          {/* Incident list */}
+          {incidents.length === 0 ? (
+            <div className="bg-card border border-border rounded-xl p-8 text-center">
+              <Shield className="w-8 h-8 text-muted-foreground mx-auto mb-3" />
+              <p className="text-sm text-muted-foreground">Brak incydentów. Uruchom analizę — każdy skan z risk &gt; 0 jest automatycznie rejestrowany.</p>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {[...incidents].reverse().slice(0, 50).map(inc => (
+                <div key={inc.id} className={`bg-card border rounded-xl p-3 space-y-2 ${
+                  inc.ban_evasion_suspected ? 'border-destructive/50' :
+                  inc.risk_score > 0.6 ? 'border-destructive/30' :
+                  inc.risk_score > 0.3 ? 'border-warning/30' : 'border-border'
+                }`}>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <Badge variant="outline" className={`text-[10px] font-mono ${
+                      inc.verdict === 'BLOCK' ? 'border-destructive/40 text-destructive' :
+                      inc.verdict === 'WARN' ? 'border-warning/40 text-warning' :
+                      'border-success/40 text-success'
+                    }`}>{inc.verdict}</Badge>
+                    {inc.category && <Badge variant="outline" className="text-[9px] font-mono">{inc.category}</Badge>}
+                    <span className="text-[10px] font-mono text-muted-foreground">risk: {(inc.risk_score * 100).toFixed(0)}%</span>
+                    {inc.ban_evasion_suspected && <Badge className="bg-destructive text-destructive-foreground text-[9px]">BAN EVASION</Badge>}
+                    <span className="text-[10px] text-muted-foreground ml-auto">{new Date(inc.timestamp).toLocaleString()}</span>
+                  </div>
+                  <p className="text-xs font-mono text-foreground line-clamp-2">{inc.input}</p>
+
+                  {/* FP/TP annotation */}
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] text-muted-foreground">Annotacja:</span>
+                    {(['true_positive', 'false_positive', 'unreviewed'] as AnnotationLabel[]).map(label => (
+                      <Button key={label} size="sm" variant={inc.annotation === label ? 'default' : 'outline'}
+                        className={`text-[10px] h-6 px-2 ${
+                          inc.annotation === label
+                            ? label === 'true_positive' ? 'bg-success text-success-foreground'
+                            : label === 'false_positive' ? 'bg-warning text-warning-foreground'
+                            : ''
+                            : ''
+                        }`}
+                        onClick={() => {
+                          annotateIncident(inc.id, label);
+                          refreshIncidents();
+                        }}>
+                        {label === 'true_positive' ? '✅ TP' : label === 'false_positive' ? '⚠️ FP' : '❓'}
+                      </Button>
+                    ))}
+                    {inc.context_shift?.shift_detected && (
+                      <Badge variant="outline" className="text-[9px] border-warning/30 text-warning ml-auto">
+                        shift: {inc.context_shift.shift_type}
+                      </Badge>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </TabsContent>
+
         <TabsContent value="saved" className="space-y-4 mt-4">
           {savedTests.length === 0 ? (
             <div className="bg-card border border-border rounded-xl p-8 text-center">
@@ -838,6 +997,139 @@ export default function LiveAnalysisPage() {
           <Button variant="outline" onClick={addSlot} className="w-full gap-2">
             + Dodaj model
           </Button>
+        </TabsContent>
+
+        {/* ═══ TAB: ADMIN ═══ */}
+        <TabsContent value="admin" className="space-y-4 mt-4">
+          {!adminMode ? (
+            <div className="bg-card border border-border rounded-xl p-8 text-center space-y-4">
+              <Ban className="w-10 h-10 text-muted-foreground mx-auto" />
+              <p className="text-sm text-muted-foreground">Dostęp administracyjny do wszystkich incydentów, zbanowanych użytkowników i analizy zagrożeń.</p>
+              <div className="flex items-center gap-2 max-w-xs mx-auto">
+                <Input type="password" value={adminPin} onChange={e => setAdminPin(e.target.value)}
+                  placeholder="PIN administratora" className="bg-secondary border-border text-sm" />
+                <Button onClick={() => {
+                  if (verifyAdminAccess(adminPin)) {
+                    setAdminMode(true);
+                    refreshIncidents();
+                  } else {
+                    setBanAlert('❌ Nieprawidłowy PIN');
+                    setTimeout(() => setBanAlert(null), 3000);
+                  }
+                }} className="gap-2">
+                  <Lock className="w-3 h-3" /> Wejdź
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="font-display font-semibold text-foreground flex items-center gap-2">
+                  <ShieldAlert className="w-5 h-5 text-destructive" />
+                  Panel Administracyjny — Pełny Dostęp
+                </h3>
+                <Button size="sm" variant="ghost" onClick={() => { setAdminMode(false); setAdminPin(''); }}>
+                  Wyloguj
+                </Button>
+              </div>
+
+              {/* Admin stats */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div className="bg-card border border-border rounded-lg p-3 text-center">
+                  <p className="text-[10px] text-muted-foreground">Wszystkie incydenty</p>
+                  <p className="text-2xl font-mono font-bold text-foreground">{incidents.length}</p>
+                </div>
+                <div className="bg-card border border-destructive/30 rounded-lg p-3 text-center">
+                  <p className="text-[10px] text-muted-foreground">Ataki (risk &gt; 0.4)</p>
+                  <p className="text-2xl font-mono font-bold text-destructive">{stats.attacks}</p>
+                </div>
+                <div className="bg-card border border-warning/30 rounded-lg p-3 text-center">
+                  <p className="text-[10px] text-muted-foreground">False Positives</p>
+                  <p className="text-2xl font-mono font-bold text-warning">{stats.false_positives}</p>
+                </div>
+                <div className="bg-card border border-destructive/30 rounded-lg p-3 text-center">
+                  <p className="text-[10px] text-muted-foreground">Zbanowani</p>
+                  <p className="text-2xl font-mono font-bold text-destructive">{stats.banned_users}</p>
+                </div>
+              </div>
+
+              {/* Banned users list */}
+              {(() => {
+                const banned = loadBannedUsers();
+                return banned.length > 0 ? (
+                  <div className="bg-card border border-destructive/30 rounded-xl p-4 space-y-3">
+                    <h4 className="text-sm font-display font-semibold text-destructive flex items-center gap-2">
+                      <Ban className="w-4 h-4" /> Zbanowani użytkownicy ({banned.length})
+                    </h4>
+                    {banned.map((b, i) => (
+                      <div key={i} className="bg-destructive/5 border border-destructive/20 rounded-lg p-3 space-y-1">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <Badge className="bg-destructive text-destructive-foreground text-[9px]">BANNED</Badge>
+                          <span className="text-[10px] font-mono text-muted-foreground">{b.session_id}</span>
+                          <span className="text-[10px] text-muted-foreground ml-auto">{new Date(b.banned_at).toLocaleString()}</span>
+                        </div>
+                        <p className="text-xs text-destructive">{b.reason}</p>
+                        <div className="text-[10px] font-mono text-muted-foreground">
+                          Ataki: {b.attack_count} · Vocab: {b.fingerprint?.vocab_richness} · AvgWord: {b.fingerprint?.avg_word_length} · LangMix: {b.fingerprint?.language_mix}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : null;
+              })()}
+
+              {/* Full export for admin */}
+              <div className="flex flex-wrap gap-2">
+                <Button variant="outline" size="sm" className="gap-2" onClick={() => {
+                  const all = loadIncidents();
+                  const data = JSON.stringify({ incidents: all, banned: loadBannedUsers(), stats: getIncidentStats(), exported_at: new Date().toISOString() }, null, 2);
+                  const blob = new Blob([data], { type: 'application/json' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a'); a.href = url; a.download = `alfa_admin_export_${Date.now()}.json`; a.click();
+                  URL.revokeObjectURL(url);
+                }}>
+                  <Download className="w-3 h-3" /> Export pełny (admin)
+                </Button>
+                <Button variant="outline" size="sm" className="gap-2" onClick={() => {
+                  const data = exportAsCSV(loadIncidents());
+                  const blob = new Blob([data], { type: 'text/csv' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a'); a.href = url; a.download = `alfa_admin_dataset_${Date.now()}.csv`; a.click();
+                  URL.revokeObjectURL(url);
+                }}>
+                  <Download className="w-3 h-3" /> Export CSV (admin)
+                </Button>
+              </div>
+
+              {/* All incidents (admin has full detail) */}
+              <div className="space-y-2">
+                <h4 className="text-sm font-display font-semibold text-foreground">Wszystkie incydenty (ostatnie 100)</h4>
+                {[...incidents].reverse().slice(0, 100).map(inc => (
+                  <div key={inc.id} className={`bg-card border rounded-lg p-3 space-y-1 ${
+                    inc.ban_evasion_suspected ? 'border-destructive/50' : 'border-border'
+                  }`}>
+                    <div className="flex items-center gap-2 flex-wrap text-[10px]">
+                      <Badge variant="outline" className={`font-mono ${
+                        inc.verdict === 'BLOCK' ? 'text-destructive' : inc.verdict === 'WARN' ? 'text-warning' : 'text-success'
+                      }`}>{inc.verdict}</Badge>
+                      {inc.category && <span className="font-mono text-muted-foreground">{inc.category}</span>}
+                      <span className="font-mono">risk:{(inc.risk_score * 100).toFixed(0)}%</span>
+                      <span className={`font-mono ${inc.annotation === 'true_positive' ? 'text-success' : inc.annotation === 'false_positive' ? 'text-warning' : 'text-muted-foreground'}`}>
+                        [{inc.annotation}]
+                      </span>
+                      {inc.ban_evasion_suspected && <span className="text-destructive font-bold">⚠ EVASION</span>}
+                      <span className="text-muted-foreground ml-auto">{inc.session_id}</span>
+                      <span className="text-muted-foreground">{new Date(inc.timestamp).toLocaleString()}</span>
+                    </div>
+                    <p className="text-[11px] font-mono text-foreground line-clamp-1">{inc.input}</p>
+                    <div className="text-[9px] font-mono text-muted-foreground">
+                      fp: vocab={inc.fingerprint?.vocab_richness} avgW={inc.fingerprint?.avg_word_length} lang={inc.fingerprint?.language_mix} upper={inc.fingerprint?.uppercase_ratio}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </TabsContent>
       </Tabs>
     </div>
