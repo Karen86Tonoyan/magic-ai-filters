@@ -67,7 +67,9 @@ export interface ThreatAnalysis {
 
 const INCIDENTS_KEY = 'alfa_incident_log';
 const BANNED_KEY = 'alfa_banned_users';
-const ADMIN_PIN = 'alfa_admin_2024'; // Simple admin access
+const ADMIN_CREDENTIALS = { login: 'alfa_admin', password: 'AlfaShield2024!' };
+const ADMIN_SESSION_KEY = 'alfa_admin_session';
+const ADMIN_SESSION_TIMEOUT_MS = 30 * 60 * 1000; // 30 min
 
 // ─── INCIDENT LOG ───────────────────────────────────────────
 
@@ -311,9 +313,41 @@ export function exportAsCSV(incidents: IncidentRecord[]): string {
   return [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
 }
 
-/** Admin access check (simple PIN for now) */
+/** Admin login with credentials */
+export function adminLogin(login: string, password: string): boolean {
+  if (login === ADMIN_CREDENTIALS.login && password === ADMIN_CREDENTIALS.password) {
+    sessionStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify({ ts: Date.now() }));
+    return true;
+  }
+  return false;
+}
+
+/** Check if admin session is still valid (30 min timeout) */
+export function isAdminSessionValid(): boolean {
+  try {
+    const raw = sessionStorage.getItem(ADMIN_SESSION_KEY);
+    if (!raw) return false;
+    const { ts } = JSON.parse(raw);
+    if (Date.now() - ts > ADMIN_SESSION_TIMEOUT_MS) {
+      sessionStorage.removeItem(ADMIN_SESSION_KEY);
+      return false;
+    }
+    // Refresh timestamp on activity
+    sessionStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify({ ts: Date.now() }));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/** Admin logout */
+export function adminLogout(): void {
+  sessionStorage.removeItem(ADMIN_SESSION_KEY);
+}
+
+/** @deprecated Use adminLogin instead */
 export function verifyAdminAccess(pin: string): boolean {
-  return pin === ADMIN_PIN;
+  return adminLogin(pin, pin);
 }
 
 /** Get stats summary */
