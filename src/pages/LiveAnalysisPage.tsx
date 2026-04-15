@@ -776,7 +776,124 @@ export default function LiveAnalysisPage() {
           )}
         </TabsContent>
 
-        {/* ═══ TAB: ZAPISANE TESTY ═══ */}
+        {/* ═══ TAB: INCYDENTY ═══ */}
+        <TabsContent value="incidents" className="space-y-4 mt-4">
+          {/* Stats bar */}
+          <div className="grid grid-cols-2 sm:grid-cols-6 gap-3">
+            <div className="bg-card border border-border rounded-lg p-3 text-center">
+              <p className="text-[10px] text-muted-foreground">Łączne</p>
+              <p className="text-lg font-mono font-bold text-foreground">{stats.total}</p>
+            </div>
+            <div className="bg-card border border-destructive/30 rounded-lg p-3 text-center">
+              <p className="text-[10px] text-muted-foreground">Ataki</p>
+              <p className="text-lg font-mono font-bold text-destructive">{stats.attacks}</p>
+            </div>
+            <div className="bg-card border border-success/30 rounded-lg p-3 text-center">
+              <p className="text-[10px] text-muted-foreground">True Positive</p>
+              <p className="text-lg font-mono font-bold text-success">{stats.true_positives}</p>
+            </div>
+            <div className="bg-card border border-warning/30 rounded-lg p-3 text-center">
+              <p className="text-[10px] text-muted-foreground">False Positive</p>
+              <p className="text-lg font-mono font-bold text-warning">{stats.false_positives}</p>
+            </div>
+            <div className="bg-card border border-border rounded-lg p-3 text-center">
+              <p className="text-[10px] text-muted-foreground">Do przeglądu</p>
+              <p className="text-lg font-mono font-bold text-muted-foreground">{stats.unreviewed}</p>
+            </div>
+            <div className="bg-card border border-destructive/30 rounded-lg p-3 text-center">
+              <p className="text-[10px] text-muted-foreground">Zbanowani</p>
+              <p className="text-lg font-mono font-bold text-destructive">{stats.banned_users}</p>
+            </div>
+          </div>
+
+          {/* Export buttons */}
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" size="sm" className="gap-2" onClick={() => {
+              const data = exportAsJSON(incidents);
+              const blob = new Blob([data], { type: 'application/json' });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a'); a.href = url; a.download = `alfa_dataset_${Date.now()}.json`; a.click();
+              URL.revokeObjectURL(url);
+            }}>
+              <Download className="w-3 h-3" /> Export JSON
+            </Button>
+            <Button variant="outline" size="sm" className="gap-2" onClick={() => {
+              const data = exportAsCSV(incidents);
+              const blob = new Blob([data], { type: 'text/csv' });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a'); a.href = url; a.download = `alfa_dataset_${Date.now()}.csv`; a.click();
+              URL.revokeObjectURL(url);
+            }}>
+              <Download className="w-3 h-3" /> Export CSV
+            </Button>
+            <Button variant="outline" size="sm" className="gap-2 text-destructive" onClick={() => {
+              if (confirm('Wyczyścić wszystkie incydenty?')) {
+                saveIncidents([]);
+                refreshIncidents();
+              }
+            }}>
+              <Trash2 className="w-3 h-3" /> Wyczyść
+            </Button>
+          </div>
+
+          {/* Incident list */}
+          {incidents.length === 0 ? (
+            <div className="bg-card border border-border rounded-xl p-8 text-center">
+              <Shield className="w-8 h-8 text-muted-foreground mx-auto mb-3" />
+              <p className="text-sm text-muted-foreground">Brak incydentów. Uruchom analizę — każdy skan z risk &gt; 0 jest automatycznie rejestrowany.</p>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {[...incidents].reverse().slice(0, 50).map(inc => (
+                <div key={inc.id} className={`bg-card border rounded-xl p-3 space-y-2 ${
+                  inc.ban_evasion_suspected ? 'border-destructive/50' :
+                  inc.risk_score > 0.6 ? 'border-destructive/30' :
+                  inc.risk_score > 0.3 ? 'border-warning/30' : 'border-border'
+                }`}>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <Badge variant="outline" className={`text-[10px] font-mono ${
+                      inc.verdict === 'BLOCK' ? 'border-destructive/40 text-destructive' :
+                      inc.verdict === 'WARN' ? 'border-warning/40 text-warning' :
+                      'border-success/40 text-success'
+                    }`}>{inc.verdict}</Badge>
+                    {inc.category && <Badge variant="outline" className="text-[9px] font-mono">{inc.category}</Badge>}
+                    <span className="text-[10px] font-mono text-muted-foreground">risk: {(inc.risk_score * 100).toFixed(0)}%</span>
+                    {inc.ban_evasion_suspected && <Badge className="bg-destructive text-destructive-foreground text-[9px]">BAN EVASION</Badge>}
+                    <span className="text-[10px] text-muted-foreground ml-auto">{new Date(inc.timestamp).toLocaleString()}</span>
+                  </div>
+                  <p className="text-xs font-mono text-foreground line-clamp-2">{inc.input}</p>
+
+                  {/* FP/TP annotation */}
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] text-muted-foreground">Annotacja:</span>
+                    {(['true_positive', 'false_positive', 'unreviewed'] as AnnotationLabel[]).map(label => (
+                      <Button key={label} size="sm" variant={inc.annotation === label ? 'default' : 'outline'}
+                        className={`text-[10px] h-6 px-2 ${
+                          inc.annotation === label
+                            ? label === 'true_positive' ? 'bg-success text-success-foreground'
+                            : label === 'false_positive' ? 'bg-warning text-warning-foreground'
+                            : ''
+                            : ''
+                        }`}
+                        onClick={() => {
+                          annotateIncident(inc.id, label);
+                          refreshIncidents();
+                        }}>
+                        {label === 'true_positive' ? '✅ TP' : label === 'false_positive' ? '⚠️ FP' : '❓'}
+                      </Button>
+                    ))}
+                    {inc.context_shift?.shift_detected && (
+                      <Badge variant="outline" className="text-[9px] border-warning/30 text-warning ml-auto">
+                        shift: {inc.context_shift.shift_type}
+                      </Badge>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </TabsContent>
+
         <TabsContent value="saved" className="space-y-4 mt-4">
           {savedTests.length === 0 ? (
             <div className="bg-card border border-border rounded-xl p-8 text-center">
