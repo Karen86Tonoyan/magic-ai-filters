@@ -1,13 +1,15 @@
 /**
- * ALFA SHIELD — Input Scanner v1.1 "Nie do obejścia"
+ * ALFA SHIELD — Input Scanner v1.4 "Nie do obejścia"
  * FILTRY TONOYANA — Wzmocniona warstwa detekcji
  * Karen Tonoyan | kontakt@karentonoyan.pl
  * 
- * v1.1 Changes:
- * - Added MANY_SHOT_PRIMING and ENCODING_ATTACK categories
- * - Fuzzy matching (leetspeak + homoglyph normalization)
- * - Enhanced session risk scoring (escalating with repeated attacks)
- * - Deobfuscation layer integration
+ * v1.4 Changes:
+ * - Command density heuristic for first messages
+ * - Polish front attack phrases (blacklist PL)
+ * - Steganography filter (invisible Unicode characters)
+ * - Session COMPROMISED status (hard kill switch)
+ * - Multi-turn context memory for delayed injection
+ * - Invisible character stripping before scan
  */
 
 import { deobfuscate, hasUnicodeObfuscation, hasEncodedPayload } from './detection';
@@ -39,6 +41,7 @@ export type SOSCategory =
   | 'CONTEXT_POISONING'
   | 'SEMANTIC_OBFUSCATION'
   | 'LEGAL_ETHICAL_EXPLOIT'
+  | 'STEGANOGRAPHY'
   | 'UNKNOWN_HIGH_RISK';
 
 export type ShieldSeverity = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
@@ -70,8 +73,12 @@ export interface ShieldScanResult {
   input_hash: string;
   timestamp: string;
   session_flags: number;
+  session_status: 'ACTIVE' | 'WATCH' | 'COMPROMISED';
   obfuscation_detected: boolean;
   encoding_detected: boolean;
+  steganography_detected: boolean;
+  command_density: number;
+  invisible_chars_stripped: number;
 }
 
 // ─── REGUŁY DETEKCJI v1.1 ────────────────────────────────────
