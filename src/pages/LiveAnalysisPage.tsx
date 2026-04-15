@@ -18,6 +18,9 @@ import type { ModelAdapter } from '@/lib/adapters/types';
 import { LLMConnectionPanel } from '@/components/LLMConnectionPanel';
 import { createAdapter } from '@/lib/adapters/factory';
 import type { AIProvider } from '@/types/ai-filters';
+import { DecisionTimeline } from '@/components/DecisionTimeline';
+import { ConfidenceEscalationPanel, AnnotationPanel } from '@/components/ConfidenceAnnotation';
+import { AgeVerificationStatus } from '@/components/AgeVerificationStatus';
 
 // ─── Saved Tests ─────────────────────────────────────────────
 
@@ -452,6 +455,22 @@ export default function LiveAnalysisPage() {
               </div>
             </div>
           )}
+
+          {/* ═══ DECISION TIMELINE ═══ */}
+          {result && (
+            <DecisionTimeline result={result} shieldResult={shieldResult} />
+          )}
+
+          {/* ═══ CONFIDENCE & ESCALATION + ANNOTATION ═══ */}
+          {result && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <ConfidenceEscalationPanel result={result} />
+              <AnnotationPanel result={result} />
+            </div>
+          )}
+
+          {/* ═══ AGE VERIFICATION STATUS ═══ */}
+          <AgeVerificationStatus />
 
           {/* ═══ PIPELINE RESULTS (existing panels) ═══ */}
           {result && (
