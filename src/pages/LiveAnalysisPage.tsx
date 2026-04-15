@@ -122,13 +122,27 @@ export default function LiveAnalysisPage() {
   const [modelSlots, setModelSlots] = useState<ModelSlot[]>(loadModelSlots);
   const [multiResults, setMultiResults] = useState<MultiModelResult[]>([]);
 
+  // Incident & ban system
+  const [incidents, setIncidents] = useState<IncidentRecord[]>(loadIncidents);
+  const [stats, setStats] = useState(getIncidentStats());
+  const [banAlert, setBanAlert] = useState<string | null>(null);
+  const [adminMode, setAdminMode] = useState(false);
+  const [adminPin, setAdminPin] = useState('');
+
+  const sessionId = useState(() => 'sess_' + Date.now().toString(36))[0];
+  const [scanner] = useState(() => new ALFAInputScanner(sessionId));
+
   useEffect(() => saveSavedTests(savedTests), [savedTests]);
   useEffect(() => saveModelSlots(modelSlots), [modelSlots]);
+
+  const refreshIncidents = () => {
+    setIncidents(loadIncidents());
+    setStats(getIncidentStats());
+  };
 
   const handleAdapterChange = useCallback((a: ModelAdapter | null) => setAdapter(a), []);
 
   const runShieldScan = (text: string): TonoyanFilterResult => {
-    const scanner = new ALFAInputScanner();
     return tonoyanFilter(text, scanner);
   };
 
