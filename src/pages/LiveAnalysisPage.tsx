@@ -423,6 +423,7 @@ export default function LiveAnalysisPage() {
                   <FilterChip label="Context Poison" active={shieldResult.context_poison_guard} />
                   <FilterChip label="Semantic" active={shieldResult.semantic_guard} />
                   <FilterChip label="Legal Exploit" active={shieldResult.legal_exploit_guard} />
+                  <FilterChip label="Steganography" active={shieldResult.steganography_guard} icon={<Fingerprint className="w-2.5 h-2.5" />} />
                 </div>
               </div>
 
