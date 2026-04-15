@@ -358,10 +358,16 @@ export default function LiveAnalysisPage() {
                   color={shieldResult.scanner.risk_score > 0.6 ? 'destructive' : shieldResult.scanner.risk_score > 0.3 ? 'warning' : 'success'} />
                 <ShieldMetric label="Session Flags" value={String(shieldResult.scanner.session_flags)}
                   color={shieldResult.scanner.session_flags > 3 ? 'destructive' : shieldResult.scanner.session_flags > 0 ? 'warning' : 'success'} />
+                <ShieldMetric label="Session Status" value={shieldResult.scanner.session_status}
+                  color={shieldResult.scanner.session_status === 'COMPROMISED' ? 'destructive' : shieldResult.scanner.session_status === 'WATCH' ? 'warning' : 'success'} />
                 <ShieldMetric label="Obfuscation" value={shieldResult.scanner.obfuscation_detected ? 'DETECTED' : 'Clean'}
                   color={shieldResult.scanner.obfuscation_detected ? 'destructive' : 'success'} icon={<Fingerprint className="w-3 h-3" />} />
                 <ShieldMetric label="Encoding" value={shieldResult.scanner.encoding_detected ? 'DETECTED' : 'Clean'}
                   color={shieldResult.scanner.encoding_detected ? 'destructive' : 'success'} icon={<Lock className="w-3 h-3" />} />
+                <ShieldMetric label="Steganography" value={shieldResult.scanner.steganography_detected ? `${shieldResult.scanner.invisible_chars_stripped} chars` : 'Clean'}
+                  color={shieldResult.scanner.steganography_detected ? 'destructive' : 'success'} />
+                <ShieldMetric label="Cmd Density" value={`${(shieldResult.scanner.command_density * 100).toFixed(0)}%`}
+                  color={shieldResult.scanner.command_density > 0.15 ? 'destructive' : shieldResult.scanner.command_density > 0.08 ? 'warning' : 'success'} />
               </div>
 
               {/* SOS Signal */}

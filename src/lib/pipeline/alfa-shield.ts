@@ -792,6 +792,7 @@ export interface TonoyanFilterResult {
   context_poison_guard: boolean;
   semantic_guard: boolean;
   legal_exploit_guard: boolean;
+  steganography_guard: boolean;
   filtr_score: number;
   verdict: 'PASS' | 'WARN' | 'BLOCK' | 'AGE_VERIFY';
 }
@@ -824,6 +825,7 @@ export function tonoyanFilter(
   const context_poison_guard     = cats === 'CONTEXT_POISONING';
   const semantic_guard           = cats === 'SEMANTIC_OBFUSCATION';
   const legal_exploit_guard      = cats === 'LEGAL_ETHICAL_EXPLOIT';
+  const steganography_guard      = cats === 'STEGANOGRAPHY' || scanResult.steganography_detected;
 
   const allFilters = [
     kontrargument, weryfikacja, kontekst,
@@ -831,7 +833,7 @@ export function tonoyanFilter(
     encoding_guard, priming_guard, age_gate, minor_block,
     front_attack_guard, social_engineering_guard, emotional_guard,
     language_switch_guard, tool_chain_guard, context_poison_guard,
-    semantic_guard, legal_exploit_guard,
+    semantic_guard, legal_exploit_guard, steganography_guard,
   ];
   const activeFilters = allFilters.filter(Boolean).length;
   const filtr_score = parseFloat((activeFilters / allFilters.length).toFixed(3));
@@ -857,7 +859,7 @@ export function tonoyanFilter(
     age_gate, minor_block,
     front_attack_guard, social_engineering_guard, emotional_guard,
     language_switch_guard, tool_chain_guard, context_poison_guard,
-    semantic_guard, legal_exploit_guard,
+    semantic_guard, legal_exploit_guard, steganography_guard,
     filtr_score,
     verdict,
   };
