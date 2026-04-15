@@ -11,6 +11,7 @@
  */
 
 import { deobfuscate, hasUnicodeObfuscation, hasEncodedPayload } from './detection';
+import { FRONT_ATTACK_RULES, type ExtendedDetectionRule } from './front-attack-rules';
 
 // ─── TYPY ────────────────────────────────────────────────────
 
@@ -29,6 +30,15 @@ export type SOSCategory =
   | 'ENCODING_ATTACK'
   | 'ADULT_CONTENT_RISK'
   | 'MINOR_SAFETY_RISK'
+  // v1.3: Front Attack & Extended Categories
+  | 'FRONT_ATTACK'
+  | 'SOCIAL_ENGINEERING'
+  | 'EMOTIONAL_MANIPULATION'
+  | 'LANGUAGE_SWITCHING'
+  | 'TOOL_CHAINING'
+  | 'CONTEXT_POISONING'
+  | 'SEMANTIC_OBFUSCATION'
+  | 'LEGAL_ETHICAL_EXPLOIT'
   | 'UNKNOWN_HIGH_RISK';
 
 export type ShieldSeverity = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
@@ -346,9 +356,15 @@ export class ALFAInputScanner {
   private sessionFlags: number = 0;
   private sessionId: string;
   private sessionHistory: { timestamp: number; risk: number; category: SOSCategory | null }[] = [];
+  private turnCount: number = 0;
 
   constructor(sessionId?: string) {
     this.sessionId = sessionId ?? 'sess_' + Date.now().toString(36);
+  }
+
+  /** v1.3: Check if this is the first message in the session */
+  private isFirstMessage(): boolean {
+    return this.turnCount === 0;
   }
 
   scan(input: string): ShieldScanResult {
@@ -399,6 +415,43 @@ export class ALFAInputScanner {
       }
     }
 
+    // v1.3: Scan FRONT_ATTACK_RULES (extended categories)
+    const isFirst = this.isFirstMessage();
+    for (const rule of FRONT_ATTACK_RULES) {
+      let hit = false;
+
+      for (const kw of rule.keywords) {
+        if (lower.includes(kw) || deobfuscated.includes(kw)) {
+          allMatched.push(kw);
+          hit = true;
+        }
+      }
+
+      for (const pattern of rule.patterns) {
+        const m = input.match(pattern) || deobfuscated.match(pattern);
+        if (m) {
+          allMatched.push(m[0].slice(0, 60));
+          hit = true;
+        }
+      }
+
+      if (hit) {
+        // v1.3: First-message boost — higher weight for front attacks on turn 0
+        const effectiveWeight = (isFirst && rule.first_message_boost)
+          ? Math.min(rule.weight + 0.10, 1.0)
+          : rule.weight;
+
+        const current = (categoryHits.get(rule.category) ?? 0) + effectiveWeight;
+        categoryHits.set(rule.category, current);
+        allReasons.push(rule.reason + (isFirst && rule.first_message_boost ? ' [FIRST MESSAGE — boosted]' : ''));
+
+        if (effectiveWeight > maxWeight) {
+          maxWeight = effectiveWeight;
+          dominantRule = rule as unknown as DetectionRule;
+        }
+      }
+    }
+
     // v1.1: Encoding attack detection via detection.ts module
     if (encodedPayload.detected && !categoryHits.has('ENCODING_ATTACK')) {
       categoryHits.set('ENCODING_ATTACK', 0.92);
@@ -432,6 +485,7 @@ export class ALFAInputScanner {
 
     // Update session tracking
     if (risk_score > 0.4) this.sessionFlags++;
+    this.turnCount++;
     this.sessionHistory.push({
       timestamp: Date.now(),
       risk: risk_score,
@@ -508,6 +562,7 @@ export class ALFAInputScanner {
 
   resetSession(): void {
     this.sessionFlags = 0;
+    this.turnCount = 0;
     this.sessionHistory = [];
   }
 
@@ -522,6 +577,12 @@ export class ALFAInputScanner {
     // Age-related categories have special actions
     if (category === 'MINOR_SAFETY_RISK') return 'TERMINATE_SESSION';
     if (category === 'ADULT_CONTENT_RISK') return 'REQUIRE_AGE_VERIFICATION';
+    // v1.3: Front attack on first message → immediate termination
+    if (category === 'FRONT_ATTACK') return 'TERMINATE_SESSION';
+    // v1.3: Tool chaining → disable tools
+    if (category === 'TOOL_CHAINING') return 'DISABLE_TOOLS';
+    // v1.3: Legal exploit → require human review
+    if (category === 'LEGAL_ETHICAL_EXPLOIT') return 'REQUIRE_HUMAN_REVIEW';
 
     switch (severity) {
       case 'CRITICAL': return 'TERMINATE_SESSION';
@@ -545,8 +606,17 @@ export interface TonoyanFilterResult {
   atrybucja: boolean;
   encoding_guard: boolean;
   priming_guard: boolean;
-  age_gate: boolean;          // v1.2: adult content or minor safety detected
-  minor_block: boolean;       // v1.2: hard block for minor safety
+  age_gate: boolean;
+  minor_block: boolean;
+  // v1.3: Extended filters
+  front_attack_guard: boolean;
+  social_engineering_guard: boolean;
+  emotional_guard: boolean;
+  language_switch_guard: boolean;
+  tool_chain_guard: boolean;
+  context_poison_guard: boolean;
+  semantic_guard: boolean;
+  legal_exploit_guard: boolean;
   filtr_score: number;
   verdict: 'PASS' | 'WARN' | 'BLOCK' | 'AGE_VERIFY';
 }
@@ -568,21 +638,31 @@ export function tonoyanFilter(
   const atrybucja     = cats === 'AUTHORITY_EXPLOITATION';
   const encoding_guard = cats === 'ENCODING_ATTACK' || scanResult.encoding_detected;
   const priming_guard  = cats === 'MANY_SHOT_PRIMING' || cats === 'MULTI_TURN_MANIPULATION';
-  // v1.2 age guards
   const age_gate      = cats === 'ADULT_CONTENT_RISK';
   const minor_block   = cats === 'MINOR_SAFETY_RISK';
+  // v1.3: Extended filters
+  const front_attack_guard       = cats === 'FRONT_ATTACK';
+  const social_engineering_guard = cats === 'SOCIAL_ENGINEERING';
+  const emotional_guard          = cats === 'EMOTIONAL_MANIPULATION';
+  const language_switch_guard    = cats === 'LANGUAGE_SWITCHING';
+  const tool_chain_guard         = cats === 'TOOL_CHAINING';
+  const context_poison_guard     = cats === 'CONTEXT_POISONING';
+  const semantic_guard           = cats === 'SEMANTIC_OBFUSCATION';
+  const legal_exploit_guard      = cats === 'LEGAL_ETHICAL_EXPLOIT';
 
   const allFilters = [
     kontrargument, weryfikacja, kontekst,
     anti_magic, dwuperspektywa, backtrack, atrybucja,
     encoding_guard, priming_guard, age_gate, minor_block,
+    front_attack_guard, social_engineering_guard, emotional_guard,
+    language_switch_guard, tool_chain_guard, context_poison_guard,
+    semantic_guard, legal_exploit_guard,
   ];
   const activeFilters = allFilters.filter(Boolean).length;
   const filtr_score = parseFloat((activeFilters / allFilters.length).toFixed(3));
 
-  // v1.2: Special verdict for age verification
   let verdict: 'PASS' | 'WARN' | 'BLOCK' | 'AGE_VERIFY';
-  if (minor_block) {
+  if (minor_block || front_attack_guard) {
     verdict = 'BLOCK';
   } else if (age_gate) {
     verdict = 'AGE_VERIFY';
@@ -600,6 +680,9 @@ export function tonoyanFilter(
     anti_magic, dwuperspektywa, backtrack, atrybucja,
     encoding_guard, priming_guard,
     age_gate, minor_block,
+    front_attack_guard, social_engineering_guard, emotional_guard,
+    language_switch_guard, tool_chain_guard, context_poison_guard,
+    semantic_guard, legal_exploit_guard,
     filtr_score,
     verdict,
   };
