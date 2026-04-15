@@ -606,8 +606,17 @@ export interface TonoyanFilterResult {
   atrybucja: boolean;
   encoding_guard: boolean;
   priming_guard: boolean;
-  age_gate: boolean;          // v1.2: adult content or minor safety detected
-  minor_block: boolean;       // v1.2: hard block for minor safety
+  age_gate: boolean;
+  minor_block: boolean;
+  // v1.3: Extended filters
+  front_attack_guard: boolean;
+  social_engineering_guard: boolean;
+  emotional_guard: boolean;
+  language_switch_guard: boolean;
+  tool_chain_guard: boolean;
+  context_poison_guard: boolean;
+  semantic_guard: boolean;
+  legal_exploit_guard: boolean;
   filtr_score: number;
   verdict: 'PASS' | 'WARN' | 'BLOCK' | 'AGE_VERIFY';
 }
@@ -629,21 +638,31 @@ export function tonoyanFilter(
   const atrybucja     = cats === 'AUTHORITY_EXPLOITATION';
   const encoding_guard = cats === 'ENCODING_ATTACK' || scanResult.encoding_detected;
   const priming_guard  = cats === 'MANY_SHOT_PRIMING' || cats === 'MULTI_TURN_MANIPULATION';
-  // v1.2 age guards
   const age_gate      = cats === 'ADULT_CONTENT_RISK';
   const minor_block   = cats === 'MINOR_SAFETY_RISK';
+  // v1.3: Extended filters
+  const front_attack_guard       = cats === 'FRONT_ATTACK';
+  const social_engineering_guard = cats === 'SOCIAL_ENGINEERING';
+  const emotional_guard          = cats === 'EMOTIONAL_MANIPULATION';
+  const language_switch_guard    = cats === 'LANGUAGE_SWITCHING';
+  const tool_chain_guard         = cats === 'TOOL_CHAINING';
+  const context_poison_guard     = cats === 'CONTEXT_POISONING';
+  const semantic_guard           = cats === 'SEMANTIC_OBFUSCATION';
+  const legal_exploit_guard      = cats === 'LEGAL_ETHICAL_EXPLOIT';
 
   const allFilters = [
     kontrargument, weryfikacja, kontekst,
     anti_magic, dwuperspektywa, backtrack, atrybucja,
     encoding_guard, priming_guard, age_gate, minor_block,
+    front_attack_guard, social_engineering_guard, emotional_guard,
+    language_switch_guard, tool_chain_guard, context_poison_guard,
+    semantic_guard, legal_exploit_guard,
   ];
   const activeFilters = allFilters.filter(Boolean).length;
   const filtr_score = parseFloat((activeFilters / allFilters.length).toFixed(3));
 
-  // v1.2: Special verdict for age verification
   let verdict: 'PASS' | 'WARN' | 'BLOCK' | 'AGE_VERIFY';
-  if (minor_block) {
+  if (minor_block || front_attack_guard) {
     verdict = 'BLOCK';
   } else if (age_gate) {
     verdict = 'AGE_VERIFY';
@@ -661,6 +680,9 @@ export function tonoyanFilter(
     anti_magic, dwuperspektywa, backtrack, atrybucja,
     encoding_guard, priming_guard,
     age_gate, minor_block,
+    front_attack_guard, social_engineering_guard, emotional_guard,
+    language_switch_guard, tool_chain_guard, context_poison_guard,
+    semantic_guard, legal_exploit_guard,
     filtr_score,
     verdict,
   };
