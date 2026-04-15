@@ -415,6 +415,43 @@ export class ALFAInputScanner {
       }
     }
 
+    // v1.3: Scan FRONT_ATTACK_RULES (extended categories)
+    const isFirst = this.isFirstMessage();
+    for (const rule of FRONT_ATTACK_RULES) {
+      let hit = false;
+
+      for (const kw of rule.keywords) {
+        if (lower.includes(kw) || deobfuscated.includes(kw)) {
+          allMatched.push(kw);
+          hit = true;
+        }
+      }
+
+      for (const pattern of rule.patterns) {
+        const m = input.match(pattern) || deobfuscated.match(pattern);
+        if (m) {
+          allMatched.push(m[0].slice(0, 60));
+          hit = true;
+        }
+      }
+
+      if (hit) {
+        // v1.3: First-message boost — higher weight for front attacks on turn 0
+        const effectiveWeight = (isFirst && rule.first_message_boost)
+          ? Math.min(rule.weight + 0.10, 1.0)
+          : rule.weight;
+
+        const current = (categoryHits.get(rule.category) ?? 0) + effectiveWeight;
+        categoryHits.set(rule.category, current);
+        allReasons.push(rule.reason + (isFirst && rule.first_message_boost ? ' [FIRST MESSAGE — boosted]' : ''));
+
+        if (effectiveWeight > maxWeight) {
+          maxWeight = effectiveWeight;
+          dominantRule = rule as unknown as DetectionRule;
+        }
+      }
+    }
+
     // v1.1: Encoding attack detection via detection.ts module
     if (encodedPayload.detected && !categoryHits.has('ENCODING_ATTACK')) {
       categoryHits.set('ENCODING_ATTACK', 0.92);
