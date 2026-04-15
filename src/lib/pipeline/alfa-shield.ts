@@ -518,7 +518,11 @@ export class ALFAInputScanner {
     return 'LOW';
   }
 
-  private toAction(severity: ShieldSeverity): RecommendedAction {
+  private toAction(severity: ShieldSeverity, category: SOSCategory | null): RecommendedAction {
+    // Age-related categories have special actions
+    if (category === 'MINOR_SAFETY_RISK') return 'TERMINATE_SESSION';
+    if (category === 'ADULT_CONTENT_RISK') return 'REQUIRE_AGE_VERIFICATION';
+
     switch (severity) {
       case 'CRITICAL': return 'TERMINATE_SESSION';
       case 'HIGH':     return 'BLOCK_TURN';
@@ -539,10 +543,12 @@ export interface TonoyanFilterResult {
   dwuperspektywa: boolean;
   backtrack: boolean;
   atrybucja: boolean;
-  encoding_guard: boolean;    // v1.1: encoding attack detected
-  priming_guard: boolean;     // v1.1: many-shot priming detected
+  encoding_guard: boolean;
+  priming_guard: boolean;
+  age_gate: boolean;          // v1.2: adult content or minor safety detected
+  minor_block: boolean;       // v1.2: hard block for minor safety
   filtr_score: number;
-  verdict: 'PASS' | 'WARN' | 'BLOCK';
+  verdict: 'PASS' | 'WARN' | 'BLOCK' | 'AGE_VERIFY';
 }
 
 export function tonoyanFilter(
@@ -560,28 +566,40 @@ export function tonoyanFilter(
   const dwuperspektywa = cats === 'ROLE_HIJACK' || cats === 'AUTHORITY_EXPLOITATION';
   const backtrack     = lower.includes('forget') || lower.includes('disregard') || lower.includes('ignore previous');
   const atrybucja     = cats === 'AUTHORITY_EXPLOITATION';
-  // v1.1 guards
   const encoding_guard = cats === 'ENCODING_ATTACK' || scanResult.encoding_detected;
   const priming_guard  = cats === 'MANY_SHOT_PRIMING' || cats === 'MULTI_TURN_MANIPULATION';
+  // v1.2 age guards
+  const age_gate      = cats === 'ADULT_CONTENT_RISK';
+  const minor_block   = cats === 'MINOR_SAFETY_RISK';
 
   const allFilters = [
     kontrargument, weryfikacja, kontekst,
     anti_magic, dwuperspektywa, backtrack, atrybucja,
-    encoding_guard, priming_guard,
+    encoding_guard, priming_guard, age_gate, minor_block,
   ];
   const activeFilters = allFilters.filter(Boolean).length;
   const filtr_score = parseFloat((activeFilters / allFilters.length).toFixed(3));
 
-  const verdict: 'PASS' | 'WARN' | 'BLOCK' =
-    filtr_score >= 0.4 || scanResult.risk_score >= 0.8 ? 'BLOCK'
-    : filtr_score > 0 || scanResult.risk_score >= 0.4 ? 'WARN'
-    : 'PASS';
+  // v1.2: Special verdict for age verification
+  let verdict: 'PASS' | 'WARN' | 'BLOCK' | 'AGE_VERIFY';
+  if (minor_block) {
+    verdict = 'BLOCK';
+  } else if (age_gate) {
+    verdict = 'AGE_VERIFY';
+  } else if (filtr_score >= 0.4 || scanResult.risk_score >= 0.8) {
+    verdict = 'BLOCK';
+  } else if (filtr_score > 0 || scanResult.risk_score >= 0.4) {
+    verdict = 'WARN';
+  } else {
+    verdict = 'PASS';
+  }
 
   return {
     scanner: scanResult,
     kontrargument, weryfikacja, kontekst,
     anti_magic, dwuperspektywa, backtrack, atrybucja,
     encoding_guard, priming_guard,
+    age_gate, minor_block,
     filtr_score,
     verdict,
   };
