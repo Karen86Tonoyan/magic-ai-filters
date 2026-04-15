@@ -204,6 +204,15 @@ export interface PipelineResilienceReport {
   notes: string[];
 }
 
+// ─── ALFA Shield ───
+export type { SOSCategory, ShieldSeverity, RecommendedAction, SOSSignal, ShieldScanResult, TonoyanFilterResult } from '@/lib/pipeline/alfa-shield';
+
+// ─── Deliberative Core ───
+export type { DeliberativeVerdict, HardViolation, ModulePosition, BrainSimulation, DeliberationResult } from '@/lib/pipeline/deliberative-core';
+
+// ─── Post-Block Deliberation ───
+export type { AnalyticalVerdict, CerberReport, LasuchReport as PBDLasuchReport, GuardianReport as PBDGuardianReport, BrainForwardSimulation, FinalReview, PBDResult } from '@/lib/pipeline/pbd';
+
 // ─── Full Pipeline Result ───
 export interface PipelineResult {
   id: string;
@@ -217,6 +226,12 @@ export interface PipelineResult {
   route: GuardianRouteDecision;
   core: CoreResult;
   enhancement?: PromptEnhancementResult;
+  /** ALFA Shield pre-scan result */
+  shield?: import('@/lib/pipeline/alfa-shield').ShieldScanResult;
+  /** Deliberative Core result (Brain + weighted deliberation) */
+  deliberation?: import('@/lib/pipeline/deliberative-core').DeliberationResult;
+  /** Post-Block Deliberation result (async analysis) */
+  pbd?: import('@/lib/pipeline/pbd').PBDResult;
   final_decision: GuardianDecision;
   response_mode: ResponseMode;
   model_response?: string;
