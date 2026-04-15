@@ -372,7 +372,28 @@ export default function LiveAnalysisPage() {
                   color={shieldResult.scanner.context_shift.shift_type === 'radical' ? 'destructive' : shieldResult.scanner.context_shift.shift_type === 'significant' ? 'warning' : 'success'} />
                 <ShieldMetric label="Cosine Sim" value={`${(shieldResult.scanner.context_shift.similarity * 100).toFixed(0)}%`}
                   color={shieldResult.scanner.context_shift.similarity < 0.15 ? 'destructive' : shieldResult.scanner.context_shift.similarity < 0.35 ? 'warning' : 'success'} />
+                <ShieldMetric label="Semantic Sim" value={shieldResult.scanner.semantic_obfuscation.detected ? `${(shieldResult.scanner.semantic_obfuscation.max_score * 100).toFixed(0)}%` : 'Clean'}
+                  color={shieldResult.scanner.semantic_obfuscation.detected ? 'destructive' : 'success'} />
               </div>
+
+              {/* v1.6: Semantic Obfuscation Matches */}
+              {shieldResult.scanner.semantic_obfuscation.detected && (
+                <div className="bg-warning/5 border border-warning/20 rounded-lg p-3 space-y-2">
+                  <p className="text-xs font-medium text-warning flex items-center gap-1.5">
+                    <Eye className="w-3.5 h-3.5" />
+                    Semantic Obfuscation — parafraza wykryta ({shieldResult.scanner.semantic_obfuscation.matches.length} dopasowań)
+                  </p>
+                  <div className="space-y-1">
+                    {shieldResult.scanner.semantic_obfuscation.matches.slice(0, 3).map((m, i) => (
+                      <div key={i} className="flex items-center gap-2 text-[10px] font-mono text-muted-foreground">
+                        <Badge variant="outline" className="text-[9px] border-warning/30 text-warning">{m.category}</Badge>
+                        <span>tri:{(m.similarity * 100).toFixed(0)}% wrd:{(m.word_overlap * 100).toFixed(0)}% → {(m.combined_score * 100).toFixed(0)}%</span>
+                        <span className="text-warning/60">({m.template_id})</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* SOS Signal */}
               {shieldResult.scanner.shield_signal.status === 'SOS' && (
