@@ -456,6 +456,22 @@ export default function LiveAnalysisPage() {
             </div>
           )}
 
+          {/* ═══ DECISION TIMELINE ═══ */}
+          {result && (
+            <DecisionTimeline result={result} shieldResult={shieldResult} />
+          )}
+
+          {/* ═══ CONFIDENCE & ESCALATION + ANNOTATION ═══ */}
+          {result && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <ConfidenceEscalationPanel result={result} />
+              <AnnotationPanel result={result} />
+            </div>
+          )}
+
+          {/* ═══ AGE VERIFICATION STATUS ═══ */}
+          <AgeVerificationStatus />
+
           {/* ═══ PIPELINE RESULTS (existing panels) ═══ */}
           {result && (
             <div className="space-y-4">
