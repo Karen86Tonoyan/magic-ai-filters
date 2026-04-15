@@ -428,7 +428,7 @@ export class ALFAInputScanner {
     );
 
     const severity = this.toSeverity(risk_score);
-    const recommended_action = this.toAction(severity);
+    const recommended_action = this.toAction(severity, dominantRule?.category ?? null);
 
     // Update session tracking
     if (risk_score > 0.4) this.sessionFlags++;
