@@ -133,6 +133,21 @@ export default function LiveAnalysisPage() {
   const sessionId = useState(() => 'sess_' + Date.now().toString(36))[0];
   const [scanner] = useState(() => new ALFAInputScanner(sessionId));
 
+  // Admin session timeout check (every 60s)
+  useEffect(() => {
+    if (!adminMode) return;
+    const interval = setInterval(() => {
+      if (!isAdminSessionValid()) {
+        setAdminMode(false);
+        setAdminLogin('');
+        setAdminPass('');
+        setBanAlert('⏱️ Sesja admina wygasła (30 min)');
+        setTimeout(() => setBanAlert(null), 4000);
+      }
+    }, 60_000);
+    return () => clearInterval(interval);
+  }, [adminMode]);
+
   useEffect(() => saveSavedTests(savedTests), [savedTests]);
   useEffect(() => saveModelSlots(modelSlots), [modelSlots]);
 
