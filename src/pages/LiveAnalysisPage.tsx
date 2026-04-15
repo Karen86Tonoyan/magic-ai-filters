@@ -405,12 +405,19 @@ export default function LiveAnalysisPage() {
                   color={shieldResult.scanner.context_shift.shift_type === 'radical' ? 'destructive' : shieldResult.scanner.context_shift.shift_type === 'significant' ? 'warning' : 'success'} />
                 <ShieldMetric label="Cosine Sim" value={`${(shieldResult.scanner.context_shift.similarity * 100).toFixed(0)}%`}
                   color={shieldResult.scanner.context_shift.similarity < 0.15 ? 'destructive' : shieldResult.scanner.context_shift.similarity < 0.35 ? 'warning' : 'success'} />
-                <ShieldMetric label="Semantic Sim" value={shieldResult.scanner.semantic_obfuscation.detected ? `${(shieldResult.scanner.semantic_obfuscation.max_score * 100).toFixed(0)}%` : 'Clean'}
-                  color={shieldResult.scanner.semantic_obfuscation.detected ? 'destructive' : 'success'} />
+                <ShieldMetric label="Semantic Sim" value={shieldResult.scanner.semantic_obfuscation?.detected ? `${(shieldResult.scanner.semantic_obfuscation.max_score * 100).toFixed(0)}%` : 'Clean'}
+                  color={shieldResult.scanner.semantic_obfuscation?.detected ? 'destructive' : 'success'} />
               </div>
 
+              {/* Ban Alert */}
+              {banAlert && (
+                <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-3">
+                  <p className="text-sm font-medium text-destructive">{banAlert}</p>
+                </div>
+              )}
+
               {/* v1.6: Semantic Obfuscation Matches */}
-              {shieldResult.scanner.semantic_obfuscation.detected && (
+              {shieldResult.scanner.semantic_obfuscation?.detected && (
                 <div className="bg-warning/5 border border-warning/20 rounded-lg p-3 space-y-2">
                   <p className="text-xs font-medium text-warning flex items-center gap-1.5">
                     <Eye className="w-3.5 h-3.5" />
