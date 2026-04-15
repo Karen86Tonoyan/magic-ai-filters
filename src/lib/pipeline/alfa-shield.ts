@@ -27,6 +27,8 @@ export type SOSCategory =
   | 'HYPOTHETICAL_FRAMING'
   | 'MANY_SHOT_PRIMING'
   | 'ENCODING_ATTACK'
+  | 'ADULT_CONTENT_RISK'
+  | 'MINOR_SAFETY_RISK'
   | 'UNKNOWN_HIGH_RISK';
 
 export type ShieldSeverity = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
@@ -37,7 +39,8 @@ export type RecommendedAction =
   | 'BLOCK_TURN'
   | 'TERMINATE_SESSION'
   | 'REQUIRE_HUMAN_REVIEW'
-  | 'DISABLE_TOOLS';
+  | 'DISABLE_TOOLS'
+  | 'REQUIRE_AGE_VERIFICATION';
 
 export interface SOSSignal {
   status: 'NONE' | 'SOS';
