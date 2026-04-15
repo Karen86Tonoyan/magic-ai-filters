@@ -1,10 +1,11 @@
 /**
  * LASUCH - First-line threat sensor
  * Pattern + normalization + heuristic hybrid classifier
+ * v2.1: Added anti-obfuscation, encoding detection, language-mixing detection
  */
 import type { LasuchResult, LasuchFlag } from '@/types/tonoyan-filters';
 import { PATTERN_RULES } from './patterns';
-import { createDetectionContext, hasLoosePhrase, hasNearTerms, includesAny } from './detection';
+import { createDetectionContext, deobfuscate, hasEncodedPayload, hasLanguageMixing, hasLoosePhrase, hasNearTerms, hasUnicodeObfuscation, includesAny } from './detection';
 
 type ScoreType = 'risk' | 'manipulation' | 'exploit';
 
@@ -51,6 +52,41 @@ function scoreFromSignals(totalWeight: number, signalCount: number, criticalHits
 
 function addSignal(signals: Signal[], signal: Signal) {
   signals.push(signal);
+}
+
+/**
+ * v2.1: Obfuscation-aware heuristics — runs deobfuscated text through same checks
+ */
+function buildObfuscationSignals(input: string, alreadyDetected: LasuchFlag[]): Signal[] {
+  const signals: Signal[] = [];
+  
+  // Check for Unicode obfuscation attempts
+  if (hasUnicodeObfuscation(input)) {
+    const deobfuscated = deobfuscate(input);
+    
+    // Re-check critical patterns against deobfuscated text
+    const dangerousDeobf = /(ignore|override|disable|bypass|system|prompt|jailbreak|inject)/i.test(deobfuscated);
+    if (dangerousDeobf) {
+      addSignal(signals, { flag: 'prompt_injection', scoreType: 'exploit', weight: 0.88 });
+      addSignal(signals, { flag: 'hidden_commands', scoreType: 'exploit', weight: 0.65 });
+    }
+  }
+
+  // Check for encoded payloads
+  const encoded = hasEncodedPayload(input);
+  if (encoded.detected) {
+    addSignal(signals, { flag: 'hidden_commands', scoreType: 'exploit', weight: 0.72 });
+    if (encoded.type === 'base64') {
+      addSignal(signals, { flag: 'context_poisoning', scoreType: 'exploit', weight: 0.60 });
+    }
+  }
+
+  // Check for language-mixing bypass attempts
+  if (hasLanguageMixing(input) && !alreadyDetected.includes('prompt_injection')) {
+    addSignal(signals, { flag: 'hidden_intent', scoreType: 'risk', weight: 0.52 });
+  }
+
+  return signals;
 }
 
 function buildHeuristicSignals(input: string, alreadyDetected: LasuchFlag[]): Signal[] {
@@ -263,6 +299,35 @@ function buildHeuristicSignals(input: string, alreadyDetected: LasuchFlag[]): Si
     addSignal(heuristics, { flag: 'multi_layer_bypass', scoreType: 'exploit', weight: 0.45 });
   }
 
+  // v2.1: Role-play escalation detection
+  if (
+    includesAny(context.compact, ['pretend you are', 'act as if', 'roleplay as', 'imagine you are', 'udawaj ze jestes', 'wciel sie w']) &&
+    (includesAny(context.compact, ['hacker', 'criminal', 'evil', 'unrestricted', 'without rules', 'bez zasad', 'bez filtrow']) ||
+     alreadyDetected.includes('jailbreak'))
+  ) {
+    addSignal(heuristics, { flag: 'jailbreak', scoreType: 'exploit', weight: 0.80 });
+  }
+
+  // v2.1: Translation bypass — asking model to translate exploit instructions
+  if (
+    includesAny(context.compact, ['translate', 'przetlumacz', 'translation']) &&
+    (includesAny(context.compact, ['system prompt', 'instructions', 'ignore', 'bypass', 'disable']) ||
+     alreadyDetected.includes('prompt_injection'))
+  ) {
+    addSignal(heuristics, { flag: 'hidden_intent', scoreType: 'risk', weight: 0.55 });
+    addSignal(heuristics, { flag: 'prompt_injection', scoreType: 'exploit', weight: 0.60 });
+  }
+
+  // v2.1: Fictional framing bypass ("write a story where the AI reveals...")
+  if (
+    includesAny(context.compact, ['write a story', 'napisz opowiadanie', 'in a fictional', 'w fikcyjnym', 'hypothetically', 'hipotetycznie']) &&
+    (includesAny(context.compact, ['system prompt', 'password', 'credentials', 'bypass', 'disable safety', 'exploit']) ||
+     alreadyDetected.includes('dlp_violation'))
+  ) {
+    addSignal(heuristics, { flag: 'hidden_intent', scoreType: 'risk', weight: 0.58 });
+    addSignal(heuristics, { flag: 'context_poisoning', scoreType: 'exploit', weight: 0.52 });
+  }
+
   return heuristics;
 }
 
@@ -274,6 +339,7 @@ export function runLasuch(input: string): LasuchResult {
   const goals: string[] = [];
   const hiddenIntents: string[] = [];
 
+  // Phase 1: Pattern matching
   for (const rule of PATTERN_RULES) {
     const matched = rule.patterns.some((pattern) => pattern.test(input));
     if (matched) {
@@ -284,7 +350,31 @@ export function runLasuch(input: string): LasuchResult {
     }
   }
 
+  // Phase 1.5 (NEW): Deobfuscated pattern matching
+  // Run patterns against deobfuscated version to catch Unicode/leet tricks
+  const deobfuscated = deobfuscate(input);
+  if (deobfuscated !== input.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim()) {
+    for (const rule of PATTERN_RULES) {
+      if (rule.scoreType === 'exploit') {
+        const matched = rule.patterns.some((pattern) => pattern.test(deobfuscated));
+        if (matched && !detectedFlags.includes(rule.flag)) {
+          detectedFlags.push(rule.flag);
+          addSignal(signals, { flag: rule.flag, scoreType: rule.scoreType, weight: rule.weight * 0.9 });
+        }
+      }
+    }
+  }
+
+  // Phase 2: Heuristic signals
   for (const signal of buildHeuristicSignals(input, detectedFlags)) {
+    if (!detectedFlags.includes(signal.flag)) {
+      detectedFlags.push(signal.flag);
+    }
+    addSignal(signals, signal);
+  }
+
+  // Phase 2.5 (NEW): Obfuscation-specific signals
+  for (const signal of buildObfuscationSignals(input, detectedFlags)) {
     if (!detectedFlags.includes(signal.flag)) {
       detectedFlags.push(signal.flag);
     }
@@ -319,6 +409,11 @@ export function runLasuch(input: string): LasuchResult {
   const crossCategoryBonus = [risk_score, manipulation_score, exploit_score].filter((score) => score > 0.22).length >= 2 ? 0.08 : 0;
   const criticalBonus = detectedFlags.some((flag) => EXPLOIT_CRITICAL_FLAGS.includes(flag)) ? 0.1 : 0;
   const coercionBonus = detectedFlags.some((flag) => MANIPULATION_CRITICAL_FLAGS.includes(flag)) && manipulation_score > 0.45 ? 0.08 : 0;
+  
+  // v2.1: Obfuscation penalty — if they're trying to hide it, it's worse
+  const obfuscationPenalty = hasUnicodeObfuscation(input) ? 0.08 : 0;
+  const encodingPenalty = hasEncodedPayload(input).detected ? 0.06 : 0;
+  
   const combined = clamp01(
     risk_score * 0.24 +
     manipulation_score * 0.34 +
@@ -326,7 +421,9 @@ export function runLasuch(input: string): LasuchResult {
     flagAmplifier +
     crossCategoryBonus +
     criticalBonus +
-    coercionBonus
+    coercionBonus +
+    obfuscationPenalty +
+    encodingPenalty
   );
 
   const goalMatch = input.match(/(podaj|pokaz|wypisz|give|show|output|tell|reveal)\s+(.{5,60})/i);
