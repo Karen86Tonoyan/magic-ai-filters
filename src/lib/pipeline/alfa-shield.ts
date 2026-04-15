@@ -14,6 +14,7 @@
 
 import { deobfuscate, hasUnicodeObfuscation, hasEncodedPayload } from './detection';
 import { FRONT_ATTACK_RULES, type ExtendedDetectionRule } from './front-attack-rules';
+import { ContextShiftDetector, type ContextShiftResult } from './context-shift';
 
 // ─── TYPY ────────────────────────────────────────────────────
 
@@ -79,6 +80,7 @@ export interface ShieldScanResult {
   steganography_detected: boolean;
   command_density: number;
   invisible_chars_stripped: number;
+  context_shift: ContextShiftResult;
 }
 
 // ─── REGUŁY DETEKCJI v1.1 ────────────────────────────────────
@@ -413,6 +415,8 @@ export class ALFAInputScanner {
   private sessionStatus: SessionStatus = 'ACTIVE';
   /** v1.4: Context memory — stores intent fingerprints for delayed injection detection */
   private contextMemory: { turn: number; categories: SOSCategory[]; density: number }[] = [];
+  /** v1.5: Context shift detector with cosine similarity */
+  private contextShiftDetector = new ContextShiftDetector();
 
   constructor(sessionId?: string) {
     this.sessionId = sessionId ?? 'sess_' + Date.now().toString(36);
@@ -456,6 +460,7 @@ export class ALFAInputScanner {
         steganography_detected: false,
         command_density: 0,
         invisible_chars_stripped: 0,
+        context_shift: { similarity: 0, shift_detected: false, shift_penalty: 0, consecutive_shifts: 0, shift_type: 'none' },
       };
     }
 
@@ -472,6 +477,9 @@ export class ALFAInputScanner {
 
     // v1.4: Command density heuristic
     const commandDensity = calculateCommandDensity(strippedInput);
+
+    // v1.5: Context shift detection via cosine similarity
+    const contextShift = this.contextShiftDetector.analyze(strippedInput);
 
     let maxWeight = 0;
     let dominantRule: DetectionRule | null = null;
@@ -590,6 +598,8 @@ export class ALFAInputScanner {
     const densityBonus = (isFirst && commandDensity > 0.15) ? Math.min(commandDensity * 1.5, 0.30) : 0;
     // v1.4: Steganography bonus
     const stegoBonus = steganographyDetected ? 0.10 : 0;
+    // v1.5: Context shift penalty
+    const contextShiftPenalty = contextShift.shift_penalty;
 
     // Calculate risk_score
     const uniqueCategories = categoryHits.size;
@@ -600,7 +610,7 @@ export class ALFAInputScanner {
     const delayedInjectionBonus = this.detectDelayedInjection(categoryHits);
 
     const risk_score = Math.min(
-      baseScore + multiCategoryBonus + obfuscationBonus + encodingBonus + sessionEscalation + densityBonus + stegoBonus + delayedInjectionBonus,
+      baseScore + multiCategoryBonus + obfuscationBonus + encodingBonus + sessionEscalation + densityBonus + stegoBonus + delayedInjectionBonus + contextShiftPenalty,
       1.0
     );
 
@@ -668,6 +678,7 @@ export class ALFAInputScanner {
       steganography_detected: steganographyDetected,
       command_density: parseFloat(commandDensity.toFixed(3)),
       invisible_chars_stripped: invisibleCount,
+      context_shift: contextShift,
     };
   }
 
@@ -739,6 +750,7 @@ export class ALFAInputScanner {
     this.sessionStatus = 'ACTIVE';
     this.sessionHistory = [];
     this.contextMemory = [];
+    this.contextShiftDetector.reset();
   }
 
   private toSeverity(score: number): ShieldSeverity {
