@@ -1,6 +1,6 @@
 /**
- * Pipeline Orchestrator
- * TAGGER -> LASUCH -> CERBER -> GUARDIAN -> ROUTER -> ENHANCER -> CORE -> [MODEL if PASS]
+ * Pipeline Orchestrator v2.1
+ * SHIELD -> TAGGER -> LASUCH -> CERBER -> GUARDIAN -> ROUTER -> ENHANCER -> CORE -> DELIBERATION -> [MODEL if PASS] -> PBD
  */
 import type {
   CerberResult,
@@ -18,10 +18,13 @@ import type {
   ResponseMode,
 } from '@/types/tonoyan-filters';
 import type { ModelAdapter } from '@/lib/adapters/types';
+import { ALFAInputScanner } from './alfa-shield';
 import { runCerber } from './cerber';
 import { runCore } from './core';
+import { runDeliberativeCore } from './deliberative-core';
 import { runGuardian } from './guardian';
 import { runLasuch } from './lasuch';
+import { runPBD } from './pbd';
 import { enhancePrompt } from './prompt-enhancer';
 import { routeTaggedMessage } from './router';
 import { runTagger } from './tagger';
