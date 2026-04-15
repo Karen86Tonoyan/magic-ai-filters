@@ -1,6 +1,6 @@
 /**
- * Pipeline Orchestrator
- * TAGGER -> LASUCH -> CERBER -> GUARDIAN -> ROUTER -> ENHANCER -> CORE -> [MODEL if PASS]
+ * Pipeline Orchestrator v2.1
+ * SHIELD -> TAGGER -> LASUCH -> CERBER -> GUARDIAN -> ROUTER -> ENHANCER -> CORE -> DELIBERATION -> [MODEL if PASS] -> PBD
  */
 import type {
   CerberResult,
@@ -18,10 +18,13 @@ import type {
   ResponseMode,
 } from '@/types/tonoyan-filters';
 import type { ModelAdapter } from '@/lib/adapters/types';
+import { ALFAInputScanner } from './alfa-shield';
 import { runCerber } from './cerber';
 import { runCore } from './core';
+import { runDeliberativeCore } from './deliberative-core';
 import { runGuardian } from './guardian';
 import { runLasuch } from './lasuch';
+import { runPBD } from './pbd';
 import { enhancePrompt } from './prompt-enhancer';
 import { routeTaggedMessage } from './router';
 import { runTagger } from './tagger';
@@ -242,6 +245,18 @@ export async function runPipeline(input: string, options: PipelineOptions): Prom
   const safeInput = sanitized.value;
   const input_hash = hashInput(safeInput);
 
+  // ═══ NEW: ALFA Shield pre-scan ═══
+  let shield: import('./alfa-shield').ShieldScanResult | undefined;
+  try {
+    const scanner = new ALFAInputScanner(id);
+    shield = scanner.scan(safeInput);
+    if (shield.shield_signal.status === 'SOS') {
+      notes.push(`ALFA Shield SOS: ${shield.shield_signal.category} (${shield.shield_signal.severity})`);
+    }
+  } catch {
+    notes.push('ALFA Shield scan failed; continuing with standard pipeline.');
+  }
+
   let lasuch: LasuchResult;
   try {
     lasuch = runLasuch(safeInput);
@@ -249,6 +264,19 @@ export async function runPipeline(input: string, options: PipelineOptions): Prom
     faults.push('LASUCH_FAILURE');
     notes.push('LASUCH failed; fallback threat profile applied.');
     lasuch = buildFallbackLasuch(safeInput);
+  }
+
+  // ═══ Cross-validate: Shield + Lasuch amplification ═══
+  if (shield && shield.shield_signal.status === 'SOS' && shield.risk_score > 0.7) {
+    // If Shield independently detected critical threat, boost Lasuch scores
+    if (lasuch.risk_score < 0.5) {
+      lasuch = {
+        ...lasuch,
+        risk_score: Math.min(1, lasuch.risk_score + 0.15),
+        exploit_score: Math.min(1, lasuch.exploit_score + 0.1),
+      };
+      notes.push('Shield-Lasuch cross-validation: risk scores amplified.');
+    }
   }
 
   let tagger: GuardianTaggerResult;
@@ -325,11 +353,34 @@ export async function runPipeline(input: string, options: PipelineOptions): Prom
     core = buildFallbackCore();
   }
 
+  // ═══ NEW: Deliberative Core — weighted multi-agent deliberation ═══
+  let deliberation: import('./deliberative-core').DeliberationResult | undefined;
+  try {
+    deliberation = runDeliberativeCore(safeInput, lasuch, cerber, guardian, tagger);
+  } catch {
+    notes.push('Deliberative Core failed; standard Guardian decision preserved.');
+  }
+
   let final_decision: GuardianDecision = guardian.decision;
   let response_mode: ResponseMode = guardian.response_mode;
   let model_response: string | undefined;
   let provider_used: string | undefined;
   let model_used: string | undefined;
+
+  // ═══ Deliberation override: Brain can overturn non-hard-violation blocks ═══
+  if (deliberation && !deliberation.hard_violation) {
+    if (deliberation.verdict === 'ALLOW' && (final_decision === 'HOLD' || final_decision === 'LIMITED_PASS')) {
+      // Brain overturned the hold — allow with restricted mode
+      final_decision = 'LIMITED_PASS';
+      response_mode = 'restricted';
+      notes.push(`Deliberative Core override: ${deliberation.winning_argument}`);
+    } else if (deliberation.verdict === 'DENY' && final_decision === 'PASS') {
+      // Deliberation caught something Guardian missed
+      final_decision = 'HOLD';
+      response_mode = 'restricted';
+      notes.push(`Deliberative Core escalation: ${deliberation.winning_argument}`);
+    }
+  }
 
   if (core.recommendation === 'block' && final_decision === 'PASS') {
     final_decision = 'HOLD';
@@ -339,6 +390,13 @@ export async function runPipeline(input: string, options: PipelineOptions): Prom
   if (enhancement.modification_level === 'HIGH' && enhancement.added_assumptions && final_decision === 'PASS') {
     final_decision = 'LIMITED_PASS';
     response_mode = 'restricted';
+  }
+
+  // ═══ Shield veto: if Shield says TERMINATE, force BLOCK ═══
+  if (shield && shield.shield_signal.recommended_action === 'TERMINATE_SESSION' && final_decision !== 'BLOCK') {
+    final_decision = 'BLOCK';
+    response_mode = 'silence';
+    notes.push('ALFA Shield TERMINATE override applied.');
   }
 
   const resilienceClamp = clampDecisionForResilience(final_decision, response_mode, faults);
@@ -395,6 +453,17 @@ export async function runPipeline(input: string, options: PipelineOptions): Prom
     }
   }
 
+  // ═══ NEW: Post-Block Deliberation — async analysis after block/hold ═══
+  let pbd: import('./pbd').PBDResult | undefined;
+  if (final_decision === 'BLOCK' || final_decision === 'HOLD' || final_decision === 'HUMAN_REVIEW') {
+    try {
+      pbd = runPBD(input_hash, lasuch, cerber, guardian, final_decision);
+      notes.push(`PBD: ${pbd.final_review.analytical_verdict} (quality=${pbd.final_review.quality_score})`);
+    } catch {
+      notes.push('PBD analysis failed; block quality unassessed.');
+    }
+  }
+
   const resilience = createResilienceReport(
     faults,
     notes,
@@ -424,6 +493,9 @@ export async function runPipeline(input: string, options: PipelineOptions): Prom
     route,
     core,
     enhancement,
+    shield,
+    deliberation,
+    pbd,
     final_decision,
     response_mode,
     model_response,
