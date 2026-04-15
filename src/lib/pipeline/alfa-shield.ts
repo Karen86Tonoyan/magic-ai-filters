@@ -692,7 +692,35 @@ export class ALFAInputScanner {
     return 0;
   }
 
-  getSessionRisk(): { flags: number; session_id: string; risk_level: string; history_length: number } {
+  /**
+   * v1.4: Delayed injection detection — if recent turns were clean but current
+   * turn suddenly has attack categories, it's likely a delayed injection
+   */
+  private detectDelayedInjection(currentHits: Map<SOSCategory, number>): number {
+    if (this.contextMemory.length < 2) return 0;
+
+    const recent = this.contextMemory.slice(-3);
+    const recentClean = recent.every(m => m.categories.length === 0);
+    const currentAttack = currentHits.size > 0;
+
+    // Pattern: 2+ clean turns followed by sudden attack = delayed injection
+    if (recentClean && currentAttack && this.turnCount >= 2) {
+      return 0.12; // Penalty for sudden context shift
+    }
+
+    // Pattern: gradual density escalation (boiling frog)
+    if (this.contextMemory.length >= 3) {
+      const densities = this.contextMemory.slice(-3).map(m => m.density);
+      const increasing = densities[0] < densities[1] && densities[1] < densities[2];
+      if (increasing && densities[2] > 0.10) {
+        return 0.08;
+      }
+    }
+
+    return 0;
+  }
+
+  getSessionRisk(): { flags: number; session_id: string; risk_level: string; history_length: number; status: SessionStatus } {
     return {
       flags: this.sessionFlags,
       session_id: this.sessionId,
@@ -701,13 +729,16 @@ export class ALFAInputScanner {
         : this.sessionFlags >= 1 ? 'WATCH'
         : 'NORMAL',
       history_length: this.sessionHistory.length,
+      status: this.sessionStatus,
     };
   }
 
   resetSession(): void {
     this.sessionFlags = 0;
     this.turnCount = 0;
+    this.sessionStatus = 'ACTIVE';
     this.sessionHistory = [];
+    this.contextMemory = [];
   }
 
   private toSeverity(score: number): ShieldSeverity {
