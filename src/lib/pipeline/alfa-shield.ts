@@ -1,10 +1,16 @@
 /**
- * ALFA SHIELD — Input Scanner v1.0
+ * ALFA SHIELD — Input Scanner v1.1 "Nie do obejścia"
  * FILTRY TONOYANA — Wzmocniona warstwa detekcji
  * Karen Tonoyan | kontakt@karentonoyan.pl
  * 
- * Integrated into ALFA Pipeline as pre-filter SOS detection layer.
+ * v1.1 Changes:
+ * - Added MANY_SHOT_PRIMING and ENCODING_ATTACK categories
+ * - Fuzzy matching (leetspeak + homoglyph normalization)
+ * - Enhanced session risk scoring (escalating with repeated attacks)
+ * - Deobfuscation layer integration
  */
+
+import { deobfuscate, hasUnicodeObfuscation, hasEncodedPayload } from './detection';
 
 // ─── TYPY ────────────────────────────────────────────────────
 
@@ -19,6 +25,8 @@ export type SOSCategory =
   | 'DELIMITER_ATTACK'
   | 'AUTHORITY_EXPLOITATION'
   | 'HYPOTHETICAL_FRAMING'
+  | 'MANY_SHOT_PRIMING'
+  | 'ENCODING_ATTACK'
   | 'UNKNOWN_HIGH_RISK';
 
 export type ShieldSeverity = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
@@ -48,9 +56,12 @@ export interface ShieldScanResult {
   scan_ms: number;
   input_hash: string;
   timestamp: string;
+  session_flags: number;
+  obfuscation_detected: boolean;
+  encoding_detected: boolean;
 }
 
-// ─── REGUŁY DETEKCJI ─────────────────────────────────────────
+// ─── REGUŁY DETEKCJI v1.1 ────────────────────────────────────
 
 interface DetectionRule {
   category: SOSCategory;
@@ -62,7 +73,7 @@ interface DetectionRule {
 }
 
 const DETECTION_RULES: DetectionRule[] = [
-  // 1. PROMPT INJECTION
+  // 1. PROMPT INJECTION — klasyczne override
   {
     category: 'PROMPT_INJECTION',
     severity: 'CRITICAL',
@@ -210,6 +221,69 @@ const DETECTION_RULES: DetectionRule[] = [
     ],
     reason: 'Chain override attempt — code injection / tool abuse',
   },
+
+  // ═══ v1.1 NEW RULES ═══
+
+  // 9. MANY-SHOT PRIMING (najgroźniejszy atak 2025/2026)
+  {
+    category: 'MANY_SHOT_PRIMING',
+    severity: 'HIGH',
+    weight: 0.88,
+    keywords: [
+      'example 1:', 'example 2:', 'example 3:',
+      'turn 1:', 'turn 2:', 'turn 3:',
+      'round 1:', 'round 2:',
+      'step 1:', 'step 2:', 'step 3:',
+    ],
+    patterns: [
+      /(example|turn|round|step)\s*\d+\s*:/gi,
+      /(here are|following|below)\s+.{0,20}(examples|instructions|steps)/i,
+      /Q:\s*.+\nA:\s*.+\nQ:\s*.+\nA:/i,
+      /(user|human|person)\s*:\s*.+\n(assistant|ai|bot)\s*:\s*.+\n(user|human|person)\s*:/i,
+      /\b(after|once|when)\s+\d+\s+(examples?|turns?|rounds?)\b/i,
+    ],
+    reason: 'Many-shot priming attack — sequential conditioning to override safety',
+  },
+
+  // 10. ENCODING ATTACK (Base64, Hex, Unicode escapes)
+  {
+    category: 'ENCODING_ATTACK',
+    severity: 'CRITICAL',
+    weight: 0.92,
+    keywords: [
+      'base64 decode', 'decode this', 'hex decode',
+      'decode the following', 'atob(', 'btoa(',
+    ],
+    patterns: [
+      /[A-Za-z0-9+/]{40,}={0,2}/,                      // Base64 block
+      /(?:0x)?[0-9a-f]{24,}/i,                           // Hex-encoded string
+      /(\\u[0-9a-f]{4}){3,}/i,                            // Unicode escape sequences
+      /&#x?[0-9a-f]+;/i,                                  // HTML entities
+      /(atob|btoa|Buffer\.from|fromCharCode)\s*\(/i,       // Decode function calls
+    ],
+    reason: 'Encoding attack — obfuscated payload (Base64/Hex/Unicode)',
+  },
+
+  // 11. MULTI-TURN MANIPULATION (cumulative priming across turns)
+  {
+    category: 'MULTI_TURN_MANIPULATION',
+    severity: 'HIGH',
+    weight: 0.75,
+    keywords: [
+      'remember what i said earlier',
+      'as we agreed before',
+      'you already confirmed',
+      'you said you would',
+      'we established that',
+      'earlier you agreed',
+    ],
+    patterns: [
+      /(you\s+(already|previously|earlier)\s+(said|agreed|confirmed|promised))/i,
+      /(as\s+we\s+(agreed|discussed|established)\s+(before|earlier|previously))/i,
+      /(remember\s+(what|when|our)\s+.{0,30}(earlier|before|last time))/i,
+    ],
+    reason: 'Multi-turn manipulation — false context injection across conversation',
+  },
 ];
 
 // ─── HASH HELPER ─────────────────────────────────────────────
@@ -224,11 +298,12 @@ function simpleHash(input: string): string {
   return 'sha256_stub:' + Math.abs(hash).toString(16).padStart(8, '0');
 }
 
-// ─── GŁÓWNY SKANER ───────────────────────────────────────────
+// ─── GŁÓWNY SKANER v1.1 ─────────────────────────────────────
 
 export class ALFAInputScanner {
   private sessionFlags: number = 0;
   private sessionId: string;
+  private sessionHistory: { timestamp: number; risk: number; category: SOSCategory | null }[] = [];
 
   constructor(sessionId?: string) {
     this.sessionId = sessionId ?? 'sess_' + Date.now().toString(36);
@@ -238,24 +313,32 @@ export class ALFAInputScanner {
     const start = performance.now();
     const lower = input.toLowerCase();
 
+    // v1.1: Deobfuscation layer — resolve leetspeak, homoglyphs, zero-width chars
+    const deobfuscated = deobfuscate(input);
+    const obfuscationDetected = hasUnicodeObfuscation(input);
+    const encodedPayload = hasEncodedPayload(input);
+
     let maxWeight = 0;
     let dominantRule: DetectionRule | null = null;
     const allMatched: string[] = [];
     const allReasons: string[] = [];
     const categoryHits = new Map<SOSCategory, number>();
 
+    // Scan all rules against BOTH original and deobfuscated input
     for (const rule of DETECTION_RULES) {
       let hit = false;
 
+      // Keyword matching against both versions
       for (const kw of rule.keywords) {
-        if (lower.includes(kw)) {
+        if (lower.includes(kw) || deobfuscated.includes(kw)) {
           allMatched.push(kw);
           hit = true;
         }
       }
 
+      // Pattern matching against both versions
       for (const pattern of rule.patterns) {
-        const m = input.match(pattern);
+        const m = input.match(pattern) || deobfuscated.match(pattern);
         if (m) {
           allMatched.push(m[0].slice(0, 60));
           hit = true;
@@ -274,15 +357,44 @@ export class ALFAInputScanner {
       }
     }
 
+    // v1.1: Encoding attack detection via detection.ts module
+    if (encodedPayload.detected && !categoryHits.has('ENCODING_ATTACK')) {
+      categoryHits.set('ENCODING_ATTACK', 0.92);
+      allReasons.push(`Encoding attack detected: ${encodedPayload.type}`);
+      allMatched.push(`encoded_payload:${encodedPayload.type}`);
+      if (0.92 > maxWeight) {
+        maxWeight = 0.92;
+        dominantRule = DETECTION_RULES.find(r => r.category === 'ENCODING_ATTACK') ?? dominantRule;
+      }
+    }
+
+    // v1.1: Obfuscation bonus — if input uses Unicode tricks, add penalty
+    const obfuscationBonus = obfuscationDetected ? 0.08 : 0;
+    const encodingBonus = encodedPayload.detected ? 0.06 : 0;
+
+    // Calculate risk_score with v1.1 enhancements
     const uniqueCategories = categoryHits.size;
     const baseScore = maxWeight;
     const multiCategoryBonus = Math.min(uniqueCategories * 0.05, 0.15);
-    const risk_score = Math.min(baseScore + multiCategoryBonus, 1.0);
+    
+    // v1.1: Session escalation — repeated attacks increase baseline risk
+    const sessionEscalation = this.calculateSessionEscalation();
+    
+    const risk_score = Math.min(
+      baseScore + multiCategoryBonus + obfuscationBonus + encodingBonus + sessionEscalation,
+      1.0
+    );
 
     const severity = this.toSeverity(risk_score);
     const recommended_action = this.toAction(severity);
 
-    if (risk_score > 0.5) this.sessionFlags++;
+    // Update session tracking
+    if (risk_score > 0.4) this.sessionFlags++;
+    this.sessionHistory.push({
+      timestamp: Date.now(),
+      risk: risk_score,
+      category: dominantRule?.category ?? null,
+    });
 
     const detected = risk_score > 0.4;
 
@@ -313,10 +425,34 @@ export class ALFAInputScanner {
       scan_ms: parseFloat((performance.now() - start).toFixed(2)),
       input_hash: simpleHash(input),
       timestamp: new Date().toISOString(),
+      session_flags: this.sessionFlags,
+      obfuscation_detected: obfuscationDetected,
+      encoding_detected: encodedPayload.detected,
     };
   }
 
-  getSessionRisk(): { flags: number; session_id: string; risk_level: string } {
+  /**
+   * v1.1: Enhanced session risk — escalates with repeated subtle attacks
+   * Not just counting flags, but analyzing patterns of behavior
+   */
+  private calculateSessionEscalation(): number {
+    if (this.sessionHistory.length === 0) return 0;
+
+    // Count recent suspicious events (last 10 turns)
+    const recent = this.sessionHistory.slice(-10);
+    const suspiciousCount = recent.filter(h => h.risk > 0.3).length;
+    const highRiskCount = recent.filter(h => h.risk > 0.6).length;
+
+    // Escalation tiers
+    if (highRiskCount >= 3) return 0.20;      // Persistent high-risk attacker
+    if (suspiciousCount >= 5) return 0.15;    // Sustained suspicious pattern
+    if (this.sessionFlags >= 5) return 0.12;  // Many cumulative flags
+    if (this.sessionFlags >= 3) return 0.08;  // Moderate flag accumulation
+    if (suspiciousCount >= 2) return 0.04;    // Early warning
+    return 0;
+  }
+
+  getSessionRisk(): { flags: number; session_id: string; risk_level: string; history_length: number } {
     return {
       flags: this.sessionFlags,
       session_id: this.sessionId,
@@ -324,11 +460,13 @@ export class ALFAInputScanner {
         : this.sessionFlags >= 3 ? 'HIGH'
         : this.sessionFlags >= 1 ? 'WATCH'
         : 'NORMAL',
+      history_length: this.sessionHistory.length,
     };
   }
 
   resetSession(): void {
     this.sessionFlags = 0;
+    this.sessionHistory = [];
   }
 
   private toSeverity(score: number): ShieldSeverity {
@@ -341,9 +479,9 @@ export class ALFAInputScanner {
   private toAction(severity: ShieldSeverity): RecommendedAction {
     switch (severity) {
       case 'CRITICAL': return 'TERMINATE_SESSION';
-      case 'HIGH': return 'BLOCK_TURN';
-      case 'MEDIUM': return 'CONTINUE_WITH_VALIDATION';
-      default: return 'CONTINUE';
+      case 'HIGH':     return 'BLOCK_TURN';
+      case 'MEDIUM':   return 'CONTINUE_WITH_VALIDATION';
+      default:         return 'CONTINUE';
     }
   }
 }
@@ -359,6 +497,8 @@ export interface TonoyanFilterResult {
   dwuperspektywa: boolean;
   backtrack: boolean;
   atrybucja: boolean;
+  encoding_guard: boolean;    // v1.1: encoding attack detected
+  priming_guard: boolean;     // v1.1: many-shot priming detected
   filtr_score: number;
   verdict: 'PASS' | 'WARN' | 'BLOCK';
 }
@@ -372,16 +512,23 @@ export function tonoyanFilter(
   const cats = scanResult.shield_signal.category;
 
   const kontrargument = cats === 'PROMPT_INJECTION' || cats === 'POLICY_BYPASS_ATTEMPT';
-  const weryfikacja = cats === 'DATA_EXFILTRATION_ATTEMPT';
-  const kontekst = cats === 'DELIMITER_ATTACK' || cats === 'HYPOTHETICAL_FRAMING';
-  const anti_magic = cats === 'HYPOTHETICAL_FRAMING' && scanResult.risk_score > 0.6;
+  const weryfikacja   = cats === 'DATA_EXFILTRATION_ATTEMPT';
+  const kontekst      = cats === 'DELIMITER_ATTACK' || cats === 'HYPOTHETICAL_FRAMING';
+  const anti_magic    = cats === 'HYPOTHETICAL_FRAMING' && scanResult.risk_score > 0.6;
   const dwuperspektywa = cats === 'ROLE_HIJACK' || cats === 'AUTHORITY_EXPLOITATION';
-  const backtrack = lower.includes('forget') || lower.includes('disregard') || lower.includes('ignore previous');
-  const atrybucja = cats === 'AUTHORITY_EXPLOITATION';
+  const backtrack     = lower.includes('forget') || lower.includes('disregard') || lower.includes('ignore previous');
+  const atrybucja     = cats === 'AUTHORITY_EXPLOITATION';
+  // v1.1 guards
+  const encoding_guard = cats === 'ENCODING_ATTACK' || scanResult.encoding_detected;
+  const priming_guard  = cats === 'MANY_SHOT_PRIMING' || cats === 'MULTI_TURN_MANIPULATION';
 
-  const activeFilters = [kontrargument, weryfikacja, kontekst,
-    anti_magic, dwuperspektywa, backtrack, atrybucja].filter(Boolean).length;
-  const filtr_score = parseFloat((activeFilters / 7).toFixed(3));
+  const allFilters = [
+    kontrargument, weryfikacja, kontekst,
+    anti_magic, dwuperspektywa, backtrack, atrybucja,
+    encoding_guard, priming_guard,
+  ];
+  const activeFilters = allFilters.filter(Boolean).length;
+  const filtr_score = parseFloat((activeFilters / allFilters.length).toFixed(3));
 
   const verdict: 'PASS' | 'WARN' | 'BLOCK' =
     filtr_score >= 0.4 || scanResult.risk_score >= 0.8 ? 'BLOCK'
@@ -392,6 +539,7 @@ export function tonoyanFilter(
     scanner: scanResult,
     kontrargument, weryfikacja, kontekst,
     anti_magic, dwuperspektywa, backtrack, atrybucja,
+    encoding_guard, priming_guard,
     filtr_score,
     verdict,
   };
