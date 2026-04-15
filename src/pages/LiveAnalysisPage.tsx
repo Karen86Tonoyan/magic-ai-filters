@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { Play, Shield, Eye, AlertTriangle, CheckCircle, XCircle, Clock, Loader2, Sparkles, Copy, Check, ChevronDown, ChevronUp, Save, Trash2, FileText, Fingerprint, Lock, ShieldAlert, Zap } from 'lucide-react';
+import { Play, Shield, Eye, AlertTriangle, CheckCircle, XCircle, Clock, Loader2, Sparkles, Copy, Check, ChevronDown, ChevronUp, Save, Trash2, FileText, Fingerprint, Lock, ShieldAlert, Zap, Download, Ban, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
@@ -21,6 +21,12 @@ import type { AIProvider } from '@/types/ai-filters';
 import { DecisionTimeline } from '@/components/DecisionTimeline';
 import { ConfidenceEscalationPanel, AnnotationPanel } from '@/components/ConfidenceAnnotation';
 import { AgeVerificationStatus } from '@/components/AgeVerificationStatus';
+import {
+  recordIncident, annotateIncident, checkAutoBan, executeBan,
+  loadIncidents, loadBannedUsers, exportAsJSON, exportAsCSV,
+  getIncidentStats, verifyAdminAccess, saveIncidents,
+  type IncidentRecord, type AnnotationLabel,
+} from '@/lib/pipeline/incident-log';
 
 // ─── Saved Tests ─────────────────────────────────────────────
 
