@@ -24,7 +24,7 @@ import { AgeVerificationStatus } from '@/components/AgeVerificationStatus';
 import {
   recordIncident, annotateIncident, checkAutoBan, executeBan,
   loadIncidents, loadBannedUsers, exportAsJSON, exportAsCSV,
-  getIncidentStats, verifyAdminAccess, saveIncidents,
+  getIncidentStats, adminLogin, adminLogout, isAdminSessionValid, saveIncidents,
   type IncidentRecord, type AnnotationLabel,
 } from '@/lib/pipeline/incident-log';
 
@@ -126,8 +126,9 @@ export default function LiveAnalysisPage() {
   const [incidents, setIncidents] = useState<IncidentRecord[]>(loadIncidents);
   const [stats, setStats] = useState(getIncidentStats());
   const [banAlert, setBanAlert] = useState<string | null>(null);
-  const [adminMode, setAdminMode] = useState(false);
-  const [adminPin, setAdminPin] = useState('');
+  const [adminMode, setAdminMode] = useState(() => isAdminSessionValid());
+  const [adminLogin_, setAdminLogin] = useState('');
+  const [adminPass, setAdminPass] = useState('');
 
   const sessionId = useState(() => 'sess_' + Date.now().toString(36))[0];
   const [scanner] = useState(() => new ALFAInputScanner(sessionId));
@@ -1005,19 +1006,30 @@ export default function LiveAnalysisPage() {
             <div className="bg-card border border-border rounded-xl p-8 text-center space-y-4">
               <Ban className="w-10 h-10 text-muted-foreground mx-auto" />
               <p className="text-sm text-muted-foreground">Dostęp administracyjny do wszystkich incydentów, zbanowanych użytkowników i analizy zagrożeń.</p>
-              <div className="flex items-center gap-2 max-w-xs mx-auto">
-                <Input type="password" value={adminPin} onChange={e => setAdminPin(e.target.value)}
-                  placeholder="PIN administratora" className="bg-secondary border-border text-sm" />
+              <div className="flex flex-col items-center gap-2 max-w-xs mx-auto">
+                <Input type="text" value={adminLogin_} onChange={e => setAdminLogin(e.target.value)}
+                  placeholder="Login" className="bg-secondary border-border text-sm" autoComplete="username" />
+                <Input type="password" value={adminPass} onChange={e => setAdminPass(e.target.value)}
+                  placeholder="Hasło" className="bg-secondary border-border text-sm" autoComplete="current-password"
+                  onKeyDown={e => { if (e.key === 'Enter') {
+                    if (adminLogin(adminLogin_, adminPass)) {
+                      setAdminMode(true);
+                      refreshIncidents();
+                    } else {
+                      setBanAlert('❌ Nieprawidłowy login lub hasło');
+                      setTimeout(() => setBanAlert(null), 3000);
+                    }
+                  }}} />
                 <Button onClick={() => {
-                  if (verifyAdminAccess(adminPin)) {
+                  if (adminLogin(adminLogin_, adminPass)) {
                     setAdminMode(true);
                     refreshIncidents();
                   } else {
-                    setBanAlert('❌ Nieprawidłowy PIN');
+                    setBanAlert('❌ Nieprawidłowy login lub hasło');
                     setTimeout(() => setBanAlert(null), 3000);
                   }
-                }} className="gap-2">
-                  <Lock className="w-3 h-3" /> Wejdź
+                }} className="gap-2 w-full">
+                  <Lock className="w-3 h-3" /> Zaloguj
                 </Button>
               </div>
             </div>
@@ -1028,7 +1040,7 @@ export default function LiveAnalysisPage() {
                   <ShieldAlert className="w-5 h-5 text-destructive" />
                   Panel Administracyjny — Pełny Dostęp
                 </h3>
-                <Button size="sm" variant="ghost" onClick={() => { setAdminMode(false); setAdminPin(''); }}>
+                <Button size="sm" variant="ghost" onClick={() => { adminLogout(); setAdminMode(false); setAdminLogin(''); setAdminPass(''); }}>
                   Wyloguj
                 </Button>
               </div>
