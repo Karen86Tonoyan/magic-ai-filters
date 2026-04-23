@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "alfa-core"
+version = "0.1.0"
+description = "Python-first ALFA-CORE canonical backend for routing, safety, memory, and local model integrations."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.115.0",
+  "pydantic>=2.8.0",
+  "httpx>=0.27.0",
+  "uvicorn>=0.30.0"
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0.0"]
+speech = ["vosk>=0.3.45"]
+vision = [
+  "Pillow>=10.4.0",
+  "pyautogui>=0.9.54"
+]
+
+[project.scripts]
+alfa-core-cli = "apps.cli.main:main"
+alfa-vision-agent = "apps.vision.alfa_vision_agent:main"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["apps*", "packages*"]
+exclude = ["src*", "dist*", "node_modules*", "alfa-gpt*"]
+
+[tool.setuptools.package-data]
+"packages.core" = ["prompts/*.md"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
