@@ -1,169 +1,108 @@
-# CLAW BOT
+# ALFA-CORE (Canonical Migration in Progress)
 
-Etyczny, self-hosted asystent AI z obsługą Telegram, Discord i lokalnym LLM (Ollama).
+ALFA-CORE is the new Python-first backend core for ALFA: routing, safety, telemetry, local-model orchestration, and project memory.
 
-## Wymagania
+## Status
 
-- Node.js >= 22
-- [Ollama](https://ollama.com) — lokalny LLM
-- (opcjonalnie) [espeak-ng](https://github.com/espeak-ng/espeak-ng/releases) — TTS
+This repository is in a staged migration.
 
-## Szybki start
+- `E:\CLAW BOT` remains the canonical repo.
+- The legacy TypeScript runtime in `src/` stays alive in compatibility mode.
+- New backend logic now belongs in `apps/` and `packages/`.
+- `ALFA-GPT` is being absorbed into the Python core instead of growing as a separate product.
 
-### 1. Zainstaluj zależności
+## What Is Canonical Now
+
+- `apps/api` - FastAPI backend
+- `apps/cli` - operator commands
+- `packages/core` - domain models, settings, orchestration, prompt loading
+- `packages/router` - ACCEPT / VERIFY / SIMULATE / ESCALATE / BLOCK routing
+- `packages/safety` - risk policy and guardrails
+- `packages/llm` - local Ollama client
+- `packages/memory` - ingestion, chunking, workspace indexing, retrieval
+- `packages/telemetry` - runtime and audit logs
+- `packages/schemas` - API models and JSON-schema-capable Pydantic types
+
+## What Remains Compatibility-Only
+
+- `src/agent`
+- `src/security`
+- `src/logger`
+- `src/mcp`
+
+These modules remain operational while the Python core takes over. New domain logic should not be added there.
+
+## Repo Policy
+
+- One main repo only.
+- No new repo copies like `-new`, `-v2`, or `-final-final`.
+- Experiments go to branches or `labs/`, not duplicate roots.
+- Public docs must describe only working behavior.
+- `.venv`, local archives, generated outputs, and local model artifacts stay out of git.
+
+## Current Startup Paths
+
+### Legacy compatibility runtime
 
 ```bash
 npm install
-```
-
-### 2. Skonfiguruj środowisko
-
-```bash
-cp .env.example .env
-```
-
-Edytuj `.env` i uzupełnij:
-- `TELEGRAM_BOT_TOKEN` — od @BotFather
-- `DISCORD_BOT_TOKEN` + `DISCORD_CLIENT_ID` — z Discord Developer Portal
-- `TELEGRAM_WHITELIST` / `DISCORD_WHITELIST` — Twoje user ID
-
-### 3. Uruchom Ollama
-
-```bash
-ollama serve
-ollama pull llama3.2
-```
-
-### 4. Uruchom bota
-
-```bash
-# Development (z hot-reload)
 npm run dev
-
-# Production
-npm run build && npm start
 ```
 
-### 5. Znajdź swoje ID
+### New ALFA-CORE API
 
-**Telegram:** Napisz `/start` do bota — ID pojawi się w logach.
-**Discord:** Włącz Developer Mode (Ustawienia → Zaawansowane), kliknij prawym na swój nick → "Kopiuj ID".
-
-Dodaj ID do `.env`:
-```
-TELEGRAM_WHITELIST=123456789
-DISCORD_WHITELIST=987654321
+```bash
+python -m pip install -e .[dev]
+python -m uvicorn apps.api.main:app --host 127.0.0.1 --port 8000
 ```
 
----
+## MVP Flow
 
-## Struktura projektu
-
-```
-src/
-├── index.ts           # Punkt wejścia
-├── config/            # Konfiguracja (zod)
-├── logger/            # Logger (winston)
-├── gateway/           # WebSocket hub + session manager
-├── agent/             # Ollama agent
-├── security/          # Whitelist, rate limit, injection defense
-├── channels/
-│   ├── telegram/      # Bot Telegram (grammY)
-│   └── discord/       # Bot Discord (discord.js)
-├── tts/               # Syntezator mowy (espeak/piper/elevenlabs)
-├── skills/            # Rozszerzalne skille
-└── types/             # Typy TypeScript
+```text
+Input -> Router -> Safety -> LLM/Action -> Output
 ```
 
----
+## ALFA Slice Execution (New)
 
-## Syntezator Mowy (TTS) — WAŻNE!
+Python core now includes ALFA-style bounded execution primitives in `packages/core/alfa_execution.py`:
 
-Bot musi mieć głos! Domyślnie ustawiony **Piper TTS** — najlepsza jakość.
+- `MarketPlanner` - curates executable plan proposals
+- `BigHeadSelector` - selects the best plan using proof vs risk scoring
+- `AlfaBrain` - injects minimal memory for the next checkpoint
+- `SliceExecutor` - splits a chosen plan into short checkpoint slices
+- `AlfaExecutionPlanner` - orchestrates market + selection + slice construction
 
-### Piper TTS (DOMYŚLNY — najlepsza jakość, lokalny, darmowy)
+Example:
 
-**Wymagane do zainstalowania!**
+```python
+from packages.core import AlfaExecutionPlanner, PlanCandidate
 
-1. Pobierz Piper: https://github.com/rhasspy/piper/releases
-   - Windows: `piper_windows_amd64.zip`
-   - Linux: `piper_linux_x86_64.tar.gz`
+planner = AlfaExecutionPlanner()
+execution = planner.plan(
+	[
+		PlanCandidate(
+			candidate_id='plan-a',
+			summary='Deliver result in bounded steps',
+			steps=['Collect facts', 'Choose tactic', 'Run step', 'Report checkpoint'],
+			proof_score=0.82,
+			risk_score=0.12,
+		)
+	],
+	prior_memory=['State B verified'],
+	max_steps_per_slice=2,
+)
 
-2. Rozpakuj do `E:\CLAW BOT\` (lub wybranego miejsca)
-
-3. Pobierz model polski (400 MB):
-   ```
-   https://huggingface.co/rhasspy/piper/resolve/main/voices/pl/pl_PL/gosia/medium/pl_PL-gosia-medium.onnx
-   ```
-   Umieść w: `E:\CLAW BOT\models\pl_PL-gosia-medium.onnx`
-
-4. Zaktualizuj `.env`:
-   ```
-   TTS_BACKEND=piper
-   TTS_PIPER_BINARY=./piper.exe
-   TTS_PIPER_MODEL=./models/pl_PL-gosia-medium.onnx
-   ```
-
-**Alternatywa: espeak-ng** (słabsza jakość, ale działa od razu)
-```
-TTS_BACKEND=espeak
-```
-Zainstaluj: https://github.com/espeak-ng/espeak-ng/releases
-
-### ElevenLabs (najwyższa jakość, wymaga API)
-
-```
-TTS_BACKEND=elevenlabs
-ELEVENLABS_API_KEY=twoj_klucz
+for checkpoint_slice in execution.slices:
+	print(checkpoint_slice.checkpoint_id, checkpoint_slice.steps)
 ```
 
----
+Validation tests for this module are in `tests/unit/test_alfa_execution.py`.
 
-## Komendy botów
+## Docs
 
-| Komenda         | Opis                          |
-|-----------------|-------------------------------|
-| `/start`        | Powitanie i sprawdzenie dostępu |
-| `/help`         | Lista komend                  |
-| `/clear`        | Wyczyść historię rozmowy      |
-| `/voice <tekst>`| Synteza mowy                  |
-| `/status`       | Status systemu                |
-| `/stats`        | Statystyki sesji              |
-
----
-
-## Bezpieczeństwo
-
-- Whitelist użytkowników (tylko autoryzowani mają dostęp)
-- Rate limiting (20 wiadomości/minutę, 500/dzień)
-- Ochrona przed prompt injection (wykrywanie wzorców)
-- Usuwanie ukrytych znaków Unicode
-- Audyt log każdej wiadomości
-- Gateway tylko na localhost
-- Brak zewnętrznych połączeń bez jawnej konfiguracji
-
----
-
-## Rozszerzanie
-
-Dodaj własny skill w `src/skills/`:
-
-```typescript
-import type { Skill } from "../types/index.js";
-
-export const mySkill: Skill = {
-  name: "my-skill",
-  description: "Opis",
-  triggers: ["słowo kluczowe"],
-  async handle(message, session) {
-    if (!message.includes("słowo kluczowe")) return null;
-    return "Odpowiedź z mojego skilla!";
-  },
-};
-```
-
-Zarejestruj w `src/skills/index.ts`:
-```typescript
-import { mySkill } from "./my-skill.js";
-this.register(mySkill);
-```
+- `docs/architecture.md`
+- `docs/routing.md`
+- `docs/safety-model.md`
+- `docs/threat-model.md`
+- `docs/knowledge/README.md`
+- `docs/knowledge/gamma/README.md`
