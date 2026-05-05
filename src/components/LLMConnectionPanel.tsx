@@ -101,6 +101,7 @@ export function LLMConnectionPanel({ onAdapterChange }: Props) {
   const [expanded, setExpanded] = useState(false);
   const [testing, setTesting] = useState(false);
   const [status, setStatus] = useState<'idle' | 'connected' | 'error'>('idle');
+  const [detectedModels, setDetectedModels] = useState<{ id: string; label: string }[] | null>(null);
   const [errorMsg, setErrorMsg] = useState<string>('');
   const isHttpsPage = typeof window !== 'undefined' && window.location.protocol === 'https:';
   const isHttpBase = config.baseUrl?.startsWith('http://');
