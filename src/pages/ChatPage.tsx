@@ -329,6 +329,15 @@ export default function ChatPage() {
               ))}
             </div>
           )}
+          <div className="ml-auto flex items-center gap-2">
+            {savedToast && <span className="text-xs font-mono text-success">{savedToast}</span>}
+            <Button size="sm" variant="outline" onClick={saveSession} disabled={messages.length === 0} className="gap-2">
+              <Save className="w-3 h-3" /> Zapisz
+            </Button>
+            <Button size="sm" variant="outline" onClick={clearSession} disabled={messages.length === 0} className="gap-2">
+              <Trash2 className="w-3 h-3" /> Wyczysc
+            </Button>
+          </div>
         </div>
       </div>
 
