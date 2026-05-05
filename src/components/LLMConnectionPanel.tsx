@@ -349,6 +349,21 @@ export function LLMConnectionPanel({ onAdapterChange }: Props) {
               </Badge>
             )}
           </div>
+
+          {mixedContent && config.provider === 'ollama' && (
+            <div className="text-[11px] font-mono text-warning bg-warning/10 border border-warning/30 rounded p-2 leading-relaxed">
+              ⚠ Mixed-content: ta strona dziala na HTTPS, a Ollama na <code>http://localhost</code>. Przegladarka zablokuje fetch.<br/>
+              Rozwiazania:<br/>
+              1) Otworz aplikacje przez <code>http://localhost</code> (np. lokalnie <code>npm run dev</code>).<br/>
+              2) Uruchom Ollama z CORS: <code>OLLAMA_ORIGINS="*" OLLAMA_HOST=0.0.0.0 ollama serve</code> i uzyj reverse-proxy na HTTPS.<br/>
+              3) Lub uzyj providera chmurowego (Groq / xAI / OpenAI).
+            </div>
+          )}
+          {errorMsg && (
+            <div className="text-[11px] font-mono text-destructive bg-destructive/10 border border-destructive/30 rounded p-2 break-words">
+              {errorMsg}
+            </div>
+          )}
         </div>
       )}
     </div>
