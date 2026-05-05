@@ -244,6 +244,11 @@ export function LLMConnectionPanel({ onAdapterChange }: Props) {
                     <Key className="w-3 h-3" /> Mistral
                   </div>
                 </SelectItem>
+                <SelectItem value="xai">
+                  <div className="flex items-center gap-2">
+                    <Key className="w-3 h-3" /> xAI (Grok)
+                  </div>
+                </SelectItem>
                 <SelectItem value="custom">
                   <div className="flex items-center gap-2">
                     <Key className="w-3 h-3" /> Custom API
