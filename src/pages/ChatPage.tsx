@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Send, Bot, User, Settings, Filter as FilterIcon, Shield, AlertTriangle, Lock, CheckCircle, XCircle } from 'lucide-react';
+import { Send, Bot, User, Settings, Filter as FilterIcon, Shield, AlertTriangle, Lock, CheckCircle, XCircle, Save, Trash2 } from 'lucide-react';
 import { useModels, useChains, useFilters } from '@/hooks/useStore';
 import { PROVIDER_INFO, FILTER_TYPE_INFO, DEFAULT_DLP_PATTERNS, type ChatMessage, type FilterLog } from '@/types/ai-filters';
 import { Button } from '@/components/ui/button';
@@ -17,7 +17,46 @@ export default function ChatPage() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showLogs, setShowLogs] = useState<Record<string, boolean>>({});
+  const [savedToast, setSavedToast] = useState('');
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Auto-load last saved session on mount
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('alfa_chat_session');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed.messages)) setMessages(parsed.messages);
+        if (parsed.modelId) setSelectedModelId(parsed.modelId);
+        if (parsed.chainId) setSelectedChainId(parsed.chainId);
+      }
+    } catch { /* ignore */ }
+  }, []);
+
+  const saveSession = () => {
+    const payload = {
+      savedAt: new Date().toISOString(),
+      modelId: selectedModelId,
+      chainId: selectedChainId,
+      messages,
+    };
+    localStorage.setItem('alfa_chat_session', JSON.stringify(payload));
+    // also offer download
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `alfa-chat-${Date.now()}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    setSavedToast('Zapisano sesje (localStorage + JSON)');
+    setTimeout(() => setSavedToast(''), 2500);
+  };
+
+  const clearSession = () => {
+    setMessages([]);
+    localStorage.removeItem('alfa_chat_session');
+  };
 
   const activeModels = models.filter(m => m.isActive);
   const activeChains = chains.filter(c => c.isActive);
@@ -290,6 +329,15 @@ export default function ChatPage() {
               ))}
             </div>
           )}
+          <div className="ml-auto flex items-center gap-2">
+            {savedToast && <span className="text-xs font-mono text-success">{savedToast}</span>}
+            <Button size="sm" variant="outline" onClick={saveSession} disabled={messages.length === 0} className="gap-2">
+              <Save className="w-3 h-3" /> Zapisz
+            </Button>
+            <Button size="sm" variant="outline" onClick={clearSession} disabled={messages.length === 0} className="gap-2">
+              <Trash2 className="w-3 h-3" /> Wyczysc
+            </Button>
+          </div>
         </div>
       </div>
 

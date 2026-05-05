@@ -75,6 +75,12 @@ const POPULAR_MODELS: Record<string, { id: string; label: string }[]> = {
     { id: 'mistral-small-latest', label: 'Mistral Small' },
     { id: 'codestral-latest', label: 'Codestral' },
   ],
+  xai: [
+    { id: 'grok-2-latest', label: 'Grok 2 (latest)' },
+    { id: 'grok-2-1212', label: 'Grok 2 1212' },
+    { id: 'grok-2-mini', label: 'Grok 2 Mini' },
+    { id: 'grok-beta', label: 'Grok Beta' },
+  ],
   custom: [],
 };
 
@@ -102,6 +108,10 @@ export function LLMConnectionPanel({ onAdapterChange }: Props) {
   const [testing, setTesting] = useState(false);
   const [status, setStatus] = useState<'idle' | 'connected' | 'error'>('idle');
   const [detectedModels, setDetectedModels] = useState<{ id: string; label: string }[] | null>(null);
+  const [errorMsg, setErrorMsg] = useState<string>('');
+  const isHttpsPage = typeof window !== 'undefined' && window.location.protocol === 'https:';
+  const isHttpBase = config.baseUrl?.startsWith('http://');
+  const mixedContent = isHttpsPage && isHttpBase;
 
   const needsApiKey = config.provider !== 'ollama';
 
@@ -136,6 +146,7 @@ export function LLMConnectionPanel({ onAdapterChange }: Props) {
 
   const testConnection = async () => {
     setTesting(true);
+    setErrorMsg('');
     try {
       const adapter = createAdapter(config.provider, {
         baseUrl: config.baseUrl || PROVIDER_INFO[config.provider]?.defaultUrl || '',
@@ -144,6 +155,7 @@ export function LLMConnectionPanel({ onAdapterChange }: Props) {
       });
       const ok = await adapter.testConnection();
       setStatus(ok ? 'connected' : 'error');
+      if (!ok) setErrorMsg('Endpoint odpowiedzial bledem (sprawdz API key / URL).');
       if (ok) {
         updateConfig({ enabled: true });
         if (config.provider === 'ollama' && adapter instanceof OllamaAdapter) {
@@ -151,8 +163,9 @@ export function LLMConnectionPanel({ onAdapterChange }: Props) {
           if (models.length > 0) setDetectedModels(models);
         }
       }
-    } catch {
+    } catch (e) {
       setStatus('error');
+      setErrorMsg((e as Error)?.message || 'Nieznany blad polaczenia');
     } finally {
       setTesting(false);
     }
@@ -229,6 +242,11 @@ export function LLMConnectionPanel({ onAdapterChange }: Props) {
                 <SelectItem value="mistral">
                   <div className="flex items-center gap-2">
                     <Key className="w-3 h-3" /> Mistral
+                  </div>
+                </SelectItem>
+                <SelectItem value="xai">
+                  <div className="flex items-center gap-2">
+                    <Key className="w-3 h-3" /> xAI (Grok)
                   </div>
                 </SelectItem>
                 <SelectItem value="custom">
@@ -331,6 +349,21 @@ export function LLMConnectionPanel({ onAdapterChange }: Props) {
               </Badge>
             )}
           </div>
+
+          {mixedContent && config.provider === 'ollama' && (
+            <div className="text-[11px] font-mono text-warning bg-warning/10 border border-warning/30 rounded p-2 leading-relaxed">
+              ⚠ Mixed-content: ta strona dziala na HTTPS, a Ollama na <code>http://localhost</code>. Przegladarka zablokuje fetch.<br/>
+              Rozwiazania:<br/>
+              1) Otworz aplikacje przez <code>http://localhost</code> (np. lokalnie <code>npm run dev</code>).<br/>
+              2) Uruchom Ollama z CORS: <code>OLLAMA_ORIGINS="*" OLLAMA_HOST=0.0.0.0 ollama serve</code> i uzyj reverse-proxy na HTTPS.<br/>
+              3) Lub uzyj providera chmurowego (Groq / xAI / OpenAI).
+            </div>
+          )}
+          {errorMsg && (
+            <div className="text-[11px] font-mono text-destructive bg-destructive/10 border border-destructive/30 rounded p-2 break-words">
+              {errorMsg}
+            </div>
+          )}
         </div>
       )}
     </div>
