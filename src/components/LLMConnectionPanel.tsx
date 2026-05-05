@@ -75,6 +75,12 @@ const POPULAR_MODELS: Record<string, { id: string; label: string }[]> = {
     { id: 'mistral-small-latest', label: 'Mistral Small' },
     { id: 'codestral-latest', label: 'Codestral' },
   ],
+  xai: [
+    { id: 'grok-2-latest', label: 'Grok 2 (latest)' },
+    { id: 'grok-2-1212', label: 'Grok 2 1212' },
+    { id: 'grok-2-mini', label: 'Grok 2 Mini' },
+    { id: 'grok-beta', label: 'Grok Beta' },
+  ],
   custom: [],
 };
 
