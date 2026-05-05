@@ -140,6 +140,7 @@ export function LLMConnectionPanel({ onAdapterChange }: Props) {
 
   const testConnection = async () => {
     setTesting(true);
+    setErrorMsg('');
     try {
       const adapter = createAdapter(config.provider, {
         baseUrl: config.baseUrl || PROVIDER_INFO[config.provider]?.defaultUrl || '',
@@ -148,6 +149,7 @@ export function LLMConnectionPanel({ onAdapterChange }: Props) {
       });
       const ok = await adapter.testConnection();
       setStatus(ok ? 'connected' : 'error');
+      if (!ok) setErrorMsg('Endpoint odpowiedzial bledem (sprawdz API key / URL).');
       if (ok) {
         updateConfig({ enabled: true });
         if (config.provider === 'ollama' && adapter instanceof OllamaAdapter) {
@@ -155,8 +157,9 @@ export function LLMConnectionPanel({ onAdapterChange }: Props) {
           if (models.length > 0) setDetectedModels(models);
         }
       }
-    } catch {
+    } catch (e) {
       setStatus('error');
+      setErrorMsg((e as Error)?.message || 'Nieznany blad polaczenia');
     } finally {
       setTesting(false);
     }
