@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Send, Bot, User, Settings, Filter as FilterIcon, Shield, AlertTriangle, Lock, CheckCircle, XCircle } from 'lucide-react';
+import { Send, Bot, User, Settings, Filter as FilterIcon, Shield, AlertTriangle, Lock, CheckCircle, XCircle, Save, Trash2 } from 'lucide-react';
 import { useModels, useChains, useFilters } from '@/hooks/useStore';
 import { PROVIDER_INFO, FILTER_TYPE_INFO, DEFAULT_DLP_PATTERNS, type ChatMessage, type FilterLog } from '@/types/ai-filters';
 import { Button } from '@/components/ui/button';
