@@ -232,6 +232,9 @@ export interface PipelineResult {
   deliberation?: import('@/lib/pipeline/deliberative-core').DeliberationResult;
   /** Post-Block Deliberation result (async analysis) */
   pbd?: import('@/lib/pipeline/pbd').PBDResult;
+  /** ALFA T9 Unified — trajectory contract + post-model verification */
+  t9_contract?: import('@/lib/pipeline/t9').TrajectoryContract;
+  t9_verification?: import('@/lib/pipeline/t9').T9UnifiedResult;
   final_decision: GuardianDecision;
   response_mode: ResponseMode;
   model_response?: string;

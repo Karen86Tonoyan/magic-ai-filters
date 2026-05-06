@@ -27,7 +27,10 @@ import { runLasuch } from './lasuch';
 import { runPBD } from './pbd';
 import { enhancePrompt } from './prompt-enhancer';
 import { routeTaggedMessage } from './router';
+import { ALFAUnified } from './t9';
 import { runTagger } from './tagger';
+
+const t9Engine = new ALFAUnified();
 
 const MAX_PIPELINE_INPUT_CHARS = 20000;
 
@@ -415,7 +418,16 @@ export async function runPipeline(input: string, options: PipelineOptions): Prom
 
   const systemGuardPrefix = enhancement.dual_prompt.system_guard;
   const routerPrompt = `[ROUTER]\npartition=${route.partition}\nlane=${route.lane}\nmodel_tier=${route.model_tier}\nexecution_profile=${route.execution_profile}\npriority=${route.priority}`;
-  const effectiveSystemPrompt = [systemGuardPrefix, routerPrompt, options.systemPrompt].filter(Boolean).join('\n\n');
+
+  // ═══ ALFA T9: trajectory contract injected before model call ═══
+  let t9_contract: import('./t9').TrajectoryContract | undefined;
+  try {
+    t9_contract = t9Engine.predict(safeInput);
+  } catch {
+    notes.push('T9 predictor failed; trajectory contract skipped.');
+  }
+  const t9Prompt = t9_contract ? t9_contract.injection_text : '';
+  const effectiveSystemPrompt = [systemGuardPrefix, routerPrompt, t9Prompt, options.systemPrompt].filter(Boolean).join('\n\n');
 
   if (options.mode !== 'benchmark' && route.should_dispatch && (final_decision === 'PASS' || final_decision === 'LIMITED_PASS') && options.adapter) {
     try {
@@ -464,6 +476,30 @@ export async function runPipeline(input: string, options: PipelineOptions): Prom
     }
   }
 
+  // ═══ ALFA T9: post-model verification (trajectory + overclaim + filtry) ═══
+  let t9_verification: import('./t9').T9UnifiedResult | undefined;
+  if (model_response && !model_response.startsWith('[ERROR]')) {
+    try {
+      t9_verification = t9Engine.verify({
+        userInput: safeInput,
+        modelOutput: model_response,
+        toolTrace: false,
+        persist: false,
+      });
+      if (t9_verification.final_decision === 'BLOCK' && final_decision === 'PASS') {
+        final_decision = 'BLOCK';
+        response_mode = 'silence';
+        notes.push(`T9 BLOCK: ${t9_verification.guard_result.reason}`);
+      } else if (t9_verification.final_decision === 'HOLD' && final_decision === 'PASS') {
+        final_decision = 'HOLD';
+        response_mode = 'restricted';
+        notes.push(`T9 HOLD: ${t9_verification.overclaim_result.reason}`);
+      }
+    } catch {
+      notes.push('T9 post-model verification failed; trajectory unchecked.');
+    }
+  }
+
   const resilience = createResilienceReport(
     faults,
     notes,
@@ -496,6 +532,8 @@ export async function runPipeline(input: string, options: PipelineOptions): Prom
     shield,
     deliberation,
     pbd,
+    t9_contract,
+    t9_verification,
     final_decision,
     response_mode,
     model_response,
