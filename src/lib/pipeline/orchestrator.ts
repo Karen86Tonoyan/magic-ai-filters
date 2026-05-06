@@ -418,7 +418,16 @@ export async function runPipeline(input: string, options: PipelineOptions): Prom
 
   const systemGuardPrefix = enhancement.dual_prompt.system_guard;
   const routerPrompt = `[ROUTER]\npartition=${route.partition}\nlane=${route.lane}\nmodel_tier=${route.model_tier}\nexecution_profile=${route.execution_profile}\npriority=${route.priority}`;
-  const effectiveSystemPrompt = [systemGuardPrefix, routerPrompt, options.systemPrompt].filter(Boolean).join('\n\n');
+
+  // ═══ ALFA T9: trajectory contract injected before model call ═══
+  let t9_contract: import('./t9').TrajectoryContract | undefined;
+  try {
+    t9_contract = t9Engine.predict(safeInput);
+  } catch {
+    notes.push('T9 predictor failed; trajectory contract skipped.');
+  }
+  const t9Prompt = t9_contract ? t9_contract.injection_text : '';
+  const effectiveSystemPrompt = [systemGuardPrefix, routerPrompt, t9Prompt, options.systemPrompt].filter(Boolean).join('\n\n');
 
   if (options.mode !== 'benchmark' && route.should_dispatch && (final_decision === 'PASS' || final_decision === 'LIMITED_PASS') && options.adapter) {
     try {
