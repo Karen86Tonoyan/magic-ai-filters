@@ -532,6 +532,8 @@ export async function runPipeline(input: string, options: PipelineOptions): Prom
     shield,
     deliberation,
     pbd,
+    t9_contract,
+    t9_verification,
     final_decision,
     response_mode,
     model_response,
