@@ -476,6 +476,30 @@ export async function runPipeline(input: string, options: PipelineOptions): Prom
     }
   }
 
+  // ═══ ALFA T9: post-model verification (trajectory + overclaim + filtry) ═══
+  let t9_verification: import('./t9').T9UnifiedResult | undefined;
+  if (model_response && !model_response.startsWith('[ERROR]')) {
+    try {
+      t9_verification = t9Engine.verify({
+        userInput: safeInput,
+        modelOutput: model_response,
+        toolTrace: false,
+        persist: false,
+      });
+      if (t9_verification.final_decision === 'BLOCK' && final_decision === 'PASS') {
+        final_decision = 'BLOCK';
+        response_mode = 'silence';
+        notes.push(`T9 BLOCK: ${t9_verification.guard_result.reason}`);
+      } else if (t9_verification.final_decision === 'HOLD' && final_decision === 'PASS') {
+        final_decision = 'HOLD';
+        response_mode = 'restricted';
+        notes.push(`T9 HOLD: ${t9_verification.overclaim_result.reason}`);
+      }
+    } catch {
+      notes.push('T9 post-model verification failed; trajectory unchecked.');
+    }
+  }
+
   const resilience = createResilienceReport(
     faults,
     notes,
