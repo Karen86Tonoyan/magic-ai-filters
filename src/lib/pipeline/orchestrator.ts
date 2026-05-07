@@ -559,6 +559,7 @@ export async function runPipeline(input: string, options: PipelineOptions): Prom
     pbd,
     t9_contract,
     t9_verification,
+    dams,
     final_decision,
     response_mode,
     model_response,
