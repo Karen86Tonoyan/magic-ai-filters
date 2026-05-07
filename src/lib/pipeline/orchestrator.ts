@@ -28,9 +28,11 @@ import { runPBD } from './pbd';
 import { enhancePrompt } from './prompt-enhancer';
 import { routeTaggedMessage } from './router';
 import { ALFAUnified } from './t9';
+import { AlfaDynamicPipeline } from './dynamic-mount';
 import { runTagger } from './tagger';
 
 const t9Engine = new ALFAUnified();
+const damsPipeline = new AlfaDynamicPipeline();
 
 const MAX_PIPELINE_INPUT_CHARS = 20000;
 
