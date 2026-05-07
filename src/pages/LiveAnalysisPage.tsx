@@ -16,6 +16,7 @@ import { TEST_PROMPTS } from '@/types/tonoyan-filters';
 import type { PipelineResult, PipelineMode } from '@/types/tonoyan-filters';
 import type { ModelAdapter } from '@/lib/adapters/types';
 import { LLMConnectionPanel } from '@/components/LLMConnectionPanel';
+import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { createAdapter } from '@/lib/adapters/factory';
 import type { AIProvider } from '@/types/ai-filters';
 import { DecisionTimeline } from '@/components/DecisionTimeline';
