@@ -16,6 +16,7 @@ import { TEST_PROMPTS } from '@/types/tonoyan-filters';
 import type { PipelineResult, PipelineMode } from '@/types/tonoyan-filters';
 import type { ModelAdapter } from '@/lib/adapters/types';
 import { LLMConnectionPanel } from '@/components/LLMConnectionPanel';
+import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { createAdapter } from '@/lib/adapters/factory';
 import type { AIProvider } from '@/types/ai-filters';
 import { DecisionTimeline } from '@/components/DecisionTimeline';
@@ -592,6 +593,103 @@ export default function LiveAnalysisPage() {
                   )}
                 </div>
               </div>
+
+              {/* ═══ ALFA T9 TRAJECTORY VERIFIER ═══ */}
+              {(result.t9_verification || result.t9_contract) && (
+                <div className="bg-card border border-primary/30 rounded-xl p-4 sm:p-6 space-y-4">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                    <h3 className="font-display font-semibold text-foreground flex items-center gap-2">
+                      <Sparkles className="w-4 h-4 text-primary" />
+                      ALFA T9 — Trajectory Verifier
+                    </h3>
+                    <div className="flex flex-wrap items-center gap-2">
+                      {result.t9_contract && (
+                        <Badge variant="outline" className="text-xs font-mono border-primary/30 text-primary">
+                          Predicted: {result.t9_contract.predicted_state}
+                        </Badge>
+                      )}
+                      {result.t9_verification && (
+                        <Badge variant="outline" className={`text-xs font-mono ${
+                          result.t9_verification.final_decision === 'PASS' ? 'border-success/30 text-success' :
+                          result.t9_verification.final_decision === 'BLOCK' ? 'border-destructive/30 text-destructive' :
+                          'border-warning/30 text-warning'
+                        }`}>
+                          T9: {result.t9_verification.final_decision}
+                        </Badge>
+                      )}
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="gap-1"
+                        onClick={() => {
+                          const payload = {
+                            id: result.id,
+                            timestamp: result.timestamp,
+                            input: result.input,
+                            final_decision: result.final_decision,
+                            response_mode: result.response_mode,
+                            model_response: result.model_response,
+                            provider_used: result.provider_used,
+                            model_used: result.model_used,
+                            total_latency_ms: result.total_latency_ms,
+                            t9_contract: result.t9_contract,
+                            t9_verification: result.t9_verification,
+                            lasuch: result.lasuch,
+                            cerber: result.cerber,
+                            guardian: result.guardian,
+                            core: result.core,
+                            shield: result.shield,
+                            deliberation: result.deliberation,
+                            pbd: result.pbd,
+                          };
+                          const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+                          const url = URL.createObjectURL(blob);
+                          const a = document.createElement('a');
+                          a.href = url;
+                          a.download = `alfa-result-${result.id}.json`;
+                          a.click();
+                          URL.revokeObjectURL(url);
+                        }}
+                      >
+                        <Download className="w-3 h-3" /> Export JSON
+                      </Button>
+                    </div>
+                  </div>
+
+                  {result.t9_verification && (
+                    <>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                        <div className="p-3 rounded border border-border bg-background/40">
+                          <p className="text-muted-foreground mb-1">TrajectoryGuard</p>
+                          <p className="font-mono text-foreground">{result.t9_verification.guard_result.decision}</p>
+                          <p className="text-muted-foreground mt-1 line-clamp-2">{result.t9_verification.guard_result.reason}</p>
+                        </div>
+                        <div className="p-3 rounded border border-border bg-background/40">
+                          <p className="text-muted-foreground mb-1">OutputIntegrity</p>
+                          <p className="font-mono text-foreground">{result.t9_verification.overclaim_result.decision}</p>
+                          <p className="text-muted-foreground mt-1 line-clamp-2">{result.t9_verification.overclaim_result.reason}</p>
+                        </div>
+                        <div className="p-3 rounded border border-border bg-background/40">
+                          <p className="text-muted-foreground mb-1">FiltrTonoyana</p>
+                          <p className="font-mono text-foreground">
+                            {result.t9_verification.filter_report.decision} · score={result.t9_verification.filter_report.overall_score}
+                          </p>
+                          <p className="text-muted-foreground mt-1">
+                            {result.t9_verification.execution_trusted ? 'execution: trusted' : 'execution: not trusted'}
+                          </p>
+                        </div>
+                      </div>
+
+                      {result.t9_verification.graph_mermaid && (
+                        <div>
+                          <p className="text-xs text-muted-foreground mb-2 font-mono uppercase tracking-wider">Trajectory Graph</p>
+                          <MermaidDiagram chart={result.t9_verification.graph_mermaid} id={`t9-${result.id}`} />
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+              )}
 
               {/* PROMPT ENHANCER */}
               {result.enhancement && result.enhancement.weaknesses.length > 0 && (
