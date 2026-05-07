@@ -235,6 +235,8 @@ export interface PipelineResult {
   /** ALFA T9 Unified — trajectory contract + post-model verification */
   t9_contract?: import('@/lib/pipeline/t9').TrajectoryContract;
   t9_verification?: import('@/lib/pipeline/t9').T9UnifiedResult;
+  /** ALFA Dynamic Algorithm Mounting System v1.0 — post-draft validation */
+  dams?: import('@/lib/pipeline/dynamic-mount').DAMSResult;
   final_decision: GuardianDecision;
   response_mode: ResponseMode;
   model_response?: string;

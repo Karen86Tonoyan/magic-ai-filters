@@ -28,9 +28,11 @@ import { runPBD } from './pbd';
 import { enhancePrompt } from './prompt-enhancer';
 import { routeTaggedMessage } from './router';
 import { ALFAUnified } from './t9';
+import { AlfaDynamicPipeline } from './dynamic-mount';
 import { runTagger } from './tagger';
 
 const t9Engine = new ALFAUnified();
+const damsPipeline = new AlfaDynamicPipeline();
 
 const MAX_PIPELINE_INPUT_CHARS = 20000;
 
@@ -500,6 +502,29 @@ export async function runPipeline(input: string, options: PipelineOptions): Prom
     }
   }
 
+  // ═══ ALFA DAMS: Dynamic Algorithm Mounting on draft answer ═══
+  let dams: import('./dynamic-mount').DAMSResult | undefined;
+  if (model_response && !model_response.startsWith('[ERROR]')) {
+    try {
+      dams = damsPipeline.process({
+        user_input: safeInput,
+        draft_answer: model_response,
+        domain: tagger.domain,
+      });
+      if (dams.verdict === 'BLOCK' && final_decision !== 'BLOCK') {
+        final_decision = 'BLOCK';
+        response_mode = 'silence';
+        notes.push(`DAMS BLOCK: ${dams.blocked_by.join(', ')}`);
+      } else if (dams.verdict === 'HOLD' && final_decision === 'PASS') {
+        final_decision = 'HOLD';
+        response_mode = 'restricted';
+        notes.push(`DAMS HOLD: ${dams.reasoning}`);
+      }
+    } catch {
+      notes.push('DAMS analysis failed; dynamic mount skipped.');
+    }
+  }
+
   const resilience = createResilienceReport(
     faults,
     notes,
@@ -534,6 +559,7 @@ export async function runPipeline(input: string, options: PipelineOptions): Prom
     pbd,
     t9_contract,
     t9_verification,
+    dams,
     final_decision,
     response_mode,
     model_response,
