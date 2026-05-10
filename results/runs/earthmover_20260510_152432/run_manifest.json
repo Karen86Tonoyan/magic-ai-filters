@@ -1,0 +1,18 @@
+{
+  "run_id": "earthmover_20260510_152432",
+  "document_id": "earthmover",
+  "source_path": ".\\examples\\documents\\earthmover.pdf",
+  "question": "What are the main topics and key findings?",
+  "structure_mode": "normal",
+  "structure_path": "results/runs/earthmover_20260510_152432/earthmover_structure.json",
+  "section_map_path": "results/runs/earthmover_20260510_152432/earthmover_alfa_section_map.json",
+  "query_result_path": "results/runs/earthmover_20260510_152432/earthmover_query_result.json",
+  "exit_code": 2,
+  "strict_passed": false,
+  "confidence": 0.167,
+  "evidence_paths": [
+    "examples\\documents\\earthmover.pdf > Root",
+    "examples\\documents\\earthmover.pdf > ABSTRACT"
+  ],
+  "section_count": 31
+}

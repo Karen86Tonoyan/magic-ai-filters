@@ -1,0 +1,18 @@
+{
+  "run_id": "attention-residuals_20260510_152425",
+  "document_id": "attention-residuals",
+  "source_path": ".\\examples\\documents\\attention-residuals.pdf",
+  "question": "What are the main topics and key findings?",
+  "structure_mode": "normal",
+  "structure_path": "results/runs/attention-residuals_20260510_152425/attention-residuals_structure.json",
+  "section_map_path": "results/runs/attention-residuals_20260510_152425/attention-residuals_alfa_section_map.json",
+  "query_result_path": "results/runs/attention-residuals_20260510_152425/attention-residuals_query_result.json",
+  "exit_code": 2,
+  "strict_passed": false,
+  "confidence": 0.167,
+  "evidence_paths": [
+    "examples\\documents\\attention-residuals.pdf > Root",
+    "examples\\documents\\attention-residuals.pdf > ABSTRACT"
+  ],
+  "section_count": 31
+}

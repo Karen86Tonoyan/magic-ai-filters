@@ -1,0 +1,175 @@
+{
+  "document_id": "attention-residuals",
+  "source_path": "examples\\documents\\attention-residuals.pdf",
+  "section_count": 14,
+  "sections": [
+    {
+      "id": "sec_9724674",
+      "title": "Root",
+      "level": 1,
+      "line_start": 1,
+      "line_end": null,
+      "hierarchy": [
+        "Root"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Root",
+      "content_preview": "6\n2\n0\n2\nr\na\nM\n6\n1\n]\nL\nC\n.\ns\nc\n[\n1\nv\n1\n3\n0\n5\n1\n.\n3\n0\n6\n2\n:\nv\ni\nX\nr\na\nATTENTION RESIDUALS\nTECHNICAL REPORT OF ATTENTION RESIDUALS\nKimi Team\n(cid:135) https://github.com/MoonshotAI/Attention-Residuals\nABSTRACT\nResidual connections [12] with PreNorm [60] are standard in modern LLMs, yet they accumulate\nall layer outputs with fixed unit weights. This uniform aggregation causes uncontrolled hidden-state\ngrowth with depth, progressively diluting each layer’s contribution [27]. We propose Attention\nResiduals (AttnRes), which replaces this fixed accumulation with softmax attention over preceding\nlayer outputs, allowing each layer to selectively aggregate earlier representations with learned, input-\ndependent weights. To address the memory and communication overhead of attending over all\npreceding layer outputs for large-scale model training, we introduce Block AttnRes, which partitions\nlayers into blocks and attends over block-level representations, reducing the memory footprint while\npreserving most of the gains of full AttnRes. Combined with cache-based pipeline communication\nand a two-phase computation strategy, Block AttnRes becomes a practical drop-in replacement for\nstandard residual connections with minimal overhead.\nScaling law experiments confirm that the improvement is consistent across model sizes, and ablations\nvalidate the benefit of content-dependent depth-wise selection. We further integrate AttnRes into\nthe Kimi Linear architecture [69] (48B total / 3B activated parameters) and pre-train on 1.4T tokens,\nwhere AttnRes mitigates PreNorm dilution, yielding more uniform output magnitudes and gradient\ndistribution across depth, and improves downstream performance across all evaluated tasks.\nOutput\nMoE\nAttention\nMoE\nAttention\n...\nOutput\nw\nα\nα\nMoE\nw\nα\nα\nAttention\nw\nα\nα\nMoE\nw\nα\nα\nAttention\nw\nα\nα\n...\nEmbedding\nEmbedding\nK V\nQ\nw\nOutput\nw\nα\nα\nMoE\nAttention\nAttnRes Op (α)\nMoE\nAttention\nBlock n-1\nBlock n-2\n···\nEmbedding\nw\nα\nα\nw\nα\nα\nw\nα\nα\nw\nα\nα\n(a) Standard Residuals\n(b) Full Attention Residuals\n(c) Block Attention Residuals\nFigure 1: Overview of Attention Residuals. (a) Standard Residuals: standard residual connections with uniform additive accumulation.\n(b) Full AttnRes: each layer selectively aggregates all previous layer outputs via learned attention weights. (c) Block AttnRes: layers\nare grouped into blocks, reducing memory from O(Ld) to O(N d)."
+    },
+    {
+      "id": "sec_6799612",
+      "title": "ATTENTION RESIDUALS",
+      "level": 2,
+      "line_start": 35,
+      "line_end": null,
+      "hierarchy": [
+        "ATTENTION RESIDUALS"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > ATTENTION RESIDUALS",
+      "content_preview": "ATTENTION RESIDUALS"
+    },
+    {
+      "id": "sec_8589515",
+      "title": "ABSTRACT",
+      "level": 4,
+      "line_start": 39,
+      "line_end": null,
+      "hierarchy": [
+        "ABSTRACT"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > ABSTRACT",
+      "content_preview": "ABSTRACT"
+    },
+    {
+      "id": "sec_8497634",
+      "title": "Introduction",
+      "level": 4,
+      "line_start": 122,
+      "line_end": null,
+      "hierarchy": [
+        "Introduction"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Introduction",
+      "content_preview": "Introduction"
+    },
+    {
+      "id": "sec_0941845",
+      "title": "2 Motivation",
+      "level": 4,
+      "line_start": 177,
+      "line_end": null,
+      "hierarchy": [
+        "2 Motivation"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > 2 Motivation",
+      "content_preview": "2 Motivation"
+    },
+    {
+      "id": "sec_1485500",
+      "title": "3 Attention Residuals: A Unified View of Time and Depth",
+      "level": 4,
+      "line_start": 222,
+      "line_end": null,
+      "hierarchy": [
+        "3 Attention Residuals: A Unified View of Time and Depth"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > 3 Attention Residuals: A Unified View of Time and Depth",
+      "content_preview": "3 Attention Residuals: A Unified View of Time and Depth"
+    },
+    {
+      "id": "sec_8445121",
+      "title": "Infrastructure Design",
+      "level": 4,
+      "line_start": 403,
+      "line_end": null,
+      "hierarchy": [
+        "Infrastructure Design"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Infrastructure Design",
+      "content_preview": "Infrastructure Design"
+    },
+    {
+      "id": "sec_2204412",
+      "title": "5 Experiments",
+      "level": 4,
+      "line_start": 675,
+      "line_end": null,
+      "hierarchy": [
+        "5 Experiments"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > 5 Experiments",
+      "content_preview": "5 Experiments"
+    },
+    {
+      "id": "sec_7527851",
+      "title": "6 Discussions",
+      "level": 4,
+      "line_start": 1328,
+      "line_end": null,
+      "hierarchy": [
+        "6 Discussions"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > 6 Discussions",
+      "content_preview": "6 Discussions"
+    },
+    {
+      "id": "sec_6831955",
+      "title": "7 Related Work",
+      "level": 4,
+      "line_start": 1574,
+      "line_end": null,
+      "hierarchy": [
+        "7 Related Work"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > 7 Related Work",
+      "content_preview": "7 Related Work"
+    },
+    {
+      "id": "sec_7790956",
+      "title": "Conclusion",
+      "level": 4,
+      "line_start": 1606,
+      "line_end": null,
+      "hierarchy": [
+        "Conclusion"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Conclusion",
+      "content_preview": "Conclusion"
+    },
+    {
+      "id": "sec_3697203",
+      "title": "References",
+      "level": 4,
+      "line_start": 1619,
+      "line_end": null,
+      "hierarchy": [
+        "References"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > References",
+      "content_preview": "References"
+    },
+    {
+      "id": "sec_9085170",
+      "title": "A Contributions",
+      "level": 4,
+      "line_start": 1787,
+      "line_end": null,
+      "hierarchy": [
+        "A Contributions"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > A Contributions",
+      "content_preview": "A Contributions"
+    },
+    {
+      "id": "sec_9510838",
+      "title": "B Optimized Inference I/O for Full Attention Residuals",
+      "level": 4,
+      "line_start": 1830,
+      "line_end": null,
+      "hierarchy": [
+        "B Optimized Inference I/O for Full Attention Residuals"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > B Optimized Inference I/O for Full Attention Residuals",
+      "content_preview": "B Optimized Inference I/O for Full Attention Residuals"
+    }
+  ]
+}

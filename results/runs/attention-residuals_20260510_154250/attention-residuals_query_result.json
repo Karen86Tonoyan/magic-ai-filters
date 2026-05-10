@@ -1,0 +1,109 @@
+{
+  "question": "What are the main topics and key findings?",
+  "answer": "Na podstawie mapy sekcji najbardziej trafne obszary to: Root, ABSTRACT, Introduction. Odpowiedź powinna zostać rozwinięta z tych ścieżek dowodu.",
+  "evidence_paths": [
+    "examples\\documents\\attention-residuals.pdf > Root",
+    "examples\\documents\\attention-residuals.pdf > ABSTRACT",
+    "examples\\documents\\attention-residuals.pdf > Introduction",
+    "examples\\documents\\attention-residuals.pdf > 6 Discussions",
+    "examples\\documents\\attention-residuals.pdf > Conclusion"
+  ],
+  "matched_sections": [
+    {
+      "id": "sec_9724674",
+      "title": "Root",
+      "level": 1,
+      "line_start": 1,
+      "line_end": null,
+      "hierarchy": [
+        "Root"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Root",
+      "score": 2,
+      "matched_terms": [
+        "abstract",
+        "overview"
+      ]
+    },
+    {
+      "id": "sec_8589515",
+      "title": "ABSTRACT",
+      "level": 4,
+      "line_start": 39,
+      "line_end": null,
+      "hierarchy": [
+        "ABSTRACT"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > ABSTRACT",
+      "score": 2,
+      "matched_terms": [
+        "abstract"
+      ]
+    },
+    {
+      "id": "sec_8497634",
+      "title": "Introduction",
+      "level": 4,
+      "line_start": 122,
+      "line_end": null,
+      "hierarchy": [
+        "Introduction"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Introduction",
+      "score": 2,
+      "matched_terms": [
+        "introduction"
+      ]
+    },
+    {
+      "id": "sec_7527851",
+      "title": "6 Discussions",
+      "level": 4,
+      "line_start": 1328,
+      "line_end": null,
+      "hierarchy": [
+        "6 Discussions"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > 6 Discussions",
+      "score": 2,
+      "matched_terms": [
+        "discussion"
+      ]
+    },
+    {
+      "id": "sec_7790956",
+      "title": "Conclusion",
+      "level": 4,
+      "line_start": 1606,
+      "line_end": null,
+      "hierarchy": [
+        "Conclusion"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Conclusion",
+      "score": 2,
+      "matched_terms": [
+        "conclusion"
+      ]
+    }
+  ],
+  "confidence": 0.417,
+  "missing_context": [
+    "finding",
+    "highlights",
+    "key",
+    "main",
+    "results",
+    "summary",
+    "topic"
+  ],
+  "strict": {
+    "enabled": true,
+    "passed": false,
+    "min_confidence": 0.6,
+    "min_evidence_paths": 2
+  },
+  "rejected_by_strict_gate": true,
+  "strict_rejection_reasons": [
+    "confidence_below_threshold"
+  ]
+}

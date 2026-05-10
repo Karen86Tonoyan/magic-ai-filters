@@ -1,0 +1,49 @@
+{
+  "question": "What are the main topics and key findings?",
+  "answer": "Na podstawie mapy sekcji najbardziej trafne obszary to: Thomas, R. (1991). The New Historicism and Other Old-Fashioned Topics . Prince-. Odpowiedź powinna zostać rozwinięta z tych ścieżek dowodu.",
+  "evidence_paths": [
+    "alfa_rc2_test1.pdf > Thomas, R. (1991). The New Historicism and Other Old-Fashioned Topics . Prince-"
+  ],
+  "matched_sections": [
+    {
+      "id": "sec_3832993",
+      "title": "Thomas, R. (1991). The New Historicism and Other Old-Fashioned Topics . Prince-",
+      "level": 3,
+      "line_start": 690,
+      "line_end": null,
+      "hierarchy": [
+        "Thomas, R. (1991). The New Historicism and Other Old-Fashioned Topics . Prince-"
+      ],
+      "evidence_path": "alfa_rc2_test1.pdf > Thomas, R. (1991). The New Historicism and Other Old-Fashioned Topics . Prince-",
+      "score": 2,
+      "matched_terms": [
+        "topic"
+      ]
+    }
+  ],
+  "confidence": 0.083,
+  "missing_context": [
+    "abstract",
+    "conclusion",
+    "discussion",
+    "finding",
+    "highlights",
+    "introduction",
+    "key",
+    "main",
+    "overview",
+    "results",
+    "summary"
+  ],
+  "strict": {
+    "enabled": true,
+    "passed": false,
+    "min_confidence": 0.6,
+    "min_evidence_paths": 2
+  },
+  "rejected_by_strict_gate": true,
+  "strict_rejection_reasons": [
+    "confidence_below_threshold",
+    "insufficient_evidence_paths"
+  ]
+}

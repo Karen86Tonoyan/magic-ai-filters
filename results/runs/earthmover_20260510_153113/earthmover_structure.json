@@ -1,0 +1,1212 @@
+{
+  "structure": [
+    {
+      "title": "Root",
+      "level": 1,
+      "line_num": 1,
+      "content_preview": "Earth Mover’s Distance based Similarity Search at Scale\nYu Tang†, Leong Hou U‡, Yilun Cai†, Nikos Mamoulis†, Reynold Cheng†\n†The University of Hong Kong ‡University of Macau\n†{ytang, ylcai, nikos, ckcheng}@cs.hku.hk ‡ryanlhu@umac.mo\nABSTRACT\nEarth Mover’s Distance (EMD), as a similarity measure, has re-\nceived a lot of attention in the ﬁelds of multimedia and probabilis-\ntic databases, computer vision, image retrieval, machine learning,\netc. EMD on multidimensional histograms provides better distin-\nguishability between the objects approximated by the histograms\n(e.g., images), compared to classic measures like Euclidean dis-\ntance. Despite its usefulness, EMD has a high computational cost;\ntherefore, a number of effective ﬁltering methods have been pro-\nposed, to reduce the pairs of histograms for which the exact EMD\nhas to be computed, during similarity search. Still, EMD calcu-\nlations in the reﬁnement step remain the bottleneck of the whole\nsimilarity search process. In this paper, we focus on optimizing the\nreﬁnement phase of EMD-based similarity search by (i) adapting\nan efﬁcient min-cost ﬂow algorithm (SIA) for EMD computation,\n(ii) proposing a dynamic distance bound, which can be used to ter-\nminate an EMD reﬁnement early, and (iii) proposing a dynamic re-\nﬁnement order for the candidates which, paired with a concurrent\nEMD reﬁnement strategy, reduces the amount of needless compu-\ntations. Our proposed techniques are orthogonal to and can be eas-\nily integrated with the state-of-the-art ﬁltering techniques, reducing\nthe cost of EMD-based similarity queries by orders of magnitude.\n1. INTRODUCTION\nGiven two histograms (e.g., probability distributions), their\nEarth Mover’s Distance(EMD) is deﬁned as the minimum amount\nof work to transform one histogram into the other. EMD is robust\nto outliers and small shifts of values among histogram bins [20],\nimproving the quality of similarity search in different domain ar-\neas, such as computer vision [19, 21], machine learning [6, 9], in-\nformation retrieval [23, 24], probabilistic [25, 32] and multimedia\ndatabases [5, 30]. Typically, the EMD between two histograms is\nmodeled and solved as a linear optimization problem, the min-cost\nﬂow problem, which requires super-cubic time. The high compu-\ntational cost of EMD restricts its applicability to datasets of low-\nscale. For example, in computer vision applications, the quality of\nresults is typically compromised by the use of low-granularity his-\ntograms, to render EMD-based similarity retrieval feasible [22,30].\nThis work is licensed under the Creative Commons Attribution-\nNonCommercial-NoDerivs 3.0 Unported License. To view a copy of this li-\ncense, visit http://creativecommons.org/licenses/by-nc-nd/3.0/. Obtain per-\nmission prior to any use beyond those covered by the license. Contact\ncopyright holder by emailing info@vldb.org. Articles from this volume\nwere invited to present their results at the 40th International Conference on\nVery Large Data Bases, September 1st - 5th 2014, Hangzhou, China.\nProceedings of the VLDB Endowment, V ol. 7, No. 4\nCopyright 2013 VLDB Endowment 2150-8097/13/12.\nEMD-based similarity search has been extensively studied in [5,\n25,30,32]. Given a query histogram q and a database of histogram\nobjects D, the objective is to ﬁnd the k nearest neighbors of q in\nD. All these works adopt the ﬁlter-and-reﬁnement framework; to\nevaluate a query, unpromising objects (or object groups) are ﬁl-\ntered out, by utilizing various effective EMD lower bound estima-\ntions, based on centroids and projections [7], dimensionality re-\nduction [30], primal-dual space [32], normal distributions [25], etc.\nActual EMD calculations1 are applied only between q and all ob-\njects that survive the ﬁlter step. Thus, the primary focus of previous\nresearch has been in tightening the lower bounds such that more ob-\njects can be pruned at the ﬁlter step. For instance, [25] demonstrate\nthat the projection-based lower bound can be up to 90% of ",
+      "fallback_reason": "pdf_pdfminer_offline_extraction"
+    },
+    {
+      "title": "Earth Mover’s Distance based Similarity Search at Scale",
+      "level": 3,
+      "line_num": 1,
+      "content_preview": "Earth Mover’s Distance based Similarity Search at Scale"
+    },
+    {
+      "title": "Yu Tang†, Leong Hou U‡, Yilun Cai†, Nikos Mamoulis†, Reynold Cheng†",
+      "level": 3,
+      "line_num": 2,
+      "content_preview": "Yu Tang†, Leong Hou U‡, Yilun Cai†, Nikos Mamoulis†, Reynold Cheng†"
+    },
+    {
+      "title": "ABSTRACT",
+      "level": 2,
+      "line_num": 5,
+      "content_preview": "ABSTRACT"
+    },
+    {
+      "title": "Earth Mover’s Distance (EMD), as a similarity measure, has re-",
+      "level": 3,
+      "line_num": 6,
+      "content_preview": "Earth Mover’s Distance (EMD), as a similarity measure, has re-"
+    },
+    {
+      "title": "EMD reﬁnement strategy, reduces the amount of needless compu-",
+      "level": 3,
+      "line_num": 23,
+      "content_preview": "EMD reﬁnement strategy, reduces the amount of needless compu-"
+    },
+    {
+      "title": "Given two histograms (e.g., probability distributions), their",
+      "level": 3,
+      "line_num": 28,
+      "content_preview": "Given two histograms (e.g., probability distributions), their"
+    },
+    {
+      "title": "Earth Mover’s Distance(EMD) is deﬁned as the minimum amount",
+      "level": 3,
+      "line_num": 29,
+      "content_preview": "Earth Mover’s Distance(EMD) is deﬁned as the minimum amount"
+    },
+    {
+      "title": "This work is licensed under the Creative Commons Attribution-",
+      "level": 3,
+      "line_num": 42,
+      "content_preview": "This work is licensed under the Creative Commons Attribution-"
+    },
+    {
+      "title": "NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this li-",
+      "level": 3,
+      "line_num": 43,
+      "content_preview": "NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this li-"
+    },
+    {
+      "title": "Proceedings of the VLDB Endowment, V ol. 7, No. 4",
+      "level": 3,
+      "line_num": 49,
+      "content_preview": "Proceedings of the VLDB Endowment, V ol. 7, No. 4"
+    },
+    {
+      "title": "EMD-based similarity search has been extensively studied in [5,",
+      "level": 3,
+      "line_num": 51,
+      "content_preview": "EMD-based similarity search has been extensively studied in [5,"
+    },
+    {
+      "title": "D. All these works adopt the ﬁlter-and-reﬁnement framework; to",
+      "level": 3,
+      "line_num": 54,
+      "content_preview": "D. All these works adopt the ﬁlter-and-reﬁnement framework; to"
+    },
+    {
+      "title": "Actual EMD calculations1 are applied only between q and all ob-",
+      "level": 3,
+      "line_num": 59,
+      "content_preview": "Actual EMD calculations1 are applied only between q and all ob-"
+    },
+    {
+      "title": "In view of this, we focus on optimizing the reﬁnement phase",
+      "level": 3,
+      "line_num": 73,
+      "content_preview": "In view of this, we focus on optimizing the reﬁnement phase"
+    },
+    {
+      "title": "Min-cost ﬂow algorithms, such as SIA, only aim at efﬁciently",
+      "level": 3,
+      "line_num": 91,
+      "content_preview": "Min-cost ﬂow algorithms, such as SIA, only aim at efﬁciently"
+    },
+    {
+      "title": "Based on this, we introduce aprogressive bounding(PB) technique,",
+      "level": 3,
+      "line_num": 103,
+      "content_preview": "Based on this, we introduce aprogressive bounding(PB) technique,"
+    },
+    {
+      "title": "PB and DRO can be seamlessly integrated with any existing (and",
+      "level": 3,
+      "line_num": 111,
+      "content_preview": "PB and DRO can be seamlessly integrated with any existing (and"
+    },
+    {
+      "title": "The rest of the paper is organized as follows. Section 2 formally",
+      "level": 3,
+      "line_num": 118,
+      "content_preview": "The rest of the paper is organized as follows. Section 2 formally"
+    },
+    {
+      "title": "The Earth Mover’s Distance(EMD), ﬁrst introduced by the com-",
+      "level": 3,
+      "line_num": 129,
+      "content_preview": "The Earth Mover’s Distance(EMD), ﬁrst introduced by the com-"
+    },
+    {
+      "title": "C, where ci,j models cost of moving ﬂow from the i-th bin to the",
+      "level": 3,
+      "line_num": 135,
+      "content_preview": "C, where ci,j models cost of moving ﬂow from the i-th bin to the"
+    },
+    {
+      "title": "The cost matrix (a.k.a., ground distance) C can be designed by",
+      "level": 3,
+      "line_num": 144,
+      "content_preview": "The cost matrix (a.k.a., ground distance) C can be designed by"
+    },
+    {
+      "title": "We demonstrate the calculation and applicability of EMD via a",
+      "level": 3,
+      "line_num": 175,
+      "content_preview": "We demonstrate the calculation and applicability of EMD via a"
+    },
+    {
+      "title": "Jazz, andHouse, respectively). Figure 1(c) illustrates the best trans-",
+      "level": 3,
+      "line_num": 184,
+      "content_preview": "Jazz, andHouse, respectively). Figure 1(c) illustrates the best trans-"
+    },
+    {
+      "title": "In the transformation, f1,1 = 2 units are moved to p’sR&B (with",
+      "level": 3,
+      "line_num": 187,
+      "content_preview": "In the transformation, f1,1 = 2 units are moved to p’sR&B (with"
+    },
+    {
+      "title": "Download rates",
+      "level": 2,
+      "line_num": 199,
+      "content_preview": "Download rates"
+    },
+    {
+      "title": "R&B HouseSambaJazz",
+      "level": 2,
+      "line_num": 200,
+      "content_preview": "R&B HouseSambaJazz"
+    },
+    {
+      "title": "Download rates",
+      "level": 2,
+      "line_num": 202,
+      "content_preview": "Download rates"
+    },
+    {
+      "title": "HouseSambaJazz (b) p’s distribution",
+      "level": 2,
+      "line_num": 209,
+      "content_preview": "HouseSambaJazz (b) p’s distribution"
+    },
+    {
+      "title": "Download rates",
+      "level": 2,
+      "line_num": 210,
+      "content_preview": "Download rates"
+    },
+    {
+      "title": "R&B HouseSambaJazz (c) emd(q,p)",
+      "level": 2,
+      "line_num": 211,
+      "content_preview": "R&B HouseSambaJazz (c) emd(q,p)"
+    },
+    {
+      "title": "Figure 1: A concrete example of online music library analysis",
+      "level": 3,
+      "line_num": 212,
+      "content_preview": "Figure 1: A concrete example of online music library analysis"
+    },
+    {
+      "title": "Table 1: Cost matrix C of 4 music genres",
+      "level": 2,
+      "line_num": 213,
+      "content_preview": "Table 1: Cost matrix C of 4 music genres"
+    },
+    {
+      "title": "Figure 2: The ﬂow network of the music example",
+      "level": 3,
+      "line_num": 285,
+      "content_preview": "Figure 2: The ﬂow network of the music example"
+    },
+    {
+      "title": "EMD can be computed using linear programming [12] and net-",
+      "level": 3,
+      "line_num": 288,
+      "content_preview": "EMD can be computed using linear programming [12] and net-"
+    },
+    {
+      "title": "The successive shortest path (SSP) algorithm [1] is the most rep-",
+      "level": 3,
+      "line_num": 309,
+      "content_preview": "The successive shortest path (SSP) algorithm [1] is the most rep-"
+    },
+    {
+      "title": "DEFINITION 1 (F EASIBLE EDGE ). Given a ﬂow graph, a",
+      "level": 3,
+      "line_num": 332,
+      "content_preview": "DEFINITION 1 (F EASIBLE EDGE ). Given a ﬂow graph, a"
+    },
+    {
+      "title": "Figure 3: Augmenting 1 ﬂow on edge e(qs,ph)",
+      "level": 3,
+      "line_num": 348,
+      "content_preview": "Figure 3: Augmenting 1 ﬂow on edge e(qs,ph)"
+    },
+    {
+      "title": "Besides, the cost cf (u,v) of an edge e(u,v) is determined by its",
+      "level": 3,
+      "line_num": 349,
+      "content_preview": "Besides, the cost cf (u,v) of an edge e(u,v) is determined by its"
+    },
+    {
+      "title": "DEFINITION 2 (C OST OF FEASIBLE EDGE ). The cost of a",
+      "level": 3,
+      "line_num": 351,
+      "content_preview": "DEFINITION 2 (C OST OF FEASIBLE EDGE ). The cost of a"
+    },
+    {
+      "title": "For instance, the reverse edge e(p4,q2) in Figure 3(b) is feasi-",
+      "level": 3,
+      "line_num": 354,
+      "content_preview": "For instance, the reverse edge e(p4,q2) in Figure 3(b) is feasi-"
+    },
+    {
+      "title": "As discussed above, a feasible path starts from a vertex inq, which",
+      "level": 3,
+      "line_num": 358,
+      "content_preview": "As discussed above, a feasible path starts from a vertex inq, which"
+    },
+    {
+      "title": "Computing the EMD, using SSP requires O(F|E|log|V|) time,",
+      "level": 3,
+      "line_num": 376,
+      "content_preview": "Computing the EMD, using SSP requires O(F|E|log|V|) time,"
+    },
+    {
+      "title": "O(|E|log|V|) is the cost of a shortest path search on a bipartite",
+      "level": 3,
+      "line_num": 378,
+      "content_preview": "O(|E|log|V|) is the cost of a shortest path search on a bipartite"
+    },
+    {
+      "title": "Full projections",
+      "level": 2,
+      "line_num": 386,
+      "content_preview": "Full projections"
+    },
+    {
+      "title": "Dimensionality",
+      "level": 2,
+      "line_num": 387,
+      "content_preview": "Dimensionality"
+    },
+    {
+      "title": "Independent",
+      "level": 2,
+      "line_num": 389,
+      "content_preview": "Independent"
+    },
+    {
+      "title": "Normal distribution index",
+      "level": 2,
+      "line_num": 391,
+      "content_preview": "Normal distribution index"
+    },
+    {
+      "title": "Black-box EMD",
+      "level": 2,
+      "line_num": 392,
+      "content_preview": "Black-box EMD"
+    },
+    {
+      "title": "Figure 4: Filter-and-reﬁnement framework",
+      "level": 2,
+      "line_num": 396,
+      "content_preview": "Figure 4: Filter-and-reﬁnement framework"
+    },
+    {
+      "title": "Given a collection Dof histograms and a query histogram q, a",
+      "level": 3,
+      "line_num": 397,
+      "content_preview": "Given a collection Dof histograms and a query histogram q, a"
+    },
+    {
+      "title": "Figure 4. For histograms p that cannot be pruned by the ﬁlters, the",
+      "level": 3,
+      "line_num": 411,
+      "content_preview": "Figure 4. For histograms p that cannot be pruned by the ﬁlters, the"
+    },
+    {
+      "title": "Algorithm 1 FILTER -AND -REFINEMENT FOR k-NN",
+      "level": 3,
+      "line_num": 415,
+      "content_preview": "Algorithm 1 FILTER -AND -REFINEMENT FOR k-NN"
+    },
+    {
+      "title": "H: heap, θ: pruning threshold",
+      "level": 2,
+      "line_num": 416,
+      "content_preview": "H: heap, θ: pruning threshold"
+    },
+    {
+      "title": "Algorithm k-NN(Query q, Index I, Filters ∆)",
+      "level": 3,
+      "line_num": 417,
+      "content_preview": "Algorithm k-NN(Query q, Index I, Filters ∆)"
+    },
+    {
+      "title": "Algorithm 1 is a pseudocode of the ﬁlter-and-reﬁnement frame-",
+      "level": 3,
+      "line_num": 428,
+      "content_preview": "Algorithm 1 is a pseudocode of the ﬁlter-and-reﬁnement frame-"
+    },
+    {
+      "title": "These indexes provide a getnext function which returns at each",
+      "level": 3,
+      "line_num": 433,
+      "content_preview": "These indexes provide a getnext function which returns at each"
+    },
+    {
+      "title": "The k-NN candidates are conﬁrmed as the result, when no more ob-",
+      "level": 3,
+      "line_num": 447,
+      "content_preview": "The k-NN candidates are conﬁrmed as the result, when no more ob-"
+    },
+    {
+      "title": "Computing EMD by SSP requires having the complete bipar-",
+      "level": 3,
+      "line_num": 451,
+      "content_preview": "Computing EMD by SSP requires having the complete bipar-"
+    },
+    {
+      "title": "SIA incrementally constructs a partial ﬂow graph G′by inserting",
+      "level": 3,
+      "line_num": 458,
+      "content_preview": "SIA incrementally constructs a partial ﬂow graph G′by inserting"
+    },
+    {
+      "title": "The question now turns to how we can guarantee that the min-",
+      "level": 3,
+      "line_num": 470,
+      "content_preview": "The question now turns to how we can guarantee that the min-"
+    },
+    {
+      "title": "Figure 5: SIA on a partial ﬂow graph",
+      "level": 2,
+      "line_num": 508,
+      "content_preview": "Figure 5: SIA on a partial ﬂow graph"
+    },
+    {
+      "title": "Π4; the expansion of G′can only reduce the cost of the feasible",
+      "level": 3,
+      "line_num": 512,
+      "content_preview": "Π4; the expansion of G′can only reduce the cost of the feasible"
+    },
+    {
+      "title": "Algorithm 2 SIA BASED EMD CALCULATION",
+      "level": 2,
+      "line_num": 515,
+      "content_preview": "Algorithm 2 SIA BASED EMD CALCULATION"
+    },
+    {
+      "title": "Π: distance bound, G′: running subgraph",
+      "level": 2,
+      "line_num": 516,
+      "content_preview": "Π: distance bound, G′: running subgraph"
+    },
+    {
+      "title": "Algorithm emdSIA (Histograms q, p)",
+      "level": 2,
+      "line_num": 517,
+      "content_preview": "Algorithm emdSIA (Histograms q, p)"
+    },
+    {
+      "title": "Algorithm 2 is a pseudocode of SIA for EMD calculations. At",
+      "level": 3,
+      "line_num": 527,
+      "content_preview": "Algorithm 2 is a pseudocode of SIA for EMD calculations. At"
+    },
+    {
+      "title": "Dijkstra’s shortest path algorithm [1] inG′from any feasible vertex",
+      "level": 3,
+      "line_num": 529,
+      "content_preview": "Dijkstra’s shortest path algorithm [1] inG′from any feasible vertex"
+    },
+    {
+      "title": "We demonstrate the functionality of SIA by the example of Fig-",
+      "level": 3,
+      "line_num": 536,
+      "content_preview": "We demonstrate the functionality of SIA by the example of Fig-"
+    },
+    {
+      "title": "Dijkstra search. The correctness proof and optimization details are",
+      "level": 3,
+      "line_num": 551,
+      "content_preview": "Dijkstra search. The correctness proof and optimization details are"
+    },
+    {
+      "title": "Figure 6: A running example of SIA-EMD",
+      "level": 2,
+      "line_num": 632,
+      "content_preview": "Figure 6: A running example of SIA-EMD"
+    },
+    {
+      "title": "In this work, we use SIA as a module for computing the EMD",
+      "level": 3,
+      "line_num": 633,
+      "content_preview": "In this work, we use SIA as a module for computing the EMD"
+    },
+    {
+      "title": "In this section, we propose two novel techniques, progressive",
+      "level": 3,
+      "line_num": 643,
+      "content_preview": "In this section, we propose two novel techniques, progressive"
+    },
+    {
+      "title": "According to previous experimental studies (e.g., [25,32]), more",
+      "level": 3,
+      "line_num": 653,
+      "content_preview": "According to previous experimental studies (e.g., [25,32]), more"
+    },
+    {
+      "title": "Iterations",
+      "level": 2,
+      "line_num": 668,
+      "content_preview": "Iterations"
+    },
+    {
+      "title": "Iterations",
+      "level": 2,
+      "line_num": 675,
+      "content_preview": "Iterations"
+    },
+    {
+      "title": "Current cost",
+      "level": 2,
+      "line_num": 681,
+      "content_preview": "Current cost"
+    },
+    {
+      "title": "Best bound from filter phase",
+      "level": 2,
+      "line_num": 683,
+      "content_preview": "Best bound from filter phase"
+    },
+    {
+      "title": "Pruning threshold (b) Current cost",
+      "level": 2,
+      "line_num": 684,
+      "content_preview": "Pruning threshold (b) Current cost"
+    },
+    {
+      "title": "Figure 7: SIA performance on different iterations",
+      "level": 3,
+      "line_num": 685,
+      "content_preview": "Figure 7: SIA performance on different iterations"
+    },
+    {
+      "title": "As discussed in Section 3, we adopt SIA for exact EMD calcu-",
+      "level": 3,
+      "line_num": 686,
+      "content_preview": "As discussed in Section 3, we adopt SIA for exact EMD calcu-"
+    },
+    {
+      "title": "In order to terminate SIA as early as possible for objects that do",
+      "level": 3,
+      "line_num": 701,
+      "content_preview": "In order to terminate SIA as early as possible for objects that do"
+    },
+    {
+      "title": "First, we use a property of SSP (and SIA); at each iteration, the",
+      "level": 3,
+      "line_num": 708,
+      "content_preview": "First, we use a property of SSP (and SIA); at each iteration, the"
+    },
+    {
+      "title": "SIA / SSP",
+      "level": 2,
+      "line_num": 741,
+      "content_preview": "SIA / SSP"
+    },
+    {
+      "title": "Figure 8: Running lower bound, emd−",
+      "level": 2,
+      "line_num": 751,
+      "content_preview": "Figure 8: Running lower bound, emd−"
+    },
+    {
+      "title": "Although the current cost could be intuitively used as a lower",
+      "level": 3,
+      "line_num": 752,
+      "content_preview": "Although the current cost could be intuitively used as a lower"
+    },
+    {
+      "title": "Thereby, we propose a running lower bound , emd−, which not",
+      "level": 3,
+      "line_num": 755,
+      "content_preview": "Thereby, we propose a running lower bound , emd−, which not"
+    },
+    {
+      "title": "We now formally deﬁne emd−. First, Lemma 1 shows that the",
+      "level": 3,
+      "line_num": 768,
+      "content_preview": "We now formally deﬁne emd−. First, Lemma 1 shows that the"
+    },
+    {
+      "title": "Given a ﬂow graph for which there is a sequence of mi",
+      "level": 3,
+      "line_num": 773,
+      "content_preview": "Given a ﬂow graph for which there is a sequence of mi"
+    },
+    {
+      "title": "PROOF. To prove the statement, it sufﬁces to show that the cost",
+      "level": 3,
+      "line_num": 778,
+      "content_preview": "PROOF. To prove the statement, it sufﬁces to show that the cost"
+    },
+    {
+      "title": "We prove this by contradiction. Assume that the monotonicity",
+      "level": 3,
+      "line_num": 790,
+      "content_preview": "We prove this by contradiction. Assume that the monotonicity"
+    },
+    {
+      "title": "In addition, based on our assumption, no vertex violates the",
+      "level": 3,
+      "line_num": 805,
+      "content_preview": "In addition, based on our assumption, no vertex violates the"
+    },
+    {
+      "title": "By combining the equations, we get",
+      "level": 2,
+      "line_num": 810,
+      "content_preview": "By combining the equations, we get"
+    },
+    {
+      "title": "If e(qk,pj) is feasible in Gt−1, then:",
+      "level": 2,
+      "line_num": 816,
+      "content_preview": "If e(qk,pj) is feasible in Gt−1, then:"
+    },
+    {
+      "title": "Consider a ﬂow graph, such that for each node qi ∈q, there is a",
+      "level": 3,
+      "line_num": 836,
+      "content_preview": "Consider a ﬂow graph, such that for each node qi ∈q, there is a"
+    },
+    {
+      "title": "LEMMA 2 (C ORRECTNESS OF emd−). The running lower",
+      "level": 3,
+      "line_num": 850,
+      "content_preview": "LEMMA 2 (C ORRECTNESS OF emd−). The running lower"
+    },
+    {
+      "title": "PROOF. Trivial, due to the monotonicity of the shortest path",
+      "level": 3,
+      "line_num": 853,
+      "content_preview": "PROOF. Trivial, due to the monotonicity of the shortest path"
+    },
+    {
+      "title": "Table 2: Four augmented paths and their costs",
+      "level": 3,
+      "line_num": 857,
+      "content_preview": "Table 2: Four augmented paths and their costs"
+    },
+    {
+      "title": "Using Deﬁnition 3, we can compute emd−by adding to current",
+      "level": 3,
+      "line_num": 863,
+      "content_preview": "Using Deﬁnition 3, we can compute emd−by adding to current"
+    },
+    {
+      "title": "Whenever a new feasible path sp from a vertex qi is augmented",
+      "level": 3,
+      "line_num": 876,
+      "content_preview": "Whenever a new feasible path sp from a vertex qi is augmented"
+    },
+    {
+      "title": "Summing up, our progressive bounding (PB) approach, during",
+      "level": 3,
+      "line_num": 883,
+      "content_preview": "Summing up, our progressive bounding (PB) approach, during"
+    },
+    {
+      "title": "PB saves unnecessary computations at the latter (expensive) stages",
+      "level": 3,
+      "line_num": 887,
+      "content_preview": "PB saves unnecessary computations at the latter (expensive) stages"
+    },
+    {
+      "title": "So far, we have discussed how to terminate a single EMD cal-",
+      "level": 3,
+      "line_num": 892,
+      "content_preview": "So far, we have discussed how to terminate a single EMD cal-"
+    },
+    {
+      "title": "EMD calculations but also on the amount and progresses of EMD",
+      "level": 3,
+      "line_num": 895,
+      "content_preview": "EMD calculations but also on the amount and progresses of EMD"
+    },
+    {
+      "title": "Figure 9 shows the EMD values of the accessed objects during",
+      "level": 3,
+      "line_num": 900,
+      "content_preview": "Figure 9 shows the EMD values of the accessed objects during"
+    },
+    {
+      "title": "Access order",
+      "level": 2,
+      "line_num": 911,
+      "content_preview": "Access order"
+    },
+    {
+      "title": "Pruning threshold",
+      "level": 2,
+      "line_num": 917,
+      "content_preview": "Pruning threshold"
+    },
+    {
+      "title": "Best bound from filter phase Real EMD",
+      "level": 2,
+      "line_num": 919,
+      "content_preview": "Best bound from filter phase Real EMD"
+    },
+    {
+      "title": "Figure 9: Access order of a k-NN search",
+      "level": 2,
+      "line_num": 920,
+      "content_preview": "Figure 9: Access order of a k-NN search"
+    },
+    {
+      "title": "The main idea behind our dynamic reﬁnement ordering (DRO)",
+      "level": 3,
+      "line_num": 939,
+      "content_preview": "The main idea behind our dynamic reﬁnement ordering (DRO)"
+    },
+    {
+      "title": "Algorithm 3 is a pseudocode of the DRO strategy for EMD-",
+      "level": 3,
+      "line_num": 968,
+      "content_preview": "Algorithm 3 is a pseudocode of the DRO strategy for EMD-"
+    },
+    {
+      "title": "Algorithm 3 DYNAMIC REFINEMENT ORDERING",
+      "level": 2,
+      "line_num": 977,
+      "content_preview": "Algorithm 3 DYNAMIC REFINEMENT ORDERING"
+    },
+    {
+      "title": "H, PL: heap, θ: pruning threshold",
+      "level": 2,
+      "line_num": 978,
+      "content_preview": "H, PL: heap, θ: pruning threshold"
+    },
+    {
+      "title": "Function getnext ﬁlter(Query q, Index I, Filters ∆)",
+      "level": 3,
+      "line_num": 979,
+      "content_preview": "Function getnext ﬁlter(Query q, Index I, Filters ∆)"
+    },
+    {
+      "title": "Algorithm DRO-kNN(Query q, Index I, size b)",
+      "level": 3,
+      "line_num": 985,
+      "content_preview": "Algorithm DRO-kNN(Query q, Index I, size b)"
+    },
+    {
+      "title": "DRO de-heaps the top objectp in PL and progressively reﬁnes the",
+      "level": 3,
+      "line_num": 1017,
+      "content_preview": "DRO de-heaps the top objectp in PL and progressively reﬁnes the"
+    },
+    {
+      "title": "PL objects whose lower bounds are already greater than or equal",
+      "level": 3,
+      "line_num": 1033,
+      "content_preview": "PL objects whose lower bounds are already greater than or equal"
+    },
+    {
+      "title": "Pruning",
+      "level": 2,
+      "line_num": 1052,
+      "content_preview": "Pruning"
+    },
+    {
+      "title": "Figure 10: Prioritizing reﬁnement order",
+      "level": 2,
+      "line_num": 1054,
+      "content_preview": "Figure 10: Prioritizing reﬁnement order"
+    },
+    {
+      "title": "Figure 10 illustrates a running instance of DRO. The current",
+      "level": 3,
+      "line_num": 1055,
+      "content_preview": "Figure 10 illustrates a running instance of DRO. The current"
+    },
+    {
+      "title": "Note that the currently best object in PL (in terms of emd−) is",
+      "level": 3,
+      "line_num": 1059,
+      "content_preview": "Note that the currently best object in PL (in terms of emd−) is"
+    },
+    {
+      "title": "After the augmentation, the EMD bounds of p4 are updated to the",
+      "level": 3,
+      "line_num": 1061,
+      "content_preview": "After the augmentation, the EMD bounds of p4 are updated to the"
+    },
+    {
+      "title": "Observe that now emd+",
+      "level": 2,
+      "line_num": 1067,
+      "content_preview": "Observe that now emd+"
+    },
+    {
+      "title": "DRO is expected to be more efﬁcient than considering the can-",
+      "level": 3,
+      "line_num": 1071,
+      "content_preview": "DRO is expected to be more efﬁcient than considering the can-"
+    },
+    {
+      "title": "EMD individually. Concurrent reﬁnement by prioritizing candi-",
+      "level": 3,
+      "line_num": 1073,
+      "content_preview": "EMD individually. Concurrent reﬁnement by prioritizing candi-"
+    },
+    {
+      "title": "SIA for many candidates and helps in deriving upper boundsemd+",
+      "level": 3,
+      "line_num": 1075,
+      "content_preview": "SIA for many candidates and helps in deriving upper boundsemd+"
+    },
+    {
+      "title": "The choice of b (i.e., the size of PL) affects the performance",
+      "level": 3,
+      "line_num": 1081,
+      "content_preview": "The choice of b (i.e., the size of PL) affects the performance"
+    },
+    {
+      "title": "PL is full). When the size of PL exceeds a limit, we stop inserting",
+      "level": 3,
+      "line_num": 1094,
+      "content_preview": "PL is full). When the size of PL exceeds a limit, we stop inserting"
+    },
+    {
+      "title": "We now discuss the details of computing and maintaining arun-",
+      "level": 3,
+      "line_num": 1100,
+      "content_preview": "We now discuss the details of computing and maintaining arun-"
+    },
+    {
+      "title": "EMD deﬁnition, any ﬂow matrix F satisfying all three conditions",
+      "level": 3,
+      "line_num": 1106,
+      "content_preview": "EMD deﬁnition, any ﬂow matrix F satisfying all three conditions"
+    },
+    {
+      "title": "Thus, ﬁnding a possible ﬂow matrix F is equivalent to ﬁnding a",
+      "level": 3,
+      "line_num": 1111,
+      "content_preview": "Thus, ﬁnding a possible ﬂow matrix F is equivalent to ﬁnding a"
+    },
+    {
+      "title": "Based on the above discussion, we can deﬁne a running upper",
+      "level": 3,
+      "line_num": 1113,
+      "content_preview": "Based on the above discussion, we can deﬁne a running upper"
+    },
+    {
+      "title": "Consider a ﬂow graph, such that for each node pi ∈ p,",
+      "level": 3,
+      "line_num": 1123,
+      "content_preview": "Consider a ﬂow graph, such that for each node pi ∈ p,"
+    },
+    {
+      "title": "To compute emd+, we can apply any maximum ﬂow algorithm;",
+      "level": 3,
+      "line_num": 1135,
+      "content_preview": "To compute emd+, we can apply any maximum ﬂow algorithm;"
+    },
+    {
+      "title": "EMD ﬂow network topology; note that the EMD ﬂow graph is a",
+      "level": 3,
+      "line_num": 1140,
+      "content_preview": "EMD ﬂow network topology; note that the EMD ﬂow graph is a"
+    },
+    {
+      "title": "Algorithm 4 GREEDY UPPER BOUND",
+      "level": 2,
+      "line_num": 1150,
+      "content_preview": "Algorithm 4 GREEDY UPPER BOUND"
+    },
+    {
+      "title": "Algorithm GreedyUB(Histograms q, p)",
+      "level": 2,
+      "line_num": 1151,
+      "content_preview": "Algorithm GreedyUB(Histograms q, p)"
+    },
+    {
+      "title": "To facilitate GreedyUB, for each row iof the cost matrix C, we",
+      "level": 3,
+      "line_num": 1161,
+      "content_preview": "To facilitate GreedyUB, for each row iof the cost matrix C, we"
+    },
+    {
+      "title": "Then, in Algorithm 4 line 4, this order is considered for identifying",
+      "level": 3,
+      "line_num": 1166,
+      "content_preview": "Then, in Algorithm 4 line 4, this order is considered for identifying"
+    },
+    {
+      "title": "Similar to emd−, we can update emd+ incrementally after each",
+      "level": 3,
+      "line_num": 1172,
+      "content_preview": "Similar to emd−, we can update emd+ incrementally after each"
+    },
+    {
+      "title": "In this section, we conduct extensive experiments to evaluate the",
+      "level": 3,
+      "line_num": 1182,
+      "content_preview": "In this section, we conduct extensive experiments to evaluate the"
+    },
+    {
+      "title": "Table 3: The statistics of six real datasets",
+      "level": 3,
+      "line_num": 1188,
+      "content_preview": "Table 3: The statistics of six real datasets"
+    },
+    {
+      "title": "Name #",
+      "level": 2,
+      "line_num": 1189,
+      "content_preview": "Name #"
+    },
+    {
+      "title": "Objs #",
+      "level": 2,
+      "line_num": 1190,
+      "content_preview": "Objs #"
+    },
+    {
+      "title": "Bins Description",
+      "level": 2,
+      "line_num": 1191,
+      "content_preview": "Bins Description"
+    },
+    {
+      "title": "RETIN",
+      "level": 2,
+      "line_num": 1192,
+      "content_preview": "RETIN"
+    },
+    {
+      "title": "A 3932 96 Feline",
+      "level": 2,
+      "line_num": 1193,
+      "content_preview": "A 3932 96 Feline"
+    },
+    {
+      "title": "IRMA 10K 199 Medical",
+      "level": 2,
+      "line_num": 1197,
+      "content_preview": "IRMA 10K 199 Medical"
+    },
+    {
+      "title": "FLICKR 680K 100 Images",
+      "level": 2,
+      "line_num": 1201,
+      "content_preview": "FLICKR 680K 100 Images"
+    },
+    {
+      "title": "ANORAMIO 500K 576 Images",
+      "level": 2,
+      "line_num": 1206,
+      "content_preview": "ANORAMIO 500K 576 Images"
+    },
+    {
+      "title": "FRIENDS 320K 768 Images",
+      "level": 2,
+      "line_num": 1210,
+      "content_preview": "FRIENDS 320K 768 Images"
+    },
+    {
+      "title": "ORLD 3M 1024 Images",
+      "level": 2,
+      "line_num": 1215,
+      "content_preview": "ORLD 3M 1024 Images"
+    },
+    {
+      "title": "We use six real datasets in our evaluation; their default statis-",
+      "level": 3,
+      "line_num": 1217,
+      "content_preview": "We use six real datasets in our evaluation; their default statis-"
+    },
+    {
+      "title": "RETINA and FLICKR as suggested in [25]: each image is divided",
+      "level": 3,
+      "line_num": 1221,
+      "content_preview": "RETINA and FLICKR as suggested in [25]: each image is divided"
+    },
+    {
+      "title": "Similar to [25,30,32], we use Euclidean distance as the ground dis-",
+      "level": 3,
+      "line_num": 1225,
+      "content_preview": "Similar to [25,30,32], we use Euclidean distance as the ground dis-"
+    },
+    {
+      "title": "In the evaluation, we compare a set of EMD computation meth-",
+      "level": 3,
+      "line_num": 1228,
+      "content_preview": "In the evaluation, we compare a set of EMD computation meth-"
+    },
+    {
+      "title": "IRMA, on which the ﬁlter has positive effects as in [25]), and in-",
+      "level": 3,
+      "line_num": 1236,
+      "content_preview": "IRMA, on which the ﬁlter has positive effects as in [25]), and in-"
+    },
+    {
+      "title": "SSP (Section 2.1), (vi) SIA (Section 3). In addition, we evaluate",
+      "level": 3,
+      "line_num": 1241,
+      "content_preview": "SSP (Section 2.1), (vi) SIA (Section 3). In addition, we evaluate"
+    },
+    {
+      "title": "First, we compare the performance of different black-box EMD",
+      "level": 3,
+      "line_num": 1251,
+      "content_preview": "First, we compare the performance of different black-box EMD"
+    },
+    {
+      "title": "SIA scales well with the problem dimensionality (i.e., the number",
+      "level": 3,
+      "line_num": 1257,
+      "content_preview": "SIA scales well with the problem dimensionality (i.e., the number"
+    },
+    {
+      "title": "Table 4: Comparison of black-box EMD computation methods",
+      "level": 3,
+      "line_num": 1263,
+      "content_preview": "Table 4: Comparison of black-box EMD computation methods"
+    },
+    {
+      "title": "RETIN",
+      "level": 2,
+      "line_num": 1264,
+      "content_preview": "RETIN"
+    },
+    {
+      "title": "A IRMA FLICKR P",
+      "level": 2,
+      "line_num": 1265,
+      "content_preview": "A IRMA FLICKR P"
+    },
+    {
+      "title": "ANO. FRIENDS W",
+      "level": 2,
+      "line_num": 1266,
+      "content_preview": "ANO. FRIENDS W"
+    },
+    {
+      "title": "ORLD",
+      "level": 2,
+      "line_num": 1267,
+      "content_preview": "ORLD"
+    },
+    {
+      "title": "Query",
+      "level": 2,
+      "line_num": 1268,
+      "content_preview": "Query"
+    },
+    {
+      "title": "CAP 0.68s 3.90s 7.89s 803s 3279s 22715s",
+      "level": 2,
+      "line_num": 1270,
+      "content_preview": "CAP 0.68s 3.90s 7.89s 803s 3279s 22715s"
+    },
+    {
+      "title": "COS 1.13s 6.48s 13.58s 1394s 5628s 48917s",
+      "level": 3,
+      "line_num": 1271,
+      "content_preview": "COS 1.13s 6.48s 13.58s 1394s 5628s 48917s"
+    },
+    {
+      "title": "NET 0.52s 4.13s 7.04s 763s 3573s 22774s",
+      "level": 2,
+      "line_num": 1272,
+      "content_preview": "NET 0.52s 4.13s 7.04s 763s 3573s 22774s"
+    },
+    {
+      "title": "SSP 0.57s 6.14s 7.52s 2048s 10370s 65731s",
+      "level": 3,
+      "line_num": 1273,
+      "content_preview": "SSP 0.57s 6.14s 7.52s 2048s 10370s 65731s"
+    },
+    {
+      "title": "TRA 0.57s 8.30s 7.72s 3395s 15307s 137414s",
+      "level": 3,
+      "line_num": 1274,
+      "content_preview": "TRA 0.57s 8.30s 7.72s 3395s 15307s 137414s"
+    },
+    {
+      "title": "SIA 0.17s 1.51s 2.77s 318s 1362s 7082s",
+      "level": 2,
+      "line_num": 1275,
+      "content_preview": "SIA 0.17s 1.51s 2.77s 318s 1362s 7082s"
+    },
+    {
+      "title": "Filter",
+      "level": 2,
+      "line_num": 1276,
+      "content_preview": "Filter"
+    },
+    {
+      "title": "RETINA, IRMA, PANORAMIO, FRIENDS, and WORLD.11 SIA",
+      "level": 3,
+      "line_num": 1279,
+      "content_preview": "RETINA, IRMA, PANORAMIO, FRIENDS, and WORLD.11 SIA"
+    },
+    {
+      "title": "Note that the relative performance difference between methods is",
+      "level": 3,
+      "line_num": 1282,
+      "content_preview": "Note that the relative performance difference between methods is"
+    },
+    {
+      "title": "Next, we evaluate the improvement offered by our progressive",
+      "level": 3,
+      "line_num": 1288,
+      "content_preview": "Next, we evaluate the improvement offered by our progressive"
+    },
+    {
+      "title": "In summary, DRO is the recommended methodology for EMD-",
+      "level": 3,
+      "line_num": 1305,
+      "content_preview": "In summary, DRO is the recommended methodology for EMD-"
+    },
+    {
+      "title": "Notably, all previous works[5,25,30,32] adopt transportation sim-",
+      "level": 3,
+      "line_num": 1308,
+      "content_preview": "Notably, all previous works[5,25,30,32] adopt transportation sim-"
+    },
+    {
+      "title": "Room for Improvement. So far, we have shown the superiority",
+      "level": 3,
+      "line_num": 1312,
+      "content_preview": "Room for Improvement. So far, we have shown the superiority"
+    },
+    {
+      "title": "Index) assumes that an oracle index is available which offers an",
+      "level": 3,
+      "line_num": 1320,
+      "content_preview": "Index) assumes that an oracle index is available which offers an"
+    },
+    {
+      "title": "Figure 13 shows the query time of four methods, PB, DRO, ESS,",
+      "level": 3,
+      "line_num": 1327,
+      "content_preview": "Figure 13 shows the query time of four methods, PB, DRO, ESS,"
+    },
+    {
+      "title": "SIA (b) IRMA",
+      "level": 2,
+      "line_num": 1356,
+      "content_preview": "SIA (b) IRMA"
+    },
+    {
+      "title": "SIA (c) PANORAMIO",
+      "level": 2,
+      "line_num": 1370,
+      "content_preview": "SIA (c) PANORAMIO"
+    },
+    {
+      "title": "SIA (d) FRIENDS",
+      "level": 2,
+      "line_num": 1383,
+      "content_preview": "SIA (d) FRIENDS"
+    },
+    {
+      "title": "SIA (e) WORLD",
+      "level": 2,
+      "line_num": 1397,
+      "content_preview": "SIA (e) WORLD"
+    },
+    {
+      "title": "Figure 11: Performance of black-box EMD computation methods varying on k",
+      "level": 3,
+      "line_num": 1398,
+      "content_preview": "Figure 11: Performance of black-box EMD computation methods varying on k"
+    },
+    {
+      "title": "DRO (b) IRMA",
+      "level": 2,
+      "line_num": 1417,
+      "content_preview": "DRO (b) IRMA"
+    },
+    {
+      "title": "Figure 12: Performance of SIA, PB and DRO varying on k",
+      "level": 3,
+      "line_num": 1462,
+      "content_preview": "Figure 12: Performance of SIA, PB and DRO varying on k"
+    },
+    {
+      "title": "ESS (b) IRMA",
+      "level": 2,
+      "line_num": 1485,
+      "content_preview": "ESS (b) IRMA"
+    },
+    {
+      "title": "ESS (c) PANORAMIO",
+      "level": 2,
+      "line_num": 1496,
+      "content_preview": "ESS (c) PANORAMIO"
+    },
+    {
+      "title": "ESS (d) FRIENDS",
+      "level": 2,
+      "line_num": 1507,
+      "content_preview": "ESS (d) FRIENDS"
+    },
+    {
+      "title": "ESS (e) WORLD",
+      "level": 2,
+      "line_num": 1519,
+      "content_preview": "ESS (e) WORLD"
+    },
+    {
+      "title": "Figure 13: Closeness of PB and DRO to the oracle methods (query time)",
+      "level": 3,
+      "line_num": 1520,
+      "content_preview": "Figure 13: Closeness of PB and DRO to the oracle methods (query time)"
+    },
+    {
+      "title": "PB-C",
+      "level": 2,
+      "line_num": 1531,
+      "content_preview": "PB-C"
+    },
+    {
+      "title": "DRO-C",
+      "level": 2,
+      "line_num": 1532,
+      "content_preview": "DRO-C"
+    },
+    {
+      "title": "PB-C",
+      "level": 2,
+      "line_num": 1545,
+      "content_preview": "PB-C"
+    },
+    {
+      "title": "DRO-C (b) IRMA",
+      "level": 2,
+      "line_num": 1546,
+      "content_preview": "DRO-C (b) IRMA"
+    },
+    {
+      "title": "PB-C",
+      "level": 2,
+      "line_num": 1556,
+      "content_preview": "PB-C"
+    },
+    {
+      "title": "DRO-C (c) PANORAMIO",
+      "level": 2,
+      "line_num": 1557,
+      "content_preview": "DRO-C (c) PANORAMIO"
+    },
+    {
+      "title": "PB-C",
+      "level": 2,
+      "line_num": 1569,
+      "content_preview": "PB-C"
+    },
+    {
+      "title": "DRO-C (d) FRIENDS",
+      "level": 2,
+      "line_num": 1570,
+      "content_preview": "DRO-C (d) FRIENDS"
+    }
+  ],
+  "line_count": 1951
+}

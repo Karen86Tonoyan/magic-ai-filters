@@ -1,0 +1,84 @@
+{
+  "question": "Information Science Statistics",
+  "answer": "Na podstawie mapy sekcji najbardziej trafne obszary to: Information Science and Statistics, Information Science and Statistics, Science and Department. Odpowiedź powinna zostać rozwinięta z tych ścieżek dowodu.",
+  "evidence_paths": [
+    "examples\\documents\\PRML.pdf > Information Science and Statistics",
+    "examples\\documents\\PRML.pdf > Information Science and Statistics",
+    "examples\\documents\\PRML.pdf > Science and Department",
+    "examples\\documents\\PRML.pdf > Science"
+  ],
+  "matched_sections": [
+    {
+      "id": "sec_8744192",
+      "title": "Information Science and Statistics",
+      "level": 2,
+      "line_start": 1,
+      "line_end": null,
+      "hierarchy": [
+        "Information Science and Statistics"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Information Science and Statistics",
+      "score": 6,
+      "matched_terms": [
+        "information",
+        "scienc",
+        "statistic"
+      ]
+    },
+    {
+      "id": "sec_8744192",
+      "title": "Information Science and Statistics",
+      "level": 2,
+      "line_start": 6,
+      "line_end": null,
+      "hierarchy": [
+        "Information Science and Statistics"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Information Science and Statistics",
+      "score": 6,
+      "matched_terms": [
+        "information",
+        "scienc",
+        "statistic"
+      ]
+    },
+    {
+      "id": "sec_0730472",
+      "title": "Science and Department",
+      "level": 2,
+      "line_start": 34,
+      "line_end": null,
+      "hierarchy": [
+        "Science and Department"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Science and Department",
+      "score": 2,
+      "matched_terms": [
+        "scienc"
+      ]
+    },
+    {
+      "id": "sec_3490153",
+      "title": "Science",
+      "level": 2,
+      "line_start": 42,
+      "line_end": null,
+      "hierarchy": [
+        "Science"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Science",
+      "score": 2,
+      "matched_terms": [
+        "scienc"
+      ]
+    }
+  ],
+  "confidence": 1.0,
+  "missing_context": [],
+  "strict": {
+    "enabled": true,
+    "passed": true,
+    "min_confidence": 0.6,
+    "min_evidence_paths": 2
+  }
+}

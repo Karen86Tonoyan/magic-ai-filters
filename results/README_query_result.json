@@ -1,0 +1,103 @@
+{
+  "question": "PageIndex core features and deployment options",
+  "answer": "Na podstawie mapy sekcji najbardziej trafne obszary to: 🎯 Core Features, 🛠️ Deployment Options, PageIndex: Vectorless, Reasoning-based RAG. Odpowiedź powinna zostać rozwinięta z tych ścieżek dowodu.",
+  "evidence_paths": [
+    "README.md > 📑 Introduction to PageIndex > 🎯 Core Features",
+    "README.md > 📑 Introduction to PageIndex > 🛠️ Deployment Options",
+    "README.md > PageIndex: Vectorless, Reasoning-based RAG",
+    "README.md > 📑 Introduction to PageIndex",
+    "README.md > 📑 Introduction to PageIndex > 📍 Explore PageIndex"
+  ],
+  "matched_sections": [
+    {
+      "id": "sec_1700162",
+      "title": "🎯 Core Features",
+      "level": 2,
+      "line_start": 62,
+      "line_end": null,
+      "hierarchy": [
+        "📑 Introduction to PageIndex",
+        "🎯 Core Features"
+      ],
+      "evidence_path": "README.md > 📑 Introduction to PageIndex > 🎯 Core Features",
+      "score": 5,
+      "matched_terms": [
+        "core",
+        "features",
+        "pageindex"
+      ]
+    },
+    {
+      "id": "sec_3705348",
+      "title": "🛠️ Deployment Options",
+      "level": 2,
+      "line_start": 79,
+      "line_end": null,
+      "hierarchy": [
+        "📑 Introduction to PageIndex",
+        "🛠️ Deployment Options"
+      ],
+      "evidence_path": "README.md > 📑 Introduction to PageIndex > 🛠️ Deployment Options",
+      "score": 5,
+      "matched_terms": [
+        "deployment",
+        "options",
+        "pageindex"
+      ]
+    },
+    {
+      "id": "sec_8111225",
+      "title": "PageIndex: Vectorless, Reasoning-based RAG",
+      "level": 1,
+      "line_start": 14,
+      "line_end": null,
+      "hierarchy": [
+        "PageIndex: Vectorless, Reasoning-based RAG"
+      ],
+      "evidence_path": "README.md > PageIndex: Vectorless, Reasoning-based RAG",
+      "score": 2,
+      "matched_terms": [
+        "pageindex"
+      ]
+    },
+    {
+      "id": "sec_8055516",
+      "title": "📑 Introduction to PageIndex",
+      "level": 1,
+      "line_start": 46,
+      "line_end": null,
+      "hierarchy": [
+        "📑 Introduction to PageIndex"
+      ],
+      "evidence_path": "README.md > 📑 Introduction to PageIndex",
+      "score": 2,
+      "matched_terms": [
+        "pageindex"
+      ]
+    },
+    {
+      "id": "sec_0368932",
+      "title": "📍 Explore PageIndex",
+      "level": 2,
+      "line_start": 73,
+      "line_end": null,
+      "hierarchy": [
+        "📑 Introduction to PageIndex",
+        "📍 Explore PageIndex"
+      ],
+      "evidence_path": "README.md > 📑 Introduction to PageIndex > 📍 Explore PageIndex",
+      "score": 2,
+      "matched_terms": [
+        "pageindex"
+      ]
+    }
+  ],
+  "confidence": 1.0,
+  "missing_context": [],
+  "strict": {
+    "enabled": true,
+    "passed": true,
+    "min_confidence": 0.6,
+    "min_evidence_paths": 1
+  }
+}

@@ -1,0 +1,203 @@
+{
+  "document_id": "README",
+  "source_path": "README.md",
+  "section_count": 17,
+  "sections": [
+    {
+      "id": "sec_4462187",
+      "title": "PageIndex: Vectorless, Reasoning-based RAG",
+      "level": 1,
+      "line_start": 14,
+      "line_end": null,
+      "hierarchy": [
+        "PageIndex: Vectorless, Reasoning-based RAG"
+      ],
+      "evidence_path": "README.md > PageIndex: Vectorless, Reasoning-based RAG"
+    },
+    {
+      "id": "sec_7752702",
+      "title": "📑 Introduction to PageIndex",
+      "level": 1,
+      "line_start": 46,
+      "line_end": null,
+      "hierarchy": [
+        "📑 Introduction to PageIndex"
+      ],
+      "evidence_path": "README.md > 📑 Introduction to PageIndex"
+    },
+    {
+      "id": "sec_6227164",
+      "title": "🎯 Core Features",
+      "level": 2,
+      "line_start": 62,
+      "line_end": null,
+      "hierarchy": [
+        "📑 Introduction to PageIndex",
+        "🎯 Core Features"
+      ],
+      "evidence_path": "README.md > 📑 Introduction to PageIndex > 🎯 Core Features"
+    },
+    {
+      "id": "sec_7740671",
+      "title": "📍 Explore PageIndex",
+      "level": 2,
+      "line_start": 73,
+      "line_end": null,
+      "hierarchy": [
+        "📑 Introduction to PageIndex",
+        "📍 Explore PageIndex"
+      ],
+      "evidence_path": "README.md > 📑 Introduction to PageIndex > 📍 Explore PageIndex"
+    },
+    {
+      "id": "sec_4087915",
+      "title": "🛠️ Deployment Options",
+      "level": 2,
+      "line_start": 79,
+      "line_end": null,
+      "hierarchy": [
+        "📑 Introduction to PageIndex",
+        "🛠️ Deployment Options"
+      ],
+      "evidence_path": "README.md > 📑 Introduction to PageIndex > 🛠️ Deployment Options"
+    },
+    {
+      "id": "sec_8154480",
+      "title": "🧪 Quick Hands-on",
+      "level": 2,
+      "line_start": 84,
+      "line_end": null,
+      "hierarchy": [
+        "📑 Introduction to PageIndex",
+        "🧪 Quick Hands-on"
+      ],
+      "evidence_path": "README.md > 📑 Introduction to PageIndex > 🧪 Quick Hands-on"
+    },
+    {
+      "id": "sec_8094848",
+      "title": "🌲 PageIndex Tree Structure",
+      "level": 1,
+      "line_start": 106,
+      "line_end": null,
+      "hierarchy": [
+        "🌲 PageIndex Tree Structure"
+      ],
+      "evidence_path": "README.md > 🌲 PageIndex Tree Structure"
+    },
+    {
+      "id": "sec_5667823",
+      "title": "⚙️ Package Usage",
+      "level": 1,
+      "line_start": 144,
+      "line_end": null,
+      "hierarchy": [
+        "⚙️ Package Usage"
+      ],
+      "evidence_path": "README.md > ⚙️ Package Usage"
+    },
+    {
+      "id": "sec_8649913",
+      "title": "1. Install dependencies",
+      "level": 2,
+      "line_start": 150,
+      "line_end": null,
+      "hierarchy": [
+        "⚙️ Package Usage",
+        "1. Install dependencies"
+      ],
+      "evidence_path": "README.md > ⚙️ Package Usage > 1. Install dependencies"
+    },
+    {
+      "id": "sec_4859678",
+      "title": "2. Set your LLM API key",
+      "level": 2,
+      "line_start": 156,
+      "line_end": null,
+      "hierarchy": [
+        "⚙️ Package Usage",
+        "2. Set your LLM API key"
+      ],
+      "evidence_path": "README.md > ⚙️ Package Usage > 2. Set your LLM API key"
+    },
+    {
+      "id": "sec_7263976",
+      "title": "3. Generate PageIndex structure for your PDF",
+      "level": 2,
+      "line_start": 164,
+      "line_end": null,
+      "hierarchy": [
+        "⚙️ Package Usage",
+        "3. Generate PageIndex structure for your PDF"
+      ],
+      "evidence_path": "README.md > ⚙️ Package Usage > 3. Generate PageIndex structure for your PDF"
+    },
+    {
+      "id": "sec_0131717",
+      "title": "Agentic Vectorless RAG: An Example",
+      "level": 2,
+      "line_start": 198,
+      "line_end": null,
+      "hierarchy": [
+        "⚙️ Package Usage",
+        "Agentic Vectorless RAG: An Example"
+      ],
+      "evidence_path": "README.md > ⚙️ Package Usage > Agentic Vectorless RAG: An Example"
+    },
+    {
+      "id": "sec_2102102",
+      "title": "☁️ Improved Tree Generation with PageIndex OCR",
+      "level": 1,
+      "line_start": 211,
+      "line_end": null,
+      "hierarchy": [
+        "☁️ Improved Tree Generation with PageIndex OCR"
+      ],
+      "evidence_path": "README.md > ☁️ Improved Tree Generation with PageIndex OCR"
+    },
+    {
+      "id": "sec_0319124",
+      "title": "📈 Case Study: PageIndex Leads Finance QA Benchmark",
+      "level": 1,
+      "line_start": 227,
+      "line_end": null,
+      "hierarchy": [
+        "📈 Case Study: PageIndex Leads Finance QA Benchmark"
+      ],
+      "evidence_path": "README.md > 📈 Case Study: PageIndex Leads Finance QA Benchmark"
+    },
+    {
+      "id": "sec_3812853",
+      "title": "🧭 Resources",
+      "level": 1,
+      "line_start": 243,
+      "line_end": null,
+      "hierarchy": [
+        "🧭 Resources"
+      ],
+      "evidence_path": "README.md > 🧭 Resources"
+    },
+    {
+      "id": "sec_1321023",
+      "title": "⭐ Support Us",
+      "level": 1,
+      "line_start": 252,
+      "line_end": null,
+      "hierarchy": [
+        "⭐ Support Us"
+      ],
+      "evidence_path": "README.md > ⭐ Support Us"
+    },
+    {
+      "id": "sec_9222597",
+      "title": "Connect with Us",
+      "level": 2,
+      "line_start": 283,
+      "line_end": null,
+      "hierarchy": [
+        "⭐ Support Us",
+        "Connect with Us"
+      ],
+      "evidence_path": "README.md > ⭐ Support Us > Connect with Us"
+    }
+  ]
+}

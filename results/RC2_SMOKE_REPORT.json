@@ -1,0 +1,84 @@
+{
+  "pipeline": "RC2_EVIDENCE_GATE_SMOKE",
+  "steps": [
+    {
+      "cmd": [
+        "C:\\Users\\ktono\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        ".\\alfa_index_document.py",
+        "--md_path",
+        ".\\README.md"
+      ],
+      "exit_code": 0,
+      "stdout": "Processing markdown file...\nExtracting nodes from markdown...\nExtracting text content from nodes...\nBuilding tree from nodes...\nFormatting tree structure...\nParsing done, saving to file...\nTree structure saved to: ./results/README_structure.json\nALFA_INDEX_DONE\nsource: README.md\nstructure_json: results\\README_structure.json\nsection_map_json: results\\README_alfa_section_map.json\n",
+      "stderr": "\u001b[92m04:07:29 - LiteLLM:WARNING\u001b[0m: get_model_cost_map.py:271 - LiteLLM: Failed to fetch remote model cost map from https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json: [WinError 10061] No connection could be made because the target machine actively refused it. Falling back to local backup.\n",
+      "name": "index_readme"
+    },
+    {
+      "cmd": [
+        "C:\\Users\\ktono\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        ".\\alfa_section_map_validate.py",
+        "C:\\Users\\ktono\\Downloads\\PageIndex\\results\\README_alfa_section_map.json"
+      ],
+      "exit_code": 0,
+      "stdout": "VALID SECTION MAP\ndocument_id: README\nsection_count: 17\n",
+      "stderr": "",
+      "name": "validate_section_map"
+    },
+    {
+      "cmd": [
+        "C:\\Users\\ktono\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        ".\\alfa_rc2_query.py",
+        "--section_map",
+        "C:\\Users\\ktono\\Downloads\\PageIndex\\results\\README_alfa_section_map.json",
+        "--question",
+        "PageIndex core features and deployment options",
+        "--json_out",
+        "C:\\Users\\ktono\\Downloads\\PageIndex\\results\\README_query_result.json",
+        "--strict",
+        "--min_confidence",
+        "0.6",
+        "--min_evidence_paths",
+        "1"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"question\": \"PageIndex core features and deployment options\",\n  \"answer\": \"Na podstawie mapy sekcji najbardziej trafne obszary to: 🎯 Core Features, 🛠️ Deployment Options, PageIndex: Vectorless, Reasoning-based RAG. Odpowiedź powinna zostać rozwinięta z tych ścieżek dowodu.\",\n  \"evidence_paths\": [\n    \"README.md > 📑 Introduction to PageIndex > 🎯 Core Features\",\n    \"README.md > 📑 Introduction to PageIndex > 🛠️ Deployment Options\",\n    \"README.md > PageIndex: Vectorless, Reasoning-based RAG\",\n    \"README.md > 📑 Introduction to PageIndex\",\n    \"README.md > 📑 Introduction to PageIndex > 📍 Explore PageIndex\"\n  ],\n  \"matched_sections\": [\n    {\n      \"id\": \"sec_1700162\",\n      \"title\": \"🎯 Core Features\",\n      \"level\": 2,\n      \"line_start\": 62,\n      \"line_end\": null,\n      \"hierarchy\": [\n        \"📑 Introduction to PageIndex\",\n        \"🎯 Core Features\"\n      ],\n      \"evidence_path\": \"README.md > 📑 Introduction to PageIndex > 🎯 Core Features\",\n      \"score\": 5,\n      \"matched_terms\": [\n        \"core\",\n        \"features\",\n        \"pageindex\"\n      ]\n    },\n    {\n      \"id\": \"sec_3705348\",\n      \"title\": \"🛠️ Deployment Options\",\n      \"level\": 2,\n      \"line_start\": 79,\n      \"line_end\": null,\n      \"hierarchy\": [\n        \"📑 Introduction to PageIndex\",\n        \"🛠️ Deployment Options\"\n      ],\n      \"evidence_path\": \"README.md > 📑 Introduction to PageIndex > 🛠️ Deployment Options\",\n      \"score\": 5,\n      \"matched_terms\": [\n        \"deployment\",\n        \"options\",\n        \"pageindex\"\n      ]\n    },\n    {\n      \"id\": \"sec_8111225\",\n      \"title\": \"PageIndex: Vectorless, Reasoning-based RAG\",\n      \"level\": 1,\n      \"line_start\": 14,\n      \"line_end\": null,\n      \"hierarchy\": [\n        \"PageIndex: Vectorless, Reasoning-based RAG\"\n      ],\n      \"evidence_path\": \"README.md > PageIndex: Vectorless, Reasoning-based RAG\",\n      \"score\": 2,\n      \"matched_terms\": [\n        \"pageindex\"\n      ]\n    },\n    {\n      \"id\": \"sec_8055516\",\n      \"title\": \"📑 Introduction to PageIndex\",\n      \"level\": 1,\n      \"line_start\": 46,\n      \"line_end\": null,\n      \"hierarchy\": [\n        \"📑 Introduction to PageIndex\"\n      ],\n      \"evidence_path\": \"README.md > 📑 Introduction to PageIndex\",\n      \"score\": 2,\n      \"matched_terms\": [\n        \"pageindex\"\n      ]\n    },\n    {\n      \"id\": \"sec_0368932\",\n      \"title\": \"📍 Explore PageIndex\",\n      \"level\": 2,\n      \"line_start\": 73,\n      \"line_end\": null,\n      \"hierarchy\": [\n        \"📑 Introduction to PageIndex\",\n        \"📍 Explore PageIndex\"\n      ],\n      \"evidence_path\": \"README.md > 📑 Introduction to PageIndex > 📍 Explore PageIndex\",\n      \"score\": 2,\n      \"matched_terms\": [\n        \"pageindex\"\n      ]\n    }\n  ],\n  \"confidence\": 1.0,\n  \"missing_context\": [],\n  \"strict\": {\n    \"enabled\": true,\n    \"passed\": true,\n    \"min_confidence\": 0.6,\n    \"min_evidence_paths\": 1\n  }\n}\n",
+      "stderr": "",
+      "name": "positive_query_strict"
+    },
+    {
+      "cmd": [
+        "C:\\Users\\ktono\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        ".\\alfa_rc2_query.py",
+        "--section_map",
+        "C:\\Users\\ktono\\Downloads\\PageIndex\\results\\README_alfa_section_map.json",
+        "--question",
+        "What is the tax policy of Poland?",
+        "--json_out",
+        "C:\\Users\\ktono\\Downloads\\PageIndex\\results\\README_query_rejected.json",
+        "--strict",
+        "--min_confidence",
+        "0.6",
+        "--min_evidence_paths",
+        "1"
+      ],
+      "exit_code": 2,
+      "stdout": "{\n  \"question\": \"What is the tax policy of Poland?\",\n  \"answer\": \"Nie znalazłem wystarczającego pokrycia strukturalnego dla pytania: 'What is the tax policy of Poland?'. Dodaj więcej kontekstu albo wskaż konkretną sekcję dokumentu.\",\n  \"evidence_paths\": [],\n  \"matched_sections\": [],\n  \"confidence\": 0.0,\n  \"missing_context\": [\n    \"poland\",\n    \"policy\",\n    \"tax\"\n  ],\n  \"strict\": {\n    \"enabled\": true,\n    \"passed\": false,\n    \"min_confidence\": 0.6,\n    \"min_evidence_paths\": 1\n  },\n  \"rejected_by_strict_gate\": true,\n  \"strict_rejection_reasons\": [\n    \"confidence_below_threshold\",\n    \"insufficient_evidence_paths\"\n  ]\n}\n",
+      "stderr": "",
+      "name": "negative_query_strict"
+    }
+  ],
+  "expected": {
+    "positive_query_exit_code": 0,
+    "negative_query_exit_code": 2
+  },
+  "passed": true,
+  "checks": {
+    "index_exit_code_zero": true,
+    "validate_exit_code_zero": true,
+    "positive_exit_code_zero": true,
+    "negative_exit_code_two": true,
+    "section_map_exists": true,
+    "positive_json_exists": true,
+    "negative_json_exists": true
+  }
+}

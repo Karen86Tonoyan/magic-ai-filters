@@ -1,0 +1,379 @@
+{
+  "document_id": "attention-residuals",
+  "source_path": "examples\\documents\\attention-residuals.pdf",
+  "section_count": 31,
+  "sections": [
+    {
+      "id": "sec_0801275",
+      "title": "Root",
+      "level": 1,
+      "line_start": 1,
+      "line_end": null,
+      "hierarchy": [
+        "Root"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Root",
+      "content_preview": "ATTENTIONRESIDUALS\nTECHNICALREPORT OFATTENTIONRESIDUALS\nKimi Team\n/gtbhttps://github.com/MoonshotAI/Attention-Residuals\nABSTRACT\nResidual connections [12] with PreNorm [60] are standard in modern LLMs, yet they accumulate\nall layer outputs with fixed unit weights. This uniform aggregation causes uncontrolled hidden-state\ngrowth with depth, progressively diluting each layer’s contribution [27]. We proposeAttention\nResiduals (AttnRes), which replaces this fixed accumulation with softmax attention over preceding\nlayer outputs, allowing each layer to selectively aggregate earlier representations with learned, input-\ndependent weights. To address the memory and communication overhead of attending over all\npreceding layer outputs for large-scale model training, we introduceBlock AttnRes, which partitions\nlayers into blocks and attends over block-level representations, reducing the memory footprint while\npreserving most of the gains of full AttnRes. Combined with cache-based pipeline communication\nand a two-phase computation strategy, Block AttnRes becomes a practical drop-in replacement for\nstandard residual connections with minimal overhead.\nScaling law experiments confirm that the improvement is consistent across model sizes, and ablations\nvalidate the benefit of content-dependent depth-wise selection. We further integrate AttnRes into\nthe Kimi Linear architecture [69] (48B total / 3B activated parameters) and pre-train on 1.4T tokens,\nwhere AttnRes mitigates PreNorm dilution, yielding more uniform output magnitudes and gradient\ndistribution across depth, and improves downstream performance across all evaluated tasks.\nEmbedding\n...\nAttention\nMoE\nAttention\nMoE\nOutput\n(a) Standard Residuals\nEmbedding\n...\nα\nAttention\nα\nMoE\nα\nAttention\nα\nMoE\nw\nw\nw\nw\nOutput\nαw\nα\nα\nα\nα\nα\n(b) Full Attention Residuals\nEmbedding\n···\nBlockn-2\nBlockn-1\nAttention\nMoE\nAttention\nMoE\nOutput\nα\nα\nα\nα\nα\nα\nα\nα\nα\nα\nw\nw\nw\nw\nw\nAttnRes Op(α)\nw\nQ\nK V\n(c) Block Attention Residuals\nFigure 1: Overview of Attention Residuals.(a)Standard Residuals: standard residual connections with uniform additive accumulation.\n(b)Full AttnRes: each layer selectively aggregates all previous layer outputs via learned attention weights.(c)Block AttnRes: layers\nare grouped into blocks, reducing memory fromO(Ld)toO(Nd).\narXiv:2603.15031v1  [cs.CL]  16 Mar 2026"
+    },
+    {
+      "id": "sec_2606261",
+      "title": "ATTENTIONRESIDUALS",
+      "level": 2,
+      "line_start": 1,
+      "line_end": null,
+      "hierarchy": [
+        "ATTENTIONRESIDUALS"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > ATTENTIONRESIDUALS",
+      "content_preview": "ATTENTIONRESIDUALS"
+    },
+    {
+      "id": "sec_6639117",
+      "title": "TECHNICALREPORT OFATTENTIONRESIDUALS",
+      "level": 2,
+      "line_start": 2,
+      "line_end": null,
+      "hierarchy": [
+        "TECHNICALREPORT OFATTENTIONRESIDUALS"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > TECHNICALREPORT OFATTENTIONRESIDUALS",
+      "content_preview": "TECHNICALREPORT OFATTENTIONRESIDUALS"
+    },
+    {
+      "id": "sec_1539824",
+      "title": "Kimi Team",
+      "level": 2,
+      "line_start": 3,
+      "line_end": null,
+      "hierarchy": [
+        "Kimi Team"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Kimi Team",
+      "content_preview": "Kimi Team"
+    },
+    {
+      "id": "sec_7997506",
+      "title": "ABSTRACT",
+      "level": 2,
+      "line_start": 5,
+      "line_end": null,
+      "hierarchy": [
+        "ABSTRACT"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > ABSTRACT",
+      "content_preview": "ABSTRACT"
+    },
+    {
+      "id": "sec_6093876",
+      "title": "Embedding",
+      "level": 2,
+      "line_start": 22,
+      "line_end": null,
+      "hierarchy": [
+        "Embedding"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Embedding",
+      "content_preview": "Embedding"
+    },
+    {
+      "id": "sec_6577202",
+      "title": "Attention",
+      "level": 2,
+      "line_start": 24,
+      "line_end": null,
+      "hierarchy": [
+        "Attention"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention",
+      "content_preview": "Attention"
+    },
+    {
+      "id": "sec_6577202",
+      "title": "Attention",
+      "level": 2,
+      "line_start": 26,
+      "line_end": null,
+      "hierarchy": [
+        "Attention"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention",
+      "content_preview": "Attention"
+    },
+    {
+      "id": "sec_6629303",
+      "title": "Output",
+      "level": 2,
+      "line_start": 28,
+      "line_end": null,
+      "hierarchy": [
+        "Output"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Output",
+      "content_preview": "Output"
+    },
+    {
+      "id": "sec_6093876",
+      "title": "Embedding",
+      "level": 2,
+      "line_start": 30,
+      "line_end": null,
+      "hierarchy": [
+        "Embedding"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Embedding",
+      "content_preview": "Embedding"
+    },
+    {
+      "id": "sec_6577202",
+      "title": "Attention",
+      "level": 2,
+      "line_start": 33,
+      "line_end": null,
+      "hierarchy": [
+        "Attention"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention",
+      "content_preview": "Attention"
+    },
+    {
+      "id": "sec_6577202",
+      "title": "Attention",
+      "level": 2,
+      "line_start": 37,
+      "line_end": null,
+      "hierarchy": [
+        "Attention"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention",
+      "content_preview": "Attention"
+    },
+    {
+      "id": "sec_6629303",
+      "title": "Output",
+      "level": 2,
+      "line_start": 44,
+      "line_end": null,
+      "hierarchy": [
+        "Output"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Output",
+      "content_preview": "Output"
+    },
+    {
+      "id": "sec_6093876",
+      "title": "Embedding",
+      "level": 2,
+      "line_start": 52,
+      "line_end": null,
+      "hierarchy": [
+        "Embedding"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Embedding",
+      "content_preview": "Embedding"
+    },
+    {
+      "id": "sec_8903114",
+      "title": "Blockn-2",
+      "level": 2,
+      "line_start": 54,
+      "line_end": null,
+      "hierarchy": [
+        "Blockn-2"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Blockn-2",
+      "content_preview": "Blockn-2"
+    },
+    {
+      "id": "sec_8062153",
+      "title": "Blockn-1",
+      "level": 2,
+      "line_start": 55,
+      "line_end": null,
+      "hierarchy": [
+        "Blockn-1"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Blockn-1",
+      "content_preview": "Blockn-1"
+    },
+    {
+      "id": "sec_6577202",
+      "title": "Attention",
+      "level": 2,
+      "line_start": 56,
+      "line_end": null,
+      "hierarchy": [
+        "Attention"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention",
+      "content_preview": "Attention"
+    },
+    {
+      "id": "sec_6577202",
+      "title": "Attention",
+      "level": 2,
+      "line_start": 58,
+      "line_end": null,
+      "hierarchy": [
+        "Attention"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention",
+      "content_preview": "Attention"
+    },
+    {
+      "id": "sec_6629303",
+      "title": "Output",
+      "level": 2,
+      "line_start": 60,
+      "line_end": null,
+      "hierarchy": [
+        "Output"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Output",
+      "content_preview": "Output"
+    },
+    {
+      "id": "sec_8432307",
+      "title": "AttnRes Op(α)",
+      "level": 2,
+      "line_start": 76,
+      "line_end": null,
+      "hierarchy": [
+        "AttnRes Op(α)"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > AttnRes Op(α)",
+      "content_preview": "AttnRes Op(α)"
+    },
+    {
+      "id": "sec_1984972",
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_start": 85,
+      "line_end": null,
+      "hierarchy": [
+        "Attention ResidualsTECHNICALREPORT"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention ResidualsTECHNICALREPORT",
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "id": "sec_1770647",
+      "title": "Contributions",
+      "level": 2,
+      "line_start": 124,
+      "line_end": null,
+      "hierarchy": [
+        "Contributions"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Contributions",
+      "content_preview": "Contributions"
+    },
+    {
+      "id": "sec_1984972",
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_start": 139,
+      "line_end": null,
+      "hierarchy": [
+        "Attention ResidualsTECHNICALREPORT"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention ResidualsTECHNICALREPORT",
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "id": "sec_5756903",
+      "title": "L−1Y",
+      "level": 2,
+      "line_start": 160,
+      "line_end": null,
+      "hierarchy": [
+        "L−1Y"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > L−1Y",
+      "content_preview": "L−1Y"
+    },
+    {
+      "id": "sec_8586699",
+      "title": "I+ ∂fj",
+      "level": 2,
+      "line_start": 163,
+      "line_end": null,
+      "hierarchy": [
+        "I+ ∂fj"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > I+ ∂fj",
+      "content_preview": "I+ ∂fj"
+    },
+    {
+      "id": "sec_1984972",
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_start": 198,
+      "line_end": null,
+      "hierarchy": [
+        "Attention ResidualsTECHNICALREPORT"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention ResidualsTECHNICALREPORT",
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "id": "sec_8063172",
+      "title": "Pl−1",
+      "level": 2,
+      "line_start": 208,
+      "line_end": null,
+      "hierarchy": [
+        "Pl−1"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Pl−1",
+      "content_preview": "Pl−1"
+    },
+    {
+      "id": "sec_7775176",
+      "title": "For each layerl, we define:",
+      "level": 2,
+      "line_start": 211,
+      "line_end": null,
+      "hierarchy": [
+        "For each layerl, we define:"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > For each layerl, we define:",
+      "content_preview": "For each layerl, we define:"
+    },
+    {
+      "id": "sec_4081927",
+      "title": "We further denote bi",
+      "level": 2,
+      "line_start": 250,
+      "line_end": null,
+      "hierarchy": [
+        "We further denote bi"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > We further denote bi",
+      "content_preview": "We further denote bi"
+    },
+    {
+      "id": "sec_1984972",
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_start": 256,
+      "line_end": null,
+      "hierarchy": [
+        "Attention ResidualsTECHNICALREPORT"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention ResidualsTECHNICALREPORT",
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "id": "sec_1984972",
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_start": 324,
+      "line_end": null,
+      "hierarchy": [
+        "Attention ResidualsTECHNICALREPORT"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention ResidualsTECHNICALREPORT",
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    }
+  ]
+}

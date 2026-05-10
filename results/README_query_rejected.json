@@ -1,0 +1,23 @@
+{
+  "question": "What is the tax policy of Poland?",
+  "answer": "Nie znalazłem wystarczającego pokrycia strukturalnego dla pytania: 'What is the tax policy of Poland?'. Dodaj więcej kontekstu albo wskaż konkretną sekcję dokumentu.",
+  "evidence_paths": [],
+  "matched_sections": [],
+  "confidence": 0.0,
+  "missing_context": [
+    "poland",
+    "policy",
+    "tax"
+  ],
+  "strict": {
+    "enabled": true,
+    "passed": false,
+    "min_confidence": 0.6,
+    "min_evidence_paths": 1
+  },
+  "rejected_by_strict_gate": true,
+  "strict_rejection_reasons": [
+    "confidence_below_threshold",
+    "insufficient_evidence_paths"
+  ]
+}

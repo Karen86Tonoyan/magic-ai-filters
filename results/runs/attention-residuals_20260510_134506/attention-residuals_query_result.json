@@ -1,0 +1,42 @@
+{
+  "question": "What are the main topics and key findings?",
+  "answer": "Na podstawie mapy sekcji najbardziej trafne obszary to: Root. Odpowiedź powinna zostać rozwinięta z tych ścieżek dowodu.",
+  "evidence_paths": [
+    "examples\\documents\\attention-residuals.pdf > Root"
+  ],
+  "matched_sections": [
+    {
+      "id": "sec_6514954",
+      "title": "Root",
+      "level": 1,
+      "line_start": 1,
+      "line_end": null,
+      "hierarchy": [
+        "Root"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Root",
+      "score": 1,
+      "matched_terms": [
+        "are"
+      ]
+    }
+  ],
+  "confidence": 0.2,
+  "missing_context": [
+    "finding",
+    "key",
+    "main",
+    "topic"
+  ],
+  "strict": {
+    "enabled": true,
+    "passed": false,
+    "min_confidence": 0.6,
+    "min_evidence_paths": 2
+  },
+  "rejected_by_strict_gate": true,
+  "strict_rejection_reasons": [
+    "confidence_below_threshold",
+    "insufficient_evidence_paths"
+  ]
+}

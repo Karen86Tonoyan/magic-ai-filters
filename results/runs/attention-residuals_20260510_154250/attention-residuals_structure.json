@@ -1,0 +1,103 @@
+{
+  "structure": [
+    {
+      "title": "Root",
+      "level": 1,
+      "line_num": 1,
+      "content_preview": "6\n2\n0\n2\nr\na\nM\n6\n1\n]\nL\nC\n.\ns\nc\n[\n1\nv\n1\n3\n0\n5\n1\n.\n3\n0\n6\n2\n:\nv\ni\nX\nr\na\nATTENTION RESIDUALS\nTECHNICAL REPORT OF ATTENTION RESIDUALS\nKimi Team\n(cid:135) https://github.com/MoonshotAI/Attention-Residuals\nABSTRACT\nResidual connections [12] with PreNorm [60] are standard in modern LLMs, yet they accumulate\nall layer outputs with fixed unit weights. This uniform aggregation causes uncontrolled hidden-state\ngrowth with depth, progressively diluting each layer’s contribution [27]. We propose Attention\nResiduals (AttnRes), which replaces this fixed accumulation with softmax attention over preceding\nlayer outputs, allowing each layer to selectively aggregate earlier representations with learned, input-\ndependent weights. To address the memory and communication overhead of attending over all\npreceding layer outputs for large-scale model training, we introduce Block AttnRes, which partitions\nlayers into blocks and attends over block-level representations, reducing the memory footprint while\npreserving most of the gains of full AttnRes. Combined with cache-based pipeline communication\nand a two-phase computation strategy, Block AttnRes becomes a practical drop-in replacement for\nstandard residual connections with minimal overhead.\nScaling law experiments confirm that the improvement is consistent across model sizes, and ablations\nvalidate the benefit of content-dependent depth-wise selection. We further integrate AttnRes into\nthe Kimi Linear architecture [69] (48B total / 3B activated parameters) and pre-train on 1.4T tokens,\nwhere AttnRes mitigates PreNorm dilution, yielding more uniform output magnitudes and gradient\ndistribution across depth, and improves downstream performance across all evaluated tasks.\nOutput\nMoE\nAttention\nMoE\nAttention\n...\nOutput\nw\nα\nα\nMoE\nw\nα\nα\nAttention\nw\nα\nα\nMoE\nw\nα\nα\nAttention\nw\nα\nα\n...\nEmbedding\nEmbedding\nK V\nQ\nw\nOutput\nw\nα\nα\nMoE\nAttention\nAttnRes Op (α)\nMoE\nAttention\nBlock n-1\nBlock n-2\n···\nEmbedding\nw\nα\nα\nw\nα\nα\nw\nα\nα\nw\nα\nα\n(a) Standard Residuals\n(b) Full Attention Residuals\n(c) Block Attention Residuals\nFigure 1: Overview of Attention Residuals. (a) Standard Residuals: standard residual connections with uniform additive accumulation.\n(b) Full AttnRes: each layer selectively aggregates all previous layer outputs via learned attention weights. (c) Block AttnRes: layers\nare grouped into blocks, reducing memory from O(Ld) to O(N d).",
+      "fallback_reason": "pdf_pdfminer_offline_extraction"
+    },
+    {
+      "title": "ATTENTION RESIDUALS",
+      "level": 2,
+      "line_num": 35,
+      "content_preview": "ATTENTION RESIDUALS",
+      "fontsize": 17.2
+    },
+    {
+      "title": "ABSTRACT",
+      "level": 4,
+      "line_num": 39,
+      "content_preview": "ABSTRACT",
+      "fontsize": 12.0
+    },
+    {
+      "title": "Introduction",
+      "level": 4,
+      "line_num": 122,
+      "content_preview": "Introduction",
+      "fontsize": 12.0
+    },
+    {
+      "title": "2 Motivation",
+      "level": 4,
+      "line_num": 177,
+      "content_preview": "2 Motivation",
+      "fontsize": 12.0
+    },
+    {
+      "title": "3 Attention Residuals: A Unified View of Time and Depth",
+      "level": 4,
+      "line_num": 222,
+      "content_preview": "3 Attention Residuals: A Unified View of Time and Depth",
+      "fontsize": 12.0
+    },
+    {
+      "title": "Infrastructure Design",
+      "level": 4,
+      "line_num": 403,
+      "content_preview": "Infrastructure Design",
+      "fontsize": 12.0
+    },
+    {
+      "title": "5 Experiments",
+      "level": 4,
+      "line_num": 675,
+      "content_preview": "5 Experiments",
+      "fontsize": 12.0
+    },
+    {
+      "title": "6 Discussions",
+      "level": 4,
+      "line_num": 1328,
+      "content_preview": "6 Discussions",
+      "fontsize": 12.0
+    },
+    {
+      "title": "7 Related Work",
+      "level": 4,
+      "line_num": 1574,
+      "content_preview": "7 Related Work",
+      "fontsize": 12.0
+    },
+    {
+      "title": "Conclusion",
+      "level": 4,
+      "line_num": 1606,
+      "content_preview": "Conclusion",
+      "fontsize": 12.0
+    },
+    {
+      "title": "References",
+      "level": 4,
+      "line_num": 1619,
+      "content_preview": "References",
+      "fontsize": 12.0
+    },
+    {
+      "title": "A Contributions",
+      "level": 4,
+      "line_num": 1787,
+      "content_preview": "A Contributions",
+      "fontsize": 12.0
+    },
+    {
+      "title": "B Optimized Inference I/O for Full Attention Residuals",
+      "level": 4,
+      "line_num": 1830,
+      "content_preview": "B Optimized Inference I/O for Full Attention Residuals",
+      "fontsize": 12.0
+    }
+  ],
+  "line_count": 1890
+}

@@ -1,0 +1,15 @@
+{
+  "run_id": "q1-fy25-earnings_20260510_140423",
+  "document_id": "q1-fy25-earnings",
+  "source_path": ".\\examples\\documents\\q1-fy25-earnings.pdf",
+  "question": "What are the main findings and topic of the document?",
+  "structure_mode": "normal",
+  "structure_path": "results/runs/q1-fy25-earnings_20260510_140423/q1-fy25-earnings_structure.json",
+  "section_map_path": "results/runs/q1-fy25-earnings_20260510_140423/q1-fy25-earnings_alfa_section_map.json",
+  "query_result_path": "results/runs/q1-fy25-earnings_20260510_140423/q1-fy25-earnings_query_result.json",
+  "exit_code": 2,
+  "strict_passed": false,
+  "confidence": 0.0,
+  "evidence_paths": [],
+  "section_count": 21
+}

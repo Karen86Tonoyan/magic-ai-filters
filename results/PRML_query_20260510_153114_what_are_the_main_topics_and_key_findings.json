@@ -1,0 +1,63 @@
+{
+  "question": "What are the main topics and key findings?",
+  "answer": "Na podstawie mapy sekcji najbardziej trafne obszary to: Introduction, So far our discussion of polynomial curve ﬁtting has appealed largely to in-. Odpowiedź powinna zostać rozwinięta z tych ścieżek dowodu.",
+  "evidence_paths": [
+    "examples\\documents\\PRML.pdf > Introduction",
+    "examples\\documents\\PRML.pdf > So far our discussion of polynomial curve ﬁtting has appealed largely to in-"
+  ],
+  "matched_sections": [
+    {
+      "id": "sec_5070351",
+      "title": "Introduction",
+      "level": 2,
+      "line_start": 501,
+      "line_end": null,
+      "hierarchy": [
+        "Introduction"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Introduction",
+      "score": 2,
+      "matched_terms": [
+        "introduction"
+      ]
+    },
+    {
+      "id": "sec_2320353",
+      "title": "So far our discussion of polynomial curve ﬁtting has appealed largely to in-",
+      "level": 3,
+      "line_start": 984,
+      "line_end": null,
+      "hierarchy": [
+        "So far our discussion of polynomial curve ﬁtting has appealed largely to in-"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > So far our discussion of polynomial curve ﬁtting has appealed largely to in-",
+      "score": 2,
+      "matched_terms": [
+        "discussion"
+      ]
+    }
+  ],
+  "confidence": 0.167,
+  "missing_context": [
+    "abstract",
+    "conclusion",
+    "finding",
+    "highlights",
+    "key",
+    "main",
+    "overview",
+    "results",
+    "summary",
+    "topic"
+  ],
+  "strict": {
+    "enabled": true,
+    "passed": false,
+    "min_confidence": 0.6,
+    "min_evidence_paths": 2
+  },
+  "rejected_by_strict_gate": true,
+  "strict_rejection_reasons": [
+    "confidence_below_threshold"
+  ]
+}

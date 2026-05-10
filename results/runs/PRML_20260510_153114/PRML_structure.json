@@ -1,0 +1,1212 @@
+{
+  "structure": [
+    {
+      "title": "Root",
+      "level": 1,
+      "line_num": 1,
+      "content_preview": "",
+      "fallback_reason": "pdf_pdfminer_offline_extraction"
+    },
+    {
+      "title": "Information Science and Statistics",
+      "level": 2,
+      "line_num": 1,
+      "content_preview": "Information Science and Statistics"
+    },
+    {
+      "title": "Series Editors:",
+      "level": 2,
+      "line_num": 2,
+      "content_preview": "Series Editors:"
+    },
+    {
+      "title": "M. Jordan",
+      "level": 2,
+      "line_num": 3,
+      "content_preview": "M. Jordan"
+    },
+    {
+      "title": "J. Kleinberg",
+      "level": 2,
+      "line_num": 4,
+      "content_preview": "J. Kleinberg"
+    },
+    {
+      "title": "B. Scho¨lkopf",
+      "level": 2,
+      "line_num": 5,
+      "content_preview": "B. Scho¨lkopf"
+    },
+    {
+      "title": "Information Science and Statistics",
+      "level": 2,
+      "line_num": 6,
+      "content_preview": "Information Science and Statistics"
+    },
+    {
+      "title": "Cowell, Dawid, Lauritzen, and Spiegelhalter: Probabilistic Networks and",
+      "level": 3,
+      "line_num": 9,
+      "content_preview": "Cowell, Dawid, Lauritzen, and Spiegelhalter: Probabilistic Networks and"
+    },
+    {
+      "title": "Marchette: Computer Intrusion Detection and Network Monitoring:",
+      "level": 3,
+      "line_num": 15,
+      "content_preview": "Marchette: Computer Intrusion Detection and Network Monitoring:"
+    },
+    {
+      "title": "Rubinstein and Kroese: The Cross-Entropy Method:  A Unified Approach to",
+      "level": 3,
+      "line_num": 17,
+      "content_preview": "Rubinstein and Kroese: The Cross-Entropy Method:  A Unified Approach to"
+    },
+    {
+      "title": "Christopher M. Bishop",
+      "level": 2,
+      "line_num": 22,
+      "content_preview": "Christopher M. Bishop"
+    },
+    {
+      "title": "Pattern Recognition and",
+      "level": 2,
+      "line_num": 23,
+      "content_preview": "Pattern Recognition and"
+    },
+    {
+      "title": "Machine Learning",
+      "level": 2,
+      "line_num": 24,
+      "content_preview": "Machine Learning"
+    },
+    {
+      "title": "Assistant Director",
+      "level": 2,
+      "line_num": 26,
+      "content_preview": "Assistant Director"
+    },
+    {
+      "title": "Microsoft Research Ltd",
+      "level": 2,
+      "line_num": 27,
+      "content_preview": "Microsoft Research Ltd"
+    },
+    {
+      "title": "Series Editors",
+      "level": 2,
+      "line_num": 31,
+      "content_preview": "Series Editors"
+    },
+    {
+      "title": "Michael Jordan",
+      "level": 2,
+      "line_num": 32,
+      "content_preview": "Michael Jordan"
+    },
+    {
+      "title": "Department of Computer",
+      "level": 2,
+      "line_num": 33,
+      "content_preview": "Department of Computer"
+    },
+    {
+      "title": "Science and Department",
+      "level": 2,
+      "line_num": 34,
+      "content_preview": "Science and Department"
+    },
+    {
+      "title": "University of California,",
+      "level": 2,
+      "line_num": 36,
+      "content_preview": "University of California,"
+    },
+    {
+      "title": "Berkeley",
+      "level": 2,
+      "line_num": 37,
+      "content_preview": "Berkeley"
+    },
+    {
+      "title": "Berkeley, CA 94720",
+      "level": 2,
+      "line_num": 38,
+      "content_preview": "Berkeley, CA 94720"
+    },
+    {
+      "title": "Professor Jon Kleinberg",
+      "level": 2,
+      "line_num": 40,
+      "content_preview": "Professor Jon Kleinberg"
+    },
+    {
+      "title": "Department of Computer",
+      "level": 2,
+      "line_num": 41,
+      "content_preview": "Department of Computer"
+    },
+    {
+      "title": "Science",
+      "level": 2,
+      "line_num": 42,
+      "content_preview": "Science"
+    },
+    {
+      "title": "Cornell University",
+      "level": 2,
+      "line_num": 43,
+      "content_preview": "Cornell University"
+    },
+    {
+      "title": "Ithaca, NY 14853",
+      "level": 2,
+      "line_num": 44,
+      "content_preview": "Ithaca, NY 14853"
+    },
+    {
+      "title": "Bernhard Scho¨lkopf",
+      "level": 2,
+      "line_num": 46,
+      "content_preview": "Bernhard Scho¨lkopf"
+    },
+    {
+      "title": "Max Planck Institute for",
+      "level": 2,
+      "line_num": 47,
+      "content_preview": "Max Planck Institute for"
+    },
+    {
+      "title": "Biological Cybernetics",
+      "level": 2,
+      "line_num": 48,
+      "content_preview": "Biological Cybernetics"
+    },
+    {
+      "title": "Spemannstrasse 38",
+      "level": 2,
+      "line_num": 49,
+      "content_preview": "Spemannstrasse 38"
+    },
+    {
+      "title": "Germany",
+      "level": 2,
+      "line_num": 51,
+      "content_preview": "Germany"
+    },
+    {
+      "title": "Library of Congress Control Number: 2006922522",
+      "level": 3,
+      "line_num": 52,
+      "content_preview": "Library of Congress Control Number: 2006922522"
+    },
+    {
+      "title": "ISBN-10: 0-387-31073-8",
+      "level": 2,
+      "line_num": 53,
+      "content_preview": "ISBN-10: 0-387-31073-8"
+    },
+    {
+      "title": "ISBN-13: 978-0387-31073-2",
+      "level": 2,
+      "line_num": 54,
+      "content_preview": "ISBN-13: 978-0387-31073-2"
+    },
+    {
+      "title": "Printed in Singapore. (KYO)",
+      "level": 2,
+      "line_num": 63,
+      "content_preview": "Printed in Singapore. (KYO)"
+    },
+    {
+      "title": "This book is dedicated to my family:",
+      "level": 2,
+      "line_num": 66,
+      "content_preview": "This book is dedicated to my family:"
+    },
+    {
+      "title": "Jenna, Mark, and Hugh",
+      "level": 2,
+      "line_num": 67,
+      "content_preview": "Jenna, Mark, and Hugh"
+    },
+    {
+      "title": "Preface",
+      "level": 2,
+      "line_num": 69,
+      "content_preview": "Preface"
+    },
+    {
+      "title": "Bayesian methods has been greatly enhanced through the development of a range of",
+      "level": 3,
+      "line_num": 76,
+      "content_preview": "Bayesian methods has been greatly enhanced through the development of a range of"
+    },
+    {
+      "title": "This new textbook reﬂects these recent developments while providing a compre-",
+      "level": 3,
+      "line_num": 80,
+      "content_preview": "This new textbook reﬂects these recent developments while providing a compre-"
+    },
+    {
+      "title": "The book is supported by a great deal of additional material, including lecture",
+      "level": 3,
+      "line_num": 93,
+      "content_preview": "The book is supported by a great deal of additional material, including lecture"
+    },
+    {
+      "title": "Exercises",
+      "level": 2,
+      "line_num": 99,
+      "content_preview": "Exercises"
+    },
+    {
+      "title": "The exercises that appear at the end of every chapter form an important com-",
+      "level": 3,
+      "line_num": 100,
+      "content_preview": "The exercises that appear at the end of every chapter form an important com-"
+    },
+    {
+      "title": "It has been difﬁcult to know to what extent these solutions should be made",
+      "level": 3,
+      "line_num": 106,
+      "content_preview": "It has been difﬁcult to know to what extent these solutions should be made"
+    },
+    {
+      "title": "Although this book focuses on concepts and principles, in a taught course the",
+      "level": 3,
+      "line_num": 117,
+      "content_preview": "Although this book focuses on concepts and principles, in a taught course the"
+    },
+    {
+      "title": "Acknowledgements",
+      "level": 2,
+      "line_num": 123,
+      "content_preview": "Acknowledgements"
+    },
+    {
+      "title": "First of all I would like to express my sincere thanks to Markus Svens´en who",
+      "level": 3,
+      "line_num": 124,
+      "content_preview": "First of all I would like to express my sincere thanks to Markus Svens´en who"
+    },
+    {
+      "title": "I am very grateful to Microsoft Research for providing a highly stimulating re-",
+      "level": 3,
+      "line_num": 127,
+      "content_preview": "I am very grateful to Microsoft Research for providing a highly stimulating re-"
+    },
+    {
+      "title": "Springer has provided excellent support throughout the ﬁnal stages of prepara-",
+      "level": 3,
+      "line_num": 131,
+      "content_preview": "Springer has provided excellent support throughout the ﬁnal stages of prepara-"
+    },
+    {
+      "title": "I also wish to thank Oxford University Press for permission to reproduce ex-",
+      "level": 3,
+      "line_num": 137,
+      "content_preview": "I also wish to thank Oxford University Press for permission to reproduce ex-"
+    },
+    {
+      "title": "PREFACE ix",
+      "level": 2,
+      "line_num": 144,
+      "content_preview": "PREFACE ix"
+    },
+    {
+      "title": "Many people have helped by proofreading draft material and providing com-",
+      "level": 3,
+      "line_num": 145,
+      "content_preview": "Many people have helped by proofreading draft material and providing com-"
+    },
+    {
+      "title": "Andrew Blake, Hakan Cevikalp, Michael Fourman, Brendan Frey, Zoubin Ghahra-",
+      "level": 3,
+      "line_num": 147,
+      "content_preview": "Andrew Blake, Hakan Cevikalp, Michael Fourman, Brendan Frey, Zoubin Ghahra-"
+    },
+    {
+      "title": "Lasserre, David Liu, Tom Minka, Ian Nabney, Tonatiuh Pena, Y uan Qi, Sam Roweis,",
+      "level": 3,
+      "line_num": 150,
+      "content_preview": "Lasserre, David Liu, Tom Minka, Ian Nabney, Tonatiuh Pena, Y uan Qi, Sam Roweis,"
+    },
+    {
+      "title": "Symeonides, Martin Szummer, Marshall Tappen, Ilkay Ulusoy, Chris Williams, John",
+      "level": 3,
+      "line_num": 152,
+      "content_preview": "Symeonides, Martin Szummer, Marshall Tappen, Ilkay Ulusoy, Chris Williams, John"
+    },
+    {
+      "title": "Finally, I would like to thank my wife Jenna who has been hugely supportive",
+      "level": 3,
+      "line_num": 154,
+      "content_preview": "Finally, I would like to thank my wife Jenna who has been hugely supportive"
+    },
+    {
+      "title": "Chris Bishop",
+      "level": 2,
+      "line_num": 156,
+      "content_preview": "Chris Bishop"
+    },
+    {
+      "title": "Cambridge",
+      "level": 2,
+      "line_num": 157,
+      "content_preview": "Cambridge"
+    },
+    {
+      "title": "February 2006",
+      "level": 2,
+      "line_num": 158,
+      "content_preview": "February 2006"
+    },
+    {
+      "title": "Mathematical notation",
+      "level": 2,
+      "line_num": 159,
+      "content_preview": "Mathematical notation"
+    },
+    {
+      "title": "I have tried to keep the mathematical content of the book to the minimum neces-",
+      "level": 3,
+      "line_num": 160,
+      "content_preview": "I have tried to keep the mathematical content of the book to the minimum neces-"
+    },
+    {
+      "title": "I have tried to use a consistent notation throughout the book, although at times",
+      "level": 3,
+      "line_num": 166,
+      "content_preview": "I have tried to use a consistent notation throughout the book, although at times"
+    },
+    {
+      "title": "T will be a row vector. Uppercase bold",
+      "level": 2,
+      "line_num": 171,
+      "content_preview": "T will be a row vector. Uppercase bold"
+    },
+    {
+      "title": "The M × M identity matrix (also known as the unit matrix) is denoted IM ,",
+      "level": 3,
+      "line_num": 181,
+      "content_preview": "The M × M identity matrix (also known as the unit matrix) is denoted IM ,"
+    },
+    {
+      "title": "A functional is denoted f[y] where y(x) is some function. The concept of a",
+      "level": 3,
+      "line_num": 184,
+      "content_preview": "A functional is denoted f[y] where y(x) is some function. The concept of a"
+    },
+    {
+      "title": "The expectation of a functionf(x, y) with respect to a random variablex is de-",
+      "level": 3,
+      "line_num": 188,
+      "content_preview": "The expectation of a functionf(x, y) with respect to a random variablex is de-"
+    },
+    {
+      "title": "If we haveN values x1,..., xN of aD-dimensional vectorx =( x1,...,x D)T,",
+      "level": 3,
+      "line_num": 198,
+      "content_preview": "If we haveN values x1,..., xN of aD-dimensional vectorx =( x1,...,x D)T,"
+    },
+    {
+      "title": "Contents",
+      "level": 2,
+      "line_num": 206,
+      "content_preview": "Contents"
+    },
+    {
+      "title": "Preface vii",
+      "level": 2,
+      "line_num": 207,
+      "content_preview": "Preface vii"
+    },
+    {
+      "title": "Mathematical notation xi",
+      "level": 2,
+      "line_num": 208,
+      "content_preview": "Mathematical notation xi"
+    },
+    {
+      "title": "Contents xiii",
+      "level": 2,
+      "line_num": 209,
+      "content_preview": "Contents xiii"
+    },
+    {
+      "title": "Exercises . . . ............................... 5 8",
+      "level": 3,
+      "line_num": 229,
+      "content_preview": "Exercises . . . ............................... 5 8"
+    },
+    {
+      "title": "Exercises . . . ............................... 1 2 7",
+      "level": 3,
+      "line_num": 254,
+      "content_preview": "Exercises . . . ............................... 1 2 7"
+    },
+    {
+      "title": "Exercises . . . ............................... 1 7 3",
+      "level": 3,
+      "line_num": 273,
+      "content_preview": "Exercises . . . ............................... 1 7 3"
+    },
+    {
+      "title": "CONTENTS xv",
+      "level": 2,
+      "line_num": 274,
+      "content_preview": "CONTENTS xv"
+    },
+    {
+      "title": "Exercises . . . ............................... 2 2 0",
+      "level": 3,
+      "line_num": 301,
+      "content_preview": "Exercises . . . ............................... 2 2 0"
+    },
+    {
+      "title": "Exercises . . . ............................... 2 8 4",
+      "level": 3,
+      "line_num": 336,
+      "content_preview": "Exercises . . . ............................... 2 8 4"
+    },
+    {
+      "title": "Exercises . . . ............................... 3 2 0",
+      "level": 3,
+      "line_num": 350,
+      "content_preview": "Exercises . . . ............................... 3 2 0"
+    },
+    {
+      "title": "Exercises . . . ............................... 3 5 7",
+      "level": 3,
+      "line_num": 362,
+      "content_preview": "Exercises . . . ............................... 3 5 7"
+    },
+    {
+      "title": "CONTENTS xvii",
+      "level": 2,
+      "line_num": 363,
+      "content_preview": "CONTENTS xvii"
+    },
+    {
+      "title": "Exercises . . . ............................... 4 1 8",
+      "level": 3,
+      "line_num": 387,
+      "content_preview": "Exercises . . . ............................... 4 1 8"
+    },
+    {
+      "title": "Exercises . . . ............................... 4 5 5",
+      "level": 3,
+      "line_num": 400,
+      "content_preview": "Exercises . . . ............................... 4 5 5"
+    },
+    {
+      "title": "Exercises . . . ............................... 5 1 7",
+      "level": 3,
+      "line_num": 428,
+      "content_preview": "Exercises . . . ............................... 5 1 7"
+    },
+    {
+      "title": "Exercises . . . ............................... 5 5 6",
+      "level": 3,
+      "line_num": 446,
+      "content_preview": "Exercises . . . ............................... 5 5 6"
+    },
+    {
+      "title": "CONTENTS xix",
+      "level": 2,
+      "line_num": 453,
+      "content_preview": "CONTENTS xix"
+    },
+    {
+      "title": "Exercises . . . ............................... 5 9 9",
+      "level": 3,
+      "line_num": 464,
+      "content_preview": "Exercises . . . ............................... 5 9 9"
+    },
+    {
+      "title": "Exercises . . . ............................... 6 4 6",
+      "level": 3,
+      "line_num": 479,
+      "content_preview": "Exercises . . . ............................... 6 4 6"
+    },
+    {
+      "title": "Exercises . . . ............................... 6 7 4",
+      "level": 3,
+      "line_num": 491,
+      "content_preview": "Exercises . . . ............................... 6 7 4"
+    },
+    {
+      "title": "Appendix A Data Sets 677",
+      "level": 2,
+      "line_num": 492,
+      "content_preview": "Appendix A Data Sets 677"
+    },
+    {
+      "title": "Appendix B Probability Distributions 685",
+      "level": 2,
+      "line_num": 493,
+      "content_preview": "Appendix B Probability Distributions 685"
+    },
+    {
+      "title": "Appendix C Properties of Matrices 695",
+      "level": 2,
+      "line_num": 494,
+      "content_preview": "Appendix C Properties of Matrices 695"
+    },
+    {
+      "title": "Appendix D Calculus of Variations 703",
+      "level": 2,
+      "line_num": 496,
+      "content_preview": "Appendix D Calculus of Variations 703"
+    },
+    {
+      "title": "Appendix E Lagrange Multipliers 707",
+      "level": 2,
+      "line_num": 497,
+      "content_preview": "Appendix E Lagrange Multipliers 707"
+    },
+    {
+      "title": "References 711",
+      "level": 2,
+      "line_num": 498,
+      "content_preview": "References 711"
+    },
+    {
+      "title": "Index 729",
+      "level": 2,
+      "line_num": 499,
+      "content_preview": "Index 729"
+    },
+    {
+      "title": "Introduction",
+      "level": 2,
+      "line_num": 501,
+      "content_preview": "Introduction"
+    },
+    {
+      "title": "Brahe in the 16",
+      "level": 2,
+      "line_num": 504,
+      "content_preview": "Brahe in the 16"
+    },
+    {
+      "title": "Figure 1.1 Examples of hand-written dig-",
+      "level": 2,
+      "line_num": 519,
+      "content_preview": "Figure 1.1 Examples of hand-written dig-"
+    },
+    {
+      "title": "Far better results can be obtained by adopting a machine learning approach in",
+      "level": 3,
+      "line_num": 524,
+      "content_preview": "Far better results can be obtained by adopting a machine learning approach in"
+    },
+    {
+      "title": "The result of running the machine learning algorithm can be expressed as a",
+      "level": 3,
+      "line_num": 532,
+      "content_preview": "The result of running the machine learning algorithm can be expressed as a"
+    },
+    {
+      "title": "Pre-processing might also be performed in order to speed up computation. For",
+      "level": 3,
+      "line_num": 552,
+      "content_preview": "Pre-processing might also be performed in order to speed up computation. For"
+    },
+    {
+      "title": "Applications in which the training data comprises examples of the input vectors",
+      "level": 3,
+      "line_num": 567,
+      "content_preview": "Applications in which the training data comprises examples of the input vectors"
+    },
+    {
+      "title": "Finally, the technique ofreinforcement learning(Sutton and Barto, 1998) is con-",
+      "level": 3,
+      "line_num": 581,
+      "content_preview": "Finally, the technique ofreinforcement learning(Sutton and Barto, 1998) is con-"
+    },
+    {
+      "title": "Figure 1.2 Plot of a training data set of N =",
+      "level": 3,
+      "line_num": 604,
+      "content_preview": "Figure 1.2 Plot of a training data set of N ="
+    },
+    {
+      "title": "Although each of these tasks needs its own tools and techniques, many of the",
+      "level": 3,
+      "line_num": 622,
+      "content_preview": "Although each of these tasks needs its own tools and techniques, many of the"
+    },
+    {
+      "title": "Now suppose that we are given a training set comprisingN observations of x,",
+      "level": 3,
+      "line_num": 642,
+      "content_preview": "Now suppose that we are given a training set comprisingN observations of x,"
+    },
+    {
+      "title": "N =1 0 data points. The input data set x in Figure 1.2 was generated by choos-",
+      "level": 3,
+      "line_num": 645,
+      "content_preview": "N =1 0 data points. The input data set x in Figure 1.2 was generated by choos-"
+    },
+    {
+      "title": "For the moment, however, we shall proceed rather informally and consider a",
+      "level": 3,
+      "line_num": 668,
+      "content_preview": "For the moment, however, we shall proceed rather informally and consider a"
+    },
+    {
+      "title": "The values of the coefﬁcients will be determined by ﬁtting the polynomial to the",
+      "level": 3,
+      "line_num": 682,
+      "content_preview": "The values of the coefﬁcients will be determined by ﬁtting the polynomial to the"
+    },
+    {
+      "title": "E(w)= 1",
+      "level": 2,
+      "line_num": 688,
+      "content_preview": "E(w)= 1"
+    },
+    {
+      "title": "Figure 1.3 The error function (1.2) corre-",
+      "level": 3,
+      "line_num": 697,
+      "content_preview": "Figure 1.3 The error function (1.2) corre-"
+    },
+    {
+      "title": "We can solve the curve ﬁtting problem by choosing the value ofw for which",
+      "level": 3,
+      "line_num": 710,
+      "content_preview": "We can solve the curve ﬁtting problem by choosing the value ofw for which"
+    },
+    {
+      "title": "There remains the problem of choosing the orderM of the polynomial, and as",
+      "level": 3,
+      "line_num": 716,
+      "content_preview": "There remains the problem of choosing the orderM of the polynomial, and as"
+    },
+    {
+      "title": "We notice that the constant (M =0 ) and ﬁrst order (M =1 ) polynomials",
+      "level": 3,
+      "line_num": 721,
+      "content_preview": "We notice that the constant (M =0 ) and ﬁrst order (M =1 ) polynomials"
+    },
+    {
+      "title": "As we have noted earlier, the goal is to achieve good generalization by making",
+      "level": 3,
+      "line_num": 729,
+      "content_preview": "As we have noted earlier, the goal is to achieve good generalization by making"
+    },
+    {
+      "title": "M =0",
+      "level": 2,
+      "line_num": 740,
+      "content_preview": "M =0"
+    },
+    {
+      "title": "M =1",
+      "level": 2,
+      "line_num": 747,
+      "content_preview": "M =1"
+    },
+    {
+      "title": "M =3",
+      "level": 2,
+      "line_num": 754,
+      "content_preview": "M =3"
+    },
+    {
+      "title": "M =9",
+      "level": 2,
+      "line_num": 761,
+      "content_preview": "M =9"
+    },
+    {
+      "title": "ERMS =",
+      "level": 2,
+      "line_num": 769,
+      "content_preview": "ERMS ="
+    },
+    {
+      "title": "Figure 1.5 Graphs of the root-mean-square",
+      "level": 3,
+      "line_num": 785,
+      "content_preview": "Figure 1.5 Graphs of the root-mean-square"
+    },
+    {
+      "title": "ERMS",
+      "level": 2,
+      "line_num": 791,
+      "content_preview": "ERMS"
+    },
+    {
+      "title": "Training",
+      "level": 2,
+      "line_num": 796,
+      "content_preview": "Training"
+    },
+    {
+      "title": "Test",
+      "level": 2,
+      "line_num": 797,
+      "content_preview": "Test"
+    },
+    {
+      "title": "For M =9 , the training set error goes to zero, as we might expect because",
+      "level": 3,
+      "line_num": 798,
+      "content_preview": "For M =9 , the training set error goes to zero, as we might expect because"
+    },
+    {
+      "title": "This may seem paradoxical because a polynomial of given order contains all",
+      "level": 3,
+      "line_num": 803,
+      "content_preview": "This may seem paradoxical because a polynomial of given order contains all"
+    },
+    {
+      "title": "We can gain some insight into the problem by examining the values of the co-",
+      "level": 3,
+      "line_num": 811,
+      "content_preview": "We can gain some insight into the problem by examining the values of the co-"
+    },
+    {
+      "title": "In particular for theM =9 polynomial, the coefﬁcients have become ﬁnely tuned",
+      "level": 3,
+      "line_num": 814,
+      "content_preview": "In particular for theM =9 polynomial, the coefﬁcients have become ﬁnely tuned"
+    },
+    {
+      "title": "Table 1.1 Table of the coefﬁcients w⋆ for",
+      "level": 3,
+      "line_num": 816,
+      "content_preview": "Table 1.1 Table of the coefﬁcients w⋆ for"
+    },
+    {
+      "title": "Observe how the typical mag-",
+      "level": 2,
+      "line_num": 818,
+      "content_preview": "Observe how the typical mag-"
+    },
+    {
+      "title": "M =0 M =1 M =6 M =9",
+      "level": 2,
+      "line_num": 822,
+      "content_preview": "M =0 M =1 M =6 M =9"
+    },
+    {
+      "title": "N =1 5",
+      "level": 2,
+      "line_num": 846,
+      "content_preview": "N =1 5"
+    },
+    {
+      "title": "N = 100",
+      "level": 2,
+      "line_num": 853,
+      "content_preview": "N = 100"
+    },
+    {
+      "title": "Also, there is something rather unsatisfying about having to limit the number of",
+      "level": 3,
+      "line_num": 875,
+      "content_preview": "Also, there is something rather unsatisfying about having to limit the number of"
+    },
+    {
+      "title": "For the moment, however, it is instructive to continue with the current approach",
+      "level": 3,
+      "line_num": 886,
+      "content_preview": "For the moment, however, it is instructive to continue with the current approach"
+    },
+    {
+      "title": "M , and the coefﬁcientλ governs the rel-",
+      "level": 2,
+      "line_num": 921,
+      "content_preview": "M , and the coefﬁcientλ governs the rel-"
+    },
+    {
+      "title": "Figure 1.7 shows the results of ﬁtting the polynomial of orderM =9 to the",
+      "level": 3,
+      "line_num": 932,
+      "content_preview": "Figure 1.7 shows the results of ﬁtting the polynomial of orderM =9 to the"
+    },
+    {
+      "title": "We see that, for a value oflnλ = −18, the over-ﬁtting has been suppressed and we",
+      "level": 3,
+      "line_num": 934,
+      "content_preview": "We see that, for a value oflnλ = −18, the over-ﬁtting has been suppressed and we"
+    },
+    {
+      "title": "Figure 1.7 forlnλ =0 . The corresponding coefﬁcients from the ﬁtted polynomials",
+      "level": 3,
+      "line_num": 937,
+      "content_preview": "Figure 1.7 forlnλ =0 . The corresponding coefﬁcients from the ﬁtted polynomials"
+    },
+    {
+      "title": "Table 1.2 Table of the coefﬁcients w⋆ for M =",
+      "level": 3,
+      "line_num": 940,
+      "content_preview": "Table 1.2 Table of the coefﬁcients w⋆ for M ="
+    },
+    {
+      "title": "The impact of the regularization term on the generalization error can be seen by",
+      "level": 3,
+      "line_num": 971,
+      "content_preview": "The impact of the regularization term on the generalization error can be seen by"
+    },
+    {
+      "title": "The issue of model complexity is an important one and will be discussed at",
+      "level": 3,
+      "line_num": 975,
+      "content_preview": "The issue of model complexity is an important one and will be discussed at"
+    },
+    {
+      "title": "So far our discussion of polynomial curve ﬁtting has appealed largely to in-",
+      "level": 3,
+      "line_num": 984,
+      "content_preview": "So far our discussion of polynomial curve ﬁtting has appealed largely to in-"
+    },
+    {
+      "title": "Figure 1.8 Graph of the root-mean-square er-",
+      "level": 3,
+      "line_num": 988,
+      "content_preview": "Figure 1.8 Graph of the root-mean-square er-"
+    },
+    {
+      "title": "ERMS",
+      "level": 2,
+      "line_num": 991,
+      "content_preview": "ERMS"
+    },
+    {
+      "title": "Training",
+      "level": 2,
+      "line_num": 996,
+      "content_preview": "Training"
+    },
+    {
+      "title": "Test",
+      "level": 2,
+      "line_num": 997,
+      "content_preview": "Test"
+    },
+    {
+      "title": "We will introduce the basic concepts of probability theory by considering a sim-",
+      "level": 3,
+      "line_num": 1010,
+      "content_preview": "We will introduce the basic concepts of probability theory by considering a sim-"
+    },
+    {
+      "title": "This is illustrated in Figure 1.9. Now suppose we randomly pick one of the boxes",
+      "level": 3,
+      "line_num": 1013,
+      "content_preview": "This is illustrated in Figure 1.9. Now suppose we randomly pick one of the boxes"
+    },
+    {
+      "title": "To begin with, we shall deﬁne the probability of an event to be the fraction",
+      "level": 3,
+      "line_num": 1025,
+      "content_preview": "To begin with, we shall deﬁne the probability of an event to be the fraction"
+    },
+    {
+      "title": "Figure 1.9 We use a simple example of two",
+      "level": 3,
+      "line_num": 1028,
+      "content_preview": "Figure 1.9 We use a simple example of two"
+    },
+    {
+      "title": "Figure 1.10 We can derive the sum and product rules of probability by",
+      "level": 3,
+      "line_num": 1034,
+      "content_preview": "Figure 1.10 We can derive the sum and product rules of probability by"
+    },
+    {
+      "title": "In this illustration we have M =5 and L =3 . If we consider a total",
+      "level": 3,
+      "line_num": 1037,
+      "content_preview": "In this illustration we have M =5 and L =3 . If we consider a total"
+    },
+    {
+      "title": "We can now ask questions such as: “what is the overall probability that the se-",
+      "level": 3,
+      "line_num": 1054,
+      "content_preview": "We can now ask questions such as: “what is the overall probability that the se-"
+    },
+    {
+      "title": "X can take any of the valuesxi where i =1 ,...,M , and Y can take the valuesyj",
+      "level": 3,
+      "line_num": 1064,
+      "content_preview": "X can take any of the valuesxi where i =1 ,...,M , and Y can take the valuesyj"
+    },
+    {
+      "title": "The probability that X will take the value xi and Y will take the value yj is",
+      "level": 3,
+      "line_num": 1070,
+      "content_preview": "The probability that X will take the value xi and Y will take the value yj is"
+    },
+    {
+      "title": "N . (1.5)",
+      "level": 2,
+      "line_num": 1075,
+      "content_preview": "N . (1.5)"
+    },
+    {
+      "title": "X takes the valuexi irrespective of the value ofY is written as p(X = xi) and is",
+      "level": 3,
+      "line_num": 1077,
+      "content_preview": "X takes the valuexi irrespective of the value ofY is written as p(X = xi) and is"
+    },
+    {
+      "title": "N . (1.6)",
+      "level": 2,
+      "line_num": 1080,
+      "content_preview": "N . (1.6)"
+    },
+    {
+      "title": "Because the number of instances in columni in Figure 1.10 is just the sum of the",
+      "level": 3,
+      "line_num": 1081,
+      "content_preview": "Because the number of instances in columni in Figure 1.10 is just the sum of the"
+    },
+    {
+      "title": "If we consider only those instances for which X = xi, then the fraction of",
+      "level": 3,
+      "line_num": 1093,
+      "content_preview": "If we consider only those instances for which X = xi, then the fraction of"
+    },
+    {
+      "title": "From (1.5), (1.6), and (1.8), we can then derive the following relationship",
+      "level": 3,
+      "line_num": 1100,
+      "content_preview": "From (1.5), (1.6), and (1.8), we can then derive the following relationship"
+    },
+    {
+      "title": "N = nij",
+      "level": 2,
+      "line_num": 1102,
+      "content_preview": "N = nij"
+    },
+    {
+      "title": "So far we have been quite careful to make a distinction between a random vari-",
+      "level": 3,
+      "line_num": 1108,
+      "content_preview": "So far we have been quite careful to make a distinction between a random vari-"
+    },
+    {
+      "title": "With this more compact notation, we can write the two fundamental rules of",
+      "level": 3,
+      "line_num": 1116,
+      "content_preview": "With this more compact notation, we can write the two fundamental rules of"
+    },
+    {
+      "title": "The Rules of Probability",
+      "level": 2,
+      "line_num": 1118,
+      "content_preview": "The Rules of Probability"
+    },
+    {
+      "title": "From the product rule, together with the symmetry propertyp(X,Y )= p(Y,X ),",
+      "level": 3,
+      "line_num": 1130,
+      "content_preview": "From the product rule, together with the symmetry propertyp(X,Y )= p(Y,X ),"
+    },
+    {
+      "title": "In Figure 1.11, we show a simple example involving a joint distribution over two",
+      "level": 3,
+      "line_num": 1144,
+      "content_preview": "In Figure 1.11, we show a simple example involving a joint distribution over two"
+    },
+    {
+      "title": "Let us now return to our example involving boxes of fruit. For the moment, we",
+      "level": 3,
+      "line_num": 1155,
+      "content_preview": "Let us now return to our example involving boxes of fruit. For the moment, we"
+    },
+    {
+      "title": "B = b)=3 /4. In fact, we can write out all four",
+      "level": 3,
+      "line_num": 1165,
+      "content_preview": "B = b)=3 /4. In fact, we can write out all four"
+    },
+    {
+      "title": "Y =2",
+      "level": 2,
+      "line_num": 1174,
+      "content_preview": "Y =2"
+    },
+    {
+      "title": "Y =1",
+      "level": 2,
+      "line_num": 1175,
+      "content_preview": "Y =1"
+    },
+    {
+      "title": "Again, note that these probabilities are normalized so that",
+      "level": 3,
+      "line_num": 1185,
+      "content_preview": "Again, note that these probabilities are normalized so that"
+    },
+    {
+      "title": "We can now use the sum and product rules of probability to evaluate the overall",
+      "level": 3,
+      "line_num": 1189,
+      "content_preview": "We can now use the sum and product rules of probability to evaluate the overall"
+    },
+    {
+      "title": "Suppose instead we are told that a piece of fruit has been selected and it is an",
+      "level": 3,
+      "line_num": 1200,
+      "content_preview": "Suppose instead we are told that a piece of fruit has been selected and it is an"
+    },
+    {
+      "title": "We can provide an important interpretation of Bayes’ theorem as follows. If",
+      "level": 3,
+      "line_num": 1213,
+      "content_preview": "We can provide an important interpretation of Bayes’ theorem as follows. If"
+    },
+    {
+      "title": "X is indeed independent of the value ofX.F o r",
+      "level": 3,
+      "line_num": 1234,
+      "content_preview": "X is indeed independent of the value ofX.F o r"
+    },
+    {
+      "title": "As well as considering probabilities deﬁned over discrete sets of events, we",
+      "level": 3,
+      "line_num": 1239,
+      "content_preview": "As well as considering probabilities deﬁned over discrete sets of events, we"
+    },
+    {
+      "title": "Figure 1.12 The concept of probability for",
+      "level": 3,
+      "line_num": 1250,
+      "content_preview": "Figure 1.12 The concept of probability for"
+    },
+    {
+      "title": "Because probabilities are nonnegative, and because the value ofx must lie some-",
+      "level": 3,
+      "line_num": 1263,
+      "content_preview": "Because probabilities are nonnegative, and because the value ofx must lie some-"
+    },
+    {
+      "title": "Now consider a probability densitypx(x) that corresponds to a densitypy(y) with",
+      "level": 3,
+      "line_num": 1271,
+      "content_preview": "Now consider a probability densitypx(x) that corresponds to a densitypy(y) with"
+    },
+    {
+      "title": "The probability that x lies in the interval (−∞,z ) is given by the cumulative",
+      "level": 3,
+      "line_num": 1284,
+      "content_preview": "The probability that x lies in the interval (−∞,z ) is given by the cumulative"
+    },
+    {
+      "title": "P(z)=",
+      "level": 2,
+      "line_num": 1286,
+      "content_preview": "P(z)="
+    },
+    {
+      "title": "If we have several continuous variablesx1,...,x D, denoted collectively by the",
+      "level": 3,
+      "line_num": 1291,
+      "content_preview": "If we have several continuous variablesx1,...,x D, denoted collectively by the"
+    },
+    {
+      "title": "Note that if x is a discrete variable, thenp(x) is sometimes called aprobability",
+      "level": 3,
+      "line_num": 1300,
+      "content_preview": "Note that if x is a discrete variable, thenp(x) is sometimes called aprobability"
+    },
+    {
+      "title": "The sum and product rules of probability, as well as Bayes’ theorem, apply",
+      "level": 3,
+      "line_num": 1303,
+      "content_preview": "The sum and product rules of probability, as well as Bayes’ theorem, apply"
+    },
+    {
+      "title": "One of the most important operations involving probabilities is that of ﬁnding",
+      "level": 3,
+      "line_num": 1318,
+      "content_preview": "One of the most important operations involving probabilities is that of ﬁnding"
+    },
+    {
+      "title": "E[f]. For a discrete distribution, it is given by",
+      "level": 3,
+      "line_num": 1321,
+      "content_preview": "E[f]. For a discrete distribution, it is given by"
+    },
+    {
+      "title": "E[f]=",
+      "level": 2,
+      "line_num": 1322,
+      "content_preview": "E[f]="
+    },
+    {
+      "title": "E[f]=",
+      "level": 2,
+      "line_num": 1329,
+      "content_preview": "E[f]="
+    },
+    {
+      "title": "E[f] ≃ 1",
+      "level": 2,
+      "line_num": 1336,
+      "content_preview": "E[f] ≃ 1"
+    },
+    {
+      "title": "We shall make extensive use of this result when we discuss sampling methods in",
+      "level": 3,
+      "line_num": 1341,
+      "content_preview": "We shall make extensive use of this result when we discuss sampling methods in"
+    },
+    {
+      "title": "Sometimes we will be considering expectations of functions of several variables,",
+      "level": 3,
+      "line_num": 1343,
+      "content_preview": "Sometimes we will be considering expectations of functions of several variables,"
+    },
+    {
+      "title": "Ex[f(x, y)] (1.36)",
+      "level": 2,
+      "line_num": 1346,
+      "content_preview": "Ex[f(x, y)] (1.36)"
+    },
+    {
+      "title": "We can also consider a conditional expectation with respect to a conditional",
+      "level": 3,
+      "line_num": 1349,
+      "content_preview": "We can also consider a conditional expectation with respect to a conditional"
+    },
+    {
+      "title": "Ex[f|y]=",
+      "level": 2,
+      "line_num": 1351,
+      "content_preview": "Ex[f|y]="
+    },
+    {
+      "title": "The variance of f(x) is deﬁned by",
+      "level": 2,
+      "line_num": 1356,
+      "content_preview": "The variance of f(x) is deﬁned by"
+    },
+    {
+      "title": "For two random variablesx and y, the covariance is deﬁned by",
+      "level": 3,
+      "line_num": 1367,
+      "content_preview": "For two random variablesx and y, the covariance is deﬁned by"
+    },
+    {
+      "title": "So far in this chapter, we have viewed probabilities in terms of the frequencies",
+      "level": 3,
+      "line_num": 1382,
+      "content_preview": "So far in this chapter, we have viewed probabilities in terms of the frequencies"
+    },
+    {
+      "title": "Consider an uncertain event, for example whether the moon was once in its own",
+      "level": 3,
+      "line_num": 1386,
+      "content_preview": "Consider an uncertain event, for example whether the moon was once in its own"
+    }
+  ],
+  "line_count": 36618
+}

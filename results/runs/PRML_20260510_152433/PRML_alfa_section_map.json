@@ -1,0 +1,379 @@
+{
+  "document_id": "PRML",
+  "source_path": "examples\\documents\\PRML.pdf",
+  "section_count": 31,
+  "sections": [
+    {
+      "id": "sec_5789877",
+      "title": "Root",
+      "level": 1,
+      "line_start": 1,
+      "line_end": null,
+      "hierarchy": [
+        "Root"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Root",
+      "content_preview": ""
+    },
+    {
+      "id": "sec_9263389",
+      "title": "Information Science and Statistics",
+      "level": 2,
+      "line_start": 1,
+      "line_end": null,
+      "hierarchy": [
+        "Information Science and Statistics"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Information Science and Statistics",
+      "content_preview": "Information Science and Statistics"
+    },
+    {
+      "id": "sec_0382090",
+      "title": "Series Editors:",
+      "level": 2,
+      "line_start": 2,
+      "line_end": null,
+      "hierarchy": [
+        "Series Editors:"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Series Editors:",
+      "content_preview": "Series Editors:"
+    },
+    {
+      "id": "sec_9852206",
+      "title": "M. Jordan",
+      "level": 2,
+      "line_start": 3,
+      "line_end": null,
+      "hierarchy": [
+        "M. Jordan"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > M. Jordan",
+      "content_preview": "M. Jordan"
+    },
+    {
+      "id": "sec_4455827",
+      "title": "J. Kleinberg",
+      "level": 2,
+      "line_start": 4,
+      "line_end": null,
+      "hierarchy": [
+        "J. Kleinberg"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > J. Kleinberg",
+      "content_preview": "J. Kleinberg"
+    },
+    {
+      "id": "sec_4130786",
+      "title": "B. Scho¨lkopf",
+      "level": 2,
+      "line_start": 5,
+      "line_end": null,
+      "hierarchy": [
+        "B. Scho¨lkopf"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > B. Scho¨lkopf",
+      "content_preview": "B. Scho¨lkopf"
+    },
+    {
+      "id": "sec_9263389",
+      "title": "Information Science and Statistics",
+      "level": 2,
+      "line_start": 6,
+      "line_end": null,
+      "hierarchy": [
+        "Information Science and Statistics"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Information Science and Statistics",
+      "content_preview": "Information Science and Statistics"
+    },
+    {
+      "id": "sec_3826270",
+      "title": "Cowell, Dawid, Lauritzen, and Spiegelhalter: Probabilistic Networks and",
+      "level": 3,
+      "line_start": 9,
+      "line_end": null,
+      "hierarchy": [
+        "Cowell, Dawid, Lauritzen, and Spiegelhalter: Probabilistic Networks and"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Cowell, Dawid, Lauritzen, and Spiegelhalter: Probabilistic Networks and",
+      "content_preview": "Cowell, Dawid, Lauritzen, and Spiegelhalter: Probabilistic Networks and"
+    },
+    {
+      "id": "sec_1579782",
+      "title": "Marchette: Computer Intrusion Detection and Network Monitoring:",
+      "level": 3,
+      "line_start": 15,
+      "line_end": null,
+      "hierarchy": [
+        "Marchette: Computer Intrusion Detection and Network Monitoring:"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Marchette: Computer Intrusion Detection and Network Monitoring:",
+      "content_preview": "Marchette: Computer Intrusion Detection and Network Monitoring:"
+    },
+    {
+      "id": "sec_5957531",
+      "title": "Rubinstein and Kroese: The Cross-Entropy Method:  A Unified Approach to",
+      "level": 3,
+      "line_start": 17,
+      "line_end": null,
+      "hierarchy": [
+        "Rubinstein and Kroese: The Cross-Entropy Method:  A Unified Approach to"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Rubinstein and Kroese: The Cross-Entropy Method:  A Unified Approach to",
+      "content_preview": "Rubinstein and Kroese: The Cross-Entropy Method:  A Unified Approach to"
+    },
+    {
+      "id": "sec_4606734",
+      "title": "Christopher M. Bishop",
+      "level": 2,
+      "line_start": 22,
+      "line_end": null,
+      "hierarchy": [
+        "Christopher M. Bishop"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Christopher M. Bishop",
+      "content_preview": "Christopher M. Bishop"
+    },
+    {
+      "id": "sec_7398827",
+      "title": "Pattern Recognition and",
+      "level": 2,
+      "line_start": 23,
+      "line_end": null,
+      "hierarchy": [
+        "Pattern Recognition and"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Pattern Recognition and",
+      "content_preview": "Pattern Recognition and"
+    },
+    {
+      "id": "sec_8458408",
+      "title": "Machine Learning",
+      "level": 2,
+      "line_start": 24,
+      "line_end": null,
+      "hierarchy": [
+        "Machine Learning"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Machine Learning",
+      "content_preview": "Machine Learning"
+    },
+    {
+      "id": "sec_8807552",
+      "title": "Assistant Director",
+      "level": 2,
+      "line_start": 26,
+      "line_end": null,
+      "hierarchy": [
+        "Assistant Director"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Assistant Director",
+      "content_preview": "Assistant Director"
+    },
+    {
+      "id": "sec_4169975",
+      "title": "Microsoft Research Ltd",
+      "level": 2,
+      "line_start": 27,
+      "line_end": null,
+      "hierarchy": [
+        "Microsoft Research Ltd"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Microsoft Research Ltd",
+      "content_preview": "Microsoft Research Ltd"
+    },
+    {
+      "id": "sec_6722652",
+      "title": "Series Editors",
+      "level": 2,
+      "line_start": 31,
+      "line_end": null,
+      "hierarchy": [
+        "Series Editors"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Series Editors",
+      "content_preview": "Series Editors"
+    },
+    {
+      "id": "sec_2915393",
+      "title": "Michael Jordan",
+      "level": 2,
+      "line_start": 32,
+      "line_end": null,
+      "hierarchy": [
+        "Michael Jordan"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Michael Jordan",
+      "content_preview": "Michael Jordan"
+    },
+    {
+      "id": "sec_4946297",
+      "title": "Department of Computer",
+      "level": 2,
+      "line_start": 33,
+      "line_end": null,
+      "hierarchy": [
+        "Department of Computer"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Department of Computer",
+      "content_preview": "Department of Computer"
+    },
+    {
+      "id": "sec_8965328",
+      "title": "Science and Department",
+      "level": 2,
+      "line_start": 34,
+      "line_end": null,
+      "hierarchy": [
+        "Science and Department"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Science and Department",
+      "content_preview": "Science and Department"
+    },
+    {
+      "id": "sec_6079255",
+      "title": "University of California,",
+      "level": 2,
+      "line_start": 36,
+      "line_end": null,
+      "hierarchy": [
+        "University of California,"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > University of California,",
+      "content_preview": "University of California,"
+    },
+    {
+      "id": "sec_8051357",
+      "title": "Berkeley",
+      "level": 2,
+      "line_start": 37,
+      "line_end": null,
+      "hierarchy": [
+        "Berkeley"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Berkeley",
+      "content_preview": "Berkeley"
+    },
+    {
+      "id": "sec_1702256",
+      "title": "Berkeley, CA 94720",
+      "level": 2,
+      "line_start": 38,
+      "line_end": null,
+      "hierarchy": [
+        "Berkeley, CA 94720"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Berkeley, CA 94720",
+      "content_preview": "Berkeley, CA 94720"
+    },
+    {
+      "id": "sec_6478065",
+      "title": "Professor Jon Kleinberg",
+      "level": 2,
+      "line_start": 40,
+      "line_end": null,
+      "hierarchy": [
+        "Professor Jon Kleinberg"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Professor Jon Kleinberg",
+      "content_preview": "Professor Jon Kleinberg"
+    },
+    {
+      "id": "sec_4946297",
+      "title": "Department of Computer",
+      "level": 2,
+      "line_start": 41,
+      "line_end": null,
+      "hierarchy": [
+        "Department of Computer"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Department of Computer",
+      "content_preview": "Department of Computer"
+    },
+    {
+      "id": "sec_4846644",
+      "title": "Science",
+      "level": 2,
+      "line_start": 42,
+      "line_end": null,
+      "hierarchy": [
+        "Science"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Science",
+      "content_preview": "Science"
+    },
+    {
+      "id": "sec_8223697",
+      "title": "Cornell University",
+      "level": 2,
+      "line_start": 43,
+      "line_end": null,
+      "hierarchy": [
+        "Cornell University"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Cornell University",
+      "content_preview": "Cornell University"
+    },
+    {
+      "id": "sec_7565269",
+      "title": "Ithaca, NY 14853",
+      "level": 2,
+      "line_start": 44,
+      "line_end": null,
+      "hierarchy": [
+        "Ithaca, NY 14853"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Ithaca, NY 14853",
+      "content_preview": "Ithaca, NY 14853"
+    },
+    {
+      "id": "sec_8381564",
+      "title": "Bernhard Scho¨lkopf",
+      "level": 2,
+      "line_start": 46,
+      "line_end": null,
+      "hierarchy": [
+        "Bernhard Scho¨lkopf"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Bernhard Scho¨lkopf",
+      "content_preview": "Bernhard Scho¨lkopf"
+    },
+    {
+      "id": "sec_3014175",
+      "title": "Max Planck Institute for",
+      "level": 2,
+      "line_start": 47,
+      "line_end": null,
+      "hierarchy": [
+        "Max Planck Institute for"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Max Planck Institute for",
+      "content_preview": "Max Planck Institute for"
+    },
+    {
+      "id": "sec_0726643",
+      "title": "Biological Cybernetics",
+      "level": 2,
+      "line_start": 48,
+      "line_end": null,
+      "hierarchy": [
+        "Biological Cybernetics"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Biological Cybernetics",
+      "content_preview": "Biological Cybernetics"
+    },
+    {
+      "id": "sec_8544806",
+      "title": "Spemannstrasse 38",
+      "level": 2,
+      "line_start": 49,
+      "line_end": null,
+      "hierarchy": [
+        "Spemannstrasse 38"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Spemannstrasse 38",
+      "content_preview": "Spemannstrasse 38"
+    }
+  ]
+}

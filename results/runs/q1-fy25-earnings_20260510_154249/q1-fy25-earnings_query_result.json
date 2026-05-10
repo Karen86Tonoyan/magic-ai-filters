@@ -1,0 +1,112 @@
+{
+  "question": "What are the main topics and key findings?",
+  "answer": "Na podstawie mapy sekcji najbardziej trafne obszary to: Root, Key\tPoints:, DISCUSSION\tOF\tFIRST\tQUARTER\tSEGMENT\tRESULTS. Odpowiedź powinna zostać rozwinięta z tych ścieżek dowodu.",
+  "evidence_paths": [
+    "examples\\documents\\q1-fy25-earnings.pdf > Root",
+    "examples\\documents\\q1-fy25-earnings.pdf > Key\tPoints:",
+    "examples\\documents\\q1-fy25-earnings.pdf > DISCUSSION\tOF\tFIRST\tQUARTER\tSEGMENT\tRESULTS",
+    "examples\\documents\\q1-fy25-earnings.pdf > Key\tMetrics\t-\tFirst\tQuarter\tof\tFiscal\t2025\tComparison\tto\tFourth\tQuarter\tof\tFiscal\t2024",
+    "examples\\documents\\q1-fy25-earnings.pdf > In\taddition\tto\trevenue,\tcosts\tand\toperating\tincome,\tmanagement\tuses\tthe\tfollowing\tkey\tmetrics(1)\tto"
+  ],
+  "matched_sections": [
+    {
+      "id": "sec_3039605",
+      "title": "Root",
+      "level": 1,
+      "line_start": 1,
+      "line_end": null,
+      "hierarchy": [
+        "Root"
+      ],
+      "evidence_path": "examples\\documents\\q1-fy25-earnings.pdf > Root",
+      "score": 2,
+      "matched_terms": [
+        "discussion",
+        "key"
+      ]
+    },
+    {
+      "id": "sec_6336759",
+      "title": "Key\tPoints:",
+      "level": 4,
+      "line_start": 15,
+      "line_end": null,
+      "hierarchy": [
+        "Key\tPoints:"
+      ],
+      "evidence_path": "examples\\documents\\q1-fy25-earnings.pdf > Key\tPoints:",
+      "score": 2,
+      "matched_terms": [
+        "key"
+      ]
+    },
+    {
+      "id": "sec_0447251",
+      "title": "DISCUSSION\tOF\tFIRST\tQUARTER\tSEGMENT\tRESULTS",
+      "level": 4,
+      "line_start": 205,
+      "line_end": null,
+      "hierarchy": [
+        "DISCUSSION\tOF\tFIRST\tQUARTER\tSEGMENT\tRESULTS"
+      ],
+      "evidence_path": "examples\\documents\\q1-fy25-earnings.pdf > DISCUSSION\tOF\tFIRST\tQUARTER\tSEGMENT\tRESULTS",
+      "score": 2,
+      "matched_terms": [
+        "discussion"
+      ]
+    },
+    {
+      "id": "sec_2028277",
+      "title": "Key\tMetrics\t-\tFirst\tQuarter\tof\tFiscal\t2025\tComparison\tto\tFourth\tQuarter\tof\tFiscal\t2024",
+      "level": 4,
+      "line_start": 361,
+      "line_end": null,
+      "hierarchy": [
+        "Key\tMetrics\t-\tFirst\tQuarter\tof\tFiscal\t2025\tComparison\tto\tFourth\tQuarter\tof\tFiscal\t2024"
+      ],
+      "evidence_path": "examples\\documents\\q1-fy25-earnings.pdf > Key\tMetrics\t-\tFirst\tQuarter\tof\tFiscal\t2025\tComparison\tto\tFourth\tQuarter\tof\tFiscal\t2024",
+      "score": 2,
+      "matched_terms": [
+        "key"
+      ]
+    },
+    {
+      "id": "sec_0413586",
+      "title": "In\taddition\tto\trevenue,\tcosts\tand\toperating\tincome,\tmanagement\tuses\tthe\tfollowing\tkey\tmetrics(1)\tto",
+      "level": 4,
+      "line_start": 362,
+      "line_end": null,
+      "hierarchy": [
+        "In\taddition\tto\trevenue,\tcosts\tand\toperating\tincome,\tmanagement\tuses\tthe\tfollowing\tkey\tmetrics(1)\tto"
+      ],
+      "evidence_path": "examples\\documents\\q1-fy25-earnings.pdf > In\taddition\tto\trevenue,\tcosts\tand\toperating\tincome,\tmanagement\tuses\tthe\tfollowing\tkey\tmetrics(1)\tto",
+      "score": 2,
+      "matched_terms": [
+        "key"
+      ]
+    }
+  ],
+  "confidence": 0.167,
+  "missing_context": [
+    "abstract",
+    "conclusion",
+    "finding",
+    "highlights",
+    "introduction",
+    "main",
+    "overview",
+    "results",
+    "summary",
+    "topic"
+  ],
+  "strict": {
+    "enabled": true,
+    "passed": false,
+    "min_confidence": 0.6,
+    "min_evidence_paths": 2
+  },
+  "rejected_by_strict_gate": true,
+  "strict_rejection_reasons": [
+    "confidence_below_threshold"
+  ]
+}

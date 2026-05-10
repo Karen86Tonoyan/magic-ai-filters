@@ -1,0 +1,21 @@
+{
+  "run_id": "alfa_rc2_test1_20260510_143203",
+  "document_id": "alfa_rc2_test1",
+  "source_path": ".\\alfa_rc2_test1.pdf",
+  "question": "Praktyki komunikacyjne Wprowadzenie",
+  "structure_mode": "normal",
+  "structure_path": "results/runs/alfa_rc2_test1_20260510_143203/alfa_rc2_test1_structure.json",
+  "section_map_path": "results/runs/alfa_rc2_test1_20260510_143203/alfa_rc2_test1_alfa_section_map.json",
+  "query_result_path": "results/runs/alfa_rc2_test1_20260510_143203/alfa_rc2_test1_query_result.json",
+  "exit_code": 0,
+  "strict_passed": true,
+  "confidence": 1.0,
+  "evidence_paths": [
+    "alfa_rc2_test1.pdf > Praktyki\tkomunikacyjne",
+    "alfa_rc2_test1.pdf > Praktyki komunikacyjne jako praktyki społeczne w ujęciu historycznym  97",
+    "alfa_rc2_test1.pdf > Praktyki komunikacyjne jako praktyki społeczne w ujęciu historycznym  99",
+    "alfa_rc2_test1.pdf > Z kolei ka żda „poszczególna” praktyka komunikacyjna tworzy",
+    "alfa_rc2_test1.pdf > Praktyki komunikacyjne jako praktyki społeczne w ujęciu historycznym  101"
+  ],
+  "section_count": 31
+}

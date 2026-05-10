@@ -1,0 +1,18 @@
+{
+  "run_id": "q1-fy25-earnings_20260510_134448",
+  "document_id": "q1-fy25-earnings",
+  "source_path": ".\\examples\\documents\\q1-fy25-earnings.pdf",
+  "question": "What are the main topics and key findings?",
+  "structure_mode": "normal",
+  "structure_path": "results/runs/q1-fy25-earnings_20260510_134448/q1-fy25-earnings_structure.json",
+  "section_map_path": "results/runs/q1-fy25-earnings_20260510_134448/q1-fy25-earnings_alfa_section_map.json",
+  "query_result_path": "results/runs/q1-fy25-earnings_20260510_134448/q1-fy25-earnings_query_result.json",
+  "exit_code": 2,
+  "strict_passed": false,
+  "confidence": 0.4,
+  "evidence_paths": [
+    "examples\\documents\\q1-fy25-earnings.pdf > Root",
+    "examples\\documents\\q1-fy25-earnings.pdf > Key\tPoints:"
+  ],
+  "section_count": 21
+}

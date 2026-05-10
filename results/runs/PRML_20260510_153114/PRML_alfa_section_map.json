@@ -1,0 +1,2419 @@
+{
+  "document_id": "PRML",
+  "source_path": "examples\\documents\\PRML.pdf",
+  "section_count": 201,
+  "sections": [
+    {
+      "id": "sec_1945557",
+      "title": "Root",
+      "level": 1,
+      "line_start": 1,
+      "line_end": null,
+      "hierarchy": [
+        "Root"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Root",
+      "content_preview": ""
+    },
+    {
+      "id": "sec_5865632",
+      "title": "Information Science and Statistics",
+      "level": 2,
+      "line_start": 1,
+      "line_end": null,
+      "hierarchy": [
+        "Information Science and Statistics"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Information Science and Statistics",
+      "content_preview": "Information Science and Statistics"
+    },
+    {
+      "id": "sec_8076619",
+      "title": "Series Editors:",
+      "level": 2,
+      "line_start": 2,
+      "line_end": null,
+      "hierarchy": [
+        "Series Editors:"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Series Editors:",
+      "content_preview": "Series Editors:"
+    },
+    {
+      "id": "sec_6011153",
+      "title": "M. Jordan",
+      "level": 2,
+      "line_start": 3,
+      "line_end": null,
+      "hierarchy": [
+        "M. Jordan"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > M. Jordan",
+      "content_preview": "M. Jordan"
+    },
+    {
+      "id": "sec_0717140",
+      "title": "J. Kleinberg",
+      "level": 2,
+      "line_start": 4,
+      "line_end": null,
+      "hierarchy": [
+        "J. Kleinberg"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > J. Kleinberg",
+      "content_preview": "J. Kleinberg"
+    },
+    {
+      "id": "sec_3656678",
+      "title": "B. Scho¨lkopf",
+      "level": 2,
+      "line_start": 5,
+      "line_end": null,
+      "hierarchy": [
+        "B. Scho¨lkopf"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > B. Scho¨lkopf",
+      "content_preview": "B. Scho¨lkopf"
+    },
+    {
+      "id": "sec_5865632",
+      "title": "Information Science and Statistics",
+      "level": 2,
+      "line_start": 6,
+      "line_end": null,
+      "hierarchy": [
+        "Information Science and Statistics"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Information Science and Statistics",
+      "content_preview": "Information Science and Statistics"
+    },
+    {
+      "id": "sec_4453710",
+      "title": "Cowell, Dawid, Lauritzen, and Spiegelhalter: Probabilistic Networks and",
+      "level": 3,
+      "line_start": 9,
+      "line_end": null,
+      "hierarchy": [
+        "Cowell, Dawid, Lauritzen, and Spiegelhalter: Probabilistic Networks and"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Cowell, Dawid, Lauritzen, and Spiegelhalter: Probabilistic Networks and",
+      "content_preview": "Cowell, Dawid, Lauritzen, and Spiegelhalter: Probabilistic Networks and"
+    },
+    {
+      "id": "sec_5609102",
+      "title": "Marchette: Computer Intrusion Detection and Network Monitoring:",
+      "level": 3,
+      "line_start": 15,
+      "line_end": null,
+      "hierarchy": [
+        "Marchette: Computer Intrusion Detection and Network Monitoring:"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Marchette: Computer Intrusion Detection and Network Monitoring:",
+      "content_preview": "Marchette: Computer Intrusion Detection and Network Monitoring:"
+    },
+    {
+      "id": "sec_7353605",
+      "title": "Rubinstein and Kroese: The Cross-Entropy Method:  A Unified Approach to",
+      "level": 3,
+      "line_start": 17,
+      "line_end": null,
+      "hierarchy": [
+        "Rubinstein and Kroese: The Cross-Entropy Method:  A Unified Approach to"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Rubinstein and Kroese: The Cross-Entropy Method:  A Unified Approach to",
+      "content_preview": "Rubinstein and Kroese: The Cross-Entropy Method:  A Unified Approach to"
+    },
+    {
+      "id": "sec_6149160",
+      "title": "Christopher M. Bishop",
+      "level": 2,
+      "line_start": 22,
+      "line_end": null,
+      "hierarchy": [
+        "Christopher M. Bishop"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Christopher M. Bishop",
+      "content_preview": "Christopher M. Bishop"
+    },
+    {
+      "id": "sec_6825305",
+      "title": "Pattern Recognition and",
+      "level": 2,
+      "line_start": 23,
+      "line_end": null,
+      "hierarchy": [
+        "Pattern Recognition and"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Pattern Recognition and",
+      "content_preview": "Pattern Recognition and"
+    },
+    {
+      "id": "sec_5050524",
+      "title": "Machine Learning",
+      "level": 2,
+      "line_start": 24,
+      "line_end": null,
+      "hierarchy": [
+        "Machine Learning"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Machine Learning",
+      "content_preview": "Machine Learning"
+    },
+    {
+      "id": "sec_6983442",
+      "title": "Assistant Director",
+      "level": 2,
+      "line_start": 26,
+      "line_end": null,
+      "hierarchy": [
+        "Assistant Director"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Assistant Director",
+      "content_preview": "Assistant Director"
+    },
+    {
+      "id": "sec_0549260",
+      "title": "Microsoft Research Ltd",
+      "level": 2,
+      "line_start": 27,
+      "line_end": null,
+      "hierarchy": [
+        "Microsoft Research Ltd"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Microsoft Research Ltd",
+      "content_preview": "Microsoft Research Ltd"
+    },
+    {
+      "id": "sec_6541951",
+      "title": "Series Editors",
+      "level": 2,
+      "line_start": 31,
+      "line_end": null,
+      "hierarchy": [
+        "Series Editors"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Series Editors",
+      "content_preview": "Series Editors"
+    },
+    {
+      "id": "sec_4444729",
+      "title": "Michael Jordan",
+      "level": 2,
+      "line_start": 32,
+      "line_end": null,
+      "hierarchy": [
+        "Michael Jordan"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Michael Jordan",
+      "content_preview": "Michael Jordan"
+    },
+    {
+      "id": "sec_8797828",
+      "title": "Department of Computer",
+      "level": 2,
+      "line_start": 33,
+      "line_end": null,
+      "hierarchy": [
+        "Department of Computer"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Department of Computer",
+      "content_preview": "Department of Computer"
+    },
+    {
+      "id": "sec_2611798",
+      "title": "Science and Department",
+      "level": 2,
+      "line_start": 34,
+      "line_end": null,
+      "hierarchy": [
+        "Science and Department"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Science and Department",
+      "content_preview": "Science and Department"
+    },
+    {
+      "id": "sec_3782724",
+      "title": "University of California,",
+      "level": 2,
+      "line_start": 36,
+      "line_end": null,
+      "hierarchy": [
+        "University of California,"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > University of California,",
+      "content_preview": "University of California,"
+    },
+    {
+      "id": "sec_9415642",
+      "title": "Berkeley",
+      "level": 2,
+      "line_start": 37,
+      "line_end": null,
+      "hierarchy": [
+        "Berkeley"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Berkeley",
+      "content_preview": "Berkeley"
+    },
+    {
+      "id": "sec_2275834",
+      "title": "Berkeley, CA 94720",
+      "level": 2,
+      "line_start": 38,
+      "line_end": null,
+      "hierarchy": [
+        "Berkeley, CA 94720"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Berkeley, CA 94720",
+      "content_preview": "Berkeley, CA 94720"
+    },
+    {
+      "id": "sec_3765232",
+      "title": "Professor Jon Kleinberg",
+      "level": 2,
+      "line_start": 40,
+      "line_end": null,
+      "hierarchy": [
+        "Professor Jon Kleinberg"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Professor Jon Kleinberg",
+      "content_preview": "Professor Jon Kleinberg"
+    },
+    {
+      "id": "sec_8797828",
+      "title": "Department of Computer",
+      "level": 2,
+      "line_start": 41,
+      "line_end": null,
+      "hierarchy": [
+        "Department of Computer"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Department of Computer",
+      "content_preview": "Department of Computer"
+    },
+    {
+      "id": "sec_8806117",
+      "title": "Science",
+      "level": 2,
+      "line_start": 42,
+      "line_end": null,
+      "hierarchy": [
+        "Science"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Science",
+      "content_preview": "Science"
+    },
+    {
+      "id": "sec_7126856",
+      "title": "Cornell University",
+      "level": 2,
+      "line_start": 43,
+      "line_end": null,
+      "hierarchy": [
+        "Cornell University"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Cornell University",
+      "content_preview": "Cornell University"
+    },
+    {
+      "id": "sec_6045614",
+      "title": "Ithaca, NY 14853",
+      "level": 2,
+      "line_start": 44,
+      "line_end": null,
+      "hierarchy": [
+        "Ithaca, NY 14853"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Ithaca, NY 14853",
+      "content_preview": "Ithaca, NY 14853"
+    },
+    {
+      "id": "sec_7136177",
+      "title": "Bernhard Scho¨lkopf",
+      "level": 2,
+      "line_start": 46,
+      "line_end": null,
+      "hierarchy": [
+        "Bernhard Scho¨lkopf"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Bernhard Scho¨lkopf",
+      "content_preview": "Bernhard Scho¨lkopf"
+    },
+    {
+      "id": "sec_9609014",
+      "title": "Max Planck Institute for",
+      "level": 2,
+      "line_start": 47,
+      "line_end": null,
+      "hierarchy": [
+        "Max Planck Institute for"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Max Planck Institute for",
+      "content_preview": "Max Planck Institute for"
+    },
+    {
+      "id": "sec_8200802",
+      "title": "Biological Cybernetics",
+      "level": 2,
+      "line_start": 48,
+      "line_end": null,
+      "hierarchy": [
+        "Biological Cybernetics"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Biological Cybernetics",
+      "content_preview": "Biological Cybernetics"
+    },
+    {
+      "id": "sec_7012110",
+      "title": "Spemannstrasse 38",
+      "level": 2,
+      "line_start": 49,
+      "line_end": null,
+      "hierarchy": [
+        "Spemannstrasse 38"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Spemannstrasse 38",
+      "content_preview": "Spemannstrasse 38"
+    },
+    {
+      "id": "sec_4349828",
+      "title": "Germany",
+      "level": 2,
+      "line_start": 51,
+      "line_end": null,
+      "hierarchy": [
+        "Germany"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Germany",
+      "content_preview": "Germany"
+    },
+    {
+      "id": "sec_0143775",
+      "title": "Library of Congress Control Number: 2006922522",
+      "level": 3,
+      "line_start": 52,
+      "line_end": null,
+      "hierarchy": [
+        "Library of Congress Control Number: 2006922522"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Library of Congress Control Number: 2006922522",
+      "content_preview": "Library of Congress Control Number: 2006922522"
+    },
+    {
+      "id": "sec_9500012",
+      "title": "ISBN-10: 0-387-31073-8",
+      "level": 2,
+      "line_start": 53,
+      "line_end": null,
+      "hierarchy": [
+        "ISBN-10: 0-387-31073-8"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > ISBN-10: 0-387-31073-8",
+      "content_preview": "ISBN-10: 0-387-31073-8"
+    },
+    {
+      "id": "sec_1975127",
+      "title": "ISBN-13: 978-0387-31073-2",
+      "level": 2,
+      "line_start": 54,
+      "line_end": null,
+      "hierarchy": [
+        "ISBN-13: 978-0387-31073-2"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > ISBN-13: 978-0387-31073-2",
+      "content_preview": "ISBN-13: 978-0387-31073-2"
+    },
+    {
+      "id": "sec_6002525",
+      "title": "Printed in Singapore. (KYO)",
+      "level": 2,
+      "line_start": 63,
+      "line_end": null,
+      "hierarchy": [
+        "Printed in Singapore. (KYO)"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Printed in Singapore. (KYO)",
+      "content_preview": "Printed in Singapore. (KYO)"
+    },
+    {
+      "id": "sec_1965928",
+      "title": "This book is dedicated to my family:",
+      "level": 2,
+      "line_start": 66,
+      "line_end": null,
+      "hierarchy": [
+        "This book is dedicated to my family:"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > This book is dedicated to my family:",
+      "content_preview": "This book is dedicated to my family:"
+    },
+    {
+      "id": "sec_0898562",
+      "title": "Jenna, Mark, and Hugh",
+      "level": 2,
+      "line_start": 67,
+      "line_end": null,
+      "hierarchy": [
+        "Jenna, Mark, and Hugh"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Jenna, Mark, and Hugh",
+      "content_preview": "Jenna, Mark, and Hugh"
+    },
+    {
+      "id": "sec_1136681",
+      "title": "Preface",
+      "level": 2,
+      "line_start": 69,
+      "line_end": null,
+      "hierarchy": [
+        "Preface"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Preface",
+      "content_preview": "Preface"
+    },
+    {
+      "id": "sec_4127722",
+      "title": "Bayesian methods has been greatly enhanced through the development of a range of",
+      "level": 3,
+      "line_start": 76,
+      "line_end": null,
+      "hierarchy": [
+        "Bayesian methods has been greatly enhanced through the development of a range of"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Bayesian methods has been greatly enhanced through the development of a range of",
+      "content_preview": "Bayesian methods has been greatly enhanced through the development of a range of"
+    },
+    {
+      "id": "sec_3519928",
+      "title": "This new textbook reﬂects these recent developments while providing a compre-",
+      "level": 3,
+      "line_start": 80,
+      "line_end": null,
+      "hierarchy": [
+        "This new textbook reﬂects these recent developments while providing a compre-"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > This new textbook reﬂects these recent developments while providing a compre-",
+      "content_preview": "This new textbook reﬂects these recent developments while providing a compre-"
+    },
+    {
+      "id": "sec_7248540",
+      "title": "The book is supported by a great deal of additional material, including lecture",
+      "level": 3,
+      "line_start": 93,
+      "line_end": null,
+      "hierarchy": [
+        "The book is supported by a great deal of additional material, including lecture"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > The book is supported by a great deal of additional material, including lecture",
+      "content_preview": "The book is supported by a great deal of additional material, including lecture"
+    },
+    {
+      "id": "sec_7742937",
+      "title": "Exercises",
+      "level": 2,
+      "line_start": 99,
+      "line_end": null,
+      "hierarchy": [
+        "Exercises"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Exercises",
+      "content_preview": "Exercises"
+    },
+    {
+      "id": "sec_8889955",
+      "title": "The exercises that appear at the end of every chapter form an important com-",
+      "level": 3,
+      "line_start": 100,
+      "line_end": null,
+      "hierarchy": [
+        "The exercises that appear at the end of every chapter form an important com-"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > The exercises that appear at the end of every chapter form an important com-",
+      "content_preview": "The exercises that appear at the end of every chapter form an important com-"
+    },
+    {
+      "id": "sec_1034425",
+      "title": "It has been difﬁcult to know to what extent these solutions should be made",
+      "level": 3,
+      "line_start": 106,
+      "line_end": null,
+      "hierarchy": [
+        "It has been difﬁcult to know to what extent these solutions should be made"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > It has been difﬁcult to know to what extent these solutions should be made",
+      "content_preview": "It has been difﬁcult to know to what extent these solutions should be made"
+    },
+    {
+      "id": "sec_9010758",
+      "title": "Although this book focuses on concepts and principles, in a taught course the",
+      "level": 3,
+      "line_start": 117,
+      "line_end": null,
+      "hierarchy": [
+        "Although this book focuses on concepts and principles, in a taught course the"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Although this book focuses on concepts and principles, in a taught course the",
+      "content_preview": "Although this book focuses on concepts and principles, in a taught course the"
+    },
+    {
+      "id": "sec_1327186",
+      "title": "Acknowledgements",
+      "level": 2,
+      "line_start": 123,
+      "line_end": null,
+      "hierarchy": [
+        "Acknowledgements"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Acknowledgements",
+      "content_preview": "Acknowledgements"
+    },
+    {
+      "id": "sec_5784069",
+      "title": "First of all I would like to express my sincere thanks to Markus Svens´en who",
+      "level": 3,
+      "line_start": 124,
+      "line_end": null,
+      "hierarchy": [
+        "First of all I would like to express my sincere thanks to Markus Svens´en who"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > First of all I would like to express my sincere thanks to Markus Svens´en who",
+      "content_preview": "First of all I would like to express my sincere thanks to Markus Svens´en who"
+    },
+    {
+      "id": "sec_8280773",
+      "title": "I am very grateful to Microsoft Research for providing a highly stimulating re-",
+      "level": 3,
+      "line_start": 127,
+      "line_end": null,
+      "hierarchy": [
+        "I am very grateful to Microsoft Research for providing a highly stimulating re-"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > I am very grateful to Microsoft Research for providing a highly stimulating re-",
+      "content_preview": "I am very grateful to Microsoft Research for providing a highly stimulating re-"
+    },
+    {
+      "id": "sec_0370793",
+      "title": "Springer has provided excellent support throughout the ﬁnal stages of prepara-",
+      "level": 3,
+      "line_start": 131,
+      "line_end": null,
+      "hierarchy": [
+        "Springer has provided excellent support throughout the ﬁnal stages of prepara-"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Springer has provided excellent support throughout the ﬁnal stages of prepara-",
+      "content_preview": "Springer has provided excellent support throughout the ﬁnal stages of prepara-"
+    },
+    {
+      "id": "sec_1163198",
+      "title": "I also wish to thank Oxford University Press for permission to reproduce ex-",
+      "level": 3,
+      "line_start": 137,
+      "line_end": null,
+      "hierarchy": [
+        "I also wish to thank Oxford University Press for permission to reproduce ex-"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > I also wish to thank Oxford University Press for permission to reproduce ex-",
+      "content_preview": "I also wish to thank Oxford University Press for permission to reproduce ex-"
+    },
+    {
+      "id": "sec_8421330",
+      "title": "PREFACE ix",
+      "level": 2,
+      "line_start": 144,
+      "line_end": null,
+      "hierarchy": [
+        "PREFACE ix"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > PREFACE ix",
+      "content_preview": "PREFACE ix"
+    },
+    {
+      "id": "sec_7884316",
+      "title": "Many people have helped by proofreading draft material and providing com-",
+      "level": 3,
+      "line_start": 145,
+      "line_end": null,
+      "hierarchy": [
+        "Many people have helped by proofreading draft material and providing com-"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Many people have helped by proofreading draft material and providing com-",
+      "content_preview": "Many people have helped by proofreading draft material and providing com-"
+    },
+    {
+      "id": "sec_3346629",
+      "title": "Andrew Blake, Hakan Cevikalp, Michael Fourman, Brendan Frey, Zoubin Ghahra-",
+      "level": 3,
+      "line_start": 147,
+      "line_end": null,
+      "hierarchy": [
+        "Andrew Blake, Hakan Cevikalp, Michael Fourman, Brendan Frey, Zoubin Ghahra-"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Andrew Blake, Hakan Cevikalp, Michael Fourman, Brendan Frey, Zoubin Ghahra-",
+      "content_preview": "Andrew Blake, Hakan Cevikalp, Michael Fourman, Brendan Frey, Zoubin Ghahra-"
+    },
+    {
+      "id": "sec_3493519",
+      "title": "Lasserre, David Liu, Tom Minka, Ian Nabney, Tonatiuh Pena, Y uan Qi, Sam Roweis,",
+      "level": 3,
+      "line_start": 150,
+      "line_end": null,
+      "hierarchy": [
+        "Lasserre, David Liu, Tom Minka, Ian Nabney, Tonatiuh Pena, Y uan Qi, Sam Roweis,"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Lasserre, David Liu, Tom Minka, Ian Nabney, Tonatiuh Pena, Y uan Qi, Sam Roweis,",
+      "content_preview": "Lasserre, David Liu, Tom Minka, Ian Nabney, Tonatiuh Pena, Y uan Qi, Sam Roweis,"
+    },
+    {
+      "id": "sec_9776920",
+      "title": "Symeonides, Martin Szummer, Marshall Tappen, Ilkay Ulusoy, Chris Williams, John",
+      "level": 3,
+      "line_start": 152,
+      "line_end": null,
+      "hierarchy": [
+        "Symeonides, Martin Szummer, Marshall Tappen, Ilkay Ulusoy, Chris Williams, John"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Symeonides, Martin Szummer, Marshall Tappen, Ilkay Ulusoy, Chris Williams, John",
+      "content_preview": "Symeonides, Martin Szummer, Marshall Tappen, Ilkay Ulusoy, Chris Williams, John"
+    },
+    {
+      "id": "sec_4075559",
+      "title": "Finally, I would like to thank my wife Jenna who has been hugely supportive",
+      "level": 3,
+      "line_start": 154,
+      "line_end": null,
+      "hierarchy": [
+        "Finally, I would like to thank my wife Jenna who has been hugely supportive"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Finally, I would like to thank my wife Jenna who has been hugely supportive",
+      "content_preview": "Finally, I would like to thank my wife Jenna who has been hugely supportive"
+    },
+    {
+      "id": "sec_7416178",
+      "title": "Chris Bishop",
+      "level": 2,
+      "line_start": 156,
+      "line_end": null,
+      "hierarchy": [
+        "Chris Bishop"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Chris Bishop",
+      "content_preview": "Chris Bishop"
+    },
+    {
+      "id": "sec_6004416",
+      "title": "Cambridge",
+      "level": 2,
+      "line_start": 157,
+      "line_end": null,
+      "hierarchy": [
+        "Cambridge"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Cambridge",
+      "content_preview": "Cambridge"
+    },
+    {
+      "id": "sec_3712782",
+      "title": "February 2006",
+      "level": 2,
+      "line_start": 158,
+      "line_end": null,
+      "hierarchy": [
+        "February 2006"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > February 2006",
+      "content_preview": "February 2006"
+    },
+    {
+      "id": "sec_0043818",
+      "title": "Mathematical notation",
+      "level": 2,
+      "line_start": 159,
+      "line_end": null,
+      "hierarchy": [
+        "Mathematical notation"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Mathematical notation",
+      "content_preview": "Mathematical notation"
+    },
+    {
+      "id": "sec_8545801",
+      "title": "I have tried to keep the mathematical content of the book to the minimum neces-",
+      "level": 3,
+      "line_start": 160,
+      "line_end": null,
+      "hierarchy": [
+        "I have tried to keep the mathematical content of the book to the minimum neces-"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > I have tried to keep the mathematical content of the book to the minimum neces-",
+      "content_preview": "I have tried to keep the mathematical content of the book to the minimum neces-"
+    },
+    {
+      "id": "sec_9059945",
+      "title": "I have tried to use a consistent notation throughout the book, although at times",
+      "level": 3,
+      "line_start": 166,
+      "line_end": null,
+      "hierarchy": [
+        "I have tried to use a consistent notation throughout the book, although at times"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > I have tried to use a consistent notation throughout the book, although at times",
+      "content_preview": "I have tried to use a consistent notation throughout the book, although at times"
+    },
+    {
+      "id": "sec_4529564",
+      "title": "T will be a row vector. Uppercase bold",
+      "level": 2,
+      "line_start": 171,
+      "line_end": null,
+      "hierarchy": [
+        "T will be a row vector. Uppercase bold"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > T will be a row vector. Uppercase bold",
+      "content_preview": "T will be a row vector. Uppercase bold"
+    },
+    {
+      "id": "sec_4049764",
+      "title": "The M × M identity matrix (also known as the unit matrix) is denoted IM ,",
+      "level": 3,
+      "line_start": 181,
+      "line_end": null,
+      "hierarchy": [
+        "The M × M identity matrix (also known as the unit matrix) is denoted IM ,"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > The M × M identity matrix (also known as the unit matrix) is denoted IM ,",
+      "content_preview": "The M × M identity matrix (also known as the unit matrix) is denoted IM ,"
+    },
+    {
+      "id": "sec_0930524",
+      "title": "A functional is denoted f[y] where y(x) is some function. The concept of a",
+      "level": 3,
+      "line_start": 184,
+      "line_end": null,
+      "hierarchy": [
+        "A functional is denoted f[y] where y(x) is some function. The concept of a"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > A functional is denoted f[y] where y(x) is some function. The concept of a",
+      "content_preview": "A functional is denoted f[y] where y(x) is some function. The concept of a"
+    },
+    {
+      "id": "sec_3133008",
+      "title": "The expectation of a functionf(x, y) with respect to a random variablex is de-",
+      "level": 3,
+      "line_start": 188,
+      "line_end": null,
+      "hierarchy": [
+        "The expectation of a functionf(x, y) with respect to a random variablex is de-"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > The expectation of a functionf(x, y) with respect to a random variablex is de-",
+      "content_preview": "The expectation of a functionf(x, y) with respect to a random variablex is de-"
+    },
+    {
+      "id": "sec_9351015",
+      "title": "If we haveN values x1,..., xN of aD-dimensional vectorx =( x1,...,x D)T,",
+      "level": 3,
+      "line_start": 198,
+      "line_end": null,
+      "hierarchy": [
+        "If we haveN values x1,..., xN of aD-dimensional vectorx =( x1,...,x D)T,"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > If we haveN values x1,..., xN of aD-dimensional vectorx =( x1,...,x D)T,",
+      "content_preview": "If we haveN values x1,..., xN of aD-dimensional vectorx =( x1,...,x D)T,"
+    },
+    {
+      "id": "sec_2791883",
+      "title": "Contents",
+      "level": 2,
+      "line_start": 206,
+      "line_end": null,
+      "hierarchy": [
+        "Contents"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Contents",
+      "content_preview": "Contents"
+    },
+    {
+      "id": "sec_1009520",
+      "title": "Preface vii",
+      "level": 2,
+      "line_start": 207,
+      "line_end": null,
+      "hierarchy": [
+        "Preface vii"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Preface vii",
+      "content_preview": "Preface vii"
+    },
+    {
+      "id": "sec_1102096",
+      "title": "Mathematical notation xi",
+      "level": 2,
+      "line_start": 208,
+      "line_end": null,
+      "hierarchy": [
+        "Mathematical notation xi"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Mathematical notation xi",
+      "content_preview": "Mathematical notation xi"
+    },
+    {
+      "id": "sec_9678366",
+      "title": "Contents xiii",
+      "level": 2,
+      "line_start": 209,
+      "line_end": null,
+      "hierarchy": [
+        "Contents xiii"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Contents xiii",
+      "content_preview": "Contents xiii"
+    },
+    {
+      "id": "sec_0466706",
+      "title": "Exercises . . . ............................... 5 8",
+      "level": 3,
+      "line_start": 229,
+      "line_end": null,
+      "hierarchy": [
+        "Exercises . . . ............................... 5 8"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Exercises . . . ............................... 5 8",
+      "content_preview": "Exercises . . . ............................... 5 8"
+    },
+    {
+      "id": "sec_5172285",
+      "title": "Exercises . . . ............................... 1 2 7",
+      "level": 3,
+      "line_start": 254,
+      "line_end": null,
+      "hierarchy": [
+        "Exercises . . . ............................... 1 2 7"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Exercises . . . ............................... 1 2 7",
+      "content_preview": "Exercises . . . ............................... 1 2 7"
+    },
+    {
+      "id": "sec_8936472",
+      "title": "Exercises . . . ............................... 1 7 3",
+      "level": 3,
+      "line_start": 273,
+      "line_end": null,
+      "hierarchy": [
+        "Exercises . . . ............................... 1 7 3"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Exercises . . . ............................... 1 7 3",
+      "content_preview": "Exercises . . . ............................... 1 7 3"
+    },
+    {
+      "id": "sec_1954086",
+      "title": "CONTENTS xv",
+      "level": 2,
+      "line_start": 274,
+      "line_end": null,
+      "hierarchy": [
+        "CONTENTS xv"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > CONTENTS xv",
+      "content_preview": "CONTENTS xv"
+    },
+    {
+      "id": "sec_5786943",
+      "title": "Exercises . . . ............................... 2 2 0",
+      "level": 3,
+      "line_start": 301,
+      "line_end": null,
+      "hierarchy": [
+        "Exercises . . . ............................... 2 2 0"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Exercises . . . ............................... 2 2 0",
+      "content_preview": "Exercises . . . ............................... 2 2 0"
+    },
+    {
+      "id": "sec_1288317",
+      "title": "Exercises . . . ............................... 2 8 4",
+      "level": 3,
+      "line_start": 336,
+      "line_end": null,
+      "hierarchy": [
+        "Exercises . . . ............................... 2 8 4"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Exercises . . . ............................... 2 8 4",
+      "content_preview": "Exercises . . . ............................... 2 8 4"
+    },
+    {
+      "id": "sec_8595284",
+      "title": "Exercises . . . ............................... 3 2 0",
+      "level": 3,
+      "line_start": 350,
+      "line_end": null,
+      "hierarchy": [
+        "Exercises . . . ............................... 3 2 0"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Exercises . . . ............................... 3 2 0",
+      "content_preview": "Exercises . . . ............................... 3 2 0"
+    },
+    {
+      "id": "sec_9797825",
+      "title": "Exercises . . . ............................... 3 5 7",
+      "level": 3,
+      "line_start": 362,
+      "line_end": null,
+      "hierarchy": [
+        "Exercises . . . ............................... 3 5 7"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Exercises . . . ............................... 3 5 7",
+      "content_preview": "Exercises . . . ............................... 3 5 7"
+    },
+    {
+      "id": "sec_1094299",
+      "title": "CONTENTS xvii",
+      "level": 2,
+      "line_start": 363,
+      "line_end": null,
+      "hierarchy": [
+        "CONTENTS xvii"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > CONTENTS xvii",
+      "content_preview": "CONTENTS xvii"
+    },
+    {
+      "id": "sec_1742555",
+      "title": "Exercises . . . ............................... 4 1 8",
+      "level": 3,
+      "line_start": 387,
+      "line_end": null,
+      "hierarchy": [
+        "Exercises . . . ............................... 4 1 8"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Exercises . . . ............................... 4 1 8",
+      "content_preview": "Exercises . . . ............................... 4 1 8"
+    },
+    {
+      "id": "sec_1813322",
+      "title": "Exercises . . . ............................... 4 5 5",
+      "level": 3,
+      "line_start": 400,
+      "line_end": null,
+      "hierarchy": [
+        "Exercises . . . ............................... 4 5 5"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Exercises . . . ............................... 4 5 5",
+      "content_preview": "Exercises . . . ............................... 4 5 5"
+    },
+    {
+      "id": "sec_0418221",
+      "title": "Exercises . . . ............................... 5 1 7",
+      "level": 3,
+      "line_start": 428,
+      "line_end": null,
+      "hierarchy": [
+        "Exercises . . . ............................... 5 1 7"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Exercises . . . ............................... 5 1 7",
+      "content_preview": "Exercises . . . ............................... 5 1 7"
+    },
+    {
+      "id": "sec_7399703",
+      "title": "Exercises . . . ............................... 5 5 6",
+      "level": 3,
+      "line_start": 446,
+      "line_end": null,
+      "hierarchy": [
+        "Exercises . . . ............................... 5 5 6"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Exercises . . . ............................... 5 5 6",
+      "content_preview": "Exercises . . . ............................... 5 5 6"
+    },
+    {
+      "id": "sec_0512614",
+      "title": "CONTENTS xix",
+      "level": 2,
+      "line_start": 453,
+      "line_end": null,
+      "hierarchy": [
+        "CONTENTS xix"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > CONTENTS xix",
+      "content_preview": "CONTENTS xix"
+    },
+    {
+      "id": "sec_3009903",
+      "title": "Exercises . . . ............................... 5 9 9",
+      "level": 3,
+      "line_start": 464,
+      "line_end": null,
+      "hierarchy": [
+        "Exercises . . . ............................... 5 9 9"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Exercises . . . ............................... 5 9 9",
+      "content_preview": "Exercises . . . ............................... 5 9 9"
+    },
+    {
+      "id": "sec_2423887",
+      "title": "Exercises . . . ............................... 6 4 6",
+      "level": 3,
+      "line_start": 479,
+      "line_end": null,
+      "hierarchy": [
+        "Exercises . . . ............................... 6 4 6"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Exercises . . . ............................... 6 4 6",
+      "content_preview": "Exercises . . . ............................... 6 4 6"
+    },
+    {
+      "id": "sec_9052797",
+      "title": "Exercises . . . ............................... 6 7 4",
+      "level": 3,
+      "line_start": 491,
+      "line_end": null,
+      "hierarchy": [
+        "Exercises . . . ............................... 6 7 4"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Exercises . . . ............................... 6 7 4",
+      "content_preview": "Exercises . . . ............................... 6 7 4"
+    },
+    {
+      "id": "sec_4296756",
+      "title": "Appendix A Data Sets 677",
+      "level": 2,
+      "line_start": 492,
+      "line_end": null,
+      "hierarchy": [
+        "Appendix A Data Sets 677"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Appendix A Data Sets 677",
+      "content_preview": "Appendix A Data Sets 677"
+    },
+    {
+      "id": "sec_7539484",
+      "title": "Appendix B Probability Distributions 685",
+      "level": 2,
+      "line_start": 493,
+      "line_end": null,
+      "hierarchy": [
+        "Appendix B Probability Distributions 685"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Appendix B Probability Distributions 685",
+      "content_preview": "Appendix B Probability Distributions 685"
+    },
+    {
+      "id": "sec_3456461",
+      "title": "Appendix C Properties of Matrices 695",
+      "level": 2,
+      "line_start": 494,
+      "line_end": null,
+      "hierarchy": [
+        "Appendix C Properties of Matrices 695"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Appendix C Properties of Matrices 695",
+      "content_preview": "Appendix C Properties of Matrices 695"
+    },
+    {
+      "id": "sec_4388387",
+      "title": "Appendix D Calculus of Variations 703",
+      "level": 2,
+      "line_start": 496,
+      "line_end": null,
+      "hierarchy": [
+        "Appendix D Calculus of Variations 703"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Appendix D Calculus of Variations 703",
+      "content_preview": "Appendix D Calculus of Variations 703"
+    },
+    {
+      "id": "sec_0811376",
+      "title": "Appendix E Lagrange Multipliers 707",
+      "level": 2,
+      "line_start": 497,
+      "line_end": null,
+      "hierarchy": [
+        "Appendix E Lagrange Multipliers 707"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Appendix E Lagrange Multipliers 707",
+      "content_preview": "Appendix E Lagrange Multipliers 707"
+    },
+    {
+      "id": "sec_5305516",
+      "title": "References 711",
+      "level": 2,
+      "line_start": 498,
+      "line_end": null,
+      "hierarchy": [
+        "References 711"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > References 711",
+      "content_preview": "References 711"
+    },
+    {
+      "id": "sec_0385343",
+      "title": "Index 729",
+      "level": 2,
+      "line_start": 499,
+      "line_end": null,
+      "hierarchy": [
+        "Index 729"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Index 729",
+      "content_preview": "Index 729"
+    },
+    {
+      "id": "sec_5070351",
+      "title": "Introduction",
+      "level": 2,
+      "line_start": 501,
+      "line_end": null,
+      "hierarchy": [
+        "Introduction"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Introduction",
+      "content_preview": "Introduction"
+    },
+    {
+      "id": "sec_7481076",
+      "title": "Brahe in the 16",
+      "level": 2,
+      "line_start": 504,
+      "line_end": null,
+      "hierarchy": [
+        "Brahe in the 16"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Brahe in the 16",
+      "content_preview": "Brahe in the 16"
+    },
+    {
+      "id": "sec_0413062",
+      "title": "Figure 1.1 Examples of hand-written dig-",
+      "level": 2,
+      "line_start": 519,
+      "line_end": null,
+      "hierarchy": [
+        "Figure 1.1 Examples of hand-written dig-"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Figure 1.1 Examples of hand-written dig-",
+      "content_preview": "Figure 1.1 Examples of hand-written dig-"
+    },
+    {
+      "id": "sec_2887853",
+      "title": "Far better results can be obtained by adopting a machine learning approach in",
+      "level": 3,
+      "line_start": 524,
+      "line_end": null,
+      "hierarchy": [
+        "Far better results can be obtained by adopting a machine learning approach in"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Far better results can be obtained by adopting a machine learning approach in",
+      "content_preview": "Far better results can be obtained by adopting a machine learning approach in"
+    },
+    {
+      "id": "sec_6981458",
+      "title": "The result of running the machine learning algorithm can be expressed as a",
+      "level": 3,
+      "line_start": 532,
+      "line_end": null,
+      "hierarchy": [
+        "The result of running the machine learning algorithm can be expressed as a"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > The result of running the machine learning algorithm can be expressed as a",
+      "content_preview": "The result of running the machine learning algorithm can be expressed as a"
+    },
+    {
+      "id": "sec_9809831",
+      "title": "Pre-processing might also be performed in order to speed up computation. For",
+      "level": 3,
+      "line_start": 552,
+      "line_end": null,
+      "hierarchy": [
+        "Pre-processing might also be performed in order to speed up computation. For"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Pre-processing might also be performed in order to speed up computation. For",
+      "content_preview": "Pre-processing might also be performed in order to speed up computation. For"
+    },
+    {
+      "id": "sec_4840660",
+      "title": "Applications in which the training data comprises examples of the input vectors",
+      "level": 3,
+      "line_start": 567,
+      "line_end": null,
+      "hierarchy": [
+        "Applications in which the training data comprises examples of the input vectors"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Applications in which the training data comprises examples of the input vectors",
+      "content_preview": "Applications in which the training data comprises examples of the input vectors"
+    },
+    {
+      "id": "sec_3716158",
+      "title": "Finally, the technique ofreinforcement learning(Sutton and Barto, 1998) is con-",
+      "level": 3,
+      "line_start": 581,
+      "line_end": null,
+      "hierarchy": [
+        "Finally, the technique ofreinforcement learning(Sutton and Barto, 1998) is con-"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Finally, the technique ofreinforcement learning(Sutton and Barto, 1998) is con-",
+      "content_preview": "Finally, the technique ofreinforcement learning(Sutton and Barto, 1998) is con-"
+    },
+    {
+      "id": "sec_9493131",
+      "title": "Figure 1.2 Plot of a training data set of N =",
+      "level": 3,
+      "line_start": 604,
+      "line_end": null,
+      "hierarchy": [
+        "Figure 1.2 Plot of a training data set of N ="
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Figure 1.2 Plot of a training data set of N =",
+      "content_preview": "Figure 1.2 Plot of a training data set of N ="
+    },
+    {
+      "id": "sec_7299970",
+      "title": "Although each of these tasks needs its own tools and techniques, many of the",
+      "level": 3,
+      "line_start": 622,
+      "line_end": null,
+      "hierarchy": [
+        "Although each of these tasks needs its own tools and techniques, many of the"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Although each of these tasks needs its own tools and techniques, many of the",
+      "content_preview": "Although each of these tasks needs its own tools and techniques, many of the"
+    },
+    {
+      "id": "sec_3986877",
+      "title": "Now suppose that we are given a training set comprisingN observations of x,",
+      "level": 3,
+      "line_start": 642,
+      "line_end": null,
+      "hierarchy": [
+        "Now suppose that we are given a training set comprisingN observations of x,"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Now suppose that we are given a training set comprisingN observations of x,",
+      "content_preview": "Now suppose that we are given a training set comprisingN observations of x,"
+    },
+    {
+      "id": "sec_0462707",
+      "title": "N =1 0 data points. The input data set x in Figure 1.2 was generated by choos-",
+      "level": 3,
+      "line_start": 645,
+      "line_end": null,
+      "hierarchy": [
+        "N =1 0 data points. The input data set x in Figure 1.2 was generated by choos-"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > N =1 0 data points. The input data set x in Figure 1.2 was generated by choos-",
+      "content_preview": "N =1 0 data points. The input data set x in Figure 1.2 was generated by choos-"
+    },
+    {
+      "id": "sec_5476383",
+      "title": "For the moment, however, we shall proceed rather informally and consider a",
+      "level": 3,
+      "line_start": 668,
+      "line_end": null,
+      "hierarchy": [
+        "For the moment, however, we shall proceed rather informally and consider a"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > For the moment, however, we shall proceed rather informally and consider a",
+      "content_preview": "For the moment, however, we shall proceed rather informally and consider a"
+    },
+    {
+      "id": "sec_2796784",
+      "title": "The values of the coefﬁcients will be determined by ﬁtting the polynomial to the",
+      "level": 3,
+      "line_start": 682,
+      "line_end": null,
+      "hierarchy": [
+        "The values of the coefﬁcients will be determined by ﬁtting the polynomial to the"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > The values of the coefﬁcients will be determined by ﬁtting the polynomial to the",
+      "content_preview": "The values of the coefﬁcients will be determined by ﬁtting the polynomial to the"
+    },
+    {
+      "id": "sec_0756651",
+      "title": "E(w)= 1",
+      "level": 2,
+      "line_start": 688,
+      "line_end": null,
+      "hierarchy": [
+        "E(w)= 1"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > E(w)= 1",
+      "content_preview": "E(w)= 1"
+    },
+    {
+      "id": "sec_3726481",
+      "title": "Figure 1.3 The error function (1.2) corre-",
+      "level": 3,
+      "line_start": 697,
+      "line_end": null,
+      "hierarchy": [
+        "Figure 1.3 The error function (1.2) corre-"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Figure 1.3 The error function (1.2) corre-",
+      "content_preview": "Figure 1.3 The error function (1.2) corre-"
+    },
+    {
+      "id": "sec_6983986",
+      "title": "We can solve the curve ﬁtting problem by choosing the value ofw for which",
+      "level": 3,
+      "line_start": 710,
+      "line_end": null,
+      "hierarchy": [
+        "We can solve the curve ﬁtting problem by choosing the value ofw for which"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > We can solve the curve ﬁtting problem by choosing the value ofw for which",
+      "content_preview": "We can solve the curve ﬁtting problem by choosing the value ofw for which"
+    },
+    {
+      "id": "sec_2182803",
+      "title": "There remains the problem of choosing the orderM of the polynomial, and as",
+      "level": 3,
+      "line_start": 716,
+      "line_end": null,
+      "hierarchy": [
+        "There remains the problem of choosing the orderM of the polynomial, and as"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > There remains the problem of choosing the orderM of the polynomial, and as",
+      "content_preview": "There remains the problem of choosing the orderM of the polynomial, and as"
+    },
+    {
+      "id": "sec_3251336",
+      "title": "We notice that the constant (M =0 ) and ﬁrst order (M =1 ) polynomials",
+      "level": 3,
+      "line_start": 721,
+      "line_end": null,
+      "hierarchy": [
+        "We notice that the constant (M =0 ) and ﬁrst order (M =1 ) polynomials"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > We notice that the constant (M =0 ) and ﬁrst order (M =1 ) polynomials",
+      "content_preview": "We notice that the constant (M =0 ) and ﬁrst order (M =1 ) polynomials"
+    },
+    {
+      "id": "sec_8157373",
+      "title": "As we have noted earlier, the goal is to achieve good generalization by making",
+      "level": 3,
+      "line_start": 729,
+      "line_end": null,
+      "hierarchy": [
+        "As we have noted earlier, the goal is to achieve good generalization by making"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > As we have noted earlier, the goal is to achieve good generalization by making",
+      "content_preview": "As we have noted earlier, the goal is to achieve good generalization by making"
+    },
+    {
+      "id": "sec_4453046",
+      "title": "M =0",
+      "level": 2,
+      "line_start": 740,
+      "line_end": null,
+      "hierarchy": [
+        "M =0"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > M =0",
+      "content_preview": "M =0"
+    },
+    {
+      "id": "sec_4781486",
+      "title": "M =1",
+      "level": 2,
+      "line_start": 747,
+      "line_end": null,
+      "hierarchy": [
+        "M =1"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > M =1",
+      "content_preview": "M =1"
+    },
+    {
+      "id": "sec_3125276",
+      "title": "M =3",
+      "level": 2,
+      "line_start": 754,
+      "line_end": null,
+      "hierarchy": [
+        "M =3"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > M =3",
+      "content_preview": "M =3"
+    },
+    {
+      "id": "sec_7928376",
+      "title": "M =9",
+      "level": 2,
+      "line_start": 761,
+      "line_end": null,
+      "hierarchy": [
+        "M =9"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > M =9",
+      "content_preview": "M =9"
+    },
+    {
+      "id": "sec_8809440",
+      "title": "ERMS =",
+      "level": 2,
+      "line_start": 769,
+      "line_end": null,
+      "hierarchy": [
+        "ERMS ="
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > ERMS =",
+      "content_preview": "ERMS ="
+    },
+    {
+      "id": "sec_5647321",
+      "title": "Figure 1.5 Graphs of the root-mean-square",
+      "level": 3,
+      "line_start": 785,
+      "line_end": null,
+      "hierarchy": [
+        "Figure 1.5 Graphs of the root-mean-square"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Figure 1.5 Graphs of the root-mean-square",
+      "content_preview": "Figure 1.5 Graphs of the root-mean-square"
+    },
+    {
+      "id": "sec_0454296",
+      "title": "ERMS",
+      "level": 2,
+      "line_start": 791,
+      "line_end": null,
+      "hierarchy": [
+        "ERMS"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > ERMS",
+      "content_preview": "ERMS"
+    },
+    {
+      "id": "sec_2370389",
+      "title": "Training",
+      "level": 2,
+      "line_start": 796,
+      "line_end": null,
+      "hierarchy": [
+        "Training"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Training",
+      "content_preview": "Training"
+    },
+    {
+      "id": "sec_2693107",
+      "title": "Test",
+      "level": 2,
+      "line_start": 797,
+      "line_end": null,
+      "hierarchy": [
+        "Test"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Test",
+      "content_preview": "Test"
+    },
+    {
+      "id": "sec_7423636",
+      "title": "For M =9 , the training set error goes to zero, as we might expect because",
+      "level": 3,
+      "line_start": 798,
+      "line_end": null,
+      "hierarchy": [
+        "For M =9 , the training set error goes to zero, as we might expect because"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > For M =9 , the training set error goes to zero, as we might expect because",
+      "content_preview": "For M =9 , the training set error goes to zero, as we might expect because"
+    },
+    {
+      "id": "sec_0523341",
+      "title": "This may seem paradoxical because a polynomial of given order contains all",
+      "level": 3,
+      "line_start": 803,
+      "line_end": null,
+      "hierarchy": [
+        "This may seem paradoxical because a polynomial of given order contains all"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > This may seem paradoxical because a polynomial of given order contains all",
+      "content_preview": "This may seem paradoxical because a polynomial of given order contains all"
+    },
+    {
+      "id": "sec_1920304",
+      "title": "We can gain some insight into the problem by examining the values of the co-",
+      "level": 3,
+      "line_start": 811,
+      "line_end": null,
+      "hierarchy": [
+        "We can gain some insight into the problem by examining the values of the co-"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > We can gain some insight into the problem by examining the values of the co-",
+      "content_preview": "We can gain some insight into the problem by examining the values of the co-"
+    },
+    {
+      "id": "sec_5350388",
+      "title": "In particular for theM =9 polynomial, the coefﬁcients have become ﬁnely tuned",
+      "level": 3,
+      "line_start": 814,
+      "line_end": null,
+      "hierarchy": [
+        "In particular for theM =9 polynomial, the coefﬁcients have become ﬁnely tuned"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > In particular for theM =9 polynomial, the coefﬁcients have become ﬁnely tuned",
+      "content_preview": "In particular for theM =9 polynomial, the coefﬁcients have become ﬁnely tuned"
+    },
+    {
+      "id": "sec_3158242",
+      "title": "Table 1.1 Table of the coefﬁcients w⋆ for",
+      "level": 3,
+      "line_start": 816,
+      "line_end": null,
+      "hierarchy": [
+        "Table 1.1 Table of the coefﬁcients w⋆ for"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Table 1.1 Table of the coefﬁcients w⋆ for",
+      "content_preview": "Table 1.1 Table of the coefﬁcients w⋆ for"
+    },
+    {
+      "id": "sec_4022026",
+      "title": "Observe how the typical mag-",
+      "level": 2,
+      "line_start": 818,
+      "line_end": null,
+      "hierarchy": [
+        "Observe how the typical mag-"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Observe how the typical mag-",
+      "content_preview": "Observe how the typical mag-"
+    },
+    {
+      "id": "sec_9113207",
+      "title": "M =0 M =1 M =6 M =9",
+      "level": 2,
+      "line_start": 822,
+      "line_end": null,
+      "hierarchy": [
+        "M =0 M =1 M =6 M =9"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > M =0 M =1 M =6 M =9",
+      "content_preview": "M =0 M =1 M =6 M =9"
+    },
+    {
+      "id": "sec_4276611",
+      "title": "N =1 5",
+      "level": 2,
+      "line_start": 846,
+      "line_end": null,
+      "hierarchy": [
+        "N =1 5"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > N =1 5",
+      "content_preview": "N =1 5"
+    },
+    {
+      "id": "sec_4616563",
+      "title": "N = 100",
+      "level": 2,
+      "line_start": 853,
+      "line_end": null,
+      "hierarchy": [
+        "N = 100"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > N = 100",
+      "content_preview": "N = 100"
+    },
+    {
+      "id": "sec_0923078",
+      "title": "Also, there is something rather unsatisfying about having to limit the number of",
+      "level": 3,
+      "line_start": 875,
+      "line_end": null,
+      "hierarchy": [
+        "Also, there is something rather unsatisfying about having to limit the number of"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Also, there is something rather unsatisfying about having to limit the number of",
+      "content_preview": "Also, there is something rather unsatisfying about having to limit the number of"
+    },
+    {
+      "id": "sec_2058905",
+      "title": "For the moment, however, it is instructive to continue with the current approach",
+      "level": 3,
+      "line_start": 886,
+      "line_end": null,
+      "hierarchy": [
+        "For the moment, however, it is instructive to continue with the current approach"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > For the moment, however, it is instructive to continue with the current approach",
+      "content_preview": "For the moment, however, it is instructive to continue with the current approach"
+    },
+    {
+      "id": "sec_1273408",
+      "title": "M , and the coefﬁcientλ governs the rel-",
+      "level": 2,
+      "line_start": 921,
+      "line_end": null,
+      "hierarchy": [
+        "M , and the coefﬁcientλ governs the rel-"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > M , and the coefﬁcientλ governs the rel-",
+      "content_preview": "M , and the coefﬁcientλ governs the rel-"
+    },
+    {
+      "id": "sec_8116328",
+      "title": "Figure 1.7 shows the results of ﬁtting the polynomial of orderM =9 to the",
+      "level": 3,
+      "line_start": 932,
+      "line_end": null,
+      "hierarchy": [
+        "Figure 1.7 shows the results of ﬁtting the polynomial of orderM =9 to the"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Figure 1.7 shows the results of ﬁtting the polynomial of orderM =9 to the",
+      "content_preview": "Figure 1.7 shows the results of ﬁtting the polynomial of orderM =9 to the"
+    },
+    {
+      "id": "sec_8981977",
+      "title": "We see that, for a value oflnλ = −18, the over-ﬁtting has been suppressed and we",
+      "level": 3,
+      "line_start": 934,
+      "line_end": null,
+      "hierarchy": [
+        "We see that, for a value oflnλ = −18, the over-ﬁtting has been suppressed and we"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > We see that, for a value oflnλ = −18, the over-ﬁtting has been suppressed and we",
+      "content_preview": "We see that, for a value oflnλ = −18, the over-ﬁtting has been suppressed and we"
+    },
+    {
+      "id": "sec_4610736",
+      "title": "Figure 1.7 forlnλ =0 . The corresponding coefﬁcients from the ﬁtted polynomials",
+      "level": 3,
+      "line_start": 937,
+      "line_end": null,
+      "hierarchy": [
+        "Figure 1.7 forlnλ =0 . The corresponding coefﬁcients from the ﬁtted polynomials"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Figure 1.7 forlnλ =0 . The corresponding coefﬁcients from the ﬁtted polynomials",
+      "content_preview": "Figure 1.7 forlnλ =0 . The corresponding coefﬁcients from the ﬁtted polynomials"
+    },
+    {
+      "id": "sec_3570758",
+      "title": "Table 1.2 Table of the coefﬁcients w⋆ for M =",
+      "level": 3,
+      "line_start": 940,
+      "line_end": null,
+      "hierarchy": [
+        "Table 1.2 Table of the coefﬁcients w⋆ for M ="
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Table 1.2 Table of the coefﬁcients w⋆ for M =",
+      "content_preview": "Table 1.2 Table of the coefﬁcients w⋆ for M ="
+    },
+    {
+      "id": "sec_9272165",
+      "title": "The impact of the regularization term on the generalization error can be seen by",
+      "level": 3,
+      "line_start": 971,
+      "line_end": null,
+      "hierarchy": [
+        "The impact of the regularization term on the generalization error can be seen by"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > The impact of the regularization term on the generalization error can be seen by",
+      "content_preview": "The impact of the regularization term on the generalization error can be seen by"
+    },
+    {
+      "id": "sec_8303277",
+      "title": "The issue of model complexity is an important one and will be discussed at",
+      "level": 3,
+      "line_start": 975,
+      "line_end": null,
+      "hierarchy": [
+        "The issue of model complexity is an important one and will be discussed at"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > The issue of model complexity is an important one and will be discussed at",
+      "content_preview": "The issue of model complexity is an important one and will be discussed at"
+    },
+    {
+      "id": "sec_2320353",
+      "title": "So far our discussion of polynomial curve ﬁtting has appealed largely to in-",
+      "level": 3,
+      "line_start": 984,
+      "line_end": null,
+      "hierarchy": [
+        "So far our discussion of polynomial curve ﬁtting has appealed largely to in-"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > So far our discussion of polynomial curve ﬁtting has appealed largely to in-",
+      "content_preview": "So far our discussion of polynomial curve ﬁtting has appealed largely to in-"
+    },
+    {
+      "id": "sec_2114390",
+      "title": "Figure 1.8 Graph of the root-mean-square er-",
+      "level": 3,
+      "line_start": 988,
+      "line_end": null,
+      "hierarchy": [
+        "Figure 1.8 Graph of the root-mean-square er-"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Figure 1.8 Graph of the root-mean-square er-",
+      "content_preview": "Figure 1.8 Graph of the root-mean-square er-"
+    },
+    {
+      "id": "sec_0454296",
+      "title": "ERMS",
+      "level": 2,
+      "line_start": 991,
+      "line_end": null,
+      "hierarchy": [
+        "ERMS"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > ERMS",
+      "content_preview": "ERMS"
+    },
+    {
+      "id": "sec_2370389",
+      "title": "Training",
+      "level": 2,
+      "line_start": 996,
+      "line_end": null,
+      "hierarchy": [
+        "Training"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Training",
+      "content_preview": "Training"
+    },
+    {
+      "id": "sec_2693107",
+      "title": "Test",
+      "level": 2,
+      "line_start": 997,
+      "line_end": null,
+      "hierarchy": [
+        "Test"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Test",
+      "content_preview": "Test"
+    },
+    {
+      "id": "sec_3267715",
+      "title": "We will introduce the basic concepts of probability theory by considering a sim-",
+      "level": 3,
+      "line_start": 1010,
+      "line_end": null,
+      "hierarchy": [
+        "We will introduce the basic concepts of probability theory by considering a sim-"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > We will introduce the basic concepts of probability theory by considering a sim-",
+      "content_preview": "We will introduce the basic concepts of probability theory by considering a sim-"
+    },
+    {
+      "id": "sec_4567075",
+      "title": "This is illustrated in Figure 1.9. Now suppose we randomly pick one of the boxes",
+      "level": 3,
+      "line_start": 1013,
+      "line_end": null,
+      "hierarchy": [
+        "This is illustrated in Figure 1.9. Now suppose we randomly pick one of the boxes"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > This is illustrated in Figure 1.9. Now suppose we randomly pick one of the boxes",
+      "content_preview": "This is illustrated in Figure 1.9. Now suppose we randomly pick one of the boxes"
+    },
+    {
+      "id": "sec_2162461",
+      "title": "To begin with, we shall deﬁne the probability of an event to be the fraction",
+      "level": 3,
+      "line_start": 1025,
+      "line_end": null,
+      "hierarchy": [
+        "To begin with, we shall deﬁne the probability of an event to be the fraction"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > To begin with, we shall deﬁne the probability of an event to be the fraction",
+      "content_preview": "To begin with, we shall deﬁne the probability of an event to be the fraction"
+    },
+    {
+      "id": "sec_3547528",
+      "title": "Figure 1.9 We use a simple example of two",
+      "level": 3,
+      "line_start": 1028,
+      "line_end": null,
+      "hierarchy": [
+        "Figure 1.9 We use a simple example of two"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Figure 1.9 We use a simple example of two",
+      "content_preview": "Figure 1.9 We use a simple example of two"
+    },
+    {
+      "id": "sec_8649298",
+      "title": "Figure 1.10 We can derive the sum and product rules of probability by",
+      "level": 3,
+      "line_start": 1034,
+      "line_end": null,
+      "hierarchy": [
+        "Figure 1.10 We can derive the sum and product rules of probability by"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Figure 1.10 We can derive the sum and product rules of probability by",
+      "content_preview": "Figure 1.10 We can derive the sum and product rules of probability by"
+    },
+    {
+      "id": "sec_8554436",
+      "title": "In this illustration we have M =5 and L =3 . If we consider a total",
+      "level": 3,
+      "line_start": 1037,
+      "line_end": null,
+      "hierarchy": [
+        "In this illustration we have M =5 and L =3 . If we consider a total"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > In this illustration we have M =5 and L =3 . If we consider a total",
+      "content_preview": "In this illustration we have M =5 and L =3 . If we consider a total"
+    },
+    {
+      "id": "sec_3170702",
+      "title": "We can now ask questions such as: “what is the overall probability that the se-",
+      "level": 3,
+      "line_start": 1054,
+      "line_end": null,
+      "hierarchy": [
+        "We can now ask questions such as: “what is the overall probability that the se-"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > We can now ask questions such as: “what is the overall probability that the se-",
+      "content_preview": "We can now ask questions such as: “what is the overall probability that the se-"
+    },
+    {
+      "id": "sec_8011081",
+      "title": "X can take any of the valuesxi where i =1 ,...,M , and Y can take the valuesyj",
+      "level": 3,
+      "line_start": 1064,
+      "line_end": null,
+      "hierarchy": [
+        "X can take any of the valuesxi where i =1 ,...,M , and Y can take the valuesyj"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > X can take any of the valuesxi where i =1 ,...,M , and Y can take the valuesyj",
+      "content_preview": "X can take any of the valuesxi where i =1 ,...,M , and Y can take the valuesyj"
+    },
+    {
+      "id": "sec_9180358",
+      "title": "The probability that X will take the value xi and Y will take the value yj is",
+      "level": 3,
+      "line_start": 1070,
+      "line_end": null,
+      "hierarchy": [
+        "The probability that X will take the value xi and Y will take the value yj is"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > The probability that X will take the value xi and Y will take the value yj is",
+      "content_preview": "The probability that X will take the value xi and Y will take the value yj is"
+    },
+    {
+      "id": "sec_9337361",
+      "title": "N . (1.5)",
+      "level": 2,
+      "line_start": 1075,
+      "line_end": null,
+      "hierarchy": [
+        "N . (1.5)"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > N . (1.5)",
+      "content_preview": "N . (1.5)"
+    },
+    {
+      "id": "sec_1862330",
+      "title": "X takes the valuexi irrespective of the value ofY is written as p(X = xi) and is",
+      "level": 3,
+      "line_start": 1077,
+      "line_end": null,
+      "hierarchy": [
+        "X takes the valuexi irrespective of the value ofY is written as p(X = xi) and is"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > X takes the valuexi irrespective of the value ofY is written as p(X = xi) and is",
+      "content_preview": "X takes the valuexi irrespective of the value ofY is written as p(X = xi) and is"
+    },
+    {
+      "id": "sec_3329356",
+      "title": "N . (1.6)",
+      "level": 2,
+      "line_start": 1080,
+      "line_end": null,
+      "hierarchy": [
+        "N . (1.6)"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > N . (1.6)",
+      "content_preview": "N . (1.6)"
+    },
+    {
+      "id": "sec_4468790",
+      "title": "Because the number of instances in columni in Figure 1.10 is just the sum of the",
+      "level": 3,
+      "line_start": 1081,
+      "line_end": null,
+      "hierarchy": [
+        "Because the number of instances in columni in Figure 1.10 is just the sum of the"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Because the number of instances in columni in Figure 1.10 is just the sum of the",
+      "content_preview": "Because the number of instances in columni in Figure 1.10 is just the sum of the"
+    },
+    {
+      "id": "sec_9388852",
+      "title": "If we consider only those instances for which X = xi, then the fraction of",
+      "level": 3,
+      "line_start": 1093,
+      "line_end": null,
+      "hierarchy": [
+        "If we consider only those instances for which X = xi, then the fraction of"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > If we consider only those instances for which X = xi, then the fraction of",
+      "content_preview": "If we consider only those instances for which X = xi, then the fraction of"
+    },
+    {
+      "id": "sec_5372871",
+      "title": "From (1.5), (1.6), and (1.8), we can then derive the following relationship",
+      "level": 3,
+      "line_start": 1100,
+      "line_end": null,
+      "hierarchy": [
+        "From (1.5), (1.6), and (1.8), we can then derive the following relationship"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > From (1.5), (1.6), and (1.8), we can then derive the following relationship",
+      "content_preview": "From (1.5), (1.6), and (1.8), we can then derive the following relationship"
+    },
+    {
+      "id": "sec_9145752",
+      "title": "N = nij",
+      "level": 2,
+      "line_start": 1102,
+      "line_end": null,
+      "hierarchy": [
+        "N = nij"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > N = nij",
+      "content_preview": "N = nij"
+    },
+    {
+      "id": "sec_7832610",
+      "title": "So far we have been quite careful to make a distinction between a random vari-",
+      "level": 3,
+      "line_start": 1108,
+      "line_end": null,
+      "hierarchy": [
+        "So far we have been quite careful to make a distinction between a random vari-"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > So far we have been quite careful to make a distinction between a random vari-",
+      "content_preview": "So far we have been quite careful to make a distinction between a random vari-"
+    },
+    {
+      "id": "sec_1175964",
+      "title": "With this more compact notation, we can write the two fundamental rules of",
+      "level": 3,
+      "line_start": 1116,
+      "line_end": null,
+      "hierarchy": [
+        "With this more compact notation, we can write the two fundamental rules of"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > With this more compact notation, we can write the two fundamental rules of",
+      "content_preview": "With this more compact notation, we can write the two fundamental rules of"
+    },
+    {
+      "id": "sec_6029094",
+      "title": "The Rules of Probability",
+      "level": 2,
+      "line_start": 1118,
+      "line_end": null,
+      "hierarchy": [
+        "The Rules of Probability"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > The Rules of Probability",
+      "content_preview": "The Rules of Probability"
+    },
+    {
+      "id": "sec_6682964",
+      "title": "From the product rule, together with the symmetry propertyp(X,Y )= p(Y,X ),",
+      "level": 3,
+      "line_start": 1130,
+      "line_end": null,
+      "hierarchy": [
+        "From the product rule, together with the symmetry propertyp(X,Y )= p(Y,X ),"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > From the product rule, together with the symmetry propertyp(X,Y )= p(Y,X ),",
+      "content_preview": "From the product rule, together with the symmetry propertyp(X,Y )= p(Y,X ),"
+    },
+    {
+      "id": "sec_7665175",
+      "title": "In Figure 1.11, we show a simple example involving a joint distribution over two",
+      "level": 3,
+      "line_start": 1144,
+      "line_end": null,
+      "hierarchy": [
+        "In Figure 1.11, we show a simple example involving a joint distribution over two"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > In Figure 1.11, we show a simple example involving a joint distribution over two",
+      "content_preview": "In Figure 1.11, we show a simple example involving a joint distribution over two"
+    },
+    {
+      "id": "sec_2121768",
+      "title": "Let us now return to our example involving boxes of fruit. For the moment, we",
+      "level": 3,
+      "line_start": 1155,
+      "line_end": null,
+      "hierarchy": [
+        "Let us now return to our example involving boxes of fruit. For the moment, we"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Let us now return to our example involving boxes of fruit. For the moment, we",
+      "content_preview": "Let us now return to our example involving boxes of fruit. For the moment, we"
+    },
+    {
+      "id": "sec_3424999",
+      "title": "B = b)=3 /4. In fact, we can write out all four",
+      "level": 3,
+      "line_start": 1165,
+      "line_end": null,
+      "hierarchy": [
+        "B = b)=3 /4. In fact, we can write out all four"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > B = b)=3 /4. In fact, we can write out all four",
+      "content_preview": "B = b)=3 /4. In fact, we can write out all four"
+    },
+    {
+      "id": "sec_2681365",
+      "title": "Y =2",
+      "level": 2,
+      "line_start": 1174,
+      "line_end": null,
+      "hierarchy": [
+        "Y =2"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Y =2",
+      "content_preview": "Y =2"
+    },
+    {
+      "id": "sec_3894645",
+      "title": "Y =1",
+      "level": 2,
+      "line_start": 1175,
+      "line_end": null,
+      "hierarchy": [
+        "Y =1"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Y =1",
+      "content_preview": "Y =1"
+    },
+    {
+      "id": "sec_7380921",
+      "title": "Again, note that these probabilities are normalized so that",
+      "level": 3,
+      "line_start": 1185,
+      "line_end": null,
+      "hierarchy": [
+        "Again, note that these probabilities are normalized so that"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Again, note that these probabilities are normalized so that",
+      "content_preview": "Again, note that these probabilities are normalized so that"
+    },
+    {
+      "id": "sec_9897764",
+      "title": "We can now use the sum and product rules of probability to evaluate the overall",
+      "level": 3,
+      "line_start": 1189,
+      "line_end": null,
+      "hierarchy": [
+        "We can now use the sum and product rules of probability to evaluate the overall"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > We can now use the sum and product rules of probability to evaluate the overall",
+      "content_preview": "We can now use the sum and product rules of probability to evaluate the overall"
+    },
+    {
+      "id": "sec_6688866",
+      "title": "Suppose instead we are told that a piece of fruit has been selected and it is an",
+      "level": 3,
+      "line_start": 1200,
+      "line_end": null,
+      "hierarchy": [
+        "Suppose instead we are told that a piece of fruit has been selected and it is an"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Suppose instead we are told that a piece of fruit has been selected and it is an",
+      "content_preview": "Suppose instead we are told that a piece of fruit has been selected and it is an"
+    },
+    {
+      "id": "sec_2742459",
+      "title": "We can provide an important interpretation of Bayes’ theorem as follows. If",
+      "level": 3,
+      "line_start": 1213,
+      "line_end": null,
+      "hierarchy": [
+        "We can provide an important interpretation of Bayes’ theorem as follows. If"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > We can provide an important interpretation of Bayes’ theorem as follows. If",
+      "content_preview": "We can provide an important interpretation of Bayes’ theorem as follows. If"
+    },
+    {
+      "id": "sec_9313701",
+      "title": "X is indeed independent of the value ofX.F o r",
+      "level": 3,
+      "line_start": 1234,
+      "line_end": null,
+      "hierarchy": [
+        "X is indeed independent of the value ofX.F o r"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > X is indeed independent of the value ofX.F o r",
+      "content_preview": "X is indeed independent of the value ofX.F o r"
+    },
+    {
+      "id": "sec_6872017",
+      "title": "As well as considering probabilities deﬁned over discrete sets of events, we",
+      "level": 3,
+      "line_start": 1239,
+      "line_end": null,
+      "hierarchy": [
+        "As well as considering probabilities deﬁned over discrete sets of events, we"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > As well as considering probabilities deﬁned over discrete sets of events, we",
+      "content_preview": "As well as considering probabilities deﬁned over discrete sets of events, we"
+    },
+    {
+      "id": "sec_5012349",
+      "title": "Figure 1.12 The concept of probability for",
+      "level": 3,
+      "line_start": 1250,
+      "line_end": null,
+      "hierarchy": [
+        "Figure 1.12 The concept of probability for"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Figure 1.12 The concept of probability for",
+      "content_preview": "Figure 1.12 The concept of probability for"
+    },
+    {
+      "id": "sec_6559467",
+      "title": "Because probabilities are nonnegative, and because the value ofx must lie some-",
+      "level": 3,
+      "line_start": 1263,
+      "line_end": null,
+      "hierarchy": [
+        "Because probabilities are nonnegative, and because the value ofx must lie some-"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Because probabilities are nonnegative, and because the value ofx must lie some-",
+      "content_preview": "Because probabilities are nonnegative, and because the value ofx must lie some-"
+    },
+    {
+      "id": "sec_9894835",
+      "title": "Now consider a probability densitypx(x) that corresponds to a densitypy(y) with",
+      "level": 3,
+      "line_start": 1271,
+      "line_end": null,
+      "hierarchy": [
+        "Now consider a probability densitypx(x) that corresponds to a densitypy(y) with"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Now consider a probability densitypx(x) that corresponds to a densitypy(y) with",
+      "content_preview": "Now consider a probability densitypx(x) that corresponds to a densitypy(y) with"
+    },
+    {
+      "id": "sec_4282128",
+      "title": "The probability that x lies in the interval (−∞,z ) is given by the cumulative",
+      "level": 3,
+      "line_start": 1284,
+      "line_end": null,
+      "hierarchy": [
+        "The probability that x lies in the interval (−∞,z ) is given by the cumulative"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > The probability that x lies in the interval (−∞,z ) is given by the cumulative",
+      "content_preview": "The probability that x lies in the interval (−∞,z ) is given by the cumulative"
+    },
+    {
+      "id": "sec_9350909",
+      "title": "P(z)=",
+      "level": 2,
+      "line_start": 1286,
+      "line_end": null,
+      "hierarchy": [
+        "P(z)="
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > P(z)=",
+      "content_preview": "P(z)="
+    },
+    {
+      "id": "sec_1036956",
+      "title": "If we have several continuous variablesx1,...,x D, denoted collectively by the",
+      "level": 3,
+      "line_start": 1291,
+      "line_end": null,
+      "hierarchy": [
+        "If we have several continuous variablesx1,...,x D, denoted collectively by the"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > If we have several continuous variablesx1,...,x D, denoted collectively by the",
+      "content_preview": "If we have several continuous variablesx1,...,x D, denoted collectively by the"
+    },
+    {
+      "id": "sec_0922170",
+      "title": "Note that if x is a discrete variable, thenp(x) is sometimes called aprobability",
+      "level": 3,
+      "line_start": 1300,
+      "line_end": null,
+      "hierarchy": [
+        "Note that if x is a discrete variable, thenp(x) is sometimes called aprobability"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Note that if x is a discrete variable, thenp(x) is sometimes called aprobability",
+      "content_preview": "Note that if x is a discrete variable, thenp(x) is sometimes called aprobability"
+    },
+    {
+      "id": "sec_5486691",
+      "title": "The sum and product rules of probability, as well as Bayes’ theorem, apply",
+      "level": 3,
+      "line_start": 1303,
+      "line_end": null,
+      "hierarchy": [
+        "The sum and product rules of probability, as well as Bayes’ theorem, apply"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > The sum and product rules of probability, as well as Bayes’ theorem, apply",
+      "content_preview": "The sum and product rules of probability, as well as Bayes’ theorem, apply"
+    },
+    {
+      "id": "sec_3252122",
+      "title": "One of the most important operations involving probabilities is that of ﬁnding",
+      "level": 3,
+      "line_start": 1318,
+      "line_end": null,
+      "hierarchy": [
+        "One of the most important operations involving probabilities is that of ﬁnding"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > One of the most important operations involving probabilities is that of ﬁnding",
+      "content_preview": "One of the most important operations involving probabilities is that of ﬁnding"
+    },
+    {
+      "id": "sec_8766585",
+      "title": "E[f]. For a discrete distribution, it is given by",
+      "level": 3,
+      "line_start": 1321,
+      "line_end": null,
+      "hierarchy": [
+        "E[f]. For a discrete distribution, it is given by"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > E[f]. For a discrete distribution, it is given by",
+      "content_preview": "E[f]. For a discrete distribution, it is given by"
+    },
+    {
+      "id": "sec_6312234",
+      "title": "E[f]=",
+      "level": 2,
+      "line_start": 1322,
+      "line_end": null,
+      "hierarchy": [
+        "E[f]="
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > E[f]=",
+      "content_preview": "E[f]="
+    },
+    {
+      "id": "sec_6312234",
+      "title": "E[f]=",
+      "level": 2,
+      "line_start": 1329,
+      "line_end": null,
+      "hierarchy": [
+        "E[f]="
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > E[f]=",
+      "content_preview": "E[f]="
+    },
+    {
+      "id": "sec_4604419",
+      "title": "E[f] ≃ 1",
+      "level": 2,
+      "line_start": 1336,
+      "line_end": null,
+      "hierarchy": [
+        "E[f] ≃ 1"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > E[f] ≃ 1",
+      "content_preview": "E[f] ≃ 1"
+    },
+    {
+      "id": "sec_5827612",
+      "title": "We shall make extensive use of this result when we discuss sampling methods in",
+      "level": 3,
+      "line_start": 1341,
+      "line_end": null,
+      "hierarchy": [
+        "We shall make extensive use of this result when we discuss sampling methods in"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > We shall make extensive use of this result when we discuss sampling methods in",
+      "content_preview": "We shall make extensive use of this result when we discuss sampling methods in"
+    },
+    {
+      "id": "sec_8287463",
+      "title": "Sometimes we will be considering expectations of functions of several variables,",
+      "level": 3,
+      "line_start": 1343,
+      "line_end": null,
+      "hierarchy": [
+        "Sometimes we will be considering expectations of functions of several variables,"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Sometimes we will be considering expectations of functions of several variables,",
+      "content_preview": "Sometimes we will be considering expectations of functions of several variables,"
+    },
+    {
+      "id": "sec_1116797",
+      "title": "Ex[f(x, y)] (1.36)",
+      "level": 2,
+      "line_start": 1346,
+      "line_end": null,
+      "hierarchy": [
+        "Ex[f(x, y)] (1.36)"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Ex[f(x, y)] (1.36)",
+      "content_preview": "Ex[f(x, y)] (1.36)"
+    },
+    {
+      "id": "sec_4376845",
+      "title": "We can also consider a conditional expectation with respect to a conditional",
+      "level": 3,
+      "line_start": 1349,
+      "line_end": null,
+      "hierarchy": [
+        "We can also consider a conditional expectation with respect to a conditional"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > We can also consider a conditional expectation with respect to a conditional",
+      "content_preview": "We can also consider a conditional expectation with respect to a conditional"
+    },
+    {
+      "id": "sec_2624191",
+      "title": "Ex[f|y]=",
+      "level": 2,
+      "line_start": 1351,
+      "line_end": null,
+      "hierarchy": [
+        "Ex[f|y]="
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Ex[f|y]=",
+      "content_preview": "Ex[f|y]="
+    },
+    {
+      "id": "sec_6143154",
+      "title": "The variance of f(x) is deﬁned by",
+      "level": 2,
+      "line_start": 1356,
+      "line_end": null,
+      "hierarchy": [
+        "The variance of f(x) is deﬁned by"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > The variance of f(x) is deﬁned by",
+      "content_preview": "The variance of f(x) is deﬁned by"
+    },
+    {
+      "id": "sec_5968127",
+      "title": "For two random variablesx and y, the covariance is deﬁned by",
+      "level": 3,
+      "line_start": 1367,
+      "line_end": null,
+      "hierarchy": [
+        "For two random variablesx and y, the covariance is deﬁned by"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > For two random variablesx and y, the covariance is deﬁned by",
+      "content_preview": "For two random variablesx and y, the covariance is deﬁned by"
+    },
+    {
+      "id": "sec_8491931",
+      "title": "So far in this chapter, we have viewed probabilities in terms of the frequencies",
+      "level": 3,
+      "line_start": 1382,
+      "line_end": null,
+      "hierarchy": [
+        "So far in this chapter, we have viewed probabilities in terms of the frequencies"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > So far in this chapter, we have viewed probabilities in terms of the frequencies",
+      "content_preview": "So far in this chapter, we have viewed probabilities in terms of the frequencies"
+    },
+    {
+      "id": "sec_1847913",
+      "title": "Consider an uncertain event, for example whether the moon was once in its own",
+      "level": 3,
+      "line_start": 1386,
+      "line_end": null,
+      "hierarchy": [
+        "Consider an uncertain event, for example whether the moon was once in its own"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Consider an uncertain event, for example whether the moon was once in its own",
+      "content_preview": "Consider an uncertain event, for example whether the moon was once in its own"
+    }
+  ]
+}

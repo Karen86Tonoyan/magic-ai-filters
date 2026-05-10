@@ -1,0 +1,1412 @@
+{
+  "structure": [
+    {
+      "title": "Root",
+      "level": 1,
+      "line_num": 1,
+      "content_preview": "",
+      "fallback_reason": "pdf_pdfminer_offline_extraction"
+    },
+    {
+      "title": "Information Science and Statistics",
+      "level": 2,
+      "line_num": 1,
+      "content_preview": "Information Science and Statistics",
+      "fontsize": 17.9
+    },
+    {
+      "title": "Information Science and Statistics",
+      "level": 2,
+      "line_num": 6,
+      "content_preview": "Information Science and Statistics",
+      "fontsize": 16.0
+    },
+    {
+      "title": "Christopher M. Bishop",
+      "level": 2,
+      "line_num": 22,
+      "content_preview": "Christopher M. Bishop",
+      "fontsize": 15.9
+    },
+    {
+      "title": "Pattern Recognition and",
+      "level": 2,
+      "line_num": 23,
+      "content_preview": "Pattern Recognition and",
+      "fontsize": 27.9
+    },
+    {
+      "title": "Machine Learning",
+      "level": 2,
+      "line_num": 24,
+      "content_preview": "Machine Learning",
+      "fontsize": 27.9
+    },
+    {
+      "title": "This book is dedicated to my family:",
+      "level": 4,
+      "line_num": 67,
+      "content_preview": "This book is dedicated to my family:",
+      "fontsize": 11.5
+    },
+    {
+      "title": "Jenna, Mark, and Hugh",
+      "level": 4,
+      "line_num": 68,
+      "content_preview": "Jenna, Mark, and Hugh",
+      "fontsize": 11.5
+    },
+    {
+      "title": "Preface",
+      "level": 2,
+      "line_num": 70,
+      "content_preview": "Preface",
+      "fontsize": 17.2
+    },
+    {
+      "title": "http://research.microsoft.com/∼cmbishop/PRML",
+      "level": 4,
+      "line_num": 97,
+      "content_preview": "http://research.microsoft.com/∼cmbishop/PRML",
+      "fontsize": 11.5
+    },
+    {
+      "title": "vii",
+      "level": 4,
+      "line_num": 98,
+      "content_preview": "vii",
+      "fontsize": 10.5
+    },
+    {
+      "title": "viii",
+      "level": 4,
+      "line_num": 99,
+      "content_preview": "viii",
+      "fontsize": 10.5
+    },
+    {
+      "title": "PREFACE",
+      "level": 4,
+      "line_num": 100,
+      "content_preview": "PREFACE",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Exercises",
+      "level": 4,
+      "line_num": 101,
+      "content_preview": "Exercises",
+      "fontsize": 11.5
+    },
+    {
+      "title": "Acknowledgements",
+      "level": 4,
+      "line_num": 124,
+      "content_preview": "Acknowledgements",
+      "fontsize": 11.5
+    },
+    {
+      "title": "PREFACE",
+      "level": 4,
+      "line_num": 145,
+      "content_preview": "PREFACE",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Mathematical notation",
+      "level": 2,
+      "line_num": 161,
+      "content_preview": "Mathematical notation",
+      "fontsize": 17.2
+    },
+    {
+      "title": "xii",
+      "level": 4,
+      "line_num": 193,
+      "content_preview": "xii",
+      "fontsize": 10.5
+    },
+    {
+      "title": "MATHEMATICAL NOTATION",
+      "level": 4,
+      "line_num": 194,
+      "content_preview": "MATHEMATICAL NOTATION",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Contents",
+      "level": 2,
+      "line_num": 208,
+      "content_preview": "Contents",
+      "fontsize": 17.2
+    },
+    {
+      "title": "Preface",
+      "level": 4,
+      "line_num": 209,
+      "content_preview": "Preface",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Mathematical notation",
+      "level": 4,
+      "line_num": 210,
+      "content_preview": "Mathematical notation",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Contents",
+      "level": 4,
+      "line_num": 211,
+      "content_preview": "Contents",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Introduction",
+      "level": 4,
+      "line_num": 213,
+      "content_preview": "Introduction",
+      "fontsize": 10.5
+    },
+    {
+      "title": "vii",
+      "level": 4,
+      "line_num": 315,
+      "content_preview": "vii",
+      "fontsize": 10.5
+    },
+    {
+      "title": "xiii",
+      "level": 4,
+      "line_num": 317,
+      "content_preview": "xiii",
+      "fontsize": 10.5
+    },
+    {
+      "title": "xiii",
+      "level": 4,
+      "line_num": 338,
+      "content_preview": "xiii",
+      "fontsize": 10.5
+    },
+    {
+      "title": "xiv",
+      "level": 4,
+      "line_num": 339,
+      "content_preview": "xiv",
+      "fontsize": 10.5
+    },
+    {
+      "title": "CONTENTS",
+      "level": 4,
+      "line_num": 340,
+      "content_preview": "CONTENTS",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Probability Distributions",
+      "level": 4,
+      "line_num": 342,
+      "content_preview": "Probability Distributions",
+      "fontsize": 10.5
+    },
+    {
+      "title": "3 Linear Models for Regression",
+      "level": 4,
+      "line_num": 464,
+      "content_preview": "3 Linear Models for Regression",
+      "fontsize": 10.5
+    },
+    {
+      "title": "137",
+      "level": 4,
+      "line_num": 518,
+      "content_preview": "137",
+      "fontsize": 10.5
+    },
+    {
+      "title": "4 Linear Models for Classiﬁcation",
+      "level": 4,
+      "line_num": 575,
+      "content_preview": "4 Linear Models for Classiﬁcation",
+      "fontsize": 10.5
+    },
+    {
+      "title": "CONTENTS",
+      "level": 4,
+      "line_num": 632,
+      "content_preview": "CONTENTS",
+      "fontsize": 10.5
+    },
+    {
+      "title": "179",
+      "level": 4,
+      "line_num": 643,
+      "content_preview": "179",
+      "fontsize": 10.5
+    },
+    {
+      "title": "5 Neural Networks",
+      "level": 4,
+      "line_num": 699,
+      "content_preview": "5 Neural Networks",
+      "fontsize": 10.5
+    },
+    {
+      "title": "225",
+      "level": 4,
+      "line_num": 750,
+      "content_preview": "225",
+      "fontsize": 10.5
+    },
+    {
+      "title": "xvi",
+      "level": 4,
+      "line_num": 771,
+      "content_preview": "xvi",
+      "fontsize": 10.5
+    },
+    {
+      "title": "CONTENTS",
+      "level": 4,
+      "line_num": 772,
+      "content_preview": "CONTENTS",
+      "fontsize": 10.5
+    },
+    {
+      "title": "6 Kernel Methods",
+      "level": 4,
+      "line_num": 857,
+      "content_preview": "6 Kernel Methods",
+      "fontsize": 10.5
+    },
+    {
+      "title": "291",
+      "level": 4,
+      "line_num": 904,
+      "content_preview": "291",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Sparse Kernel Machines",
+      "level": 4,
+      "line_num": 920,
+      "content_preview": "Sparse Kernel Machines",
+      "fontsize": 10.5
+    },
+    {
+      "title": "325",
+      "level": 4,
+      "line_num": 953,
+      "content_preview": "325",
+      "fontsize": 10.5
+    },
+    {
+      "title": "CONTENTS",
+      "level": 4,
+      "line_num": 983,
+      "content_preview": "CONTENTS",
+      "fontsize": 10.5
+    },
+    {
+      "title": "xvii",
+      "level": 4,
+      "line_num": 984,
+      "content_preview": "xvii",
+      "fontsize": 10.5
+    },
+    {
+      "title": "8 Graphical Models",
+      "level": 4,
+      "line_num": 985,
+      "content_preview": "8 Graphical Models",
+      "fontsize": 10.5
+    },
+    {
+      "title": "359",
+      "level": 4,
+      "line_num": 1066,
+      "content_preview": "359",
+      "fontsize": 10.5
+    },
+    {
+      "title": "9 Mixture Models and EM",
+      "level": 4,
+      "line_num": 1109,
+      "content_preview": "9 Mixture Models and EM",
+      "fontsize": 10.5
+    },
+    {
+      "title": "423",
+      "level": 4,
+      "line_num": 1143,
+      "content_preview": "423",
+      "fontsize": 10.5
+    },
+    {
+      "title": "10 Approximate Inference",
+      "level": 4,
+      "line_num": 1171,
+      "content_preview": "10 Approximate Inference",
+      "fontsize": 10.5
+    },
+    {
+      "title": "461",
+      "level": 4,
+      "line_num": 1186,
+      "content_preview": "461",
+      "fontsize": 10.5
+    },
+    {
+      "title": "xviii",
+      "level": 4,
+      "line_num": 1197,
+      "content_preview": "xviii",
+      "fontsize": 10.5
+    },
+    {
+      "title": "CONTENTS",
+      "level": 4,
+      "line_num": 1198,
+      "content_preview": "CONTENTS",
+      "fontsize": 10.5
+    },
+    {
+      "title": "11 Sampling Methods",
+      "level": 4,
+      "line_num": 1291,
+      "content_preview": "11 Sampling Methods",
+      "fontsize": 10.5
+    },
+    {
+      "title": "12 Continuous Latent Variables",
+      "level": 4,
+      "line_num": 1352,
+      "content_preview": "12 Continuous Latent Variables",
+      "fontsize": 10.5
+    },
+    {
+      "title": "523",
+      "level": 4,
+      "line_num": 1366,
+      "content_preview": "523",
+      "fontsize": 10.5
+    },
+    {
+      "title": "559",
+      "level": 4,
+      "line_num": 1391,
+      "content_preview": "559",
+      "fontsize": 10.5
+    },
+    {
+      "title": "CONTENTS",
+      "level": 4,
+      "line_num": 1399,
+      "content_preview": "CONTENTS",
+      "fontsize": 10.5
+    },
+    {
+      "title": "xix",
+      "level": 4,
+      "line_num": 1400,
+      "content_preview": "xix",
+      "fontsize": 10.5
+    },
+    {
+      "title": "13 Sequential Data",
+      "level": 4,
+      "line_num": 1458,
+      "content_preview": "13 Sequential Data",
+      "fontsize": 10.5
+    },
+    {
+      "title": "605",
+      "level": 4,
+      "line_num": 1513,
+      "content_preview": "605",
+      "fontsize": 10.5
+    },
+    {
+      "title": "14 Combining Models",
+      "level": 4,
+      "line_num": 1535,
+      "content_preview": "14 Combining Models",
+      "fontsize": 10.5
+    },
+    {
+      "title": "653",
+      "level": 4,
+      "line_num": 1580,
+      "content_preview": "653",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Appendix A Data Sets",
+      "level": 4,
+      "line_num": 1602,
+      "content_preview": "Appendix A Data Sets",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Appendix B Probability Distributions",
+      "level": 4,
+      "line_num": 1603,
+      "content_preview": "Appendix B Probability Distributions",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Appendix C Properties of Matrices",
+      "level": 4,
+      "line_num": 1604,
+      "content_preview": "Appendix C Properties of Matrices",
+      "fontsize": 10.5
+    },
+    {
+      "title": "677",
+      "level": 4,
+      "line_num": 1605,
+      "content_preview": "677",
+      "fontsize": 10.5
+    },
+    {
+      "title": "685",
+      "level": 4,
+      "line_num": 1606,
+      "content_preview": "685",
+      "fontsize": 10.5
+    },
+    {
+      "title": "695",
+      "level": 4,
+      "line_num": 1607,
+      "content_preview": "695",
+      "fontsize": 10.5
+    },
+    {
+      "title": "CONTENTS",
+      "level": 4,
+      "line_num": 1609,
+      "content_preview": "CONTENTS",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Appendix D Calculus of Variations",
+      "level": 4,
+      "line_num": 1610,
+      "content_preview": "Appendix D Calculus of Variations",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Appendix E Lagrange Multipliers",
+      "level": 4,
+      "line_num": 1611,
+      "content_preview": "Appendix E Lagrange Multipliers",
+      "fontsize": 10.5
+    },
+    {
+      "title": "References",
+      "level": 4,
+      "line_num": 1612,
+      "content_preview": "References",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Index",
+      "level": 4,
+      "line_num": 1613,
+      "content_preview": "Index",
+      "fontsize": 10.5
+    },
+    {
+      "title": "703",
+      "level": 4,
+      "line_num": 1614,
+      "content_preview": "703",
+      "fontsize": 10.5
+    },
+    {
+      "title": "707",
+      "level": 4,
+      "line_num": 1615,
+      "content_preview": "707",
+      "fontsize": 10.5
+    },
+    {
+      "title": "711",
+      "level": 4,
+      "line_num": 1616,
+      "content_preview": "711",
+      "fontsize": 10.5
+    },
+    {
+      "title": "729",
+      "level": 4,
+      "line_num": 1617,
+      "content_preview": "729",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Introduction",
+      "level": 2,
+      "line_num": 1619,
+      "content_preview": "Introduction",
+      "fontsize": 35.9
+    },
+    {
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_num": 1636,
+      "content_preview": "1. INTRODUCTION",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Figure 1.1 Examples of hand-written dig-",
+      "level": 4,
+      "line_num": 1637,
+      "content_preview": "Figure 1.1 Examples of hand-written dig-",
+      "fontsize": 9.0
+    },
+    {
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_num": 1675,
+      "content_preview": "1. INTRODUCTION",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_num": 1723,
+      "content_preview": "1. INTRODUCTION",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Figure 1.2 Plot of a training data set of N =",
+      "level": 4,
+      "line_num": 1724,
+      "content_preview": "Figure 1.2 Plot of a training data set of N =",
+      "fontsize": 9.0
+    },
+    {
+      "title": "1.1. Example: Polynomial Curve Fitting",
+      "level": 3,
+      "line_num": 1754,
+      "content_preview": "1.1. Example: Polynomial Curve Fitting",
+      "fontsize": 13.0
+    },
+    {
+      "title": "1.1. Example: Polynomial Curve Fitting",
+      "level": 4,
+      "line_num": 1769,
+      "content_preview": "1.1. Example: Polynomial Curve Fitting",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_num": 1820,
+      "content_preview": "1. INTRODUCTION",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Figure 1.3 The error",
+      "level": 4,
+      "line_num": 1821,
+      "content_preview": "Figure 1.3 The error",
+      "fontsize": 9.0
+    },
+    {
+      "title": "1.1. Example: Polynomial Curve Fitting",
+      "level": 4,
+      "line_num": 1873,
+      "content_preview": "1.1. Example: Polynomial Curve Fitting",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_num": 1917,
+      "content_preview": "1. INTRODUCTION",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Figure 1.5 Graphs of",
+      "level": 4,
+      "line_num": 1918,
+      "content_preview": "Figure 1.5 Graphs of",
+      "fontsize": 9.0
+    },
+    {
+      "title": "Table 1.1 Table of the coefﬁcients w(cid:1) for",
+      "level": 4,
+      "line_num": 1956,
+      "content_preview": "Table 1.1 Table of the coefﬁcients w(cid:1) for",
+      "fontsize": 9.0
+    },
+    {
+      "title": "1.1. Example: Polynomial Curve Fitting",
+      "level": 4,
+      "line_num": 2002,
+      "content_preview": "1.1. Example: Polynomial Curve Fitting",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_num": 2052,
+      "content_preview": "1. INTRODUCTION",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1.1. Example: Polynomial Curve Fitting",
+      "level": 4,
+      "line_num": 2111,
+      "content_preview": "1.1. Example: Polynomial Curve Fitting",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Table 1.2 Table of the coefﬁcients w(cid:1) for M =",
+      "level": 4,
+      "line_num": 2113,
+      "content_preview": "Table 1.2 Table of the coefﬁcients w(cid:1) for M =",
+      "fontsize": 9.0
+    },
+    {
+      "title": "Figure 1.8 Graph of the root-mean-square er-",
+      "level": 4,
+      "line_num": 2194,
+      "content_preview": "Figure 1.8 Graph of the root-mean-square er-",
+      "fontsize": 9.0
+    },
+    {
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_num": 2212,
+      "content_preview": "1. INTRODUCTION",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1.2. Probability Theory",
+      "level": 3,
+      "line_num": 2216,
+      "content_preview": "1.2. Probability Theory",
+      "fontsize": 13.0
+    },
+    {
+      "title": "Figure 1.9 We use a simple example of two",
+      "level": 4,
+      "line_num": 2242,
+      "content_preview": "Figure 1.9 We use a simple example of two",
+      "fontsize": 9.0
+    },
+    {
+      "title": "1.2. Probability Theory",
+      "level": 4,
+      "line_num": 2247,
+      "content_preview": "1.2. Probability Theory",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Figure 1.10 We can derive the sum and product rules of probability by",
+      "level": 4,
+      "line_num": 2249,
+      "content_preview": "Figure 1.10 We can derive the sum and product rules of probability by",
+      "fontsize": 9.0
+    },
+    {
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_num": 2309,
+      "content_preview": "1. INTRODUCTION",
+      "fontsize": 10.5
+    },
+    {
+      "title": "sum rule",
+      "level": 4,
+      "line_num": 2353,
+      "content_preview": "sum rule",
+      "fontsize": 10.5
+    },
+    {
+      "title": "product rule",
+      "level": 4,
+      "line_num": 2357,
+      "content_preview": "product rule",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1.2. Probability Theory",
+      "level": 4,
+      "line_num": 2364,
+      "content_preview": "1.2. Probability Theory",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_num": 2418,
+      "content_preview": "1. INTRODUCTION",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1.2. Probability Theory",
+      "level": 4,
+      "line_num": 2457,
+      "content_preview": "1.2. Probability Theory",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1.2.1 Probability densities",
+      "level": 4,
+      "line_num": 2505,
+      "content_preview": "1.2.1 Probability densities",
+      "fontsize": 11.5
+    },
+    {
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_num": 2518,
+      "content_preview": "1. INTRODUCTION",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Figure 1.12 The concept of probability for",
+      "level": 4,
+      "line_num": 2519,
+      "content_preview": "Figure 1.12 The concept of probability for",
+      "fontsize": 9.0
+    },
+    {
+      "title": "1.2. Probability Theory",
+      "level": 4,
+      "line_num": 2576,
+      "content_preview": "1.2. Probability Theory",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1.2.2 Expectations and covariances",
+      "level": 4,
+      "line_num": 2606,
+      "content_preview": "1.2.2 Expectations and covariances",
+      "fontsize": 11.5
+    },
+    {
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_num": 2626,
+      "content_preview": "1. INTRODUCTION",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1.2. Probability Theory",
+      "level": 4,
+      "line_num": 2682,
+      "content_preview": "1.2. Probability Theory",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1.2.3 Bayesian probabilities",
+      "level": 4,
+      "line_num": 2684,
+      "content_preview": "1.2.3 Bayesian probabilities",
+      "fontsize": 11.5
+    },
+    {
+      "title": "Thomas Bayes",
+      "level": 3,
+      "line_num": 2717,
+      "content_preview": "Thomas Bayes",
+      "fontsize": 13.0
+    },
+    {
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_num": 2740,
+      "content_preview": "1. INTRODUCTION",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1.2. Probability Theory",
+      "level": 4,
+      "line_num": 2787,
+      "content_preview": "1.2. Probability Theory",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_num": 2838,
+      "content_preview": "1. INTRODUCTION",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1.2.4 The Gaussian distribution",
+      "level": 4,
+      "line_num": 2850,
+      "content_preview": "1.2.4 The Gaussian distribution",
+      "fontsize": 11.5
+    },
+    {
+      "title": "Pierre-Simon Laplace",
+      "level": 3,
+      "line_num": 2880,
+      "content_preview": "Pierre-Simon Laplace",
+      "fontsize": 13.0
+    },
+    {
+      "title": "Figure 1.13 Plot of the univariate Gaussian",
+      "level": 4,
+      "line_num": 2902,
+      "content_preview": "Figure 1.13 Plot of the univariate Gaussian",
+      "fontsize": 9.0
+    },
+    {
+      "title": "1.2. Probability Theory",
+      "level": 4,
+      "line_num": 2906,
+      "content_preview": "1.2. Probability Theory",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_num": 2967,
+      "content_preview": "1. INTRODUCTION",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Figure 1.14 Illustration of the likelihood function for",
+      "level": 4,
+      "line_num": 2968,
+      "content_preview": "Figure 1.14 Illustration of the likelihood function for",
+      "fontsize": 9.0
+    },
+    {
+      "title": "1.2. Probability Theory",
+      "level": 4,
+      "line_num": 3024,
+      "content_preview": "1.2. Probability Theory",
+      "fontsize": 10.5
+    },
+    {
+      "title": "x|µ, σ2",
+      "level": 4,
+      "line_num": 3028,
+      "content_preview": "x|µ, σ2",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_num": 3105,
+      "content_preview": "1. INTRODUCTION",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Figure 1.15 Illustration of how bias arises in using max-",
+      "level": 4,
+      "line_num": 3106,
+      "content_preview": "Figure 1.15 Illustration of how bias arises in using max-",
+      "fontsize": 9.0
+    },
+    {
+      "title": "1.2.5 Curve ﬁtting re-visited",
+      "level": 4,
+      "line_num": 3134,
+      "content_preview": "1.2.5 Curve ﬁtting re-visited",
+      "fontsize": 11.5
+    },
+    {
+      "title": "Figure 1.16 Schematic illustration of a Gaus-",
+      "level": 4,
+      "line_num": 3156,
+      "content_preview": "Figure 1.16 Schematic illustration of a Gaus-",
+      "fontsize": 9.0
+    },
+    {
+      "title": "1.2. Probability Theory",
+      "level": 4,
+      "line_num": 3164,
+      "content_preview": "1.2. Probability Theory",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_num": 3224,
+      "content_preview": "1. INTRODUCTION",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1.2.6 Bayesian curve ﬁtting",
+      "level": 4,
+      "line_num": 3280,
+      "content_preview": "1.2.6 Bayesian curve ﬁtting",
+      "fontsize": 11.5
+    },
+    {
+      "title": "1.2. Probability Theory",
+      "level": 4,
+      "line_num": 3287,
+      "content_preview": "1.2. Probability Theory",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_num": 3338,
+      "content_preview": "1. INTRODUCTION",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Figure 1.17 The predictive distribution result-",
+      "level": 4,
+      "line_num": 3339,
+      "content_preview": "Figure 1.17 The predictive distribution result-",
+      "fontsize": 9.0
+    },
+    {
+      "title": "1.3. Model Selection",
+      "level": 3,
+      "line_num": 3358,
+      "content_preview": "1.3. Model Selection",
+      "fontsize": 13.0
+    },
+    {
+      "title": "1.4. The Curse of Dimensionality",
+      "level": 4,
+      "line_num": 3388,
+      "content_preview": "1.4. The Curse of Dimensionality",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Figure 1.18 The technique of S-fold cross-validation,",
+      "level": 4,
+      "line_num": 3390,
+      "content_preview": "Figure 1.18 The technique of S-fold cross-validation,",
+      "fontsize": 9.0
+    },
+    {
+      "title": "1.4. The Curse of Dimensionality",
+      "level": 3,
+      "line_num": 3434,
+      "content_preview": "1.4. The Curse of Dimensionality",
+      "fontsize": 13.0
+    },
+    {
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_num": 3438,
+      "content_preview": "1. INTRODUCTION",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Figure 1.19 Scatter plot of the oil ﬂow data",
+      "level": 4,
+      "line_num": 3439,
+      "content_preview": "Figure 1.19 Scatter plot of the oil ﬂow data",
+      "fontsize": 9.0
+    },
+    {
+      "title": "1.4. The Curse of Dimensionality",
+      "level": 4,
+      "line_num": 3487,
+      "content_preview": "1.4. The Curse of Dimensionality",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Figure 1.20 Illustration of a simple approach",
+      "level": 4,
+      "line_num": 3489,
+      "content_preview": "Figure 1.20 Illustration of a simple approach",
+      "fontsize": 9.0
+    },
+    {
+      "title": "Figure 1.21 Illustration",
+      "level": 4,
+      "line_num": 3529,
+      "content_preview": "Figure 1.21 Illustration",
+      "fontsize": 9.0
+    },
+    {
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_num": 3549,
+      "content_preview": "1. INTRODUCTION",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Figure 1.22 Plot of the fraction of the volume of",
+      "level": 4,
+      "line_num": 3611,
+      "content_preview": "Figure 1.22 Plot of the fraction of the volume of",
+      "fontsize": 9.0
+    },
+    {
+      "title": "1.4. The Curse of Dimensionality",
+      "level": 4,
+      "line_num": 3615,
+      "content_preview": "1.4. The Curse of Dimensionality",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Figure 1.23 Plot of the probability density with",
+      "level": 4,
+      "line_num": 3661,
+      "content_preview": "Figure 1.23 Plot of the probability density with",
+      "fontsize": 9.0
+    },
+    {
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_num": 3687,
+      "content_preview": "1. INTRODUCTION",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1.5. Decision Theory",
+      "level": 3,
+      "line_num": 3697,
+      "content_preview": "1.5. Decision Theory",
+      "fontsize": 13.0
+    },
+    {
+      "title": "1.5. Decision Theory",
+      "level": 4,
+      "line_num": 3730,
+      "content_preview": "1.5. Decision Theory",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1.5.1 Minimizing the misclassiﬁcation rate",
+      "level": 4,
+      "line_num": 3755,
+      "content_preview": "1.5.1 Minimizing the misclassiﬁcation rate",
+      "fontsize": 11.5
+    },
+    {
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_num": 3783,
+      "content_preview": "1. INTRODUCTION",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Figure 1.25 An example of a loss matrix with ele-",
+      "level": 4,
+      "line_num": 3825,
+      "content_preview": "Figure 1.25 An example of a loss matrix with ele-",
+      "fontsize": 9.0
+    },
+    {
+      "title": "1.5. Decision Theory",
+      "level": 4,
+      "line_num": 3838,
+      "content_preview": "1.5. Decision Theory",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1.5.2 Minimizing the expected loss",
+      "level": 4,
+      "line_num": 3840,
+      "content_preview": "1.5.2 Minimizing the expected loss",
+      "fontsize": 11.5
+    },
+    {
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_num": 3886,
+      "content_preview": "1. INTRODUCTION",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1.5.3 The reject option",
+      "level": 4,
+      "line_num": 3906,
+      "content_preview": "1.5.3 The reject option",
+      "fontsize": 11.5
+    },
+    {
+      "title": "1.5.4 Inference and decision",
+      "level": 4,
+      "line_num": 3926,
+      "content_preview": "1.5.4 Inference and decision",
+      "fontsize": 11.5
+    },
+    {
+      "title": "1.5. Decision Theory",
+      "level": 4,
+      "line_num": 3930,
+      "content_preview": "1.5. Decision Theory",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_num": 3978,
+      "content_preview": "1. INTRODUCTION",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Minimizing risk. Consider a problem in which the elements of the loss matrix are",
+      "level": 4,
+      "line_num": 4048,
+      "content_preview": "Minimizing risk. Consider a problem in which the elements of the loss matrix are",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1.5. Decision Theory",
+      "level": 4,
+      "line_num": 4050,
+      "content_preview": "1.5. Decision Theory",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Compensating for class priors. Consider our medical X-ray problem again, and",
+      "level": 4,
+      "line_num": 4059,
+      "content_preview": "Compensating for class priors. Consider our medical X-ray problem again, and",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Combining models. For complex applications, we may wish to break the problem",
+      "level": 4,
+      "line_num": 4084,
+      "content_preview": "Combining models. For complex applications, we may wish to break the problem",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_num": 4096,
+      "content_preview": "1. INTRODUCTION",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1.5.5 Loss functions for regression",
+      "level": 4,
+      "line_num": 4120,
+      "content_preview": "1.5.5 Loss functions for regression",
+      "fontsize": 11.5
+    },
+    {
+      "title": "Figure 1.28 The regression function y(x),",
+      "level": 4,
+      "line_num": 4155,
+      "content_preview": "Figure 1.28 The regression function y(x),",
+      "fontsize": 9.0
+    },
+    {
+      "title": "1.5. Decision Theory",
+      "level": 4,
+      "line_num": 4162,
+      "content_preview": "1.5. Decision Theory",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_num": 4205,
+      "content_preview": "1. INTRODUCTION",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1.6.",
+      "level": 3,
+      "line_num": 4228,
+      "content_preview": "1.6.",
+      "fontsize": 13.0
+    },
+    {
+      "title": "Information Theory",
+      "level": 3,
+      "line_num": 4229,
+      "content_preview": "Information Theory",
+      "fontsize": 13.0
+    },
+    {
+      "title": "1.6. Information Theory",
+      "level": 4,
+      "line_num": 4305,
+      "content_preview": "1.6. Information Theory",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_num": 4341,
+      "content_preview": "1. INTRODUCTION",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1.6. Information Theory",
+      "level": 4,
+      "line_num": 4433,
+      "content_preview": "1.6. Information Theory",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_num": 4516,
+      "content_preview": "1. INTRODUCTION",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1.6. Information Theory",
+      "level": 4,
+      "line_num": 4590,
+      "content_preview": "1.6. Information Theory",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Ludwig Boltzmann",
+      "level": 3,
+      "line_num": 4621,
+      "content_preview": "Ludwig Boltzmann",
+      "fontsize": 13.0
+    },
+    {
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_num": 4663,
+      "content_preview": "1. INTRODUCTION",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1.6. Information Theory",
+      "level": 4,
+      "line_num": 4746,
+      "content_preview": "1.6. Information Theory",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1.6.1 Relative entropy and mutual information",
+      "level": 4,
+      "line_num": 4754,
+      "content_preview": "1.6.1 Relative entropy and mutual information",
+      "fontsize": 11.5
+    },
+    {
+      "title": "Claude Shannon",
+      "level": 3,
+      "line_num": 4789,
+      "content_preview": "Claude Shannon",
+      "fontsize": 13.0
+    },
+    {
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_num": 4809,
+      "content_preview": "1. INTRODUCTION",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Figure 1.31 A convex function f (x) is one for which ev-",
+      "level": 4,
+      "line_num": 4810,
+      "content_preview": "Figure 1.31 A convex function f (x) is one for which ev-",
+      "fontsize": 9.0
+    },
+    {
+      "title": "1.6. Information Theory",
+      "level": 4,
+      "line_num": 4875,
+      "content_preview": "1.6. Information Theory",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_num": 4934,
+      "content_preview": "1. INTRODUCTION",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Exercises",
+      "level": 3,
+      "line_num": 4935,
+      "content_preview": "Exercises",
+      "fontsize": 13.0
+    },
+    {
+      "title": "Exercises",
+      "level": 4,
+      "line_num": 4985,
+      "content_preview": "Exercises",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_num": 5048,
+      "content_preview": "1. INTRODUCTION",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1.12 ((cid:1) (cid:1)) www Using the results (1.49) and (1.50), show that",
+      "level": 4,
+      "line_num": 5049,
+      "content_preview": "1.12 ((cid:1) (cid:1)) www Using the results (1.49) and (1.50), show that",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1.14 ((cid:1) (cid:1))",
+      "level": 4,
+      "line_num": 5059,
+      "content_preview": "1.14 ((cid:1) (cid:1))",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Exercises",
+      "level": 4,
+      "line_num": 5127,
+      "content_preview": "Exercises",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_num": 5186,
+      "content_preview": "1. INTRODUCTION",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1.17 ((cid:1) (cid:1)) www The gamma function is deﬁned by",
+      "level": 4,
+      "line_num": 5187,
+      "content_preview": "1.17 ((cid:1) (cid:1)) www The gamma function is deﬁned by",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Exercises",
+      "level": 4,
+      "line_num": 5250,
+      "content_preview": "Exercises",
+      "fontsize": 10.5
+    },
+    {
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_num": 5315,
+      "content_preview": "1. INTRODUCTION",
+      "fontsize": 10.5
+    },
+    {
+      "title": "Table 1.3 The joint distribution p(x, y) for two binary variables",
+      "level": 4,
+      "line_num": 5358,
+      "content_preview": "Table 1.3 The joint distribution p(x, y) for two binary variables",
+      "fontsize": 9.0
+    },
+    {
+      "title": "Exercises",
+      "level": 4,
+      "line_num": 5360,
+      "content_preview": "Exercises",
+      "fontsize": 10.5
+    }
+  ],
+  "line_count": 43590
+}

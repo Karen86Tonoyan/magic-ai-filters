@@ -1,0 +1,41 @@
+{
+  "question": "Jakie są główne tezy i rekomendacje dokumentu?",
+  "answer": "Na podstawie mapy sekcji najbardziej trafne obszary to: Root. Odpowiedź powinna zostać rozwinięta z tych ścieżek dowodu.",
+  "evidence_paths": [
+    "alfa_rc2_test1.md > Root"
+  ],
+  "matched_sections": [
+    {
+      "id": "sec_9358830",
+      "title": "Root",
+      "level": 1,
+      "line_start": 1,
+      "line_end": 4,
+      "hierarchy": [
+        "Root"
+      ],
+      "evidence_path": "alfa_rc2_test1.md > Root",
+      "score": 2,
+      "matched_terms": [
+        "rekomendacj",
+        "tez"
+      ]
+    }
+  ],
+  "confidence": 0.5,
+  "missing_context": [
+    "dokument",
+    "główn"
+  ],
+  "strict": {
+    "enabled": true,
+    "passed": false,
+    "min_confidence": 0.6,
+    "min_evidence_paths": 2
+  },
+  "rejected_by_strict_gate": true,
+  "strict_rejection_reasons": [
+    "confidence_below_threshold",
+    "insufficient_evidence_paths"
+  ]
+}

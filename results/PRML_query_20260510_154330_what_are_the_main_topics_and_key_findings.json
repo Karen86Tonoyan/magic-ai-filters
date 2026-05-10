@@ -1,0 +1,64 @@
+{
+  "question": "What are the main topics and key findings?",
+  "answer": "Na podstawie mapy sekcji najbardziej trafne obszary to: Introduction, 1. INTRODUCTION. Odpowiedź powinna zostać rozwinięta z tych ścieżek dowodu.",
+  "evidence_paths": [
+    "examples\\documents\\PRML.pdf > Introduction",
+    "examples\\documents\\PRML.pdf > 1. INTRODUCTION"
+  ],
+  "matched_sections": [
+    {
+      "id": "sec_4472649",
+      "title": "Introduction",
+      "level": 4,
+      "line_start": 213,
+      "line_end": null,
+      "hierarchy": [
+        "Introduction"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Introduction",
+      "score": 2,
+      "matched_terms": [
+        "introduction"
+      ]
+    },
+    {
+      "id": "sec_4361872",
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_start": 1636,
+      "line_end": null,
+      "hierarchy": [
+        "1. INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1. INTRODUCTION",
+      "score": 2,
+      "matched_terms": [
+        "introduction"
+      ]
+    }
+  ],
+  "confidence": 0.083,
+  "missing_context": [
+    "abstract",
+    "conclusion",
+    "discussion",
+    "finding",
+    "highlights",
+    "key",
+    "main",
+    "overview",
+    "results",
+    "summary",
+    "topic"
+  ],
+  "strict": {
+    "enabled": true,
+    "passed": false,
+    "min_confidence": 0.6,
+    "min_evidence_paths": 2
+  },
+  "rejected_by_strict_gate": true,
+  "strict_rejection_reasons": [
+    "confidence_below_threshold"
+  ]
+}

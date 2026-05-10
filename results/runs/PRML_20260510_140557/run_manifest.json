@@ -1,0 +1,15 @@
+{
+  "run_id": "PRML_20260510_140557",
+  "document_id": "PRML",
+  "source_path": ".\\examples\\documents\\PRML.pdf",
+  "question": "What are the main findings and topic of the document?",
+  "structure_mode": "normal",
+  "structure_path": "results/runs/PRML_20260510_140557/PRML_structure.json",
+  "section_map_path": "results/runs/PRML_20260510_140557/PRML_alfa_section_map.json",
+  "query_result_path": "results/runs/PRML_20260510_140557/PRML_query_result.json",
+  "exit_code": 2,
+  "strict_passed": false,
+  "confidence": 0.0,
+  "evidence_paths": [],
+  "section_count": 21
+}

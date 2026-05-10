@@ -1,0 +1,34 @@
+{
+  "question": "Praktyki komunikacyjne i wprowadzenie",
+  "answer": "Na podstawie mapy sekcji najbardziej trafne obszary to: Root. Odpowiedź powinna zostać rozwinięta z tych ścieżek dowodu.",
+  "evidence_paths": [
+    "alfa_rc2_test1.pdf > Root"
+  ],
+  "matched_sections": [
+    {
+      "id": "sec_3642552",
+      "title": "Root",
+      "level": 1,
+      "line_start": 1,
+      "line_end": null,
+      "hierarchy": [
+        "Root"
+      ],
+      "evidence_path": "alfa_rc2_test1.pdf > Root",
+      "score": 3,
+      "matched_terms": [
+        "komunikacyjn",
+        "praktyk",
+        "wprowadzen"
+      ]
+    }
+  ],
+  "confidence": 1.0,
+  "missing_context": [],
+  "strict": {
+    "enabled": true,
+    "passed": true,
+    "min_confidence": 0.8,
+    "min_evidence_paths": 1
+  }
+}

@@ -1,0 +1,192 @@
+{
+  "structure": [
+    {
+      "title": "Root",
+      "level": 1,
+      "line_num": 1,
+      "content_preview": "Earth Mover’s Distance based Similarity Search at Scale\nYu Tang†, Leong Hou U‡, Yilun Cai†, Nikos Mamoulis†, Reynold Cheng†\n†The University of Hong Kong ‡University of Macau\n†{ytang, ylcai, nikos, ckcheng}@cs.hku.hk ‡ryanlhu@umac.mo\nABSTRACT\nEarth Mover’s Distance (EMD), as a similarity measure, has re-\nceived a lot of attention in the ﬁelds of multimedia and probabilis-\ntic databases, computer vision, image retrieval, machine learning,\netc. EMD on multidimensional histograms provides better distin-\nguishability between the objects approximated by the histograms\n(e.g., images), compared to classic measures like Euclidean dis-\ntance. Despite its usefulness, EMD has a high computational cost;\ntherefore, a number of effective ﬁltering methods have been pro-\nposed, to reduce the pairs of histograms for which the exact EMD\nhas to be computed, during similarity search. Still, EMD calcu-\nlations in the reﬁnement step remain the bottleneck of the whole\nsimilarity search process. In this paper, we focus on optimizing the\nreﬁnement phase of EMD-based similarity search by (i) adapting\nan efﬁcient min-cost ﬂow algorithm (SIA) for EMD computation,\n(ii) proposing a dynamic distance bound, which can be used to ter-\nminate an EMD reﬁnement early, and (iii) proposing a dynamic re-\nﬁnement order for the candidates which, paired with a concurrent\nEMD reﬁnement strategy, reduces the amount of needless compu-\ntations. Our proposed techniques are orthogonal to and can be eas-\nily integrated with the state-of-the-art ﬁltering techniques, reducing\nthe cost of EMD-based similarity queries by orders of magnitude.\n1. INTRODUCTION\nGiven two histograms (e.g., probability distributions), their\nEarth Mover’s Distance(EMD) is deﬁned as the minimum amount\nof work to transform one histogram into the other. EMD is robust\nto outliers and small shifts of values among histogram bins [20],\nimproving the quality of similarity search in different domain ar-\neas, such as computer vision [19, 21], machine learning [6, 9], in-\nformation retrieval [23, 24], probabilistic [25, 32] and multimedia\ndatabases [5, 30]. Typically, the EMD between two histograms is\nmodeled and solved as a linear optimization problem, the min-cost\nﬂow problem, which requires super-cubic time. The high compu-\ntational cost of EMD restricts its applicability to datasets of low-\nscale. For example, in computer vision applications, the quality of\nresults is typically compromised by the use of low-granularity his-\ntograms, to render EMD-based similarity retrieval feasible [22,30].\nThis work is licensed under the Creative Commons Attribution-\nNonCommercial-NoDerivs 3.0 Unported License. To view a copy of this li-\ncense, visit http://creativecommons.org/licenses/by-nc-nd/3.0/. Obtain per-\nmission prior to any use beyond those covered by the license. Contact\ncopyright holder by emailing info@vldb.org. Articles from this volume\nwere invited to present their results at the 40th International Conference on\nVery Large Data Bases, September 1st - 5th 2014, Hangzhou, China.\nProceedings of the VLDB Endowment, V ol. 7, No. 4\nCopyright 2013 VLDB Endowment 2150-8097/13/12.\nEMD-based similarity search has been extensively studied in [5,\n25,30,32]. Given a query histogram q and a database of histogram\nobjects D, the objective is to ﬁnd the k nearest neighbors of q in\nD. All these works adopt the ﬁlter-and-reﬁnement framework; to\nevaluate a query, unpromising objects (or object groups) are ﬁl-\ntered out, by utilizing various effective EMD lower bound estima-\ntions, based on centroids and projections [7], dimensionality re-\nduction [30], primal-dual space [32], normal distributions [25], etc.\nActual EMD calculations1 are applied only between q and all ob-\njects that survive the ﬁlter step. Thus, the primary focus of previous\nresearch has been in tightening the lower bounds such that more ob-\njects can be pruned at the ﬁlter step. For instance, [25] demonstrate\nthat the projection-based lower bound can be up to 90% of ",
+      "fallback_reason": "pdf_pdfminer_offline_extraction"
+    },
+    {
+      "title": "Earth Mover’s Distance based Similarity Search at Scale",
+      "level": 3,
+      "line_num": 1,
+      "content_preview": "Earth Mover’s Distance based Similarity Search at Scale"
+    },
+    {
+      "title": "Yu Tang†, Leong Hou U‡, Yilun Cai†, Nikos Mamoulis†, Reynold Cheng†",
+      "level": 3,
+      "line_num": 2,
+      "content_preview": "Yu Tang†, Leong Hou U‡, Yilun Cai†, Nikos Mamoulis†, Reynold Cheng†"
+    },
+    {
+      "title": "ABSTRACT",
+      "level": 2,
+      "line_num": 5,
+      "content_preview": "ABSTRACT"
+    },
+    {
+      "title": "Earth Mover’s Distance (EMD), as a similarity measure, has re-",
+      "level": 3,
+      "line_num": 6,
+      "content_preview": "Earth Mover’s Distance (EMD), as a similarity measure, has re-"
+    },
+    {
+      "title": "EMD reﬁnement strategy, reduces the amount of needless compu-",
+      "level": 3,
+      "line_num": 23,
+      "content_preview": "EMD reﬁnement strategy, reduces the amount of needless compu-"
+    },
+    {
+      "title": "Given two histograms (e.g., probability distributions), their",
+      "level": 3,
+      "line_num": 28,
+      "content_preview": "Given two histograms (e.g., probability distributions), their"
+    },
+    {
+      "title": "Earth Mover’s Distance(EMD) is deﬁned as the minimum amount",
+      "level": 3,
+      "line_num": 29,
+      "content_preview": "Earth Mover’s Distance(EMD) is deﬁned as the minimum amount"
+    },
+    {
+      "title": "This work is licensed under the Creative Commons Attribution-",
+      "level": 3,
+      "line_num": 42,
+      "content_preview": "This work is licensed under the Creative Commons Attribution-"
+    },
+    {
+      "title": "NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this li-",
+      "level": 3,
+      "line_num": 43,
+      "content_preview": "NonCommercial-NoDerivs 3.0 Unported License. To view a copy of this li-"
+    },
+    {
+      "title": "Proceedings of the VLDB Endowment, V ol. 7, No. 4",
+      "level": 3,
+      "line_num": 49,
+      "content_preview": "Proceedings of the VLDB Endowment, V ol. 7, No. 4"
+    },
+    {
+      "title": "EMD-based similarity search has been extensively studied in [5,",
+      "level": 3,
+      "line_num": 51,
+      "content_preview": "EMD-based similarity search has been extensively studied in [5,"
+    },
+    {
+      "title": "D. All these works adopt the ﬁlter-and-reﬁnement framework; to",
+      "level": 3,
+      "line_num": 54,
+      "content_preview": "D. All these works adopt the ﬁlter-and-reﬁnement framework; to"
+    },
+    {
+      "title": "Actual EMD calculations1 are applied only between q and all ob-",
+      "level": 3,
+      "line_num": 59,
+      "content_preview": "Actual EMD calculations1 are applied only between q and all ob-"
+    },
+    {
+      "title": "In view of this, we focus on optimizing the reﬁnement phase",
+      "level": 3,
+      "line_num": 73,
+      "content_preview": "In view of this, we focus on optimizing the reﬁnement phase"
+    },
+    {
+      "title": "Min-cost ﬂow algorithms, such as SIA, only aim at efﬁciently",
+      "level": 3,
+      "line_num": 91,
+      "content_preview": "Min-cost ﬂow algorithms, such as SIA, only aim at efﬁciently"
+    },
+    {
+      "title": "Based on this, we introduce aprogressive bounding(PB) technique,",
+      "level": 3,
+      "line_num": 103,
+      "content_preview": "Based on this, we introduce aprogressive bounding(PB) technique,"
+    },
+    {
+      "title": "PB and DRO can be seamlessly integrated with any existing (and",
+      "level": 3,
+      "line_num": 111,
+      "content_preview": "PB and DRO can be seamlessly integrated with any existing (and"
+    },
+    {
+      "title": "The rest of the paper is organized as follows. Section 2 formally",
+      "level": 3,
+      "line_num": 118,
+      "content_preview": "The rest of the paper is organized as follows. Section 2 formally"
+    },
+    {
+      "title": "The Earth Mover’s Distance(EMD), ﬁrst introduced by the com-",
+      "level": 3,
+      "line_num": 129,
+      "content_preview": "The Earth Mover’s Distance(EMD), ﬁrst introduced by the com-"
+    },
+    {
+      "title": "C, where ci,j models cost of moving ﬂow from the i-th bin to the",
+      "level": 3,
+      "line_num": 135,
+      "content_preview": "C, where ci,j models cost of moving ﬂow from the i-th bin to the"
+    },
+    {
+      "title": "The cost matrix (a.k.a., ground distance) C can be designed by",
+      "level": 3,
+      "line_num": 144,
+      "content_preview": "The cost matrix (a.k.a., ground distance) C can be designed by"
+    },
+    {
+      "title": "We demonstrate the calculation and applicability of EMD via a",
+      "level": 3,
+      "line_num": 175,
+      "content_preview": "We demonstrate the calculation and applicability of EMD via a"
+    },
+    {
+      "title": "Jazz, andHouse, respectively). Figure 1(c) illustrates the best trans-",
+      "level": 3,
+      "line_num": 184,
+      "content_preview": "Jazz, andHouse, respectively). Figure 1(c) illustrates the best trans-"
+    },
+    {
+      "title": "In the transformation, f1,1 = 2 units are moved to p’sR&B (with",
+      "level": 3,
+      "line_num": 187,
+      "content_preview": "In the transformation, f1,1 = 2 units are moved to p’sR&B (with"
+    },
+    {
+      "title": "Download rates",
+      "level": 2,
+      "line_num": 199,
+      "content_preview": "Download rates"
+    },
+    {
+      "title": "R&B HouseSambaJazz",
+      "level": 2,
+      "line_num": 200,
+      "content_preview": "R&B HouseSambaJazz"
+    },
+    {
+      "title": "Download rates",
+      "level": 2,
+      "line_num": 202,
+      "content_preview": "Download rates"
+    },
+    {
+      "title": "HouseSambaJazz (b) p’s distribution",
+      "level": 2,
+      "line_num": 209,
+      "content_preview": "HouseSambaJazz (b) p’s distribution"
+    },
+    {
+      "title": "Download rates",
+      "level": 2,
+      "line_num": 210,
+      "content_preview": "Download rates"
+    },
+    {
+      "title": "R&B HouseSambaJazz (c) emd(q,p)",
+      "level": 2,
+      "line_num": 211,
+      "content_preview": "R&B HouseSambaJazz (c) emd(q,p)"
+    }
+  ],
+  "line_count": 1951
+}

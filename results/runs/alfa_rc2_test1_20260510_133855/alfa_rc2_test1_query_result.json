@@ -1,0 +1,101 @@
+{
+  "question": "Praktyki komunikacyjne Wprowadzenie",
+  "answer": "Na podstawie mapy sekcji najbardziej trafne obszary to: Praktyki\tkomunikacyjne, Praktyki komunikacyjne jako praktyki społeczne w ujęciu historycznym  97, Praktyki komunikacyjne jako praktyki społeczne w ujęciu historycznym  99. Odpowiedź powinna zostać rozwinięta z tych ścieżek dowodu.",
+  "evidence_paths": [
+    "alfa_rc2_test1.pdf > Praktyki\tkomunikacyjne",
+    "alfa_rc2_test1.pdf > Praktyki komunikacyjne jako praktyki społeczne w ujęciu historycznym  97",
+    "alfa_rc2_test1.pdf > Praktyki komunikacyjne jako praktyki społeczne w ujęciu historycznym  99",
+    "alfa_rc2_test1.pdf > Root",
+    "alfa_rc2_test1.pdf > Wprowadzenie"
+  ],
+  "matched_sections": [
+    {
+      "id": "sec_6180631",
+      "title": "Praktyki\tkomunikacyjne",
+      "level": 2,
+      "line_start": 2,
+      "line_end": null,
+      "hierarchy": [
+        "Praktyki\tkomunikacyjne"
+      ],
+      "evidence_path": "alfa_rc2_test1.pdf > Praktyki\tkomunikacyjne",
+      "score": 4,
+      "matched_terms": [
+        "komunikacyjn",
+        "praktyk"
+      ]
+    },
+    {
+      "id": "sec_7728412",
+      "title": "Praktyki komunikacyjne jako praktyki społeczne w ujęciu historycznym  97",
+      "level": 3,
+      "line_start": 62,
+      "line_end": null,
+      "hierarchy": [
+        "Praktyki komunikacyjne jako praktyki społeczne w ujęciu historycznym  97"
+      ],
+      "evidence_path": "alfa_rc2_test1.pdf > Praktyki komunikacyjne jako praktyki społeczne w ujęciu historycznym  97",
+      "score": 4,
+      "matched_terms": [
+        "komunikacyjn",
+        "praktyk"
+      ]
+    },
+    {
+      "id": "sec_7596740",
+      "title": "Praktyki komunikacyjne jako praktyki społeczne w ujęciu historycznym  99",
+      "level": 3,
+      "line_start": 128,
+      "line_end": null,
+      "hierarchy": [
+        "Praktyki komunikacyjne jako praktyki społeczne w ujęciu historycznym  99"
+      ],
+      "evidence_path": "alfa_rc2_test1.pdf > Praktyki komunikacyjne jako praktyki społeczne w ujęciu historycznym  99",
+      "score": 4,
+      "matched_terms": [
+        "komunikacyjn",
+        "praktyk"
+      ]
+    },
+    {
+      "id": "sec_8946243",
+      "title": "Root",
+      "level": 1,
+      "line_start": 1,
+      "line_end": null,
+      "hierarchy": [
+        "Root"
+      ],
+      "evidence_path": "alfa_rc2_test1.pdf > Root",
+      "score": 3,
+      "matched_terms": [
+        "komunikacyjn",
+        "praktyk",
+        "wprowadzen"
+      ]
+    },
+    {
+      "id": "sec_9683690",
+      "title": "Wprowadzenie",
+      "level": 2,
+      "line_start": 5,
+      "line_end": null,
+      "hierarchy": [
+        "Wprowadzenie"
+      ],
+      "evidence_path": "alfa_rc2_test1.pdf > Wprowadzenie",
+      "score": 2,
+      "matched_terms": [
+        "wprowadzen"
+      ]
+    }
+  ],
+  "confidence": 1.0,
+  "missing_context": [],
+  "strict": {
+    "enabled": true,
+    "passed": true,
+    "min_confidence": 0.6,
+    "min_evidence_paths": 2
+  }
+}

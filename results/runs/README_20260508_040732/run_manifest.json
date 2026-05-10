@@ -1,0 +1,11 @@
+{
+  "run_id": "README_20260508_040732",
+  "document_id": "README",
+  "source_path": ".\\README.md",
+  "question": "PageIndex core features and deployment options",
+  "structure_path": "results/runs/README_20260508_040732/README_structure.json",
+  "section_map_path": "results/runs/README_20260508_040732/README_alfa_section_map.json",
+  "query_result_path": "results/runs/README_20260508_040732/README_query_result.json",
+  "exit_code": 0,
+  "strict_passed": true
+}

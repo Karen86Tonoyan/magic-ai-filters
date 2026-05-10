@@ -1,0 +1,132 @@
+{
+  "structure": [
+    {
+      "title": "Root",
+      "level": 1,
+      "line_num": 1,
+      "content_preview": "",
+      "fallback_reason": "pdf_local_offline_extraction"
+    },
+    {
+      "title": "Information Science and Statistics",
+      "level": 2,
+      "line_num": 1,
+      "content_preview": "Information Science and Statistics"
+    },
+    {
+      "title": "Series Editors:",
+      "level": 2,
+      "line_num": 2,
+      "content_preview": "Series Editors:"
+    },
+    {
+      "title": "M. Jordan",
+      "level": 2,
+      "line_num": 3,
+      "content_preview": "M. Jordan"
+    },
+    {
+      "title": "J. Kleinberg",
+      "level": 2,
+      "line_num": 4,
+      "content_preview": "J. Kleinberg"
+    },
+    {
+      "title": "B. Scho¨lkopf",
+      "level": 2,
+      "line_num": 5,
+      "content_preview": "B. Scho¨lkopf"
+    },
+    {
+      "title": "Information Science and Statistics",
+      "level": 2,
+      "line_num": 6,
+      "content_preview": "Information Science and Statistics"
+    },
+    {
+      "title": "Cowell, Dawid, Lauritzen, and Spiegelhalter: Probabilistic Networks and",
+      "level": 3,
+      "line_num": 9,
+      "content_preview": "Cowell, Dawid, Lauritzen, and Spiegelhalter: Probabilistic Networks and"
+    },
+    {
+      "title": "Marchette: Computer Intrusion Detection and Network Monitoring:",
+      "level": 3,
+      "line_num": 15,
+      "content_preview": "Marchette: Computer Intrusion Detection and Network Monitoring:"
+    },
+    {
+      "title": "Rubinstein and Kroese: The Cross-Entropy Method:  A Unified Approach to",
+      "level": 3,
+      "line_num": 17,
+      "content_preview": "Rubinstein and Kroese: The Cross-Entropy Method:  A Unified Approach to"
+    },
+    {
+      "title": "Christopher M. Bishop",
+      "level": 2,
+      "line_num": 22,
+      "content_preview": "Christopher M. Bishop"
+    },
+    {
+      "title": "Pattern Recognition and",
+      "level": 2,
+      "line_num": 23,
+      "content_preview": "Pattern Recognition and"
+    },
+    {
+      "title": "Machine Learning",
+      "level": 2,
+      "line_num": 24,
+      "content_preview": "Machine Learning"
+    },
+    {
+      "title": "Assistant Director",
+      "level": 2,
+      "line_num": 26,
+      "content_preview": "Assistant Director"
+    },
+    {
+      "title": "Microsoft Research Ltd",
+      "level": 2,
+      "line_num": 27,
+      "content_preview": "Microsoft Research Ltd"
+    },
+    {
+      "title": "Series Editors",
+      "level": 2,
+      "line_num": 31,
+      "content_preview": "Series Editors"
+    },
+    {
+      "title": "Michael Jordan",
+      "level": 2,
+      "line_num": 32,
+      "content_preview": "Michael Jordan"
+    },
+    {
+      "title": "Department of Computer",
+      "level": 2,
+      "line_num": 33,
+      "content_preview": "Department of Computer"
+    },
+    {
+      "title": "Science and Department",
+      "level": 2,
+      "line_num": 34,
+      "content_preview": "Science and Department"
+    },
+    {
+      "title": "University of California,",
+      "level": 2,
+      "line_num": 36,
+      "content_preview": "University of California,"
+    },
+    {
+      "title": "Berkeley",
+      "level": 2,
+      "line_num": 37,
+      "content_preview": "Berkeley"
+    }
+  ],
+  "line_count": 36618
+}

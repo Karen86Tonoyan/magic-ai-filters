@@ -1,0 +1,95 @@
+{
+  "question": "What are the main topics and key findings?",
+  "answer": "Na podstawie mapy sekcji najbardziej trafne obszary to: Root, ABSTRACT, INTRODUCTION. Odpowiedź powinna zostać rozwinięta z tych ścieżek dowodu.",
+  "evidence_paths": [
+    "examples\\documents\\earthmover.pdf > Root",
+    "examples\\documents\\earthmover.pdf > ABSTRACT",
+    "examples\\documents\\earthmover.pdf > INTRODUCTION",
+    "examples\\documents\\earthmover.pdf > 7. CONCLUSION"
+  ],
+  "matched_sections": [
+    {
+      "id": "sec_3716890",
+      "title": "Root",
+      "level": 1,
+      "line_start": 1,
+      "line_end": null,
+      "hierarchy": [
+        "Root"
+      ],
+      "evidence_path": "examples\\documents\\earthmover.pdf > Root",
+      "score": 2,
+      "matched_terms": [
+        "abstract",
+        "introduction"
+      ]
+    },
+    {
+      "id": "sec_0159549",
+      "title": "ABSTRACT",
+      "level": 4,
+      "line_start": 7,
+      "line_end": null,
+      "hierarchy": [
+        "ABSTRACT"
+      ],
+      "evidence_path": "examples\\documents\\earthmover.pdf > ABSTRACT",
+      "score": 2,
+      "matched_terms": [
+        "abstract"
+      ]
+    },
+    {
+      "id": "sec_3970504",
+      "title": "INTRODUCTION",
+      "level": 4,
+      "line_start": 30,
+      "line_end": null,
+      "hierarchy": [
+        "INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\earthmover.pdf > INTRODUCTION",
+      "score": 2,
+      "matched_terms": [
+        "introduction"
+      ]
+    },
+    {
+      "id": "sec_9235545",
+      "title": "7. CONCLUSION",
+      "level": 4,
+      "line_start": 1449,
+      "line_end": null,
+      "hierarchy": [
+        "7. CONCLUSION"
+      ],
+      "evidence_path": "examples\\documents\\earthmover.pdf > 7. CONCLUSION",
+      "score": 2,
+      "matched_terms": [
+        "conclusion"
+      ]
+    }
+  ],
+  "confidence": 0.25,
+  "missing_context": [
+    "discussion",
+    "finding",
+    "highlights",
+    "key",
+    "main",
+    "overview",
+    "results",
+    "summary",
+    "topic"
+  ],
+  "strict": {
+    "enabled": true,
+    "passed": false,
+    "min_confidence": 0.6,
+    "min_evidence_paths": 2
+  },
+  "rejected_by_strict_gate": true,
+  "strict_rejection_reasons": [
+    "confidence_below_threshold"
+  ]
+}

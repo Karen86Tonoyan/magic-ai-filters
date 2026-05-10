@@ -1,0 +1,15 @@
+{
+  "run_id": "alfa_rc2_test1_20260510_140520",
+  "document_id": "alfa_rc2_test1",
+  "source_path": ".\\alfa_rc2_test1.pdf",
+  "question": "What are the main findings and topic of the document?",
+  "structure_mode": "normal",
+  "structure_path": "results/runs/alfa_rc2_test1_20260510_140520/alfa_rc2_test1_structure.json",
+  "section_map_path": "results/runs/alfa_rc2_test1_20260510_140520/alfa_rc2_test1_alfa_section_map.json",
+  "query_result_path": "results/runs/alfa_rc2_test1_20260510_140520/alfa_rc2_test1_query_result.json",
+  "exit_code": 2,
+  "strict_passed": false,
+  "confidence": 0.0,
+  "evidence_paths": [],
+  "section_count": 21
+}

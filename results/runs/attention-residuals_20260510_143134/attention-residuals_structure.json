@@ -1,0 +1,192 @@
+{
+  "structure": [
+    {
+      "title": "Root",
+      "level": 1,
+      "line_num": 1,
+      "content_preview": "ATTENTIONRESIDUALS\nTECHNICALREPORT OFATTENTIONRESIDUALS\nKimi Team\n/gtbhttps://github.com/MoonshotAI/Attention-Residuals\nABSTRACT\nResidual connections [12] with PreNorm [60] are standard in modern LLMs, yet they accumulate\nall layer outputs with fixed unit weights. This uniform aggregation causes uncontrolled hidden-state\ngrowth with depth, progressively diluting each layer’s contribution [27]. We proposeAttention\nResiduals (AttnRes), which replaces this fixed accumulation with softmax attention over preceding\nlayer outputs, allowing each layer to selectively aggregate earlier representations with learned, input-\ndependent weights. To address the memory and communication overhead of attending over all\npreceding layer outputs for large-scale model training, we introduceBlock AttnRes, which partitions\nlayers into blocks and attends over block-level representations, reducing the memory footprint while\npreserving most of the gains of full AttnRes. Combined with cache-based pipeline communication\nand a two-phase computation strategy, Block AttnRes becomes a practical drop-in replacement for\nstandard residual connections with minimal overhead.\nScaling law experiments confirm that the improvement is consistent across model sizes, and ablations\nvalidate the benefit of content-dependent depth-wise selection. We further integrate AttnRes into\nthe Kimi Linear architecture [69] (48B total / 3B activated parameters) and pre-train on 1.4T tokens,\nwhere AttnRes mitigates PreNorm dilution, yielding more uniform output magnitudes and gradient\ndistribution across depth, and improves downstream performance across all evaluated tasks.\nEmbedding\n...\nAttention\nMoE\nAttention\nMoE\nOutput\n(a) Standard Residuals\nEmbedding\n...\nα\nAttention\nα\nMoE\nα\nAttention\nα\nMoE\nw\nw\nw\nw\nOutput\nαw\nα\nα\nα\nα\nα\n(b) Full Attention Residuals\nEmbedding\n···\nBlockn-2\nBlockn-1\nAttention\nMoE\nAttention\nMoE\nOutput\nα\nα\nα\nα\nα\nα\nα\nα\nα\nα\nw\nw\nw\nw\nw\nAttnRes Op(α)\nw\nQ\nK V\n(c) Block Attention Residuals\nFigure 1: Overview of Attention Residuals.(a)Standard Residuals: standard residual connections with uniform additive accumulation.\n(b)Full AttnRes: each layer selectively aggregates all previous layer outputs via learned attention weights.(c)Block AttnRes: layers\nare grouped into blocks, reducing memory fromO(Ld)toO(Nd).\narXiv:2603.15031v1  [cs.CL]  16 Mar 2026",
+      "fallback_reason": "pdf_pdfminer_offline_extraction"
+    },
+    {
+      "title": "ATTENTIONRESIDUALS",
+      "level": 2,
+      "line_num": 1,
+      "content_preview": "ATTENTIONRESIDUALS"
+    },
+    {
+      "title": "TECHNICALREPORT OFATTENTIONRESIDUALS",
+      "level": 2,
+      "line_num": 2,
+      "content_preview": "TECHNICALREPORT OFATTENTIONRESIDUALS"
+    },
+    {
+      "title": "Kimi Team",
+      "level": 2,
+      "line_num": 3,
+      "content_preview": "Kimi Team"
+    },
+    {
+      "title": "ABSTRACT",
+      "level": 2,
+      "line_num": 5,
+      "content_preview": "ABSTRACT"
+    },
+    {
+      "title": "Embedding",
+      "level": 2,
+      "line_num": 22,
+      "content_preview": "Embedding"
+    },
+    {
+      "title": "Attention",
+      "level": 2,
+      "line_num": 24,
+      "content_preview": "Attention"
+    },
+    {
+      "title": "Attention",
+      "level": 2,
+      "line_num": 26,
+      "content_preview": "Attention"
+    },
+    {
+      "title": "Output",
+      "level": 2,
+      "line_num": 28,
+      "content_preview": "Output"
+    },
+    {
+      "title": "Embedding",
+      "level": 2,
+      "line_num": 30,
+      "content_preview": "Embedding"
+    },
+    {
+      "title": "Attention",
+      "level": 2,
+      "line_num": 33,
+      "content_preview": "Attention"
+    },
+    {
+      "title": "Attention",
+      "level": 2,
+      "line_num": 37,
+      "content_preview": "Attention"
+    },
+    {
+      "title": "Output",
+      "level": 2,
+      "line_num": 44,
+      "content_preview": "Output"
+    },
+    {
+      "title": "Embedding",
+      "level": 2,
+      "line_num": 52,
+      "content_preview": "Embedding"
+    },
+    {
+      "title": "Blockn-2",
+      "level": 2,
+      "line_num": 54,
+      "content_preview": "Blockn-2"
+    },
+    {
+      "title": "Blockn-1",
+      "level": 2,
+      "line_num": 55,
+      "content_preview": "Blockn-1"
+    },
+    {
+      "title": "Attention",
+      "level": 2,
+      "line_num": 56,
+      "content_preview": "Attention"
+    },
+    {
+      "title": "Attention",
+      "level": 2,
+      "line_num": 58,
+      "content_preview": "Attention"
+    },
+    {
+      "title": "Output",
+      "level": 2,
+      "line_num": 60,
+      "content_preview": "Output"
+    },
+    {
+      "title": "AttnRes Op(α)",
+      "level": 2,
+      "line_num": 76,
+      "content_preview": "AttnRes Op(α)"
+    },
+    {
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_num": 85,
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "title": "Contributions",
+      "level": 2,
+      "line_num": 124,
+      "content_preview": "Contributions"
+    },
+    {
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_num": 139,
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "title": "L−1Y",
+      "level": 2,
+      "line_num": 160,
+      "content_preview": "L−1Y"
+    },
+    {
+      "title": "I+ ∂fj",
+      "level": 2,
+      "line_num": 163,
+      "content_preview": "I+ ∂fj"
+    },
+    {
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_num": 198,
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "title": "Pl−1",
+      "level": 2,
+      "line_num": 208,
+      "content_preview": "Pl−1"
+    },
+    {
+      "title": "For each layerl, we define:",
+      "level": 2,
+      "line_num": 211,
+      "content_preview": "For each layerl, we define:"
+    },
+    {
+      "title": "We further denote bi",
+      "level": 2,
+      "line_num": 250,
+      "content_preview": "We further denote bi"
+    },
+    {
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_num": 256,
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_num": 324,
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    }
+  ],
+  "line_count": 1306
+}

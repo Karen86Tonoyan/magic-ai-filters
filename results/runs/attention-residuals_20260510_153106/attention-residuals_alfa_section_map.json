@@ -1,0 +1,2419 @@
+{
+  "document_id": "attention-residuals",
+  "source_path": "examples\\documents\\attention-residuals.pdf",
+  "section_count": 201,
+  "sections": [
+    {
+      "id": "sec_9337757",
+      "title": "Root",
+      "level": 1,
+      "line_start": 1,
+      "line_end": null,
+      "hierarchy": [
+        "Root"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Root",
+      "content_preview": "ATTENTIONRESIDUALS\nTECHNICALREPORT OFATTENTIONRESIDUALS\nKimi Team\n/gtbhttps://github.com/MoonshotAI/Attention-Residuals\nABSTRACT\nResidual connections [12] with PreNorm [60] are standard in modern LLMs, yet they accumulate\nall layer outputs with fixed unit weights. This uniform aggregation causes uncontrolled hidden-state\ngrowth with depth, progressively diluting each layer’s contribution [27]. We proposeAttention\nResiduals (AttnRes), which replaces this fixed accumulation with softmax attention over preceding\nlayer outputs, allowing each layer to selectively aggregate earlier representations with learned, input-\ndependent weights. To address the memory and communication overhead of attending over all\npreceding layer outputs for large-scale model training, we introduceBlock AttnRes, which partitions\nlayers into blocks and attends over block-level representations, reducing the memory footprint while\npreserving most of the gains of full AttnRes. Combined with cache-based pipeline communication\nand a two-phase computation strategy, Block AttnRes becomes a practical drop-in replacement for\nstandard residual connections with minimal overhead.\nScaling law experiments confirm that the improvement is consistent across model sizes, and ablations\nvalidate the benefit of content-dependent depth-wise selection. We further integrate AttnRes into\nthe Kimi Linear architecture [69] (48B total / 3B activated parameters) and pre-train on 1.4T tokens,\nwhere AttnRes mitigates PreNorm dilution, yielding more uniform output magnitudes and gradient\ndistribution across depth, and improves downstream performance across all evaluated tasks.\nEmbedding\n...\nAttention\nMoE\nAttention\nMoE\nOutput\n(a) Standard Residuals\nEmbedding\n...\nα\nAttention\nα\nMoE\nα\nAttention\nα\nMoE\nw\nw\nw\nw\nOutput\nαw\nα\nα\nα\nα\nα\n(b) Full Attention Residuals\nEmbedding\n···\nBlockn-2\nBlockn-1\nAttention\nMoE\nAttention\nMoE\nOutput\nα\nα\nα\nα\nα\nα\nα\nα\nα\nα\nw\nw\nw\nw\nw\nAttnRes Op(α)\nw\nQ\nK V\n(c) Block Attention Residuals\nFigure 1: Overview of Attention Residuals.(a)Standard Residuals: standard residual connections with uniform additive accumulation.\n(b)Full AttnRes: each layer selectively aggregates all previous layer outputs via learned attention weights.(c)Block AttnRes: layers\nare grouped into blocks, reducing memory fromO(Ld)toO(Nd).\narXiv:2603.15031v1  [cs.CL]  16 Mar 2026"
+    },
+    {
+      "id": "sec_8004289",
+      "title": "ATTENTIONRESIDUALS",
+      "level": 2,
+      "line_start": 1,
+      "line_end": null,
+      "hierarchy": [
+        "ATTENTIONRESIDUALS"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > ATTENTIONRESIDUALS",
+      "content_preview": "ATTENTIONRESIDUALS"
+    },
+    {
+      "id": "sec_1926559",
+      "title": "TECHNICALREPORT OFATTENTIONRESIDUALS",
+      "level": 2,
+      "line_start": 2,
+      "line_end": null,
+      "hierarchy": [
+        "TECHNICALREPORT OFATTENTIONRESIDUALS"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > TECHNICALREPORT OFATTENTIONRESIDUALS",
+      "content_preview": "TECHNICALREPORT OFATTENTIONRESIDUALS"
+    },
+    {
+      "id": "sec_8852653",
+      "title": "Kimi Team",
+      "level": 2,
+      "line_start": 3,
+      "line_end": null,
+      "hierarchy": [
+        "Kimi Team"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Kimi Team",
+      "content_preview": "Kimi Team"
+    },
+    {
+      "id": "sec_7365307",
+      "title": "ABSTRACT",
+      "level": 2,
+      "line_start": 5,
+      "line_end": null,
+      "hierarchy": [
+        "ABSTRACT"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > ABSTRACT",
+      "content_preview": "ABSTRACT"
+    },
+    {
+      "id": "sec_1208311",
+      "title": "Embedding",
+      "level": 2,
+      "line_start": 22,
+      "line_end": null,
+      "hierarchy": [
+        "Embedding"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Embedding",
+      "content_preview": "Embedding"
+    },
+    {
+      "id": "sec_4054259",
+      "title": "Attention",
+      "level": 2,
+      "line_start": 24,
+      "line_end": null,
+      "hierarchy": [
+        "Attention"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention",
+      "content_preview": "Attention"
+    },
+    {
+      "id": "sec_4054259",
+      "title": "Attention",
+      "level": 2,
+      "line_start": 26,
+      "line_end": null,
+      "hierarchy": [
+        "Attention"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention",
+      "content_preview": "Attention"
+    },
+    {
+      "id": "sec_8361750",
+      "title": "Output",
+      "level": 2,
+      "line_start": 28,
+      "line_end": null,
+      "hierarchy": [
+        "Output"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Output",
+      "content_preview": "Output"
+    },
+    {
+      "id": "sec_1208311",
+      "title": "Embedding",
+      "level": 2,
+      "line_start": 30,
+      "line_end": null,
+      "hierarchy": [
+        "Embedding"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Embedding",
+      "content_preview": "Embedding"
+    },
+    {
+      "id": "sec_4054259",
+      "title": "Attention",
+      "level": 2,
+      "line_start": 33,
+      "line_end": null,
+      "hierarchy": [
+        "Attention"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention",
+      "content_preview": "Attention"
+    },
+    {
+      "id": "sec_4054259",
+      "title": "Attention",
+      "level": 2,
+      "line_start": 37,
+      "line_end": null,
+      "hierarchy": [
+        "Attention"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention",
+      "content_preview": "Attention"
+    },
+    {
+      "id": "sec_8361750",
+      "title": "Output",
+      "level": 2,
+      "line_start": 44,
+      "line_end": null,
+      "hierarchy": [
+        "Output"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Output",
+      "content_preview": "Output"
+    },
+    {
+      "id": "sec_1208311",
+      "title": "Embedding",
+      "level": 2,
+      "line_start": 52,
+      "line_end": null,
+      "hierarchy": [
+        "Embedding"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Embedding",
+      "content_preview": "Embedding"
+    },
+    {
+      "id": "sec_0952534",
+      "title": "Blockn-2",
+      "level": 2,
+      "line_start": 54,
+      "line_end": null,
+      "hierarchy": [
+        "Blockn-2"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Blockn-2",
+      "content_preview": "Blockn-2"
+    },
+    {
+      "id": "sec_1704004",
+      "title": "Blockn-1",
+      "level": 2,
+      "line_start": 55,
+      "line_end": null,
+      "hierarchy": [
+        "Blockn-1"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Blockn-1",
+      "content_preview": "Blockn-1"
+    },
+    {
+      "id": "sec_4054259",
+      "title": "Attention",
+      "level": 2,
+      "line_start": 56,
+      "line_end": null,
+      "hierarchy": [
+        "Attention"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention",
+      "content_preview": "Attention"
+    },
+    {
+      "id": "sec_4054259",
+      "title": "Attention",
+      "level": 2,
+      "line_start": 58,
+      "line_end": null,
+      "hierarchy": [
+        "Attention"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention",
+      "content_preview": "Attention"
+    },
+    {
+      "id": "sec_8361750",
+      "title": "Output",
+      "level": 2,
+      "line_start": 60,
+      "line_end": null,
+      "hierarchy": [
+        "Output"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Output",
+      "content_preview": "Output"
+    },
+    {
+      "id": "sec_2264206",
+      "title": "AttnRes Op(α)",
+      "level": 2,
+      "line_start": 76,
+      "line_end": null,
+      "hierarchy": [
+        "AttnRes Op(α)"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > AttnRes Op(α)",
+      "content_preview": "AttnRes Op(α)"
+    },
+    {
+      "id": "sec_8716907",
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_start": 85,
+      "line_end": null,
+      "hierarchy": [
+        "Attention ResidualsTECHNICALREPORT"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention ResidualsTECHNICALREPORT",
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "id": "sec_2811857",
+      "title": "Contributions",
+      "level": 2,
+      "line_start": 124,
+      "line_end": null,
+      "hierarchy": [
+        "Contributions"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Contributions",
+      "content_preview": "Contributions"
+    },
+    {
+      "id": "sec_8716907",
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_start": 139,
+      "line_end": null,
+      "hierarchy": [
+        "Attention ResidualsTECHNICALREPORT"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention ResidualsTECHNICALREPORT",
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "id": "sec_0427735",
+      "title": "L−1Y",
+      "level": 2,
+      "line_start": 160,
+      "line_end": null,
+      "hierarchy": [
+        "L−1Y"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > L−1Y",
+      "content_preview": "L−1Y"
+    },
+    {
+      "id": "sec_7642145",
+      "title": "I+ ∂fj",
+      "level": 2,
+      "line_start": 163,
+      "line_end": null,
+      "hierarchy": [
+        "I+ ∂fj"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > I+ ∂fj",
+      "content_preview": "I+ ∂fj"
+    },
+    {
+      "id": "sec_8716907",
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_start": 198,
+      "line_end": null,
+      "hierarchy": [
+        "Attention ResidualsTECHNICALREPORT"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention ResidualsTECHNICALREPORT",
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "id": "sec_0983597",
+      "title": "Pl−1",
+      "level": 2,
+      "line_start": 208,
+      "line_end": null,
+      "hierarchy": [
+        "Pl−1"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Pl−1",
+      "content_preview": "Pl−1"
+    },
+    {
+      "id": "sec_9774344",
+      "title": "For each layerl, we define:",
+      "level": 2,
+      "line_start": 211,
+      "line_end": null,
+      "hierarchy": [
+        "For each layerl, we define:"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > For each layerl, we define:",
+      "content_preview": "For each layerl, we define:"
+    },
+    {
+      "id": "sec_3374752",
+      "title": "We further denote bi",
+      "level": 2,
+      "line_start": 250,
+      "line_end": null,
+      "hierarchy": [
+        "We further denote bi"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > We further denote bi",
+      "content_preview": "We further denote bi"
+    },
+    {
+      "id": "sec_8716907",
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_start": 256,
+      "line_end": null,
+      "hierarchy": [
+        "Attention ResidualsTECHNICALREPORT"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention ResidualsTECHNICALREPORT",
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "id": "sec_8716907",
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_start": 324,
+      "line_end": null,
+      "hierarchy": [
+        "Attention ResidualsTECHNICALREPORT"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention ResidualsTECHNICALREPORT",
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "id": "sec_4845635",
+      "title": "RANK0",
+      "level": 2,
+      "line_start": 325,
+      "line_end": null,
+      "hierarchy": [
+        "RANK0"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > RANK0",
+      "content_preview": "RANK0"
+    },
+    {
+      "id": "sec_4278089",
+      "title": "RANK1",
+      "level": 2,
+      "line_start": 326,
+      "line_end": null,
+      "hierarchy": [
+        "RANK1"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > RANK1",
+      "content_preview": "RANK1"
+    },
+    {
+      "id": "sec_9321961",
+      "title": "RANK2",
+      "level": 2,
+      "line_start": 327,
+      "line_end": null,
+      "hierarchy": [
+        "RANK2"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > RANK2",
+      "content_preview": "RANK2"
+    },
+    {
+      "id": "sec_6596732",
+      "title": "RANK3",
+      "level": 2,
+      "line_start": 328,
+      "line_end": null,
+      "hierarchy": [
+        "RANK3"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > RANK3",
+      "content_preview": "RANK3"
+    },
+    {
+      "id": "sec_6619646",
+      "title": "VIRTUALSTAGE0 VIRTUALSTAGE1",
+      "level": 2,
+      "line_start": 337,
+      "line_end": null,
+      "hierarchy": [
+        "VIRTUALSTAGE0 VIRTUALSTAGE1"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > VIRTUALSTAGE0 VIRTUALSTAGE1",
+      "content_preview": "VIRTUALSTAGE0 VIRTUALSTAGE1"
+    },
+    {
+      "id": "sec_7475034",
+      "title": "Commnaïve =",
+      "level": 2,
+      "line_start": 367,
+      "line_end": null,
+      "hierarchy": [
+        "Commnaïve ="
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Commnaïve =",
+      "content_preview": "Commnaïve ="
+    },
+    {
+      "id": "sec_6309041",
+      "title": "C−1X",
+      "level": 2,
+      "line_start": 368,
+      "line_end": null,
+      "hierarchy": [
+        "C−1X"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > C−1X",
+      "content_preview": "C−1X"
+    },
+    {
+      "id": "sec_6447486",
+      "title": "Commcached = P(P−1)",
+      "level": 2,
+      "line_start": 377,
+      "line_end": null,
+      "hierarchy": [
+        "Commcached = P(P−1)"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Commcached = P(P−1)",
+      "content_preview": "Commcached = P(P−1)"
+    },
+    {
+      "id": "sec_8716907",
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_start": 390,
+      "line_end": null,
+      "hierarchy": [
+        "Attention ResidualsTECHNICALREPORT"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention ResidualsTECHNICALREPORT",
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "id": "sec_0757858",
+      "title": "Algorithm 1:Two-phase computation for blockn",
+      "level": 3,
+      "line_start": 391,
+      "line_end": null,
+      "hierarchy": [
+        "Algorithm 1:Two-phase computation for blockn"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Algorithm 1:Two-phase computation for blockn",
+      "content_preview": "Algorithm 1:Two-phase computation for blockn"
+    },
+    {
+      "id": "sec_7362564",
+      "title": "Input:Pseudo queries{w l}l∈Bn, block representations{b 0, . . . ,bn−1}",
+      "level": 3,
+      "line_start": 392,
+      "line_end": null,
+      "hierarchy": [
+        "Input:Pseudo queries{w l}l∈Bn, block representations{b 0, . . . ,bn−1}"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Input:Pseudo queries{w l}l∈Bn, block representations{b 0, . . . ,bn−1}",
+      "content_preview": "Input:Pseudo queries{w l}l∈Bn, block representations{b 0, . . . ,bn−1}"
+    },
+    {
+      "id": "sec_8716907",
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_start": 463,
+      "line_end": null,
+      "hierarchy": [
+        "Attention ResidualsTECHNICALREPORT"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention ResidualsTECHNICALREPORT",
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "id": "sec_0457723",
+      "title": "S + 3)dreads and 2d",
+      "level": 2,
+      "line_start": 465,
+      "line_end": null,
+      "hierarchy": [
+        "S + 3)dreads and 2d"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > S + 3)dreads and 2d",
+      "content_preview": "S + 3)dreads and 2d"
+    },
+    {
+      "id": "sec_1096490",
+      "title": "Operation Read Write Total I/O",
+      "level": 2,
+      "line_start": 473,
+      "line_end": null,
+      "hierarchy": [
+        "Operation Read Write Total I/O"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Operation Read Write Total I/O",
+      "content_preview": "Operation Read Write Total I/O"
+    },
+    {
+      "id": "sec_7655220",
+      "title": "Symbolic Typical",
+      "level": 2,
+      "line_start": 474,
+      "line_end": null,
+      "hierarchy": [
+        "Symbolic Typical"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Symbolic Typical",
+      "content_preview": "Symbolic Typical"
+    },
+    {
+      "id": "sec_6236839",
+      "title": "Standard Residuals Residual Merge2d d3d3d",
+      "level": 3,
+      "line_start": 475,
+      "line_end": null,
+      "hierarchy": [
+        "Standard Residuals Residual Merge2d d3d3d"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Standard Residuals Residual Merge2d d3d3d",
+      "content_preview": "Standard Residuals Residual Merge2d d3d3d"
+    },
+    {
+      "id": "sec_5428666",
+      "title": "Computeα l,β l,A l md m 2+2m",
+      "level": 2,
+      "line_start": 477,
+      "line_end": null,
+      "hierarchy": [
+        "Computeα l,β l,A l md m 2+2m"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Computeα l,β l,A l md m 2+2m",
+      "content_preview": "Computeα l,β l,A l md m 2+2m"
+    },
+    {
+      "id": "sec_6224356",
+      "title": "Applyα l md+m d",
+      "level": 2,
+      "line_start": 479,
+      "line_end": null,
+      "hierarchy": [
+        "Applyα l md+m d"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Applyα l md+m d",
+      "content_preview": "Applyα l md+m d"
+    },
+    {
+      "id": "sec_3418400",
+      "title": "Applyβ l d+m md",
+      "level": 2,
+      "line_start": 480,
+      "line_end": null,
+      "hierarchy": [
+        "Applyβ l d+m md"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Applyβ l d+m md",
+      "content_preview": "Applyβ l d+m md"
+    },
+    {
+      "id": "sec_8303801",
+      "title": "ApplyA l md+m2 md",
+      "level": 2,
+      "line_start": 481,
+      "line_end": null,
+      "hierarchy": [
+        "ApplyA l md+m2 md"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > ApplyA l md+m2 md",
+      "content_preview": "ApplyA l md+m2 md"
+    },
+    {
+      "id": "sec_4771163",
+      "title": "Residual Merge2md md",
+      "level": 2,
+      "line_start": 482,
+      "line_end": null,
+      "hierarchy": [
+        "Residual Merge2md md"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Residual Merge2md md",
+      "content_preview": "Residual Merge2md md"
+    },
+    {
+      "id": "sec_0291975",
+      "title": "AttnRes",
+      "level": 2,
+      "line_start": 483,
+      "line_end": null,
+      "hierarchy": [
+        "AttnRes"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > AttnRes",
+      "content_preview": "AttnRes"
+    },
+    {
+      "id": "sec_9012768",
+      "title": "Full Phase 1 (amortized)(N−1)d d (S+N)d24dPhase 2(S−1)d d",
+      "level": 3,
+      "line_start": 484,
+      "line_end": null,
+      "hierarchy": [
+        "Full Phase 1 (amortized)(N−1)d d (S+N)d24dPhase 2(S−1)d d"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Full Phase 1 (amortized)(N−1)d d (S+N)d24dPhase 2(S−1)d d",
+      "content_preview": "Full Phase 1 (amortized)(N−1)d d (S+N)d24dPhase 2(S−1)d d"
+    },
+    {
+      "id": "sec_4242291",
+      "title": "Block Phase 1 (amortized) N",
+      "level": 2,
+      "line_start": 485,
+      "line_end": null,
+      "hierarchy": [
+        "Block Phase 1 (amortized) N"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Block Phase 1 (amortized) N",
+      "content_preview": "Block Phase 1 (amortized) N"
+    },
+    {
+      "id": "sec_8147302",
+      "title": "S d d \u0000N",
+      "level": 2,
+      "line_start": 486,
+      "line_end": null,
+      "hierarchy": [
+        "S d d \u0000N"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > S d d \u0000N",
+      "content_preview": "S d d \u0000N"
+    },
+    {
+      "id": "sec_4536302",
+      "title": "S +5",
+      "level": 2,
+      "line_start": 487,
+      "line_end": null,
+      "hierarchy": [
+        "S +5"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > S +5",
+      "content_preview": "S +5"
+    },
+    {
+      "id": "sec_8716907",
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_start": 518,
+      "line_end": null,
+      "hierarchy": [
+        "Attention ResidualsTECHNICALREPORT"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention ResidualsTECHNICALREPORT",
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "id": "sec_6829525",
+      "title": "Params† TokensL b H d model dff lr batch size‡ Val. Loss",
+      "level": 3,
+      "line_start": 522,
+      "line_end": null,
+      "hierarchy": [
+        "Params† TokensL b H d model dff lr batch size‡ Val. Loss"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Params† TokensL b H d model dff lr batch size‡ Val. Loss",
+      "content_preview": "Params† TokensL b H d model dff lr batch size‡ Val. Loss"
+    },
+    {
+      "id": "sec_2906434",
+      "title": "Baseline Block AttnRes Full AttnRes mHC(-lite)",
+      "level": 3,
+      "line_start": 523,
+      "line_end": null,
+      "hierarchy": [
+        "Baseline Block AttnRes Full AttnRes mHC(-lite)"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Baseline Block AttnRes Full AttnRes mHC(-lite)",
+      "content_preview": "Baseline Block AttnRes Full AttnRes mHC(-lite)"
+    },
+    {
+      "id": "sec_9987739",
+      "title": "PFLOP/s-days",
+      "level": 2,
+      "line_start": 537,
+      "line_end": null,
+      "hierarchy": [
+        "PFLOP/s-days"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > PFLOP/s-days",
+      "content_preview": "PFLOP/s-days"
+    },
+    {
+      "id": "sec_8227767",
+      "title": "Loss",
+      "level": 2,
+      "line_start": 538,
+      "line_end": null,
+      "hierarchy": [
+        "Loss"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Loss",
+      "content_preview": "Loss"
+    },
+    {
+      "id": "sec_4036798",
+      "title": "Baseline:1.891×C −0.057",
+      "level": 2,
+      "line_start": 539,
+      "line_end": null,
+      "hierarchy": [
+        "Baseline:1.891×C −0.057"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Baseline:1.891×C −0.057",
+      "content_preview": "Baseline:1.891×C −0.057"
+    },
+    {
+      "id": "sec_5824543",
+      "title": "Full AttnRes:1.865×C −0.057",
+      "level": 2,
+      "line_start": 540,
+      "line_end": null,
+      "hierarchy": [
+        "Full AttnRes:1.865×C −0.057"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Full AttnRes:1.865×C −0.057",
+      "content_preview": "Full AttnRes:1.865×C −0.057"
+    },
+    {
+      "id": "sec_8178423",
+      "title": "Block AttnRes:1.870×C −0.058",
+      "level": 2,
+      "line_start": 541,
+      "line_end": null,
+      "hierarchy": [
+        "Block AttnRes:1.870×C −0.058"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Block AttnRes:1.870×C −0.058",
+      "content_preview": "Block AttnRes:1.870×C −0.058"
+    },
+    {
+      "id": "sec_8716907",
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_start": 562,
+      "line_end": null,
+      "hierarchy": [
+        "Attention ResidualsTECHNICALREPORT"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention ResidualsTECHNICALREPORT",
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "id": "sec_0879796",
+      "title": "Step",
+      "level": 2,
+      "line_start": 568,
+      "line_end": null,
+      "hierarchy": [
+        "Step"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Step",
+      "content_preview": "Step"
+    },
+    {
+      "id": "sec_5799802",
+      "title": "Baseline",
+      "level": 2,
+      "line_start": 570,
+      "line_end": null,
+      "hierarchy": [
+        "Baseline"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Baseline",
+      "content_preview": "Baseline"
+    },
+    {
+      "id": "sec_8055225",
+      "title": "Block AttnRes",
+      "level": 2,
+      "line_start": 571,
+      "line_end": null,
+      "hierarchy": [
+        "Block AttnRes"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Block AttnRes",
+      "content_preview": "Block AttnRes"
+    },
+    {
+      "id": "sec_2537237",
+      "title": "Transformer Block Index",
+      "level": 2,
+      "line_start": 576,
+      "line_end": null,
+      "hierarchy": [
+        "Transformer Block Index"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Transformer Block Index",
+      "content_preview": "Transformer Block Index"
+    },
+    {
+      "id": "sec_2537237",
+      "title": "Transformer Block Index",
+      "level": 2,
+      "line_start": 582,
+      "line_end": null,
+      "hierarchy": [
+        "Transformer Block Index"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Transformer Block Index",
+      "content_preview": "Transformer Block Index"
+    },
+    {
+      "id": "sec_0499015",
+      "title": "Baseline AttnRes",
+      "level": 2,
+      "line_start": 600,
+      "line_end": null,
+      "hierarchy": [
+        "Baseline AttnRes"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Baseline AttnRes",
+      "content_preview": "Baseline AttnRes"
+    },
+    {
+      "id": "sec_4996533",
+      "title": "General",
+      "level": 2,
+      "line_start": 601,
+      "line_end": null,
+      "hierarchy": [
+        "General"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > General",
+      "content_preview": "General"
+    },
+    {
+      "id": "sec_8848350",
+      "title": "MMLU 73.574.6",
+      "level": 2,
+      "line_start": 602,
+      "line_end": null,
+      "hierarchy": [
+        "MMLU 73.574.6"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > MMLU 73.574.6",
+      "content_preview": "MMLU 73.574.6"
+    },
+    {
+      "id": "sec_7657520",
+      "title": "MMLU-Pro52.2 52.2",
+      "level": 2,
+      "line_start": 603,
+      "line_end": null,
+      "hierarchy": [
+        "MMLU-Pro52.2 52.2"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > MMLU-Pro52.2 52.2",
+      "content_preview": "MMLU-Pro52.2 52.2"
+    },
+    {
+      "id": "sec_3752365",
+      "title": "GPQA-Diamond 36.944.4",
+      "level": 2,
+      "line_start": 604,
+      "line_end": null,
+      "hierarchy": [
+        "GPQA-Diamond 36.944.4"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > GPQA-Diamond 36.944.4",
+      "content_preview": "GPQA-Diamond 36.944.4"
+    },
+    {
+      "id": "sec_1937876",
+      "title": "BBH 76.378.0",
+      "level": 2,
+      "line_start": 605,
+      "line_end": null,
+      "hierarchy": [
+        "BBH 76.378.0"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > BBH 76.378.0",
+      "content_preview": "BBH 76.378.0"
+    },
+    {
+      "id": "sec_0028560",
+      "title": "ARC-Challenge 64.665.7",
+      "level": 2,
+      "line_start": 606,
+      "line_end": null,
+      "hierarchy": [
+        "ARC-Challenge 64.665.7"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > ARC-Challenge 64.665.7",
+      "content_preview": "ARC-Challenge 64.665.7"
+    },
+    {
+      "id": "sec_9887530",
+      "title": "HellaSwag 83.283.4",
+      "level": 2,
+      "line_start": 607,
+      "line_end": null,
+      "hierarchy": [
+        "HellaSwag 83.283.4"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > HellaSwag 83.283.4",
+      "content_preview": "HellaSwag 83.283.4"
+    },
+    {
+      "id": "sec_8980293",
+      "title": "TriviaQA 69.971.8",
+      "level": 2,
+      "line_start": 608,
+      "line_end": null,
+      "hierarchy": [
+        "TriviaQA 69.971.8"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > TriviaQA 69.971.8",
+      "content_preview": "TriviaQA 69.971.8"
+    },
+    {
+      "id": "sec_6115287",
+      "title": "Math & Code",
+      "level": 2,
+      "line_start": 609,
+      "line_end": null,
+      "hierarchy": [
+        "Math & Code"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Math & Code",
+      "content_preview": "Math & Code"
+    },
+    {
+      "id": "sec_7883517",
+      "title": "GSM8K 81.782.4",
+      "level": 2,
+      "line_start": 610,
+      "line_end": null,
+      "hierarchy": [
+        "GSM8K 81.782.4"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > GSM8K 81.782.4",
+      "content_preview": "GSM8K 81.782.4"
+    },
+    {
+      "id": "sec_5082900",
+      "title": "MGSM 64.966.1",
+      "level": 2,
+      "line_start": 611,
+      "line_end": null,
+      "hierarchy": [
+        "MGSM 64.966.1"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > MGSM 64.966.1",
+      "content_preview": "MGSM 64.966.1"
+    },
+    {
+      "id": "sec_7069761",
+      "title": "Math 53.557.1",
+      "level": 2,
+      "line_start": 612,
+      "line_end": null,
+      "hierarchy": [
+        "Math 53.557.1"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Math 53.557.1",
+      "content_preview": "Math 53.557.1"
+    },
+    {
+      "id": "sec_8148127",
+      "title": "CMath 84.785.1",
+      "level": 2,
+      "line_start": 613,
+      "line_end": null,
+      "hierarchy": [
+        "CMath 84.785.1"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > CMath 84.785.1",
+      "content_preview": "CMath 84.785.1"
+    },
+    {
+      "id": "sec_2134137",
+      "title": "HumanEval 59.162.2",
+      "level": 2,
+      "line_start": 614,
+      "line_end": null,
+      "hierarchy": [
+        "HumanEval 59.162.2"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > HumanEval 59.162.2",
+      "content_preview": "HumanEval 59.162.2"
+    },
+    {
+      "id": "sec_2449226",
+      "title": "MBPP 72.073.9",
+      "level": 2,
+      "line_start": 615,
+      "line_end": null,
+      "hierarchy": [
+        "MBPP 72.073.9"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > MBPP 72.073.9",
+      "content_preview": "MBPP 72.073.9"
+    },
+    {
+      "id": "sec_7467361",
+      "title": "Chinese CMMLU 82.082.9",
+      "level": 2,
+      "line_start": 616,
+      "line_end": null,
+      "hierarchy": [
+        "Chinese CMMLU 82.082.9"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Chinese CMMLU 82.082.9",
+      "content_preview": "Chinese CMMLU 82.082.9"
+    },
+    {
+      "id": "sec_5234021",
+      "title": "C-Eval 79.682.5",
+      "level": 2,
+      "line_start": 617,
+      "line_end": null,
+      "hierarchy": [
+        "C-Eval 79.682.5"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > C-Eval 79.682.5",
+      "content_preview": "C-Eval 79.682.5"
+    },
+    {
+      "id": "sec_8716907",
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_start": 621,
+      "line_end": null,
+      "hierarchy": [
+        "Attention ResidualsTECHNICALREPORT"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention ResidualsTECHNICALREPORT",
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "id": "sec_8552907",
+      "title": "Table 4: Ablation on key components of AttnRes (16-layer",
+      "level": 3,
+      "line_start": 622,
+      "line_end": null,
+      "hierarchy": [
+        "Table 4: Ablation on key components of AttnRes (16-layer"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Table 4: Ablation on key components of AttnRes (16-layer",
+      "content_preview": "Table 4: Ablation on key components of AttnRes (16-layer"
+    },
+    {
+      "id": "sec_7340361",
+      "title": "Variant Loss",
+      "level": 2,
+      "line_start": 624,
+      "line_end": null,
+      "hierarchy": [
+        "Variant Loss"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Variant Loss",
+      "content_preview": "Variant Loss"
+    },
+    {
+      "id": "sec_7572601",
+      "title": "Baseline (PreNorm) 1.766",
+      "level": 2,
+      "line_start": 625,
+      "line_end": null,
+      "hierarchy": [
+        "Baseline (PreNorm) 1.766"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Baseline (PreNorm) 1.766",
+      "content_preview": "Baseline (PreNorm) 1.766"
+    },
+    {
+      "id": "sec_3136312",
+      "title": "DenseFormer [36] 1.767",
+      "level": 2,
+      "line_start": 626,
+      "line_end": null,
+      "hierarchy": [
+        "DenseFormer [36] 1.767"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > DenseFormer [36] 1.767",
+      "content_preview": "DenseFormer [36] 1.767"
+    },
+    {
+      "id": "sec_0122136",
+      "title": "AttnRes Full 1.737",
+      "level": 2,
+      "line_start": 628,
+      "line_end": null,
+      "hierarchy": [
+        "AttnRes Full 1.737"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > AttnRes Full 1.737",
+      "content_preview": "AttnRes Full 1.737"
+    },
+    {
+      "id": "sec_8807127",
+      "title": "SW A (W= 1 + 8) 1.764",
+      "level": 2,
+      "line_start": 633,
+      "line_end": null,
+      "hierarchy": [
+        "SW A (W= 1 + 8) 1.764"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > SW A (W= 1 + 8) 1.764",
+      "content_preview": "SW A (W= 1 + 8) 1.764"
+    },
+    {
+      "id": "sec_0114684",
+      "title": "Block (S= 4) 1.746",
+      "level": 2,
+      "line_start": 634,
+      "line_end": null,
+      "hierarchy": [
+        "Block (S= 4) 1.746"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Block (S= 4) 1.746",
+      "content_preview": "Block (S= 4) 1.746"
+    },
+    {
+      "id": "sec_0162701",
+      "title": "Baseline (1.766)",
+      "level": 2,
+      "line_start": 650,
+      "line_end": null,
+      "hierarchy": [
+        "Baseline (1.766)"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Baseline (1.766)",
+      "content_preview": "Baseline (1.766)"
+    },
+    {
+      "id": "sec_2705538",
+      "title": "Full AttnRes i.e. S=1 (1.737)",
+      "level": 2,
+      "line_start": 651,
+      "line_end": null,
+      "hierarchy": [
+        "Full AttnRes i.e. S=1 (1.737)"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Full AttnRes i.e. S=1 (1.737)",
+      "content_preview": "Full AttnRes i.e. S=1 (1.737)"
+    },
+    {
+      "id": "sec_3161474",
+      "title": "Block size (S)",
+      "level": 2,
+      "line_start": 652,
+      "line_end": null,
+      "hierarchy": [
+        "Block size (S)"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Block size (S)",
+      "content_preview": "Block size (S)"
+    },
+    {
+      "id": "sec_8881194",
+      "title": "Validation loss",
+      "level": 2,
+      "line_start": 653,
+      "line_end": null,
+      "hierarchy": [
+        "Validation loss"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Validation loss",
+      "content_preview": "Validation loss"
+    },
+    {
+      "id": "sec_5799802",
+      "title": "Baseline",
+      "level": 2,
+      "line_start": 654,
+      "line_end": null,
+      "hierarchy": [
+        "Baseline"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Baseline",
+      "content_preview": "Baseline"
+    },
+    {
+      "id": "sec_7770440",
+      "title": "Full AttnRes",
+      "level": 2,
+      "line_start": 655,
+      "line_end": null,
+      "hierarchy": [
+        "Full AttnRes"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Full AttnRes",
+      "content_preview": "Full AttnRes"
+    },
+    {
+      "id": "sec_8055225",
+      "title": "Block AttnRes",
+      "level": 2,
+      "line_start": 656,
+      "line_end": null,
+      "hierarchy": [
+        "Block AttnRes"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Block AttnRes",
+      "content_preview": "Block AttnRes"
+    },
+    {
+      "id": "sec_8716907",
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_start": 690,
+      "line_end": null,
+      "hierarchy": [
+        "Attention ResidualsTECHNICALREPORT"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention ResidualsTECHNICALREPORT",
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "id": "sec_1013191",
+      "title": "H/Lb",
+      "level": 2,
+      "line_start": 702,
+      "line_end": null,
+      "hierarchy": [
+        "H/Lb"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > H/Lb",
+      "content_preview": "H/Lb"
+    },
+    {
+      "id": "sec_8716907",
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_start": 752,
+      "line_end": null,
+      "hierarchy": [
+        "Attention ResidualsTECHNICALREPORT"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention ResidualsTECHNICALREPORT",
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "id": "sec_1650440",
+      "title": "Source Index",
+      "level": 2,
+      "line_start": 755,
+      "line_end": null,
+      "hierarchy": [
+        "Source Index"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Source Index",
+      "content_preview": "Source Index"
+    },
+    {
+      "id": "sec_3851942",
+      "title": "Layer",
+      "level": 2,
+      "line_start": 756,
+      "line_end": null,
+      "hierarchy": [
+        "Layer"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Layer",
+      "content_preview": "Layer"
+    },
+    {
+      "id": "sec_6729666",
+      "title": "Full AttnRes, Pre-Attn",
+      "level": 2,
+      "line_start": 757,
+      "line_end": null,
+      "hierarchy": [
+        "Full AttnRes, Pre-Attn"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Full AttnRes, Pre-Attn",
+      "content_preview": "Full AttnRes, Pre-Attn"
+    },
+    {
+      "id": "sec_1650440",
+      "title": "Source Index",
+      "level": 2,
+      "line_start": 759,
+      "line_end": null,
+      "hierarchy": [
+        "Source Index"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Source Index",
+      "content_preview": "Source Index"
+    },
+    {
+      "id": "sec_7203394",
+      "title": "Full AttnRes, Pre-MLP",
+      "level": 2,
+      "line_start": 760,
+      "line_end": null,
+      "hierarchy": [
+        "Full AttnRes, Pre-MLP"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Full AttnRes, Pre-MLP",
+      "content_preview": "Full AttnRes, Pre-MLP"
+    },
+    {
+      "id": "sec_0102332",
+      "title": "Block Index",
+      "level": 2,
+      "line_start": 763,
+      "line_end": null,
+      "hierarchy": [
+        "Block Index"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Block Index",
+      "content_preview": "Block Index"
+    },
+    {
+      "id": "sec_3851942",
+      "title": "Layer",
+      "level": 2,
+      "line_start": 764,
+      "line_end": null,
+      "hierarchy": [
+        "Layer"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Layer",
+      "content_preview": "Layer"
+    },
+    {
+      "id": "sec_3040877",
+      "title": "Block AttnRes, Pre-Attn",
+      "level": 2,
+      "line_start": 765,
+      "line_end": null,
+      "hierarchy": [
+        "Block AttnRes, Pre-Attn"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Block AttnRes, Pre-Attn",
+      "content_preview": "Block AttnRes, Pre-Attn"
+    },
+    {
+      "id": "sec_0102332",
+      "title": "Block Index",
+      "level": 2,
+      "line_start": 767,
+      "line_end": null,
+      "hierarchy": [
+        "Block Index"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Block Index",
+      "content_preview": "Block Index"
+    },
+    {
+      "id": "sec_2389858",
+      "title": "Block AttnRes, Pre-MLP",
+      "level": 2,
+      "line_start": 768,
+      "line_end": null,
+      "hierarchy": [
+        "Block AttnRes, Pre-MLP"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Block AttnRes, Pre-MLP",
+      "content_preview": "Block AttnRes, Pre-MLP"
+    },
+    {
+      "id": "sec_0606647",
+      "title": "Weight",
+      "level": 2,
+      "line_start": 774,
+      "line_end": null,
+      "hierarchy": [
+        "Weight"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Weight",
+      "content_preview": "Weight"
+    },
+    {
+      "id": "sec_8716907",
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_start": 799,
+      "line_end": null,
+      "hierarchy": [
+        "Attention ResidualsTECHNICALREPORT"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention ResidualsTECHNICALREPORT",
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "id": "sec_2194247",
+      "title": "Method Update rule Weight Source",
+      "level": 2,
+      "line_start": 803,
+      "line_end": null,
+      "hierarchy": [
+        "Method Update rule Weight Source"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Method Update rule Weight Source",
+      "content_preview": "Method Update rule Weight Source"
+    },
+    {
+      "id": "sec_5731795",
+      "title": "Single-state recurrence: layerlreceives onlyhl−1",
+      "level": 3,
+      "line_start": 804,
+      "line_end": null,
+      "hierarchy": [
+        "Single-state recurrence: layerlreceives onlyhl−1"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Single-state recurrence: layerlreceives onlyhl−1",
+      "content_preview": "Single-state recurrence: layerlreceives onlyhl−1"
+    },
+    {
+      "id": "sec_1095567",
+      "title": "Residual [12]h l =hl−1+fl−1(hl−1)Fixedh l−1",
+      "level": 3,
+      "line_start": 805,
+      "line_end": null,
+      "hierarchy": [
+        "Residual [12]h l =hl−1+fl−1(hl−1)Fixedh l−1"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Residual [12]h l =hl−1+fl−1(hl−1)Fixedh l−1",
+      "content_preview": "Residual [12]h l =hl−1+fl−1(hl−1)Fixedh l−1"
+    },
+    {
+      "id": "sec_4645993",
+      "title": "ReZero [2]h l =hl−1+αl ·fl−1(hl−1)Statich l−1",
+      "level": 3,
+      "line_start": 806,
+      "line_end": null,
+      "hierarchy": [
+        "ReZero [2]h l =hl−1+αl ·fl−1(hl−1)Statich l−1"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > ReZero [2]h l =hl−1+αl ·fl−1(hl−1)Statich l−1",
+      "content_preview": "ReZero [2]h l =hl−1+αl ·fl−1(hl−1)Statich l−1"
+    },
+    {
+      "id": "sec_9335677",
+      "title": "LayerScale [50]h l =hl−1+ diag(λl)·f l−1(hl−1)Statich l−1",
+      "level": 3,
+      "line_start": 807,
+      "line_end": null,
+      "hierarchy": [
+        "LayerScale [50]h l =hl−1+ diag(λl)·f l−1(hl−1)Statich l−1"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > LayerScale [50]h l =hl−1+ diag(λl)·f l−1(hl−1)Statich l−1",
+      "content_preview": "LayerScale [50]h l =hl−1+ diag(λl)·f l−1(hl−1)Statich l−1"
+    },
+    {
+      "id": "sec_4497206",
+      "title": "Highway [45]h l = (1−gl)⊙hl−1+gl ⊙fl−1(hl−1)Dynamich l−1",
+      "level": 3,
+      "line_start": 808,
+      "line_end": null,
+      "hierarchy": [
+        "Highway [45]h l = (1−gl)⊙hl−1+gl ⊙fl−1(hl−1)Dynamich l−1"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Highway [45]h l = (1−gl)⊙hl−1+gl ⊙fl−1(hl−1)Dynamich l−1",
+      "content_preview": "Highway [45]h l = (1−gl)⊙hl−1+gl ⊙fl−1(hl−1)Dynamich l−1"
+    },
+    {
+      "id": "sec_8734693",
+      "title": "DeepNorm [54]h l = Norm(αhl−1+fl−1(hl−1))Fixedh l−1",
+      "level": 3,
+      "line_start": 809,
+      "line_end": null,
+      "hierarchy": [
+        "DeepNorm [54]h l = Norm(αhl−1+fl−1(hl−1))Fixedh l−1"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > DeepNorm [54]h l = Norm(αhl−1+fl−1(hl−1))Fixedh l−1",
+      "content_preview": "DeepNorm [54]h l = Norm(αhl−1+fl−1(hl−1))Fixedh l−1"
+    },
+    {
+      "id": "sec_8787362",
+      "title": "KEEL [4]h l = Norm(αhl−1+fl−1(Norm(hl−1)))Fixedh l−1",
+      "level": 3,
+      "line_start": 810,
+      "line_end": null,
+      "hierarchy": [
+        "KEEL [4]h l = Norm(αhl−1+fl−1(Norm(hl−1)))Fixedh l−1"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > KEEL [4]h l = Norm(αhl−1+fl−1(Norm(hl−1)))Fixedh l−1",
+      "content_preview": "KEEL [4]h l = Norm(αhl−1+fl−1(Norm(hl−1)))Fixedh l−1"
+    },
+    {
+      "id": "sec_1031072",
+      "title": "Multi-state recurrence: layerlreceivesmstreams",
+      "level": 3,
+      "line_start": 811,
+      "line_end": null,
+      "hierarchy": [
+        "Multi-state recurrence: layerlreceivesmstreams"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Multi-state recurrence: layerlreceivesmstreams",
+      "content_preview": "Multi-state recurrence: layerlreceivesmstreams"
+    },
+    {
+      "id": "sec_4068394",
+      "title": "SiameseNorm [27]h 1",
+      "level": 2,
+      "line_start": 812,
+      "line_end": null,
+      "hierarchy": [
+        "SiameseNorm [27]h 1"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > SiameseNorm [27]h 1",
+      "content_preview": "SiameseNorm [27]h 1"
+    },
+    {
+      "id": "sec_2972600",
+      "title": "HC/mHC [72, 59]H l =Hl−1Al +fl−1(Hl−1αl−1)β⊤",
+      "level": 3,
+      "line_start": 817,
+      "line_end": null,
+      "hierarchy": [
+        "HC/mHC [72, 59]H l =Hl−1Al +fl−1(Hl−1αl−1)β⊤"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > HC/mHC [72, 59]H l =Hl−1Al +fl−1(Hl−1αl−1)β⊤",
+      "content_preview": "HC/mHC [72, 59]H l =Hl−1Al +fl−1(Hl−1αl−1)β⊤"
+    },
+    {
+      "id": "sec_6505040",
+      "title": "DDL [67]H l = (I−βlklk⊤",
+      "level": 2,
+      "line_start": 819,
+      "line_end": null,
+      "hierarchy": [
+        "DDL [67]H l = (I−βlklk⊤"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > DDL [67]H l = (I−βlklk⊤",
+      "content_preview": "DDL [67]H l = (I−βlklk⊤"
+    },
+    {
+      "id": "sec_5229871",
+      "title": "Cross-layer access: layerlcan access individual earlier-layer outputs",
+      "level": 3,
+      "line_start": 822,
+      "line_end": null,
+      "hierarchy": [
+        "Cross-layer access: layerlcan access individual earlier-layer outputs"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Cross-layer access: layerlcan access individual earlier-layer outputs",
+      "content_preview": "Cross-layer access: layerlcan access individual earlier-layer outputs"
+    },
+    {
+      "id": "sec_6572576",
+      "title": "DenseFormer [36]h l =α0→lh1 +Pl−1",
+      "level": 2,
+      "line_start": 824,
+      "line_end": null,
+      "hierarchy": [
+        "DenseFormer [36]h l =α0→lh1 +Pl−1"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > DenseFormer [36]h l =α0→lh1 +Pl−1",
+      "content_preview": "DenseFormer [36]h l =α0→lh1 +Pl−1"
+    },
+    {
+      "id": "sec_3240187",
+      "title": "MRLA [10]1 hl =Pl−1",
+      "level": 2,
+      "line_start": 826,
+      "line_end": null,
+      "hierarchy": [
+        "MRLA [10]1 hl =Pl−1"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > MRLA [10]1 hl =Pl−1",
+      "content_preview": "MRLA [10]1 hl =Pl−1"
+    },
+    {
+      "id": "sec_1595648",
+      "title": "Full2 hl ∝Pl−1",
+      "level": 2,
+      "line_start": 828,
+      "line_end": null,
+      "hierarchy": [
+        "Full2 hl ∝Pl−1"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Full2 hl ∝Pl−1",
+      "content_preview": "Full2 hl ∝Pl−1"
+    },
+    {
+      "id": "sec_0206948",
+      "title": "Wt =W t−1 −η∇ℓ(W t−1;x t),(9)",
+      "level": 2,
+      "line_start": 845,
+      "line_end": null,
+      "hierarchy": [
+        "Wt =W t−1 −η∇ℓ(W t−1;x t),(9)"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Wt =W t−1 −η∇ℓ(W t−1;x t),(9)",
+      "content_preview": "Wt =W t−1 −η∇ℓ(W t−1;x t),(9)"
+    },
+    {
+      "id": "sec_0476521",
+      "title": "Concretely, the input to layer l is hl = Pl−1",
+      "level": 3,
+      "line_start": 863,
+      "line_end": null,
+      "hierarchy": [
+        "Concretely, the input to layer l is hl = Pl−1"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Concretely, the input to layer l is hl = Pl−1",
+      "content_preview": "Concretely, the input to layer l is hl = Pl−1"
+    },
+    {
+      "id": "sec_8716907",
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_start": 867,
+      "line_end": null,
+      "hierarchy": [
+        "Attention ResidualsTECHNICALREPORT"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention ResidualsTECHNICALREPORT",
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "id": "sec_2600650",
+      "title": "Highway",
+      "level": 2,
+      "line_start": 868,
+      "line_end": null,
+      "hierarchy": [
+        "Highway"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Highway",
+      "content_preview": "Highway"
+    },
+    {
+      "id": "sec_7770440",
+      "title": "Full AttnRes",
+      "level": 2,
+      "line_start": 908,
+      "line_end": null,
+      "hierarchy": [
+        "Full AttnRes"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Full AttnRes",
+      "content_preview": "Full AttnRes"
+    },
+    {
+      "id": "sec_8055225",
+      "title": "Block AttnRes",
+      "level": 2,
+      "line_start": 917,
+      "line_end": null,
+      "hierarchy": [
+        "Block AttnRes"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Block AttnRes",
+      "content_preview": "Block AttnRes"
+    },
+    {
+      "id": "sec_0544295",
+      "title": "Hl =H l−1Al +f l−1(Hl−1αl−1)β ⊤",
+      "level": 2,
+      "line_start": 968,
+      "line_end": null,
+      "hierarchy": [
+        "Hl =H l−1Al +f l−1(Hl−1αl−1)β ⊤"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Hl =H l−1Al +f l−1(Hl−1αl−1)β ⊤",
+      "content_preview": "Hl =H l−1Al +f l−1(Hl−1αl−1)β ⊤"
+    },
+    {
+      "id": "sec_0603321",
+      "title": "Mi→l =β ⊤",
+      "level": 2,
+      "line_start": 972,
+      "line_end": null,
+      "hierarchy": [
+        "Mi→l =β ⊤"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Mi→l =β ⊤",
+      "content_preview": "Mi→l =β ⊤"
+    },
+    {
+      "id": "sec_8716907",
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_start": 1000,
+      "line_end": null,
+      "hierarchy": [
+        "Attention ResidualsTECHNICALREPORT"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention ResidualsTECHNICALREPORT",
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "id": "sec_9040830",
+      "title": "For example, the unrolled (m)HC weight Mi→l =β ⊤",
+      "level": 3,
+      "line_start": 1003,
+      "line_end": null,
+      "hierarchy": [
+        "For example, the unrolled (m)HC weight Mi→l =β ⊤"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > For example, the unrolled (m)HC weight Mi→l =β ⊤",
+      "content_preview": "For example, the unrolled (m)HC weight Mi→l =β ⊤"
+    },
+    {
+      "id": "sec_4408348",
+      "title": "Conclusion",
+      "level": 2,
+      "line_start": 1047,
+      "line_end": null,
+      "hierarchy": [
+        "Conclusion"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Conclusion",
+      "content_preview": "Conclusion"
+    },
+    {
+      "id": "sec_8716907",
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_start": 1058,
+      "line_end": null,
+      "hierarchy": [
+        "Attention ResidualsTECHNICALREPORT"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention ResidualsTECHNICALREPORT",
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "id": "sec_2269881",
+      "title": "References",
+      "level": 2,
+      "line_start": 1059,
+      "line_end": null,
+      "hierarchy": [
+        "References"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > References",
+      "content_preview": "References"
+    },
+    {
+      "id": "sec_8716907",
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_start": 1113,
+      "line_end": null,
+      "hierarchy": [
+        "Attention ResidualsTECHNICALREPORT"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention ResidualsTECHNICALREPORT",
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "id": "sec_8716907",
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_start": 1170,
+      "line_end": null,
+      "hierarchy": [
+        "Attention ResidualsTECHNICALREPORT"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention ResidualsTECHNICALREPORT",
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "id": "sec_8716907",
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_start": 1216,
+      "line_end": null,
+      "hierarchy": [
+        "Attention ResidualsTECHNICALREPORT"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention ResidualsTECHNICALREPORT",
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "id": "sec_3589175",
+      "title": "A Contributions",
+      "level": 2,
+      "line_start": 1217,
+      "line_end": null,
+      "hierarchy": [
+        "A Contributions"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > A Contributions",
+      "content_preview": "A Contributions"
+    },
+    {
+      "id": "sec_2274313",
+      "title": "Guangyu Chen∗",
+      "level": 2,
+      "line_start": 1220,
+      "line_end": null,
+      "hierarchy": [
+        "Guangyu Chen∗"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Guangyu Chen∗",
+      "content_preview": "Guangyu Chen∗"
+    },
+    {
+      "id": "sec_1908749",
+      "title": "Yu Zhang∗",
+      "level": 2,
+      "line_start": 1221,
+      "line_end": null,
+      "hierarchy": [
+        "Yu Zhang∗"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Yu Zhang∗",
+      "content_preview": "Yu Zhang∗"
+    },
+    {
+      "id": "sec_2232206",
+      "title": "Jianlin Su∗",
+      "level": 2,
+      "line_start": 1222,
+      "line_end": null,
+      "hierarchy": [
+        "Jianlin Su∗"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Jianlin Su∗",
+      "content_preview": "Jianlin Su∗"
+    },
+    {
+      "id": "sec_9475204",
+      "title": "Weixin Xu",
+      "level": 2,
+      "line_start": 1223,
+      "line_end": null,
+      "hierarchy": [
+        "Weixin Xu"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Weixin Xu",
+      "content_preview": "Weixin Xu"
+    },
+    {
+      "id": "sec_6671318",
+      "title": "Siyuan Pan",
+      "level": 2,
+      "line_start": 1224,
+      "line_end": null,
+      "hierarchy": [
+        "Siyuan Pan"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Siyuan Pan",
+      "content_preview": "Siyuan Pan"
+    },
+    {
+      "id": "sec_9792720",
+      "title": "Yaoyu Wang",
+      "level": 2,
+      "line_start": 1225,
+      "line_end": null,
+      "hierarchy": [
+        "Yaoyu Wang"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Yaoyu Wang",
+      "content_preview": "Yaoyu Wang"
+    },
+    {
+      "id": "sec_2235581",
+      "title": "Yucheng Wang",
+      "level": 2,
+      "line_start": 1226,
+      "line_end": null,
+      "hierarchy": [
+        "Yucheng Wang"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Yucheng Wang",
+      "content_preview": "Yucheng Wang"
+    },
+    {
+      "id": "sec_1658701",
+      "title": "Guanduo Chen",
+      "level": 2,
+      "line_start": 1227,
+      "line_end": null,
+      "hierarchy": [
+        "Guanduo Chen"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Guanduo Chen",
+      "content_preview": "Guanduo Chen"
+    },
+    {
+      "id": "sec_7596021",
+      "title": "Bohong Yin",
+      "level": 2,
+      "line_start": 1228,
+      "line_end": null,
+      "hierarchy": [
+        "Bohong Yin"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Bohong Yin",
+      "content_preview": "Bohong Yin"
+    },
+    {
+      "id": "sec_6330046",
+      "title": "Yutian Chen",
+      "level": 2,
+      "line_start": 1229,
+      "line_end": null,
+      "hierarchy": [
+        "Yutian Chen"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Yutian Chen",
+      "content_preview": "Yutian Chen"
+    },
+    {
+      "id": "sec_9497005",
+      "title": "Junjie Yan",
+      "level": 2,
+      "line_start": 1230,
+      "line_end": null,
+      "hierarchy": [
+        "Junjie Yan"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Junjie Yan",
+      "content_preview": "Junjie Yan"
+    },
+    {
+      "id": "sec_6412637",
+      "title": "Ming Wei",
+      "level": 2,
+      "line_start": 1231,
+      "line_end": null,
+      "hierarchy": [
+        "Ming Wei"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Ming Wei",
+      "content_preview": "Ming Wei"
+    },
+    {
+      "id": "sec_0612712",
+      "title": "Y . Zhang",
+      "level": 2,
+      "line_start": 1232,
+      "line_end": null,
+      "hierarchy": [
+        "Y . Zhang"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Y . Zhang",
+      "content_preview": "Y . Zhang"
+    },
+    {
+      "id": "sec_8392831",
+      "title": "Fanqing Meng",
+      "level": 2,
+      "line_start": 1233,
+      "line_end": null,
+      "hierarchy": [
+        "Fanqing Meng"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Fanqing Meng",
+      "content_preview": "Fanqing Meng"
+    },
+    {
+      "id": "sec_9403690",
+      "title": "Chao Hong",
+      "level": 2,
+      "line_start": 1234,
+      "line_end": null,
+      "hierarchy": [
+        "Chao Hong"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Chao Hong",
+      "content_preview": "Chao Hong"
+    },
+    {
+      "id": "sec_9020683",
+      "title": "Xiaotong Xie",
+      "level": 2,
+      "line_start": 1235,
+      "line_end": null,
+      "hierarchy": [
+        "Xiaotong Xie"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Xiaotong Xie",
+      "content_preview": "Xiaotong Xie"
+    },
+    {
+      "id": "sec_8577092",
+      "title": "Shaowei Liu",
+      "level": 2,
+      "line_start": 1236,
+      "line_end": null,
+      "hierarchy": [
+        "Shaowei Liu"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Shaowei Liu",
+      "content_preview": "Shaowei Liu"
+    },
+    {
+      "id": "sec_7072689",
+      "title": "Enzhe Lu",
+      "level": 2,
+      "line_start": 1237,
+      "line_end": null,
+      "hierarchy": [
+        "Enzhe Lu"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Enzhe Lu",
+      "content_preview": "Enzhe Lu"
+    },
+    {
+      "id": "sec_3625446",
+      "title": "Yunpeng Tai",
+      "level": 2,
+      "line_start": 1238,
+      "line_end": null,
+      "hierarchy": [
+        "Yunpeng Tai"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Yunpeng Tai",
+      "content_preview": "Yunpeng Tai"
+    },
+    {
+      "id": "sec_8630291",
+      "title": "Yanru Chen",
+      "level": 2,
+      "line_start": 1239,
+      "line_end": null,
+      "hierarchy": [
+        "Yanru Chen"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Yanru Chen",
+      "content_preview": "Yanru Chen"
+    },
+    {
+      "id": "sec_7185653",
+      "title": "Xin Men",
+      "level": 2,
+      "line_start": 1240,
+      "line_end": null,
+      "hierarchy": [
+        "Xin Men"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Xin Men",
+      "content_preview": "Xin Men"
+    },
+    {
+      "id": "sec_0956971",
+      "title": "Haiqing Guo",
+      "level": 2,
+      "line_start": 1241,
+      "line_end": null,
+      "hierarchy": [
+        "Haiqing Guo"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Haiqing Guo",
+      "content_preview": "Haiqing Guo"
+    },
+    {
+      "id": "sec_2843715",
+      "title": "Y . Charles",
+      "level": 2,
+      "line_start": 1242,
+      "line_end": null,
+      "hierarchy": [
+        "Y . Charles"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Y . Charles",
+      "content_preview": "Y . Charles"
+    },
+    {
+      "id": "sec_1404766",
+      "title": "Haoyu Lu",
+      "level": 2,
+      "line_start": 1243,
+      "line_end": null,
+      "hierarchy": [
+        "Haoyu Lu"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Haoyu Lu",
+      "content_preview": "Haoyu Lu"
+    },
+    {
+      "id": "sec_9129871",
+      "title": "Lin Sui",
+      "level": 2,
+      "line_start": 1244,
+      "line_end": null,
+      "hierarchy": [
+        "Lin Sui"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Lin Sui",
+      "content_preview": "Lin Sui"
+    },
+    {
+      "id": "sec_3320422",
+      "title": "Jinguo Zhu",
+      "level": 2,
+      "line_start": 1245,
+      "line_end": null,
+      "hierarchy": [
+        "Jinguo Zhu"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Jinguo Zhu",
+      "content_preview": "Jinguo Zhu"
+    },
+    {
+      "id": "sec_8282028",
+      "title": "Zaida Zhou",
+      "level": 2,
+      "line_start": 1246,
+      "line_end": null,
+      "hierarchy": [
+        "Zaida Zhou"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Zaida Zhou",
+      "content_preview": "Zaida Zhou"
+    },
+    {
+      "id": "sec_4412108",
+      "title": "Weiran He",
+      "level": 2,
+      "line_start": 1247,
+      "line_end": null,
+      "hierarchy": [
+        "Weiran He"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Weiran He",
+      "content_preview": "Weiran He"
+    },
+    {
+      "id": "sec_6622743",
+      "title": "Weixiao Huang",
+      "level": 2,
+      "line_start": 1248,
+      "line_end": null,
+      "hierarchy": [
+        "Weixiao Huang"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Weixiao Huang",
+      "content_preview": "Weixiao Huang"
+    },
+    {
+      "id": "sec_2032019",
+      "title": "Xinran Xu",
+      "level": 2,
+      "line_start": 1249,
+      "line_end": null,
+      "hierarchy": [
+        "Xinran Xu"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Xinran Xu",
+      "content_preview": "Xinran Xu"
+    },
+    {
+      "id": "sec_4705045",
+      "title": "Yuzhi Wang",
+      "level": 2,
+      "line_start": 1250,
+      "line_end": null,
+      "hierarchy": [
+        "Yuzhi Wang"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Yuzhi Wang",
+      "content_preview": "Yuzhi Wang"
+    },
+    {
+      "id": "sec_5884312",
+      "title": "Guokun Lai",
+      "level": 2,
+      "line_start": 1251,
+      "line_end": null,
+      "hierarchy": [
+        "Guokun Lai"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Guokun Lai",
+      "content_preview": "Guokun Lai"
+    },
+    {
+      "id": "sec_1934693",
+      "title": "Yulun Du",
+      "level": 2,
+      "line_start": 1252,
+      "line_end": null,
+      "hierarchy": [
+        "Yulun Du"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Yulun Du",
+      "content_preview": "Yulun Du"
+    },
+    {
+      "id": "sec_7148211",
+      "title": "Yuxin Wu",
+      "level": 2,
+      "line_start": 1253,
+      "line_end": null,
+      "hierarchy": [
+        "Yuxin Wu"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Yuxin Wu",
+      "content_preview": "Yuxin Wu"
+    },
+    {
+      "id": "sec_8194007",
+      "title": "Zhilin Yang",
+      "level": 2,
+      "line_start": 1254,
+      "line_end": null,
+      "hierarchy": [
+        "Zhilin Yang"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Zhilin Yang",
+      "content_preview": "Zhilin Yang"
+    },
+    {
+      "id": "sec_4598070",
+      "title": "Xinyu Zhou",
+      "level": 2,
+      "line_start": 1255,
+      "line_end": null,
+      "hierarchy": [
+        "Xinyu Zhou"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Xinyu Zhou",
+      "content_preview": "Xinyu Zhou"
+    },
+    {
+      "id": "sec_8716907",
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_start": 1258,
+      "line_end": null,
+      "hierarchy": [
+        "Attention ResidualsTECHNICALREPORT"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Attention ResidualsTECHNICALREPORT",
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "id": "sec_0045838",
+      "title": "B Optimized Inference I/O for Full Attention Residuals",
+      "level": 3,
+      "line_start": 1259,
+      "line_end": null,
+      "hierarchy": [
+        "B Optimized Inference I/O for Full Attention Residuals"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > B Optimized Inference I/O for Full Attention Residuals",
+      "content_preview": "B Optimized Inference I/O for Full Attention Residuals"
+    },
+    {
+      "id": "sec_3943378",
+      "title": "Phase 1: Batched Inter-block Attention",
+      "level": 2,
+      "line_start": 1270,
+      "line_end": null,
+      "hierarchy": [
+        "Phase 1: Batched Inter-block Attention"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Phase 1: Batched Inter-block Attention",
+      "content_preview": "Phase 1: Batched Inter-block Attention"
+    },
+    {
+      "id": "sec_8883421",
+      "title": "Read(n)",
+      "level": 2,
+      "line_start": 1274,
+      "line_end": null,
+      "hierarchy": [
+        "Read(n)"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Read(n)",
+      "content_preview": "Read(n)"
+    },
+    {
+      "id": "sec_6107166",
+      "title": "Readinter =",
+      "level": 2,
+      "line_start": 1277,
+      "line_end": null,
+      "hierarchy": [
+        "Readinter ="
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Readinter =",
+      "content_preview": "Readinter ="
+    },
+    {
+      "id": "sec_1057111",
+      "title": "Phase 1 also writes oned-dimensional output per layer, givingWrite (n)",
+      "level": 3,
+      "line_start": 1282,
+      "line_end": null,
+      "hierarchy": [
+        "Phase 1 also writes oned-dimensional output per layer, givingWrite (n)"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Phase 1 also writes oned-dimensional output per layer, givingWrite (n)",
+      "content_preview": "Phase 1 also writes oned-dimensional output per layer, givingWrite (n)"
+    },
+    {
+      "id": "sec_8748157",
+      "title": "Writeinter =Ld(13)",
+      "level": 2,
+      "line_start": 1284,
+      "line_end": null,
+      "hierarchy": [
+        "Writeinter =Ld(13)"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Writeinter =Ld(13)",
+      "content_preview": "Writeinter =Ld(13)"
+    },
+    {
+      "id": "sec_3391742",
+      "title": "Phase 2: Sequential Intra-block Attention",
+      "level": 3,
+      "line_start": 1286,
+      "line_end": null,
+      "hierarchy": [
+        "Phase 2: Sequential Intra-block Attention"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Phase 2: Sequential Intra-block Attention",
+      "content_preview": "Phase 2: Sequential Intra-block Attention"
+    },
+    {
+      "id": "sec_4461979",
+      "title": "Summing over one block:",
+      "level": 2,
+      "line_start": 1289,
+      "line_end": null,
+      "hierarchy": [
+        "Summing over one block:"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Summing over one block:",
+      "content_preview": "Summing over one block:"
+    },
+    {
+      "id": "sec_8883421",
+      "title": "Read(n)",
+      "level": 2,
+      "line_start": 1290,
+      "line_end": null,
+      "hierarchy": [
+        "Read(n)"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Read(n)",
+      "content_preview": "Read(n)"
+    },
+    {
+      "id": "sec_6390419",
+      "title": "Phase 2 also writes one output per layer, soWrite(n)",
+      "level": 3,
+      "line_start": 1295,
+      "line_end": null,
+      "hierarchy": [
+        "Phase 2 also writes one output per layer, soWrite(n)"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Phase 2 also writes one output per layer, soWrite(n)",
+      "content_preview": "Phase 2 also writes one output per layer, soWrite(n)"
+    },
+    {
+      "id": "sec_7220445",
+      "title": "Total Amortized I/O per Layer",
+      "level": 2,
+      "line_start": 1297,
+      "line_end": null,
+      "hierarchy": [
+        "Total Amortized I/O per Layer"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Total Amortized I/O per Layer",
+      "content_preview": "Total Amortized I/O per Layer"
+    },
+    {
+      "id": "sec_6200109",
+      "title": "Summing both phases over allNblocks:",
+      "level": 2,
+      "line_start": 1298,
+      "line_end": null,
+      "hierarchy": [
+        "Summing both phases over allNblocks:"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Summing both phases over allNblocks:",
+      "content_preview": "Summing both phases over allNblocks:"
+    }
+  ]
+}

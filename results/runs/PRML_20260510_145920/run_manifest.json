@@ -1,0 +1,20 @@
+{
+  "run_id": "PRML_20260510_145920",
+  "document_id": "PRML",
+  "source_path": ".\\examples\\documents\\PRML.pdf",
+  "question": "Information Science Statistics",
+  "structure_mode": "normal",
+  "structure_path": "results/runs/PRML_20260510_145920/PRML_structure.json",
+  "section_map_path": "results/runs/PRML_20260510_145920/PRML_alfa_section_map.json",
+  "query_result_path": "results/runs/PRML_20260510_145920/PRML_query_result.json",
+  "exit_code": 0,
+  "strict_passed": true,
+  "confidence": 1.0,
+  "evidence_paths": [
+    "examples\\documents\\PRML.pdf > Information Science and Statistics",
+    "examples\\documents\\PRML.pdf > Information Science and Statistics",
+    "examples\\documents\\PRML.pdf > Science and Department",
+    "examples\\documents\\PRML.pdf > Science"
+  ],
+  "section_count": 31
+}

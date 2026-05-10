@@ -1,0 +1,2419 @@
+{
+  "document_id": "PRML",
+  "source_path": "examples\\documents\\PRML.pdf",
+  "section_count": 201,
+  "sections": [
+    {
+      "id": "sec_8645855",
+      "title": "Root",
+      "level": 1,
+      "line_start": 1,
+      "line_end": null,
+      "hierarchy": [
+        "Root"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Root",
+      "content_preview": ""
+    },
+    {
+      "id": "sec_4671567",
+      "title": "Information Science and Statistics",
+      "level": 2,
+      "line_start": 1,
+      "line_end": null,
+      "hierarchy": [
+        "Information Science and Statistics"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Information Science and Statistics",
+      "content_preview": "Information Science and Statistics"
+    },
+    {
+      "id": "sec_4671567",
+      "title": "Information Science and Statistics",
+      "level": 2,
+      "line_start": 6,
+      "line_end": null,
+      "hierarchy": [
+        "Information Science and Statistics"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Information Science and Statistics",
+      "content_preview": "Information Science and Statistics"
+    },
+    {
+      "id": "sec_7532632",
+      "title": "Christopher M. Bishop",
+      "level": 2,
+      "line_start": 22,
+      "line_end": null,
+      "hierarchy": [
+        "Christopher M. Bishop"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Christopher M. Bishop",
+      "content_preview": "Christopher M. Bishop"
+    },
+    {
+      "id": "sec_8264972",
+      "title": "Pattern Recognition and",
+      "level": 2,
+      "line_start": 23,
+      "line_end": null,
+      "hierarchy": [
+        "Pattern Recognition and"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Pattern Recognition and",
+      "content_preview": "Pattern Recognition and"
+    },
+    {
+      "id": "sec_2479619",
+      "title": "Machine Learning",
+      "level": 2,
+      "line_start": 24,
+      "line_end": null,
+      "hierarchy": [
+        "Machine Learning"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Machine Learning",
+      "content_preview": "Machine Learning"
+    },
+    {
+      "id": "sec_4334159",
+      "title": "This book is dedicated to my family:",
+      "level": 4,
+      "line_start": 67,
+      "line_end": null,
+      "hierarchy": [
+        "This book is dedicated to my family:"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > This book is dedicated to my family:",
+      "content_preview": "This book is dedicated to my family:"
+    },
+    {
+      "id": "sec_4281310",
+      "title": "Jenna, Mark, and Hugh",
+      "level": 4,
+      "line_start": 68,
+      "line_end": null,
+      "hierarchy": [
+        "Jenna, Mark, and Hugh"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Jenna, Mark, and Hugh",
+      "content_preview": "Jenna, Mark, and Hugh"
+    },
+    {
+      "id": "sec_1170230",
+      "title": "Preface",
+      "level": 2,
+      "line_start": 70,
+      "line_end": null,
+      "hierarchy": [
+        "Preface"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Preface",
+      "content_preview": "Preface"
+    },
+    {
+      "id": "sec_5636324",
+      "title": "http://research.microsoft.com/∼cmbishop/PRML",
+      "level": 4,
+      "line_start": 97,
+      "line_end": null,
+      "hierarchy": [
+        "http://research.microsoft.com/∼cmbishop/PRML"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > http://research.microsoft.com/∼cmbishop/PRML",
+      "content_preview": "http://research.microsoft.com/∼cmbishop/PRML"
+    },
+    {
+      "id": "sec_4790789",
+      "title": "vii",
+      "level": 4,
+      "line_start": 98,
+      "line_end": null,
+      "hierarchy": [
+        "vii"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > vii",
+      "content_preview": "vii"
+    },
+    {
+      "id": "sec_7295839",
+      "title": "viii",
+      "level": 4,
+      "line_start": 99,
+      "line_end": null,
+      "hierarchy": [
+        "viii"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > viii",
+      "content_preview": "viii"
+    },
+    {
+      "id": "sec_0075120",
+      "title": "PREFACE",
+      "level": 4,
+      "line_start": 100,
+      "line_end": null,
+      "hierarchy": [
+        "PREFACE"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > PREFACE",
+      "content_preview": "PREFACE"
+    },
+    {
+      "id": "sec_1386852",
+      "title": "Exercises",
+      "level": 4,
+      "line_start": 101,
+      "line_end": null,
+      "hierarchy": [
+        "Exercises"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Exercises",
+      "content_preview": "Exercises"
+    },
+    {
+      "id": "sec_9896362",
+      "title": "Acknowledgements",
+      "level": 4,
+      "line_start": 124,
+      "line_end": null,
+      "hierarchy": [
+        "Acknowledgements"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Acknowledgements",
+      "content_preview": "Acknowledgements"
+    },
+    {
+      "id": "sec_0075120",
+      "title": "PREFACE",
+      "level": 4,
+      "line_start": 145,
+      "line_end": null,
+      "hierarchy": [
+        "PREFACE"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > PREFACE",
+      "content_preview": "PREFACE"
+    },
+    {
+      "id": "sec_7318667",
+      "title": "Mathematical notation",
+      "level": 2,
+      "line_start": 161,
+      "line_end": null,
+      "hierarchy": [
+        "Mathematical notation"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Mathematical notation",
+      "content_preview": "Mathematical notation"
+    },
+    {
+      "id": "sec_9610310",
+      "title": "xii",
+      "level": 4,
+      "line_start": 193,
+      "line_end": null,
+      "hierarchy": [
+        "xii"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > xii",
+      "content_preview": "xii"
+    },
+    {
+      "id": "sec_0080208",
+      "title": "MATHEMATICAL NOTATION",
+      "level": 4,
+      "line_start": 194,
+      "line_end": null,
+      "hierarchy": [
+        "MATHEMATICAL NOTATION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > MATHEMATICAL NOTATION",
+      "content_preview": "MATHEMATICAL NOTATION"
+    },
+    {
+      "id": "sec_1408714",
+      "title": "Contents",
+      "level": 2,
+      "line_start": 208,
+      "line_end": null,
+      "hierarchy": [
+        "Contents"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Contents",
+      "content_preview": "Contents"
+    },
+    {
+      "id": "sec_1170230",
+      "title": "Preface",
+      "level": 4,
+      "line_start": 209,
+      "line_end": null,
+      "hierarchy": [
+        "Preface"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Preface",
+      "content_preview": "Preface"
+    },
+    {
+      "id": "sec_7318667",
+      "title": "Mathematical notation",
+      "level": 4,
+      "line_start": 210,
+      "line_end": null,
+      "hierarchy": [
+        "Mathematical notation"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Mathematical notation",
+      "content_preview": "Mathematical notation"
+    },
+    {
+      "id": "sec_1408714",
+      "title": "Contents",
+      "level": 4,
+      "line_start": 211,
+      "line_end": null,
+      "hierarchy": [
+        "Contents"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Contents",
+      "content_preview": "Contents"
+    },
+    {
+      "id": "sec_4472649",
+      "title": "Introduction",
+      "level": 4,
+      "line_start": 213,
+      "line_end": null,
+      "hierarchy": [
+        "Introduction"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Introduction",
+      "content_preview": "Introduction"
+    },
+    {
+      "id": "sec_4790789",
+      "title": "vii",
+      "level": 4,
+      "line_start": 315,
+      "line_end": null,
+      "hierarchy": [
+        "vii"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > vii",
+      "content_preview": "vii"
+    },
+    {
+      "id": "sec_6923631",
+      "title": "xiii",
+      "level": 4,
+      "line_start": 317,
+      "line_end": null,
+      "hierarchy": [
+        "xiii"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > xiii",
+      "content_preview": "xiii"
+    },
+    {
+      "id": "sec_6923631",
+      "title": "xiii",
+      "level": 4,
+      "line_start": 338,
+      "line_end": null,
+      "hierarchy": [
+        "xiii"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > xiii",
+      "content_preview": "xiii"
+    },
+    {
+      "id": "sec_6273083",
+      "title": "xiv",
+      "level": 4,
+      "line_start": 339,
+      "line_end": null,
+      "hierarchy": [
+        "xiv"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > xiv",
+      "content_preview": "xiv"
+    },
+    {
+      "id": "sec_7653005",
+      "title": "CONTENTS",
+      "level": 4,
+      "line_start": 340,
+      "line_end": null,
+      "hierarchy": [
+        "CONTENTS"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > CONTENTS",
+      "content_preview": "CONTENTS"
+    },
+    {
+      "id": "sec_6803957",
+      "title": "Probability Distributions",
+      "level": 4,
+      "line_start": 342,
+      "line_end": null,
+      "hierarchy": [
+        "Probability Distributions"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Probability Distributions",
+      "content_preview": "Probability Distributions"
+    },
+    {
+      "id": "sec_0834895",
+      "title": "3 Linear Models for Regression",
+      "level": 4,
+      "line_start": 464,
+      "line_end": null,
+      "hierarchy": [
+        "3 Linear Models for Regression"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 3 Linear Models for Regression",
+      "content_preview": "3 Linear Models for Regression"
+    },
+    {
+      "id": "sec_5519601",
+      "title": "137",
+      "level": 4,
+      "line_start": 518,
+      "line_end": null,
+      "hierarchy": [
+        "137"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 137",
+      "content_preview": "137"
+    },
+    {
+      "id": "sec_1245408",
+      "title": "4 Linear Models for Classiﬁcation",
+      "level": 4,
+      "line_start": 575,
+      "line_end": null,
+      "hierarchy": [
+        "4 Linear Models for Classiﬁcation"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 4 Linear Models for Classiﬁcation",
+      "content_preview": "4 Linear Models for Classiﬁcation"
+    },
+    {
+      "id": "sec_7653005",
+      "title": "CONTENTS",
+      "level": 4,
+      "line_start": 632,
+      "line_end": null,
+      "hierarchy": [
+        "CONTENTS"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > CONTENTS",
+      "content_preview": "CONTENTS"
+    },
+    {
+      "id": "sec_8287078",
+      "title": "179",
+      "level": 4,
+      "line_start": 643,
+      "line_end": null,
+      "hierarchy": [
+        "179"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 179",
+      "content_preview": "179"
+    },
+    {
+      "id": "sec_3971335",
+      "title": "5 Neural Networks",
+      "level": 4,
+      "line_start": 699,
+      "line_end": null,
+      "hierarchy": [
+        "5 Neural Networks"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 5 Neural Networks",
+      "content_preview": "5 Neural Networks"
+    },
+    {
+      "id": "sec_1282868",
+      "title": "225",
+      "level": 4,
+      "line_start": 750,
+      "line_end": null,
+      "hierarchy": [
+        "225"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 225",
+      "content_preview": "225"
+    },
+    {
+      "id": "sec_5832001",
+      "title": "xvi",
+      "level": 4,
+      "line_start": 771,
+      "line_end": null,
+      "hierarchy": [
+        "xvi"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > xvi",
+      "content_preview": "xvi"
+    },
+    {
+      "id": "sec_7653005",
+      "title": "CONTENTS",
+      "level": 4,
+      "line_start": 772,
+      "line_end": null,
+      "hierarchy": [
+        "CONTENTS"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > CONTENTS",
+      "content_preview": "CONTENTS"
+    },
+    {
+      "id": "sec_1978462",
+      "title": "6 Kernel Methods",
+      "level": 4,
+      "line_start": 857,
+      "line_end": null,
+      "hierarchy": [
+        "6 Kernel Methods"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 6 Kernel Methods",
+      "content_preview": "6 Kernel Methods"
+    },
+    {
+      "id": "sec_4387144",
+      "title": "291",
+      "level": 4,
+      "line_start": 904,
+      "line_end": null,
+      "hierarchy": [
+        "291"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 291",
+      "content_preview": "291"
+    },
+    {
+      "id": "sec_2098240",
+      "title": "Sparse Kernel Machines",
+      "level": 4,
+      "line_start": 920,
+      "line_end": null,
+      "hierarchy": [
+        "Sparse Kernel Machines"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Sparse Kernel Machines",
+      "content_preview": "Sparse Kernel Machines"
+    },
+    {
+      "id": "sec_0037226",
+      "title": "325",
+      "level": 4,
+      "line_start": 953,
+      "line_end": null,
+      "hierarchy": [
+        "325"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 325",
+      "content_preview": "325"
+    },
+    {
+      "id": "sec_7653005",
+      "title": "CONTENTS",
+      "level": 4,
+      "line_start": 983,
+      "line_end": null,
+      "hierarchy": [
+        "CONTENTS"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > CONTENTS",
+      "content_preview": "CONTENTS"
+    },
+    {
+      "id": "sec_3307340",
+      "title": "xvii",
+      "level": 4,
+      "line_start": 984,
+      "line_end": null,
+      "hierarchy": [
+        "xvii"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > xvii",
+      "content_preview": "xvii"
+    },
+    {
+      "id": "sec_6706531",
+      "title": "8 Graphical Models",
+      "level": 4,
+      "line_start": 985,
+      "line_end": null,
+      "hierarchy": [
+        "8 Graphical Models"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 8 Graphical Models",
+      "content_preview": "8 Graphical Models"
+    },
+    {
+      "id": "sec_9995331",
+      "title": "359",
+      "level": 4,
+      "line_start": 1066,
+      "line_end": null,
+      "hierarchy": [
+        "359"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 359",
+      "content_preview": "359"
+    },
+    {
+      "id": "sec_2496768",
+      "title": "9 Mixture Models and EM",
+      "level": 4,
+      "line_start": 1109,
+      "line_end": null,
+      "hierarchy": [
+        "9 Mixture Models and EM"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 9 Mixture Models and EM",
+      "content_preview": "9 Mixture Models and EM"
+    },
+    {
+      "id": "sec_2403556",
+      "title": "423",
+      "level": 4,
+      "line_start": 1143,
+      "line_end": null,
+      "hierarchy": [
+        "423"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 423",
+      "content_preview": "423"
+    },
+    {
+      "id": "sec_9643493",
+      "title": "10 Approximate Inference",
+      "level": 4,
+      "line_start": 1171,
+      "line_end": null,
+      "hierarchy": [
+        "10 Approximate Inference"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 10 Approximate Inference",
+      "content_preview": "10 Approximate Inference"
+    },
+    {
+      "id": "sec_1833368",
+      "title": "461",
+      "level": 4,
+      "line_start": 1186,
+      "line_end": null,
+      "hierarchy": [
+        "461"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 461",
+      "content_preview": "461"
+    },
+    {
+      "id": "sec_9280602",
+      "title": "xviii",
+      "level": 4,
+      "line_start": 1197,
+      "line_end": null,
+      "hierarchy": [
+        "xviii"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > xviii",
+      "content_preview": "xviii"
+    },
+    {
+      "id": "sec_7653005",
+      "title": "CONTENTS",
+      "level": 4,
+      "line_start": 1198,
+      "line_end": null,
+      "hierarchy": [
+        "CONTENTS"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > CONTENTS",
+      "content_preview": "CONTENTS"
+    },
+    {
+      "id": "sec_8452700",
+      "title": "11 Sampling Methods",
+      "level": 4,
+      "line_start": 1291,
+      "line_end": null,
+      "hierarchy": [
+        "11 Sampling Methods"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 11 Sampling Methods",
+      "content_preview": "11 Sampling Methods"
+    },
+    {
+      "id": "sec_0955210",
+      "title": "12 Continuous Latent Variables",
+      "level": 4,
+      "line_start": 1352,
+      "line_end": null,
+      "hierarchy": [
+        "12 Continuous Latent Variables"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 12 Continuous Latent Variables",
+      "content_preview": "12 Continuous Latent Variables"
+    },
+    {
+      "id": "sec_3506787",
+      "title": "523",
+      "level": 4,
+      "line_start": 1366,
+      "line_end": null,
+      "hierarchy": [
+        "523"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 523",
+      "content_preview": "523"
+    },
+    {
+      "id": "sec_5678055",
+      "title": "559",
+      "level": 4,
+      "line_start": 1391,
+      "line_end": null,
+      "hierarchy": [
+        "559"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 559",
+      "content_preview": "559"
+    },
+    {
+      "id": "sec_7653005",
+      "title": "CONTENTS",
+      "level": 4,
+      "line_start": 1399,
+      "line_end": null,
+      "hierarchy": [
+        "CONTENTS"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > CONTENTS",
+      "content_preview": "CONTENTS"
+    },
+    {
+      "id": "sec_2686311",
+      "title": "xix",
+      "level": 4,
+      "line_start": 1400,
+      "line_end": null,
+      "hierarchy": [
+        "xix"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > xix",
+      "content_preview": "xix"
+    },
+    {
+      "id": "sec_9044690",
+      "title": "13 Sequential Data",
+      "level": 4,
+      "line_start": 1458,
+      "line_end": null,
+      "hierarchy": [
+        "13 Sequential Data"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 13 Sequential Data",
+      "content_preview": "13 Sequential Data"
+    },
+    {
+      "id": "sec_0052687",
+      "title": "605",
+      "level": 4,
+      "line_start": 1513,
+      "line_end": null,
+      "hierarchy": [
+        "605"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 605",
+      "content_preview": "605"
+    },
+    {
+      "id": "sec_4609497",
+      "title": "14 Combining Models",
+      "level": 4,
+      "line_start": 1535,
+      "line_end": null,
+      "hierarchy": [
+        "14 Combining Models"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 14 Combining Models",
+      "content_preview": "14 Combining Models"
+    },
+    {
+      "id": "sec_3063998",
+      "title": "653",
+      "level": 4,
+      "line_start": 1580,
+      "line_end": null,
+      "hierarchy": [
+        "653"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 653",
+      "content_preview": "653"
+    },
+    {
+      "id": "sec_1889997",
+      "title": "Appendix A Data Sets",
+      "level": 4,
+      "line_start": 1602,
+      "line_end": null,
+      "hierarchy": [
+        "Appendix A Data Sets"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Appendix A Data Sets",
+      "content_preview": "Appendix A Data Sets"
+    },
+    {
+      "id": "sec_3472192",
+      "title": "Appendix B Probability Distributions",
+      "level": 4,
+      "line_start": 1603,
+      "line_end": null,
+      "hierarchy": [
+        "Appendix B Probability Distributions"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Appendix B Probability Distributions",
+      "content_preview": "Appendix B Probability Distributions"
+    },
+    {
+      "id": "sec_8384270",
+      "title": "Appendix C Properties of Matrices",
+      "level": 4,
+      "line_start": 1604,
+      "line_end": null,
+      "hierarchy": [
+        "Appendix C Properties of Matrices"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Appendix C Properties of Matrices",
+      "content_preview": "Appendix C Properties of Matrices"
+    },
+    {
+      "id": "sec_6197143",
+      "title": "677",
+      "level": 4,
+      "line_start": 1605,
+      "line_end": null,
+      "hierarchy": [
+        "677"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 677",
+      "content_preview": "677"
+    },
+    {
+      "id": "sec_6091938",
+      "title": "685",
+      "level": 4,
+      "line_start": 1606,
+      "line_end": null,
+      "hierarchy": [
+        "685"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 685",
+      "content_preview": "685"
+    },
+    {
+      "id": "sec_6328688",
+      "title": "695",
+      "level": 4,
+      "line_start": 1607,
+      "line_end": null,
+      "hierarchy": [
+        "695"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 695",
+      "content_preview": "695"
+    },
+    {
+      "id": "sec_7653005",
+      "title": "CONTENTS",
+      "level": 4,
+      "line_start": 1609,
+      "line_end": null,
+      "hierarchy": [
+        "CONTENTS"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > CONTENTS",
+      "content_preview": "CONTENTS"
+    },
+    {
+      "id": "sec_5157549",
+      "title": "Appendix D Calculus of Variations",
+      "level": 4,
+      "line_start": 1610,
+      "line_end": null,
+      "hierarchy": [
+        "Appendix D Calculus of Variations"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Appendix D Calculus of Variations",
+      "content_preview": "Appendix D Calculus of Variations"
+    },
+    {
+      "id": "sec_3241097",
+      "title": "Appendix E Lagrange Multipliers",
+      "level": 4,
+      "line_start": 1611,
+      "line_end": null,
+      "hierarchy": [
+        "Appendix E Lagrange Multipliers"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Appendix E Lagrange Multipliers",
+      "content_preview": "Appendix E Lagrange Multipliers"
+    },
+    {
+      "id": "sec_0758727",
+      "title": "References",
+      "level": 4,
+      "line_start": 1612,
+      "line_end": null,
+      "hierarchy": [
+        "References"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > References",
+      "content_preview": "References"
+    },
+    {
+      "id": "sec_8619310",
+      "title": "Index",
+      "level": 4,
+      "line_start": 1613,
+      "line_end": null,
+      "hierarchy": [
+        "Index"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Index",
+      "content_preview": "Index"
+    },
+    {
+      "id": "sec_4810777",
+      "title": "703",
+      "level": 4,
+      "line_start": 1614,
+      "line_end": null,
+      "hierarchy": [
+        "703"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 703",
+      "content_preview": "703"
+    },
+    {
+      "id": "sec_1274877",
+      "title": "707",
+      "level": 4,
+      "line_start": 1615,
+      "line_end": null,
+      "hierarchy": [
+        "707"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 707",
+      "content_preview": "707"
+    },
+    {
+      "id": "sec_8262206",
+      "title": "711",
+      "level": 4,
+      "line_start": 1616,
+      "line_end": null,
+      "hierarchy": [
+        "711"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 711",
+      "content_preview": "711"
+    },
+    {
+      "id": "sec_4865994",
+      "title": "729",
+      "level": 4,
+      "line_start": 1617,
+      "line_end": null,
+      "hierarchy": [
+        "729"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 729",
+      "content_preview": "729"
+    },
+    {
+      "id": "sec_4472649",
+      "title": "Introduction",
+      "level": 2,
+      "line_start": 1619,
+      "line_end": null,
+      "hierarchy": [
+        "Introduction"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Introduction",
+      "content_preview": "Introduction"
+    },
+    {
+      "id": "sec_4361872",
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_start": 1636,
+      "line_end": null,
+      "hierarchy": [
+        "1. INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1. INTRODUCTION",
+      "content_preview": "1. INTRODUCTION"
+    },
+    {
+      "id": "sec_8176130",
+      "title": "Figure 1.1 Examples of hand-written dig-",
+      "level": 4,
+      "line_start": 1637,
+      "line_end": null,
+      "hierarchy": [
+        "Figure 1.1 Examples of hand-written dig-"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Figure 1.1 Examples of hand-written dig-",
+      "content_preview": "Figure 1.1 Examples of hand-written dig-"
+    },
+    {
+      "id": "sec_4361872",
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_start": 1675,
+      "line_end": null,
+      "hierarchy": [
+        "1. INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1. INTRODUCTION",
+      "content_preview": "1. INTRODUCTION"
+    },
+    {
+      "id": "sec_4361872",
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_start": 1723,
+      "line_end": null,
+      "hierarchy": [
+        "1. INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1. INTRODUCTION",
+      "content_preview": "1. INTRODUCTION"
+    },
+    {
+      "id": "sec_4749477",
+      "title": "Figure 1.2 Plot of a training data set of N =",
+      "level": 4,
+      "line_start": 1724,
+      "line_end": null,
+      "hierarchy": [
+        "Figure 1.2 Plot of a training data set of N ="
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Figure 1.2 Plot of a training data set of N =",
+      "content_preview": "Figure 1.2 Plot of a training data set of N ="
+    },
+    {
+      "id": "sec_2238802",
+      "title": "1.1. Example: Polynomial Curve Fitting",
+      "level": 3,
+      "line_start": 1754,
+      "line_end": null,
+      "hierarchy": [
+        "1.1. Example: Polynomial Curve Fitting"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.1. Example: Polynomial Curve Fitting",
+      "content_preview": "1.1. Example: Polynomial Curve Fitting"
+    },
+    {
+      "id": "sec_2238802",
+      "title": "1.1. Example: Polynomial Curve Fitting",
+      "level": 4,
+      "line_start": 1769,
+      "line_end": null,
+      "hierarchy": [
+        "1.1. Example: Polynomial Curve Fitting"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.1. Example: Polynomial Curve Fitting",
+      "content_preview": "1.1. Example: Polynomial Curve Fitting"
+    },
+    {
+      "id": "sec_4361872",
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_start": 1820,
+      "line_end": null,
+      "hierarchy": [
+        "1. INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1. INTRODUCTION",
+      "content_preview": "1. INTRODUCTION"
+    },
+    {
+      "id": "sec_9724716",
+      "title": "Figure 1.3 The error",
+      "level": 4,
+      "line_start": 1821,
+      "line_end": null,
+      "hierarchy": [
+        "Figure 1.3 The error"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Figure 1.3 The error",
+      "content_preview": "Figure 1.3 The error"
+    },
+    {
+      "id": "sec_2238802",
+      "title": "1.1. Example: Polynomial Curve Fitting",
+      "level": 4,
+      "line_start": 1873,
+      "line_end": null,
+      "hierarchy": [
+        "1.1. Example: Polynomial Curve Fitting"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.1. Example: Polynomial Curve Fitting",
+      "content_preview": "1.1. Example: Polynomial Curve Fitting"
+    },
+    {
+      "id": "sec_4361872",
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_start": 1917,
+      "line_end": null,
+      "hierarchy": [
+        "1. INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1. INTRODUCTION",
+      "content_preview": "1. INTRODUCTION"
+    },
+    {
+      "id": "sec_5431672",
+      "title": "Figure 1.5 Graphs of",
+      "level": 4,
+      "line_start": 1918,
+      "line_end": null,
+      "hierarchy": [
+        "Figure 1.5 Graphs of"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Figure 1.5 Graphs of",
+      "content_preview": "Figure 1.5 Graphs of"
+    },
+    {
+      "id": "sec_2907651",
+      "title": "Table 1.1 Table of the coefﬁcients w(cid:1) for",
+      "level": 4,
+      "line_start": 1956,
+      "line_end": null,
+      "hierarchy": [
+        "Table 1.1 Table of the coefﬁcients w(cid:1) for"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Table 1.1 Table of the coefﬁcients w(cid:1) for",
+      "content_preview": "Table 1.1 Table of the coefﬁcients w(cid:1) for"
+    },
+    {
+      "id": "sec_2238802",
+      "title": "1.1. Example: Polynomial Curve Fitting",
+      "level": 4,
+      "line_start": 2002,
+      "line_end": null,
+      "hierarchy": [
+        "1.1. Example: Polynomial Curve Fitting"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.1. Example: Polynomial Curve Fitting",
+      "content_preview": "1.1. Example: Polynomial Curve Fitting"
+    },
+    {
+      "id": "sec_4361872",
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_start": 2052,
+      "line_end": null,
+      "hierarchy": [
+        "1. INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1. INTRODUCTION",
+      "content_preview": "1. INTRODUCTION"
+    },
+    {
+      "id": "sec_2238802",
+      "title": "1.1. Example: Polynomial Curve Fitting",
+      "level": 4,
+      "line_start": 2111,
+      "line_end": null,
+      "hierarchy": [
+        "1.1. Example: Polynomial Curve Fitting"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.1. Example: Polynomial Curve Fitting",
+      "content_preview": "1.1. Example: Polynomial Curve Fitting"
+    },
+    {
+      "id": "sec_1512880",
+      "title": "Table 1.2 Table of the coefﬁcients w(cid:1) for M =",
+      "level": 4,
+      "line_start": 2113,
+      "line_end": null,
+      "hierarchy": [
+        "Table 1.2 Table of the coefﬁcients w(cid:1) for M ="
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Table 1.2 Table of the coefﬁcients w(cid:1) for M =",
+      "content_preview": "Table 1.2 Table of the coefﬁcients w(cid:1) for M ="
+    },
+    {
+      "id": "sec_3611873",
+      "title": "Figure 1.8 Graph of the root-mean-square er-",
+      "level": 4,
+      "line_start": 2194,
+      "line_end": null,
+      "hierarchy": [
+        "Figure 1.8 Graph of the root-mean-square er-"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Figure 1.8 Graph of the root-mean-square er-",
+      "content_preview": "Figure 1.8 Graph of the root-mean-square er-"
+    },
+    {
+      "id": "sec_4361872",
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_start": 2212,
+      "line_end": null,
+      "hierarchy": [
+        "1. INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1. INTRODUCTION",
+      "content_preview": "1. INTRODUCTION"
+    },
+    {
+      "id": "sec_3711999",
+      "title": "1.2. Probability Theory",
+      "level": 3,
+      "line_start": 2216,
+      "line_end": null,
+      "hierarchy": [
+        "1.2. Probability Theory"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.2. Probability Theory",
+      "content_preview": "1.2. Probability Theory"
+    },
+    {
+      "id": "sec_1729055",
+      "title": "Figure 1.9 We use a simple example of two",
+      "level": 4,
+      "line_start": 2242,
+      "line_end": null,
+      "hierarchy": [
+        "Figure 1.9 We use a simple example of two"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Figure 1.9 We use a simple example of two",
+      "content_preview": "Figure 1.9 We use a simple example of two"
+    },
+    {
+      "id": "sec_3711999",
+      "title": "1.2. Probability Theory",
+      "level": 4,
+      "line_start": 2247,
+      "line_end": null,
+      "hierarchy": [
+        "1.2. Probability Theory"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.2. Probability Theory",
+      "content_preview": "1.2. Probability Theory"
+    },
+    {
+      "id": "sec_3501130",
+      "title": "Figure 1.10 We can derive the sum and product rules of probability by",
+      "level": 4,
+      "line_start": 2249,
+      "line_end": null,
+      "hierarchy": [
+        "Figure 1.10 We can derive the sum and product rules of probability by"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Figure 1.10 We can derive the sum and product rules of probability by",
+      "content_preview": "Figure 1.10 We can derive the sum and product rules of probability by"
+    },
+    {
+      "id": "sec_4361872",
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_start": 2309,
+      "line_end": null,
+      "hierarchy": [
+        "1. INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1. INTRODUCTION",
+      "content_preview": "1. INTRODUCTION"
+    },
+    {
+      "id": "sec_1454864",
+      "title": "sum rule",
+      "level": 4,
+      "line_start": 2353,
+      "line_end": null,
+      "hierarchy": [
+        "sum rule"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > sum rule",
+      "content_preview": "sum rule"
+    },
+    {
+      "id": "sec_1019168",
+      "title": "product rule",
+      "level": 4,
+      "line_start": 2357,
+      "line_end": null,
+      "hierarchy": [
+        "product rule"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > product rule",
+      "content_preview": "product rule"
+    },
+    {
+      "id": "sec_3711999",
+      "title": "1.2. Probability Theory",
+      "level": 4,
+      "line_start": 2364,
+      "line_end": null,
+      "hierarchy": [
+        "1.2. Probability Theory"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.2. Probability Theory",
+      "content_preview": "1.2. Probability Theory"
+    },
+    {
+      "id": "sec_4361872",
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_start": 2418,
+      "line_end": null,
+      "hierarchy": [
+        "1. INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1. INTRODUCTION",
+      "content_preview": "1. INTRODUCTION"
+    },
+    {
+      "id": "sec_3711999",
+      "title": "1.2. Probability Theory",
+      "level": 4,
+      "line_start": 2457,
+      "line_end": null,
+      "hierarchy": [
+        "1.2. Probability Theory"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.2. Probability Theory",
+      "content_preview": "1.2. Probability Theory"
+    },
+    {
+      "id": "sec_6082445",
+      "title": "1.2.1 Probability densities",
+      "level": 4,
+      "line_start": 2505,
+      "line_end": null,
+      "hierarchy": [
+        "1.2.1 Probability densities"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.2.1 Probability densities",
+      "content_preview": "1.2.1 Probability densities"
+    },
+    {
+      "id": "sec_4361872",
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_start": 2518,
+      "line_end": null,
+      "hierarchy": [
+        "1. INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1. INTRODUCTION",
+      "content_preview": "1. INTRODUCTION"
+    },
+    {
+      "id": "sec_1092955",
+      "title": "Figure 1.12 The concept of probability for",
+      "level": 4,
+      "line_start": 2519,
+      "line_end": null,
+      "hierarchy": [
+        "Figure 1.12 The concept of probability for"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Figure 1.12 The concept of probability for",
+      "content_preview": "Figure 1.12 The concept of probability for"
+    },
+    {
+      "id": "sec_3711999",
+      "title": "1.2. Probability Theory",
+      "level": 4,
+      "line_start": 2576,
+      "line_end": null,
+      "hierarchy": [
+        "1.2. Probability Theory"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.2. Probability Theory",
+      "content_preview": "1.2. Probability Theory"
+    },
+    {
+      "id": "sec_9918914",
+      "title": "1.2.2 Expectations and covariances",
+      "level": 4,
+      "line_start": 2606,
+      "line_end": null,
+      "hierarchy": [
+        "1.2.2 Expectations and covariances"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.2.2 Expectations and covariances",
+      "content_preview": "1.2.2 Expectations and covariances"
+    },
+    {
+      "id": "sec_4361872",
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_start": 2626,
+      "line_end": null,
+      "hierarchy": [
+        "1. INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1. INTRODUCTION",
+      "content_preview": "1. INTRODUCTION"
+    },
+    {
+      "id": "sec_3711999",
+      "title": "1.2. Probability Theory",
+      "level": 4,
+      "line_start": 2682,
+      "line_end": null,
+      "hierarchy": [
+        "1.2. Probability Theory"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.2. Probability Theory",
+      "content_preview": "1.2. Probability Theory"
+    },
+    {
+      "id": "sec_4774068",
+      "title": "1.2.3 Bayesian probabilities",
+      "level": 4,
+      "line_start": 2684,
+      "line_end": null,
+      "hierarchy": [
+        "1.2.3 Bayesian probabilities"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.2.3 Bayesian probabilities",
+      "content_preview": "1.2.3 Bayesian probabilities"
+    },
+    {
+      "id": "sec_3725519",
+      "title": "Thomas Bayes",
+      "level": 3,
+      "line_start": 2717,
+      "line_end": null,
+      "hierarchy": [
+        "Thomas Bayes"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Thomas Bayes",
+      "content_preview": "Thomas Bayes"
+    },
+    {
+      "id": "sec_4361872",
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_start": 2740,
+      "line_end": null,
+      "hierarchy": [
+        "1. INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1. INTRODUCTION",
+      "content_preview": "1. INTRODUCTION"
+    },
+    {
+      "id": "sec_3711999",
+      "title": "1.2. Probability Theory",
+      "level": 4,
+      "line_start": 2787,
+      "line_end": null,
+      "hierarchy": [
+        "1.2. Probability Theory"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.2. Probability Theory",
+      "content_preview": "1.2. Probability Theory"
+    },
+    {
+      "id": "sec_4361872",
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_start": 2838,
+      "line_end": null,
+      "hierarchy": [
+        "1. INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1. INTRODUCTION",
+      "content_preview": "1. INTRODUCTION"
+    },
+    {
+      "id": "sec_4331290",
+      "title": "1.2.4 The Gaussian distribution",
+      "level": 4,
+      "line_start": 2850,
+      "line_end": null,
+      "hierarchy": [
+        "1.2.4 The Gaussian distribution"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.2.4 The Gaussian distribution",
+      "content_preview": "1.2.4 The Gaussian distribution"
+    },
+    {
+      "id": "sec_4158495",
+      "title": "Pierre-Simon Laplace",
+      "level": 3,
+      "line_start": 2880,
+      "line_end": null,
+      "hierarchy": [
+        "Pierre-Simon Laplace"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Pierre-Simon Laplace",
+      "content_preview": "Pierre-Simon Laplace"
+    },
+    {
+      "id": "sec_3518878",
+      "title": "Figure 1.13 Plot of the univariate Gaussian",
+      "level": 4,
+      "line_start": 2902,
+      "line_end": null,
+      "hierarchy": [
+        "Figure 1.13 Plot of the univariate Gaussian"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Figure 1.13 Plot of the univariate Gaussian",
+      "content_preview": "Figure 1.13 Plot of the univariate Gaussian"
+    },
+    {
+      "id": "sec_3711999",
+      "title": "1.2. Probability Theory",
+      "level": 4,
+      "line_start": 2906,
+      "line_end": null,
+      "hierarchy": [
+        "1.2. Probability Theory"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.2. Probability Theory",
+      "content_preview": "1.2. Probability Theory"
+    },
+    {
+      "id": "sec_4361872",
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_start": 2967,
+      "line_end": null,
+      "hierarchy": [
+        "1. INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1. INTRODUCTION",
+      "content_preview": "1. INTRODUCTION"
+    },
+    {
+      "id": "sec_8393976",
+      "title": "Figure 1.14 Illustration of the likelihood function for",
+      "level": 4,
+      "line_start": 2968,
+      "line_end": null,
+      "hierarchy": [
+        "Figure 1.14 Illustration of the likelihood function for"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Figure 1.14 Illustration of the likelihood function for",
+      "content_preview": "Figure 1.14 Illustration of the likelihood function for"
+    },
+    {
+      "id": "sec_3711999",
+      "title": "1.2. Probability Theory",
+      "level": 4,
+      "line_start": 3024,
+      "line_end": null,
+      "hierarchy": [
+        "1.2. Probability Theory"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.2. Probability Theory",
+      "content_preview": "1.2. Probability Theory"
+    },
+    {
+      "id": "sec_8227161",
+      "title": "x|µ, σ2",
+      "level": 4,
+      "line_start": 3028,
+      "line_end": null,
+      "hierarchy": [
+        "x|µ, σ2"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > x|µ, σ2",
+      "content_preview": "x|µ, σ2"
+    },
+    {
+      "id": "sec_4361872",
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_start": 3105,
+      "line_end": null,
+      "hierarchy": [
+        "1. INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1. INTRODUCTION",
+      "content_preview": "1. INTRODUCTION"
+    },
+    {
+      "id": "sec_6632977",
+      "title": "Figure 1.15 Illustration of how bias arises in using max-",
+      "level": 4,
+      "line_start": 3106,
+      "line_end": null,
+      "hierarchy": [
+        "Figure 1.15 Illustration of how bias arises in using max-"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Figure 1.15 Illustration of how bias arises in using max-",
+      "content_preview": "Figure 1.15 Illustration of how bias arises in using max-"
+    },
+    {
+      "id": "sec_2483829",
+      "title": "1.2.5 Curve ﬁtting re-visited",
+      "level": 4,
+      "line_start": 3134,
+      "line_end": null,
+      "hierarchy": [
+        "1.2.5 Curve ﬁtting re-visited"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.2.5 Curve ﬁtting re-visited",
+      "content_preview": "1.2.5 Curve ﬁtting re-visited"
+    },
+    {
+      "id": "sec_2075140",
+      "title": "Figure 1.16 Schematic illustration of a Gaus-",
+      "level": 4,
+      "line_start": 3156,
+      "line_end": null,
+      "hierarchy": [
+        "Figure 1.16 Schematic illustration of a Gaus-"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Figure 1.16 Schematic illustration of a Gaus-",
+      "content_preview": "Figure 1.16 Schematic illustration of a Gaus-"
+    },
+    {
+      "id": "sec_3711999",
+      "title": "1.2. Probability Theory",
+      "level": 4,
+      "line_start": 3164,
+      "line_end": null,
+      "hierarchy": [
+        "1.2. Probability Theory"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.2. Probability Theory",
+      "content_preview": "1.2. Probability Theory"
+    },
+    {
+      "id": "sec_4361872",
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_start": 3224,
+      "line_end": null,
+      "hierarchy": [
+        "1. INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1. INTRODUCTION",
+      "content_preview": "1. INTRODUCTION"
+    },
+    {
+      "id": "sec_3219486",
+      "title": "1.2.6 Bayesian curve ﬁtting",
+      "level": 4,
+      "line_start": 3280,
+      "line_end": null,
+      "hierarchy": [
+        "1.2.6 Bayesian curve ﬁtting"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.2.6 Bayesian curve ﬁtting",
+      "content_preview": "1.2.6 Bayesian curve ﬁtting"
+    },
+    {
+      "id": "sec_3711999",
+      "title": "1.2. Probability Theory",
+      "level": 4,
+      "line_start": 3287,
+      "line_end": null,
+      "hierarchy": [
+        "1.2. Probability Theory"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.2. Probability Theory",
+      "content_preview": "1.2. Probability Theory"
+    },
+    {
+      "id": "sec_4361872",
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_start": 3338,
+      "line_end": null,
+      "hierarchy": [
+        "1. INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1. INTRODUCTION",
+      "content_preview": "1. INTRODUCTION"
+    },
+    {
+      "id": "sec_6539554",
+      "title": "Figure 1.17 The predictive distribution result-",
+      "level": 4,
+      "line_start": 3339,
+      "line_end": null,
+      "hierarchy": [
+        "Figure 1.17 The predictive distribution result-"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Figure 1.17 The predictive distribution result-",
+      "content_preview": "Figure 1.17 The predictive distribution result-"
+    },
+    {
+      "id": "sec_2437896",
+      "title": "1.3. Model Selection",
+      "level": 3,
+      "line_start": 3358,
+      "line_end": null,
+      "hierarchy": [
+        "1.3. Model Selection"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.3. Model Selection",
+      "content_preview": "1.3. Model Selection"
+    },
+    {
+      "id": "sec_8042069",
+      "title": "1.4. The Curse of Dimensionality",
+      "level": 4,
+      "line_start": 3388,
+      "line_end": null,
+      "hierarchy": [
+        "1.4. The Curse of Dimensionality"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.4. The Curse of Dimensionality",
+      "content_preview": "1.4. The Curse of Dimensionality"
+    },
+    {
+      "id": "sec_5345573",
+      "title": "Figure 1.18 The technique of S-fold cross-validation,",
+      "level": 4,
+      "line_start": 3390,
+      "line_end": null,
+      "hierarchy": [
+        "Figure 1.18 The technique of S-fold cross-validation,"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Figure 1.18 The technique of S-fold cross-validation,",
+      "content_preview": "Figure 1.18 The technique of S-fold cross-validation,"
+    },
+    {
+      "id": "sec_8042069",
+      "title": "1.4. The Curse of Dimensionality",
+      "level": 3,
+      "line_start": 3434,
+      "line_end": null,
+      "hierarchy": [
+        "1.4. The Curse of Dimensionality"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.4. The Curse of Dimensionality",
+      "content_preview": "1.4. The Curse of Dimensionality"
+    },
+    {
+      "id": "sec_4361872",
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_start": 3438,
+      "line_end": null,
+      "hierarchy": [
+        "1. INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1. INTRODUCTION",
+      "content_preview": "1. INTRODUCTION"
+    },
+    {
+      "id": "sec_1127666",
+      "title": "Figure 1.19 Scatter plot of the oil ﬂow data",
+      "level": 4,
+      "line_start": 3439,
+      "line_end": null,
+      "hierarchy": [
+        "Figure 1.19 Scatter plot of the oil ﬂow data"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Figure 1.19 Scatter plot of the oil ﬂow data",
+      "content_preview": "Figure 1.19 Scatter plot of the oil ﬂow data"
+    },
+    {
+      "id": "sec_8042069",
+      "title": "1.4. The Curse of Dimensionality",
+      "level": 4,
+      "line_start": 3487,
+      "line_end": null,
+      "hierarchy": [
+        "1.4. The Curse of Dimensionality"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.4. The Curse of Dimensionality",
+      "content_preview": "1.4. The Curse of Dimensionality"
+    },
+    {
+      "id": "sec_9319359",
+      "title": "Figure 1.20 Illustration of a simple approach",
+      "level": 4,
+      "line_start": 3489,
+      "line_end": null,
+      "hierarchy": [
+        "Figure 1.20 Illustration of a simple approach"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Figure 1.20 Illustration of a simple approach",
+      "content_preview": "Figure 1.20 Illustration of a simple approach"
+    },
+    {
+      "id": "sec_8269137",
+      "title": "Figure 1.21 Illustration",
+      "level": 4,
+      "line_start": 3529,
+      "line_end": null,
+      "hierarchy": [
+        "Figure 1.21 Illustration"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Figure 1.21 Illustration",
+      "content_preview": "Figure 1.21 Illustration"
+    },
+    {
+      "id": "sec_4361872",
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_start": 3549,
+      "line_end": null,
+      "hierarchy": [
+        "1. INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1. INTRODUCTION",
+      "content_preview": "1. INTRODUCTION"
+    },
+    {
+      "id": "sec_8239355",
+      "title": "Figure 1.22 Plot of the fraction of the volume of",
+      "level": 4,
+      "line_start": 3611,
+      "line_end": null,
+      "hierarchy": [
+        "Figure 1.22 Plot of the fraction of the volume of"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Figure 1.22 Plot of the fraction of the volume of",
+      "content_preview": "Figure 1.22 Plot of the fraction of the volume of"
+    },
+    {
+      "id": "sec_8042069",
+      "title": "1.4. The Curse of Dimensionality",
+      "level": 4,
+      "line_start": 3615,
+      "line_end": null,
+      "hierarchy": [
+        "1.4. The Curse of Dimensionality"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.4. The Curse of Dimensionality",
+      "content_preview": "1.4. The Curse of Dimensionality"
+    },
+    {
+      "id": "sec_4899056",
+      "title": "Figure 1.23 Plot of the probability density with",
+      "level": 4,
+      "line_start": 3661,
+      "line_end": null,
+      "hierarchy": [
+        "Figure 1.23 Plot of the probability density with"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Figure 1.23 Plot of the probability density with",
+      "content_preview": "Figure 1.23 Plot of the probability density with"
+    },
+    {
+      "id": "sec_4361872",
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_start": 3687,
+      "line_end": null,
+      "hierarchy": [
+        "1. INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1. INTRODUCTION",
+      "content_preview": "1. INTRODUCTION"
+    },
+    {
+      "id": "sec_2044233",
+      "title": "1.5. Decision Theory",
+      "level": 3,
+      "line_start": 3697,
+      "line_end": null,
+      "hierarchy": [
+        "1.5. Decision Theory"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.5. Decision Theory",
+      "content_preview": "1.5. Decision Theory"
+    },
+    {
+      "id": "sec_2044233",
+      "title": "1.5. Decision Theory",
+      "level": 4,
+      "line_start": 3730,
+      "line_end": null,
+      "hierarchy": [
+        "1.5. Decision Theory"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.5. Decision Theory",
+      "content_preview": "1.5. Decision Theory"
+    },
+    {
+      "id": "sec_8221988",
+      "title": "1.5.1 Minimizing the misclassiﬁcation rate",
+      "level": 4,
+      "line_start": 3755,
+      "line_end": null,
+      "hierarchy": [
+        "1.5.1 Minimizing the misclassiﬁcation rate"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.5.1 Minimizing the misclassiﬁcation rate",
+      "content_preview": "1.5.1 Minimizing the misclassiﬁcation rate"
+    },
+    {
+      "id": "sec_4361872",
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_start": 3783,
+      "line_end": null,
+      "hierarchy": [
+        "1. INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1. INTRODUCTION",
+      "content_preview": "1. INTRODUCTION"
+    },
+    {
+      "id": "sec_6364777",
+      "title": "Figure 1.25 An example of a loss matrix with ele-",
+      "level": 4,
+      "line_start": 3825,
+      "line_end": null,
+      "hierarchy": [
+        "Figure 1.25 An example of a loss matrix with ele-"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Figure 1.25 An example of a loss matrix with ele-",
+      "content_preview": "Figure 1.25 An example of a loss matrix with ele-"
+    },
+    {
+      "id": "sec_2044233",
+      "title": "1.5. Decision Theory",
+      "level": 4,
+      "line_start": 3838,
+      "line_end": null,
+      "hierarchy": [
+        "1.5. Decision Theory"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.5. Decision Theory",
+      "content_preview": "1.5. Decision Theory"
+    },
+    {
+      "id": "sec_5975141",
+      "title": "1.5.2 Minimizing the expected loss",
+      "level": 4,
+      "line_start": 3840,
+      "line_end": null,
+      "hierarchy": [
+        "1.5.2 Minimizing the expected loss"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.5.2 Minimizing the expected loss",
+      "content_preview": "1.5.2 Minimizing the expected loss"
+    },
+    {
+      "id": "sec_4361872",
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_start": 3886,
+      "line_end": null,
+      "hierarchy": [
+        "1. INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1. INTRODUCTION",
+      "content_preview": "1. INTRODUCTION"
+    },
+    {
+      "id": "sec_4219466",
+      "title": "1.5.3 The reject option",
+      "level": 4,
+      "line_start": 3906,
+      "line_end": null,
+      "hierarchy": [
+        "1.5.3 The reject option"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.5.3 The reject option",
+      "content_preview": "1.5.3 The reject option"
+    },
+    {
+      "id": "sec_2135116",
+      "title": "1.5.4 Inference and decision",
+      "level": 4,
+      "line_start": 3926,
+      "line_end": null,
+      "hierarchy": [
+        "1.5.4 Inference and decision"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.5.4 Inference and decision",
+      "content_preview": "1.5.4 Inference and decision"
+    },
+    {
+      "id": "sec_2044233",
+      "title": "1.5. Decision Theory",
+      "level": 4,
+      "line_start": 3930,
+      "line_end": null,
+      "hierarchy": [
+        "1.5. Decision Theory"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.5. Decision Theory",
+      "content_preview": "1.5. Decision Theory"
+    },
+    {
+      "id": "sec_4361872",
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_start": 3978,
+      "line_end": null,
+      "hierarchy": [
+        "1. INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1. INTRODUCTION",
+      "content_preview": "1. INTRODUCTION"
+    },
+    {
+      "id": "sec_1440810",
+      "title": "Minimizing risk. Consider a problem in which the elements of the loss matrix are",
+      "level": 4,
+      "line_start": 4048,
+      "line_end": null,
+      "hierarchy": [
+        "Minimizing risk. Consider a problem in which the elements of the loss matrix are"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Minimizing risk. Consider a problem in which the elements of the loss matrix are",
+      "content_preview": "Minimizing risk. Consider a problem in which the elements of the loss matrix are"
+    },
+    {
+      "id": "sec_2044233",
+      "title": "1.5. Decision Theory",
+      "level": 4,
+      "line_start": 4050,
+      "line_end": null,
+      "hierarchy": [
+        "1.5. Decision Theory"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.5. Decision Theory",
+      "content_preview": "1.5. Decision Theory"
+    },
+    {
+      "id": "sec_1209815",
+      "title": "Compensating for class priors. Consider our medical X-ray problem again, and",
+      "level": 4,
+      "line_start": 4059,
+      "line_end": null,
+      "hierarchy": [
+        "Compensating for class priors. Consider our medical X-ray problem again, and"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Compensating for class priors. Consider our medical X-ray problem again, and",
+      "content_preview": "Compensating for class priors. Consider our medical X-ray problem again, and"
+    },
+    {
+      "id": "sec_7354430",
+      "title": "Combining models. For complex applications, we may wish to break the problem",
+      "level": 4,
+      "line_start": 4084,
+      "line_end": null,
+      "hierarchy": [
+        "Combining models. For complex applications, we may wish to break the problem"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Combining models. For complex applications, we may wish to break the problem",
+      "content_preview": "Combining models. For complex applications, we may wish to break the problem"
+    },
+    {
+      "id": "sec_4361872",
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_start": 4096,
+      "line_end": null,
+      "hierarchy": [
+        "1. INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1. INTRODUCTION",
+      "content_preview": "1. INTRODUCTION"
+    },
+    {
+      "id": "sec_6723226",
+      "title": "1.5.5 Loss functions for regression",
+      "level": 4,
+      "line_start": 4120,
+      "line_end": null,
+      "hierarchy": [
+        "1.5.5 Loss functions for regression"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.5.5 Loss functions for regression",
+      "content_preview": "1.5.5 Loss functions for regression"
+    },
+    {
+      "id": "sec_9309380",
+      "title": "Figure 1.28 The regression function y(x),",
+      "level": 4,
+      "line_start": 4155,
+      "line_end": null,
+      "hierarchy": [
+        "Figure 1.28 The regression function y(x),"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Figure 1.28 The regression function y(x),",
+      "content_preview": "Figure 1.28 The regression function y(x),"
+    },
+    {
+      "id": "sec_2044233",
+      "title": "1.5. Decision Theory",
+      "level": 4,
+      "line_start": 4162,
+      "line_end": null,
+      "hierarchy": [
+        "1.5. Decision Theory"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.5. Decision Theory",
+      "content_preview": "1.5. Decision Theory"
+    },
+    {
+      "id": "sec_4361872",
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_start": 4205,
+      "line_end": null,
+      "hierarchy": [
+        "1. INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1. INTRODUCTION",
+      "content_preview": "1. INTRODUCTION"
+    },
+    {
+      "id": "sec_7911241",
+      "title": "1.6.",
+      "level": 3,
+      "line_start": 4228,
+      "line_end": null,
+      "hierarchy": [
+        "1.6."
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.6.",
+      "content_preview": "1.6."
+    },
+    {
+      "id": "sec_5734754",
+      "title": "Information Theory",
+      "level": 3,
+      "line_start": 4229,
+      "line_end": null,
+      "hierarchy": [
+        "Information Theory"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Information Theory",
+      "content_preview": "Information Theory"
+    },
+    {
+      "id": "sec_2593611",
+      "title": "1.6. Information Theory",
+      "level": 4,
+      "line_start": 4305,
+      "line_end": null,
+      "hierarchy": [
+        "1.6. Information Theory"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.6. Information Theory",
+      "content_preview": "1.6. Information Theory"
+    },
+    {
+      "id": "sec_4361872",
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_start": 4341,
+      "line_end": null,
+      "hierarchy": [
+        "1. INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1. INTRODUCTION",
+      "content_preview": "1. INTRODUCTION"
+    },
+    {
+      "id": "sec_2593611",
+      "title": "1.6. Information Theory",
+      "level": 4,
+      "line_start": 4433,
+      "line_end": null,
+      "hierarchy": [
+        "1.6. Information Theory"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.6. Information Theory",
+      "content_preview": "1.6. Information Theory"
+    },
+    {
+      "id": "sec_4361872",
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_start": 4516,
+      "line_end": null,
+      "hierarchy": [
+        "1. INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1. INTRODUCTION",
+      "content_preview": "1. INTRODUCTION"
+    },
+    {
+      "id": "sec_2593611",
+      "title": "1.6. Information Theory",
+      "level": 4,
+      "line_start": 4590,
+      "line_end": null,
+      "hierarchy": [
+        "1.6. Information Theory"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.6. Information Theory",
+      "content_preview": "1.6. Information Theory"
+    },
+    {
+      "id": "sec_8938900",
+      "title": "Ludwig Boltzmann",
+      "level": 3,
+      "line_start": 4621,
+      "line_end": null,
+      "hierarchy": [
+        "Ludwig Boltzmann"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Ludwig Boltzmann",
+      "content_preview": "Ludwig Boltzmann"
+    },
+    {
+      "id": "sec_4361872",
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_start": 4663,
+      "line_end": null,
+      "hierarchy": [
+        "1. INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1. INTRODUCTION",
+      "content_preview": "1. INTRODUCTION"
+    },
+    {
+      "id": "sec_2593611",
+      "title": "1.6. Information Theory",
+      "level": 4,
+      "line_start": 4746,
+      "line_end": null,
+      "hierarchy": [
+        "1.6. Information Theory"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.6. Information Theory",
+      "content_preview": "1.6. Information Theory"
+    },
+    {
+      "id": "sec_5933441",
+      "title": "1.6.1 Relative entropy and mutual information",
+      "level": 4,
+      "line_start": 4754,
+      "line_end": null,
+      "hierarchy": [
+        "1.6.1 Relative entropy and mutual information"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.6.1 Relative entropy and mutual information",
+      "content_preview": "1.6.1 Relative entropy and mutual information"
+    },
+    {
+      "id": "sec_6843074",
+      "title": "Claude Shannon",
+      "level": 3,
+      "line_start": 4789,
+      "line_end": null,
+      "hierarchy": [
+        "Claude Shannon"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Claude Shannon",
+      "content_preview": "Claude Shannon"
+    },
+    {
+      "id": "sec_4361872",
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_start": 4809,
+      "line_end": null,
+      "hierarchy": [
+        "1. INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1. INTRODUCTION",
+      "content_preview": "1. INTRODUCTION"
+    },
+    {
+      "id": "sec_8293627",
+      "title": "Figure 1.31 A convex function f (x) is one for which ev-",
+      "level": 4,
+      "line_start": 4810,
+      "line_end": null,
+      "hierarchy": [
+        "Figure 1.31 A convex function f (x) is one for which ev-"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Figure 1.31 A convex function f (x) is one for which ev-",
+      "content_preview": "Figure 1.31 A convex function f (x) is one for which ev-"
+    },
+    {
+      "id": "sec_2593611",
+      "title": "1.6. Information Theory",
+      "level": 4,
+      "line_start": 4875,
+      "line_end": null,
+      "hierarchy": [
+        "1.6. Information Theory"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.6. Information Theory",
+      "content_preview": "1.6. Information Theory"
+    },
+    {
+      "id": "sec_4361872",
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_start": 4934,
+      "line_end": null,
+      "hierarchy": [
+        "1. INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1. INTRODUCTION",
+      "content_preview": "1. INTRODUCTION"
+    },
+    {
+      "id": "sec_1386852",
+      "title": "Exercises",
+      "level": 3,
+      "line_start": 4935,
+      "line_end": null,
+      "hierarchy": [
+        "Exercises"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Exercises",
+      "content_preview": "Exercises"
+    },
+    {
+      "id": "sec_1386852",
+      "title": "Exercises",
+      "level": 4,
+      "line_start": 4985,
+      "line_end": null,
+      "hierarchy": [
+        "Exercises"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Exercises",
+      "content_preview": "Exercises"
+    },
+    {
+      "id": "sec_4361872",
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_start": 5048,
+      "line_end": null,
+      "hierarchy": [
+        "1. INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1. INTRODUCTION",
+      "content_preview": "1. INTRODUCTION"
+    },
+    {
+      "id": "sec_7597327",
+      "title": "1.12 ((cid:1) (cid:1)) www Using the results (1.49) and (1.50), show that",
+      "level": 4,
+      "line_start": 5049,
+      "line_end": null,
+      "hierarchy": [
+        "1.12 ((cid:1) (cid:1)) www Using the results (1.49) and (1.50), show that"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.12 ((cid:1) (cid:1)) www Using the results (1.49) and (1.50), show that",
+      "content_preview": "1.12 ((cid:1) (cid:1)) www Using the results (1.49) and (1.50), show that"
+    },
+    {
+      "id": "sec_1169334",
+      "title": "1.14 ((cid:1) (cid:1))",
+      "level": 4,
+      "line_start": 5059,
+      "line_end": null,
+      "hierarchy": [
+        "1.14 ((cid:1) (cid:1))"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.14 ((cid:1) (cid:1))",
+      "content_preview": "1.14 ((cid:1) (cid:1))"
+    },
+    {
+      "id": "sec_1386852",
+      "title": "Exercises",
+      "level": 4,
+      "line_start": 5127,
+      "line_end": null,
+      "hierarchy": [
+        "Exercises"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Exercises",
+      "content_preview": "Exercises"
+    },
+    {
+      "id": "sec_4361872",
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_start": 5186,
+      "line_end": null,
+      "hierarchy": [
+        "1. INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1. INTRODUCTION",
+      "content_preview": "1. INTRODUCTION"
+    },
+    {
+      "id": "sec_9756764",
+      "title": "1.17 ((cid:1) (cid:1)) www The gamma function is deﬁned by",
+      "level": 4,
+      "line_start": 5187,
+      "line_end": null,
+      "hierarchy": [
+        "1.17 ((cid:1) (cid:1)) www The gamma function is deﬁned by"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1.17 ((cid:1) (cid:1)) www The gamma function is deﬁned by",
+      "content_preview": "1.17 ((cid:1) (cid:1)) www The gamma function is deﬁned by"
+    },
+    {
+      "id": "sec_1386852",
+      "title": "Exercises",
+      "level": 4,
+      "line_start": 5250,
+      "line_end": null,
+      "hierarchy": [
+        "Exercises"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Exercises",
+      "content_preview": "Exercises"
+    },
+    {
+      "id": "sec_4361872",
+      "title": "1. INTRODUCTION",
+      "level": 4,
+      "line_start": 5315,
+      "line_end": null,
+      "hierarchy": [
+        "1. INTRODUCTION"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > 1. INTRODUCTION",
+      "content_preview": "1. INTRODUCTION"
+    },
+    {
+      "id": "sec_1877248",
+      "title": "Table 1.3 The joint distribution p(x, y) for two binary variables",
+      "level": 4,
+      "line_start": 5358,
+      "line_end": null,
+      "hierarchy": [
+        "Table 1.3 The joint distribution p(x, y) for two binary variables"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Table 1.3 The joint distribution p(x, y) for two binary variables",
+      "content_preview": "Table 1.3 The joint distribution p(x, y) for two binary variables"
+    },
+    {
+      "id": "sec_1386852",
+      "title": "Exercises",
+      "level": 4,
+      "line_start": 5360,
+      "line_end": null,
+      "hierarchy": [
+        "Exercises"
+      ],
+      "evidence_path": "examples\\documents\\PRML.pdf > Exercises",
+      "content_preview": "Exercises"
+    }
+  ]
+}

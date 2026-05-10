@@ -1,0 +1,12 @@
+{
+  "run_id": "alfa_rc2_test1_20260510_131746",
+  "document_id": "alfa_rc2_test1",
+  "source_path": ".\\alfa_rc2_test1.pdf",
+  "question": "Praktyki komunikacyjne i wprowadzenie",
+  "structure_mode": "normal",
+  "structure_path": "results/runs/alfa_rc2_test1_20260510_131746/alfa_rc2_test1_structure.json",
+  "section_map_path": "results/runs/alfa_rc2_test1_20260510_131746/alfa_rc2_test1_alfa_section_map.json",
+  "query_result_path": "results/runs/alfa_rc2_test1_20260510_131746/alfa_rc2_test1_query_result.json",
+  "exit_code": 0,
+  "strict_passed": true
+}

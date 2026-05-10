@@ -1,0 +1,94 @@
+{
+  "question": "What are the main topics and key findings?",
+  "answer": "Na podstawie mapy sekcji najbardziej trafne obszary to: Root, ABSTRACT, The main idea behind our dynamic reﬁnement ordering (DRO). Odpowiedź powinna zostać rozwinięta z tych ścieżek dowodu.",
+  "evidence_paths": [
+    "examples\\documents\\earthmover.pdf > Root",
+    "examples\\documents\\earthmover.pdf > ABSTRACT",
+    "examples\\documents\\earthmover.pdf > The main idea behind our dynamic reﬁnement ordering (DRO)",
+    "examples\\documents\\earthmover.pdf > Based on the above discussion, we can deﬁne a running upper"
+  ],
+  "matched_sections": [
+    {
+      "id": "sec_9727391",
+      "title": "Root",
+      "level": 1,
+      "line_start": 1,
+      "line_end": null,
+      "hierarchy": [
+        "Root"
+      ],
+      "evidence_path": "examples\\documents\\earthmover.pdf > Root",
+      "score": 2,
+      "matched_terms": [
+        "abstract",
+        "introduction"
+      ]
+    },
+    {
+      "id": "sec_5914211",
+      "title": "ABSTRACT",
+      "level": 2,
+      "line_start": 5,
+      "line_end": null,
+      "hierarchy": [
+        "ABSTRACT"
+      ],
+      "evidence_path": "examples\\documents\\earthmover.pdf > ABSTRACT",
+      "score": 2,
+      "matched_terms": [
+        "abstract"
+      ]
+    },
+    {
+      "id": "sec_5824337",
+      "title": "The main idea behind our dynamic reﬁnement ordering (DRO)",
+      "level": 3,
+      "line_start": 939,
+      "line_end": null,
+      "hierarchy": [
+        "The main idea behind our dynamic reﬁnement ordering (DRO)"
+      ],
+      "evidence_path": "examples\\documents\\earthmover.pdf > The main idea behind our dynamic reﬁnement ordering (DRO)",
+      "score": 2,
+      "matched_terms": [
+        "main"
+      ]
+    },
+    {
+      "id": "sec_7524531",
+      "title": "Based on the above discussion, we can deﬁne a running upper",
+      "level": 3,
+      "line_start": 1113,
+      "line_end": null,
+      "hierarchy": [
+        "Based on the above discussion, we can deﬁne a running upper"
+      ],
+      "evidence_path": "examples\\documents\\earthmover.pdf > Based on the above discussion, we can deﬁne a running upper",
+      "score": 2,
+      "matched_terms": [
+        "discussion"
+      ]
+    }
+  ],
+  "confidence": 0.333,
+  "missing_context": [
+    "conclusion",
+    "finding",
+    "highlights",
+    "key",
+    "overview",
+    "results",
+    "summary",
+    "topic"
+  ],
+  "strict": {
+    "enabled": true,
+    "passed": false,
+    "min_confidence": 0.6,
+    "min_evidence_paths": 2
+  },
+  "rejected_by_strict_gate": true,
+  "strict_rejection_reasons": [
+    "confidence_below_threshold"
+  ]
+}

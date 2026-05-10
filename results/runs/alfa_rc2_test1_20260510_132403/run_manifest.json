@@ -1,0 +1,12 @@
+{
+  "run_id": "alfa_rc2_test1_20260510_132403",
+  "document_id": "alfa_rc2_test1",
+  "source_path": ".\\alfa_rc2_test1.pdf",
+  "question": "Jakie są główne tezy i rekomendacje dokumentu?",
+  "structure_mode": "normal",
+  "structure_path": "results/runs/alfa_rc2_test1_20260510_132403/alfa_rc2_test1_structure.json",
+  "section_map_path": "results/runs/alfa_rc2_test1_20260510_132403/alfa_rc2_test1_alfa_section_map.json",
+  "query_result_path": "results/runs/alfa_rc2_test1_20260510_132403/alfa_rc2_test1_query_result.json",
+  "exit_code": 2,
+  "strict_passed": false
+}

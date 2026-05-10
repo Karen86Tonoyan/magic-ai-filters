@@ -1,0 +1,1212 @@
+{
+  "structure": [
+    {
+      "title": "Root",
+      "level": 1,
+      "line_num": 1,
+      "content_preview": "ATTENTIONRESIDUALS\nTECHNICALREPORT OFATTENTIONRESIDUALS\nKimi Team\n/gtbhttps://github.com/MoonshotAI/Attention-Residuals\nABSTRACT\nResidual connections [12] with PreNorm [60] are standard in modern LLMs, yet they accumulate\nall layer outputs with fixed unit weights. This uniform aggregation causes uncontrolled hidden-state\ngrowth with depth, progressively diluting each layer’s contribution [27]. We proposeAttention\nResiduals (AttnRes), which replaces this fixed accumulation with softmax attention over preceding\nlayer outputs, allowing each layer to selectively aggregate earlier representations with learned, input-\ndependent weights. To address the memory and communication overhead of attending over all\npreceding layer outputs for large-scale model training, we introduceBlock AttnRes, which partitions\nlayers into blocks and attends over block-level representations, reducing the memory footprint while\npreserving most of the gains of full AttnRes. Combined with cache-based pipeline communication\nand a two-phase computation strategy, Block AttnRes becomes a practical drop-in replacement for\nstandard residual connections with minimal overhead.\nScaling law experiments confirm that the improvement is consistent across model sizes, and ablations\nvalidate the benefit of content-dependent depth-wise selection. We further integrate AttnRes into\nthe Kimi Linear architecture [69] (48B total / 3B activated parameters) and pre-train on 1.4T tokens,\nwhere AttnRes mitigates PreNorm dilution, yielding more uniform output magnitudes and gradient\ndistribution across depth, and improves downstream performance across all evaluated tasks.\nEmbedding\n...\nAttention\nMoE\nAttention\nMoE\nOutput\n(a) Standard Residuals\nEmbedding\n...\nα\nAttention\nα\nMoE\nα\nAttention\nα\nMoE\nw\nw\nw\nw\nOutput\nαw\nα\nα\nα\nα\nα\n(b) Full Attention Residuals\nEmbedding\n···\nBlockn-2\nBlockn-1\nAttention\nMoE\nAttention\nMoE\nOutput\nα\nα\nα\nα\nα\nα\nα\nα\nα\nα\nw\nw\nw\nw\nw\nAttnRes Op(α)\nw\nQ\nK V\n(c) Block Attention Residuals\nFigure 1: Overview of Attention Residuals.(a)Standard Residuals: standard residual connections with uniform additive accumulation.\n(b)Full AttnRes: each layer selectively aggregates all previous layer outputs via learned attention weights.(c)Block AttnRes: layers\nare grouped into blocks, reducing memory fromO(Ld)toO(Nd).\narXiv:2603.15031v1  [cs.CL]  16 Mar 2026",
+      "fallback_reason": "pdf_pdfminer_offline_extraction"
+    },
+    {
+      "title": "ATTENTIONRESIDUALS",
+      "level": 2,
+      "line_num": 1,
+      "content_preview": "ATTENTIONRESIDUALS"
+    },
+    {
+      "title": "TECHNICALREPORT OFATTENTIONRESIDUALS",
+      "level": 2,
+      "line_num": 2,
+      "content_preview": "TECHNICALREPORT OFATTENTIONRESIDUALS"
+    },
+    {
+      "title": "Kimi Team",
+      "level": 2,
+      "line_num": 3,
+      "content_preview": "Kimi Team"
+    },
+    {
+      "title": "ABSTRACT",
+      "level": 2,
+      "line_num": 5,
+      "content_preview": "ABSTRACT"
+    },
+    {
+      "title": "Embedding",
+      "level": 2,
+      "line_num": 22,
+      "content_preview": "Embedding"
+    },
+    {
+      "title": "Attention",
+      "level": 2,
+      "line_num": 24,
+      "content_preview": "Attention"
+    },
+    {
+      "title": "Attention",
+      "level": 2,
+      "line_num": 26,
+      "content_preview": "Attention"
+    },
+    {
+      "title": "Output",
+      "level": 2,
+      "line_num": 28,
+      "content_preview": "Output"
+    },
+    {
+      "title": "Embedding",
+      "level": 2,
+      "line_num": 30,
+      "content_preview": "Embedding"
+    },
+    {
+      "title": "Attention",
+      "level": 2,
+      "line_num": 33,
+      "content_preview": "Attention"
+    },
+    {
+      "title": "Attention",
+      "level": 2,
+      "line_num": 37,
+      "content_preview": "Attention"
+    },
+    {
+      "title": "Output",
+      "level": 2,
+      "line_num": 44,
+      "content_preview": "Output"
+    },
+    {
+      "title": "Embedding",
+      "level": 2,
+      "line_num": 52,
+      "content_preview": "Embedding"
+    },
+    {
+      "title": "Blockn-2",
+      "level": 2,
+      "line_num": 54,
+      "content_preview": "Blockn-2"
+    },
+    {
+      "title": "Blockn-1",
+      "level": 2,
+      "line_num": 55,
+      "content_preview": "Blockn-1"
+    },
+    {
+      "title": "Attention",
+      "level": 2,
+      "line_num": 56,
+      "content_preview": "Attention"
+    },
+    {
+      "title": "Attention",
+      "level": 2,
+      "line_num": 58,
+      "content_preview": "Attention"
+    },
+    {
+      "title": "Output",
+      "level": 2,
+      "line_num": 60,
+      "content_preview": "Output"
+    },
+    {
+      "title": "AttnRes Op(α)",
+      "level": 2,
+      "line_num": 76,
+      "content_preview": "AttnRes Op(α)"
+    },
+    {
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_num": 85,
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "title": "Contributions",
+      "level": 2,
+      "line_num": 124,
+      "content_preview": "Contributions"
+    },
+    {
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_num": 139,
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "title": "L−1Y",
+      "level": 2,
+      "line_num": 160,
+      "content_preview": "L−1Y"
+    },
+    {
+      "title": "I+ ∂fj",
+      "level": 2,
+      "line_num": 163,
+      "content_preview": "I+ ∂fj"
+    },
+    {
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_num": 198,
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "title": "Pl−1",
+      "level": 2,
+      "line_num": 208,
+      "content_preview": "Pl−1"
+    },
+    {
+      "title": "For each layerl, we define:",
+      "level": 2,
+      "line_num": 211,
+      "content_preview": "For each layerl, we define:"
+    },
+    {
+      "title": "We further denote bi",
+      "level": 2,
+      "line_num": 250,
+      "content_preview": "We further denote bi"
+    },
+    {
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_num": 256,
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_num": 324,
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "title": "RANK0",
+      "level": 2,
+      "line_num": 325,
+      "content_preview": "RANK0"
+    },
+    {
+      "title": "RANK1",
+      "level": 2,
+      "line_num": 326,
+      "content_preview": "RANK1"
+    },
+    {
+      "title": "RANK2",
+      "level": 2,
+      "line_num": 327,
+      "content_preview": "RANK2"
+    },
+    {
+      "title": "RANK3",
+      "level": 2,
+      "line_num": 328,
+      "content_preview": "RANK3"
+    },
+    {
+      "title": "VIRTUALSTAGE0 VIRTUALSTAGE1",
+      "level": 2,
+      "line_num": 337,
+      "content_preview": "VIRTUALSTAGE0 VIRTUALSTAGE1"
+    },
+    {
+      "title": "Commnaïve =",
+      "level": 2,
+      "line_num": 367,
+      "content_preview": "Commnaïve ="
+    },
+    {
+      "title": "C−1X",
+      "level": 2,
+      "line_num": 368,
+      "content_preview": "C−1X"
+    },
+    {
+      "title": "Commcached = P(P−1)",
+      "level": 2,
+      "line_num": 377,
+      "content_preview": "Commcached = P(P−1)"
+    },
+    {
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_num": 390,
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "title": "Algorithm 1:Two-phase computation for blockn",
+      "level": 3,
+      "line_num": 391,
+      "content_preview": "Algorithm 1:Two-phase computation for blockn"
+    },
+    {
+      "title": "Input:Pseudo queries{w l}l∈Bn, block representations{b 0, . . . ,bn−1}",
+      "level": 3,
+      "line_num": 392,
+      "content_preview": "Input:Pseudo queries{w l}l∈Bn, block representations{b 0, . . . ,bn−1}"
+    },
+    {
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_num": 463,
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "title": "S + 3)dreads and 2d",
+      "level": 2,
+      "line_num": 465,
+      "content_preview": "S + 3)dreads and 2d"
+    },
+    {
+      "title": "Operation Read Write Total I/O",
+      "level": 2,
+      "line_num": 473,
+      "content_preview": "Operation Read Write Total I/O"
+    },
+    {
+      "title": "Symbolic Typical",
+      "level": 2,
+      "line_num": 474,
+      "content_preview": "Symbolic Typical"
+    },
+    {
+      "title": "Standard Residuals Residual Merge2d d3d3d",
+      "level": 3,
+      "line_num": 475,
+      "content_preview": "Standard Residuals Residual Merge2d d3d3d"
+    },
+    {
+      "title": "Computeα l,β l,A l md m 2+2m",
+      "level": 2,
+      "line_num": 477,
+      "content_preview": "Computeα l,β l,A l md m 2+2m"
+    },
+    {
+      "title": "Applyα l md+m d",
+      "level": 2,
+      "line_num": 479,
+      "content_preview": "Applyα l md+m d"
+    },
+    {
+      "title": "Applyβ l d+m md",
+      "level": 2,
+      "line_num": 480,
+      "content_preview": "Applyβ l d+m md"
+    },
+    {
+      "title": "ApplyA l md+m2 md",
+      "level": 2,
+      "line_num": 481,
+      "content_preview": "ApplyA l md+m2 md"
+    },
+    {
+      "title": "Residual Merge2md md",
+      "level": 2,
+      "line_num": 482,
+      "content_preview": "Residual Merge2md md"
+    },
+    {
+      "title": "AttnRes",
+      "level": 2,
+      "line_num": 483,
+      "content_preview": "AttnRes"
+    },
+    {
+      "title": "Full Phase 1 (amortized)(N−1)d d (S+N)d24dPhase 2(S−1)d d",
+      "level": 3,
+      "line_num": 484,
+      "content_preview": "Full Phase 1 (amortized)(N−1)d d (S+N)d24dPhase 2(S−1)d d"
+    },
+    {
+      "title": "Block Phase 1 (amortized) N",
+      "level": 2,
+      "line_num": 485,
+      "content_preview": "Block Phase 1 (amortized) N"
+    },
+    {
+      "title": "S d d \u0000N",
+      "level": 2,
+      "line_num": 486,
+      "content_preview": "S d d \u0000N"
+    },
+    {
+      "title": "S +5",
+      "level": 2,
+      "line_num": 487,
+      "content_preview": "S +5"
+    },
+    {
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_num": 518,
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "title": "Params† TokensL b H d model dff lr batch size‡ Val. Loss",
+      "level": 3,
+      "line_num": 522,
+      "content_preview": "Params† TokensL b H d model dff lr batch size‡ Val. Loss"
+    },
+    {
+      "title": "Baseline Block AttnRes Full AttnRes mHC(-lite)",
+      "level": 3,
+      "line_num": 523,
+      "content_preview": "Baseline Block AttnRes Full AttnRes mHC(-lite)"
+    },
+    {
+      "title": "PFLOP/s-days",
+      "level": 2,
+      "line_num": 537,
+      "content_preview": "PFLOP/s-days"
+    },
+    {
+      "title": "Loss",
+      "level": 2,
+      "line_num": 538,
+      "content_preview": "Loss"
+    },
+    {
+      "title": "Baseline:1.891×C −0.057",
+      "level": 2,
+      "line_num": 539,
+      "content_preview": "Baseline:1.891×C −0.057"
+    },
+    {
+      "title": "Full AttnRes:1.865×C −0.057",
+      "level": 2,
+      "line_num": 540,
+      "content_preview": "Full AttnRes:1.865×C −0.057"
+    },
+    {
+      "title": "Block AttnRes:1.870×C −0.058",
+      "level": 2,
+      "line_num": 541,
+      "content_preview": "Block AttnRes:1.870×C −0.058"
+    },
+    {
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_num": 562,
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "title": "Step",
+      "level": 2,
+      "line_num": 568,
+      "content_preview": "Step"
+    },
+    {
+      "title": "Baseline",
+      "level": 2,
+      "line_num": 570,
+      "content_preview": "Baseline"
+    },
+    {
+      "title": "Block AttnRes",
+      "level": 2,
+      "line_num": 571,
+      "content_preview": "Block AttnRes"
+    },
+    {
+      "title": "Transformer Block Index",
+      "level": 2,
+      "line_num": 576,
+      "content_preview": "Transformer Block Index"
+    },
+    {
+      "title": "Transformer Block Index",
+      "level": 2,
+      "line_num": 582,
+      "content_preview": "Transformer Block Index"
+    },
+    {
+      "title": "Baseline AttnRes",
+      "level": 2,
+      "line_num": 600,
+      "content_preview": "Baseline AttnRes"
+    },
+    {
+      "title": "General",
+      "level": 2,
+      "line_num": 601,
+      "content_preview": "General"
+    },
+    {
+      "title": "MMLU 73.574.6",
+      "level": 2,
+      "line_num": 602,
+      "content_preview": "MMLU 73.574.6"
+    },
+    {
+      "title": "MMLU-Pro52.2 52.2",
+      "level": 2,
+      "line_num": 603,
+      "content_preview": "MMLU-Pro52.2 52.2"
+    },
+    {
+      "title": "GPQA-Diamond 36.944.4",
+      "level": 2,
+      "line_num": 604,
+      "content_preview": "GPQA-Diamond 36.944.4"
+    },
+    {
+      "title": "BBH 76.378.0",
+      "level": 2,
+      "line_num": 605,
+      "content_preview": "BBH 76.378.0"
+    },
+    {
+      "title": "ARC-Challenge 64.665.7",
+      "level": 2,
+      "line_num": 606,
+      "content_preview": "ARC-Challenge 64.665.7"
+    },
+    {
+      "title": "HellaSwag 83.283.4",
+      "level": 2,
+      "line_num": 607,
+      "content_preview": "HellaSwag 83.283.4"
+    },
+    {
+      "title": "TriviaQA 69.971.8",
+      "level": 2,
+      "line_num": 608,
+      "content_preview": "TriviaQA 69.971.8"
+    },
+    {
+      "title": "Math & Code",
+      "level": 2,
+      "line_num": 609,
+      "content_preview": "Math & Code"
+    },
+    {
+      "title": "GSM8K 81.782.4",
+      "level": 2,
+      "line_num": 610,
+      "content_preview": "GSM8K 81.782.4"
+    },
+    {
+      "title": "MGSM 64.966.1",
+      "level": 2,
+      "line_num": 611,
+      "content_preview": "MGSM 64.966.1"
+    },
+    {
+      "title": "Math 53.557.1",
+      "level": 2,
+      "line_num": 612,
+      "content_preview": "Math 53.557.1"
+    },
+    {
+      "title": "CMath 84.785.1",
+      "level": 2,
+      "line_num": 613,
+      "content_preview": "CMath 84.785.1"
+    },
+    {
+      "title": "HumanEval 59.162.2",
+      "level": 2,
+      "line_num": 614,
+      "content_preview": "HumanEval 59.162.2"
+    },
+    {
+      "title": "MBPP 72.073.9",
+      "level": 2,
+      "line_num": 615,
+      "content_preview": "MBPP 72.073.9"
+    },
+    {
+      "title": "Chinese CMMLU 82.082.9",
+      "level": 2,
+      "line_num": 616,
+      "content_preview": "Chinese CMMLU 82.082.9"
+    },
+    {
+      "title": "C-Eval 79.682.5",
+      "level": 2,
+      "line_num": 617,
+      "content_preview": "C-Eval 79.682.5"
+    },
+    {
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_num": 621,
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "title": "Table 4: Ablation on key components of AttnRes (16-layer",
+      "level": 3,
+      "line_num": 622,
+      "content_preview": "Table 4: Ablation on key components of AttnRes (16-layer"
+    },
+    {
+      "title": "Variant Loss",
+      "level": 2,
+      "line_num": 624,
+      "content_preview": "Variant Loss"
+    },
+    {
+      "title": "Baseline (PreNorm) 1.766",
+      "level": 2,
+      "line_num": 625,
+      "content_preview": "Baseline (PreNorm) 1.766"
+    },
+    {
+      "title": "DenseFormer [36] 1.767",
+      "level": 2,
+      "line_num": 626,
+      "content_preview": "DenseFormer [36] 1.767"
+    },
+    {
+      "title": "AttnRes Full 1.737",
+      "level": 2,
+      "line_num": 628,
+      "content_preview": "AttnRes Full 1.737"
+    },
+    {
+      "title": "SW A (W= 1 + 8) 1.764",
+      "level": 2,
+      "line_num": 633,
+      "content_preview": "SW A (W= 1 + 8) 1.764"
+    },
+    {
+      "title": "Block (S= 4) 1.746",
+      "level": 2,
+      "line_num": 634,
+      "content_preview": "Block (S= 4) 1.746"
+    },
+    {
+      "title": "Baseline (1.766)",
+      "level": 2,
+      "line_num": 650,
+      "content_preview": "Baseline (1.766)"
+    },
+    {
+      "title": "Full AttnRes i.e. S=1 (1.737)",
+      "level": 2,
+      "line_num": 651,
+      "content_preview": "Full AttnRes i.e. S=1 (1.737)"
+    },
+    {
+      "title": "Block size (S)",
+      "level": 2,
+      "line_num": 652,
+      "content_preview": "Block size (S)"
+    },
+    {
+      "title": "Validation loss",
+      "level": 2,
+      "line_num": 653,
+      "content_preview": "Validation loss"
+    },
+    {
+      "title": "Baseline",
+      "level": 2,
+      "line_num": 654,
+      "content_preview": "Baseline"
+    },
+    {
+      "title": "Full AttnRes",
+      "level": 2,
+      "line_num": 655,
+      "content_preview": "Full AttnRes"
+    },
+    {
+      "title": "Block AttnRes",
+      "level": 2,
+      "line_num": 656,
+      "content_preview": "Block AttnRes"
+    },
+    {
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_num": 690,
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "title": "H/Lb",
+      "level": 2,
+      "line_num": 702,
+      "content_preview": "H/Lb"
+    },
+    {
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_num": 752,
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "title": "Source Index",
+      "level": 2,
+      "line_num": 755,
+      "content_preview": "Source Index"
+    },
+    {
+      "title": "Layer",
+      "level": 2,
+      "line_num": 756,
+      "content_preview": "Layer"
+    },
+    {
+      "title": "Full AttnRes, Pre-Attn",
+      "level": 2,
+      "line_num": 757,
+      "content_preview": "Full AttnRes, Pre-Attn"
+    },
+    {
+      "title": "Source Index",
+      "level": 2,
+      "line_num": 759,
+      "content_preview": "Source Index"
+    },
+    {
+      "title": "Full AttnRes, Pre-MLP",
+      "level": 2,
+      "line_num": 760,
+      "content_preview": "Full AttnRes, Pre-MLP"
+    },
+    {
+      "title": "Block Index",
+      "level": 2,
+      "line_num": 763,
+      "content_preview": "Block Index"
+    },
+    {
+      "title": "Layer",
+      "level": 2,
+      "line_num": 764,
+      "content_preview": "Layer"
+    },
+    {
+      "title": "Block AttnRes, Pre-Attn",
+      "level": 2,
+      "line_num": 765,
+      "content_preview": "Block AttnRes, Pre-Attn"
+    },
+    {
+      "title": "Block Index",
+      "level": 2,
+      "line_num": 767,
+      "content_preview": "Block Index"
+    },
+    {
+      "title": "Block AttnRes, Pre-MLP",
+      "level": 2,
+      "line_num": 768,
+      "content_preview": "Block AttnRes, Pre-MLP"
+    },
+    {
+      "title": "Weight",
+      "level": 2,
+      "line_num": 774,
+      "content_preview": "Weight"
+    },
+    {
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_num": 799,
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "title": "Method Update rule Weight Source",
+      "level": 2,
+      "line_num": 803,
+      "content_preview": "Method Update rule Weight Source"
+    },
+    {
+      "title": "Single-state recurrence: layerlreceives onlyhl−1",
+      "level": 3,
+      "line_num": 804,
+      "content_preview": "Single-state recurrence: layerlreceives onlyhl−1"
+    },
+    {
+      "title": "Residual [12]h l =hl−1+fl−1(hl−1)Fixedh l−1",
+      "level": 3,
+      "line_num": 805,
+      "content_preview": "Residual [12]h l =hl−1+fl−1(hl−1)Fixedh l−1"
+    },
+    {
+      "title": "ReZero [2]h l =hl−1+αl ·fl−1(hl−1)Statich l−1",
+      "level": 3,
+      "line_num": 806,
+      "content_preview": "ReZero [2]h l =hl−1+αl ·fl−1(hl−1)Statich l−1"
+    },
+    {
+      "title": "LayerScale [50]h l =hl−1+ diag(λl)·f l−1(hl−1)Statich l−1",
+      "level": 3,
+      "line_num": 807,
+      "content_preview": "LayerScale [50]h l =hl−1+ diag(λl)·f l−1(hl−1)Statich l−1"
+    },
+    {
+      "title": "Highway [45]h l = (1−gl)⊙hl−1+gl ⊙fl−1(hl−1)Dynamich l−1",
+      "level": 3,
+      "line_num": 808,
+      "content_preview": "Highway [45]h l = (1−gl)⊙hl−1+gl ⊙fl−1(hl−1)Dynamich l−1"
+    },
+    {
+      "title": "DeepNorm [54]h l = Norm(αhl−1+fl−1(hl−1))Fixedh l−1",
+      "level": 3,
+      "line_num": 809,
+      "content_preview": "DeepNorm [54]h l = Norm(αhl−1+fl−1(hl−1))Fixedh l−1"
+    },
+    {
+      "title": "KEEL [4]h l = Norm(αhl−1+fl−1(Norm(hl−1)))Fixedh l−1",
+      "level": 3,
+      "line_num": 810,
+      "content_preview": "KEEL [4]h l = Norm(αhl−1+fl−1(Norm(hl−1)))Fixedh l−1"
+    },
+    {
+      "title": "Multi-state recurrence: layerlreceivesmstreams",
+      "level": 3,
+      "line_num": 811,
+      "content_preview": "Multi-state recurrence: layerlreceivesmstreams"
+    },
+    {
+      "title": "SiameseNorm [27]h 1",
+      "level": 2,
+      "line_num": 812,
+      "content_preview": "SiameseNorm [27]h 1"
+    },
+    {
+      "title": "HC/mHC [72, 59]H l =Hl−1Al +fl−1(Hl−1αl−1)β⊤",
+      "level": 3,
+      "line_num": 817,
+      "content_preview": "HC/mHC [72, 59]H l =Hl−1Al +fl−1(Hl−1αl−1)β⊤"
+    },
+    {
+      "title": "DDL [67]H l = (I−βlklk⊤",
+      "level": 2,
+      "line_num": 819,
+      "content_preview": "DDL [67]H l = (I−βlklk⊤"
+    },
+    {
+      "title": "Cross-layer access: layerlcan access individual earlier-layer outputs",
+      "level": 3,
+      "line_num": 822,
+      "content_preview": "Cross-layer access: layerlcan access individual earlier-layer outputs"
+    },
+    {
+      "title": "DenseFormer [36]h l =α0→lh1 +Pl−1",
+      "level": 2,
+      "line_num": 824,
+      "content_preview": "DenseFormer [36]h l =α0→lh1 +Pl−1"
+    },
+    {
+      "title": "MRLA [10]1 hl =Pl−1",
+      "level": 2,
+      "line_num": 826,
+      "content_preview": "MRLA [10]1 hl =Pl−1"
+    },
+    {
+      "title": "Full2 hl ∝Pl−1",
+      "level": 2,
+      "line_num": 828,
+      "content_preview": "Full2 hl ∝Pl−1"
+    },
+    {
+      "title": "Wt =W t−1 −η∇ℓ(W t−1;x t),(9)",
+      "level": 2,
+      "line_num": 845,
+      "content_preview": "Wt =W t−1 −η∇ℓ(W t−1;x t),(9)"
+    },
+    {
+      "title": "Concretely, the input to layer l is hl = Pl−1",
+      "level": 3,
+      "line_num": 863,
+      "content_preview": "Concretely, the input to layer l is hl = Pl−1"
+    },
+    {
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_num": 867,
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "title": "Highway",
+      "level": 2,
+      "line_num": 868,
+      "content_preview": "Highway"
+    },
+    {
+      "title": "Full AttnRes",
+      "level": 2,
+      "line_num": 908,
+      "content_preview": "Full AttnRes"
+    },
+    {
+      "title": "Block AttnRes",
+      "level": 2,
+      "line_num": 917,
+      "content_preview": "Block AttnRes"
+    },
+    {
+      "title": "Hl =H l−1Al +f l−1(Hl−1αl−1)β ⊤",
+      "level": 2,
+      "line_num": 968,
+      "content_preview": "Hl =H l−1Al +f l−1(Hl−1αl−1)β ⊤"
+    },
+    {
+      "title": "Mi→l =β ⊤",
+      "level": 2,
+      "line_num": 972,
+      "content_preview": "Mi→l =β ⊤"
+    },
+    {
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_num": 1000,
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "title": "For example, the unrolled (m)HC weight Mi→l =β ⊤",
+      "level": 3,
+      "line_num": 1003,
+      "content_preview": "For example, the unrolled (m)HC weight Mi→l =β ⊤"
+    },
+    {
+      "title": "Conclusion",
+      "level": 2,
+      "line_num": 1047,
+      "content_preview": "Conclusion"
+    },
+    {
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_num": 1058,
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "title": "References",
+      "level": 2,
+      "line_num": 1059,
+      "content_preview": "References"
+    },
+    {
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_num": 1113,
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_num": 1170,
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_num": 1216,
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "title": "A Contributions",
+      "level": 2,
+      "line_num": 1217,
+      "content_preview": "A Contributions"
+    },
+    {
+      "title": "Guangyu Chen∗",
+      "level": 2,
+      "line_num": 1220,
+      "content_preview": "Guangyu Chen∗"
+    },
+    {
+      "title": "Yu Zhang∗",
+      "level": 2,
+      "line_num": 1221,
+      "content_preview": "Yu Zhang∗"
+    },
+    {
+      "title": "Jianlin Su∗",
+      "level": 2,
+      "line_num": 1222,
+      "content_preview": "Jianlin Su∗"
+    },
+    {
+      "title": "Weixin Xu",
+      "level": 2,
+      "line_num": 1223,
+      "content_preview": "Weixin Xu"
+    },
+    {
+      "title": "Siyuan Pan",
+      "level": 2,
+      "line_num": 1224,
+      "content_preview": "Siyuan Pan"
+    },
+    {
+      "title": "Yaoyu Wang",
+      "level": 2,
+      "line_num": 1225,
+      "content_preview": "Yaoyu Wang"
+    },
+    {
+      "title": "Yucheng Wang",
+      "level": 2,
+      "line_num": 1226,
+      "content_preview": "Yucheng Wang"
+    },
+    {
+      "title": "Guanduo Chen",
+      "level": 2,
+      "line_num": 1227,
+      "content_preview": "Guanduo Chen"
+    },
+    {
+      "title": "Bohong Yin",
+      "level": 2,
+      "line_num": 1228,
+      "content_preview": "Bohong Yin"
+    },
+    {
+      "title": "Yutian Chen",
+      "level": 2,
+      "line_num": 1229,
+      "content_preview": "Yutian Chen"
+    },
+    {
+      "title": "Junjie Yan",
+      "level": 2,
+      "line_num": 1230,
+      "content_preview": "Junjie Yan"
+    },
+    {
+      "title": "Ming Wei",
+      "level": 2,
+      "line_num": 1231,
+      "content_preview": "Ming Wei"
+    },
+    {
+      "title": "Y . Zhang",
+      "level": 2,
+      "line_num": 1232,
+      "content_preview": "Y . Zhang"
+    },
+    {
+      "title": "Fanqing Meng",
+      "level": 2,
+      "line_num": 1233,
+      "content_preview": "Fanqing Meng"
+    },
+    {
+      "title": "Chao Hong",
+      "level": 2,
+      "line_num": 1234,
+      "content_preview": "Chao Hong"
+    },
+    {
+      "title": "Xiaotong Xie",
+      "level": 2,
+      "line_num": 1235,
+      "content_preview": "Xiaotong Xie"
+    },
+    {
+      "title": "Shaowei Liu",
+      "level": 2,
+      "line_num": 1236,
+      "content_preview": "Shaowei Liu"
+    },
+    {
+      "title": "Enzhe Lu",
+      "level": 2,
+      "line_num": 1237,
+      "content_preview": "Enzhe Lu"
+    },
+    {
+      "title": "Yunpeng Tai",
+      "level": 2,
+      "line_num": 1238,
+      "content_preview": "Yunpeng Tai"
+    },
+    {
+      "title": "Yanru Chen",
+      "level": 2,
+      "line_num": 1239,
+      "content_preview": "Yanru Chen"
+    },
+    {
+      "title": "Xin Men",
+      "level": 2,
+      "line_num": 1240,
+      "content_preview": "Xin Men"
+    },
+    {
+      "title": "Haiqing Guo",
+      "level": 2,
+      "line_num": 1241,
+      "content_preview": "Haiqing Guo"
+    },
+    {
+      "title": "Y . Charles",
+      "level": 2,
+      "line_num": 1242,
+      "content_preview": "Y . Charles"
+    },
+    {
+      "title": "Haoyu Lu",
+      "level": 2,
+      "line_num": 1243,
+      "content_preview": "Haoyu Lu"
+    },
+    {
+      "title": "Lin Sui",
+      "level": 2,
+      "line_num": 1244,
+      "content_preview": "Lin Sui"
+    },
+    {
+      "title": "Jinguo Zhu",
+      "level": 2,
+      "line_num": 1245,
+      "content_preview": "Jinguo Zhu"
+    },
+    {
+      "title": "Zaida Zhou",
+      "level": 2,
+      "line_num": 1246,
+      "content_preview": "Zaida Zhou"
+    },
+    {
+      "title": "Weiran He",
+      "level": 2,
+      "line_num": 1247,
+      "content_preview": "Weiran He"
+    },
+    {
+      "title": "Weixiao Huang",
+      "level": 2,
+      "line_num": 1248,
+      "content_preview": "Weixiao Huang"
+    },
+    {
+      "title": "Xinran Xu",
+      "level": 2,
+      "line_num": 1249,
+      "content_preview": "Xinran Xu"
+    },
+    {
+      "title": "Yuzhi Wang",
+      "level": 2,
+      "line_num": 1250,
+      "content_preview": "Yuzhi Wang"
+    },
+    {
+      "title": "Guokun Lai",
+      "level": 2,
+      "line_num": 1251,
+      "content_preview": "Guokun Lai"
+    },
+    {
+      "title": "Yulun Du",
+      "level": 2,
+      "line_num": 1252,
+      "content_preview": "Yulun Du"
+    },
+    {
+      "title": "Yuxin Wu",
+      "level": 2,
+      "line_num": 1253,
+      "content_preview": "Yuxin Wu"
+    },
+    {
+      "title": "Zhilin Yang",
+      "level": 2,
+      "line_num": 1254,
+      "content_preview": "Zhilin Yang"
+    },
+    {
+      "title": "Xinyu Zhou",
+      "level": 2,
+      "line_num": 1255,
+      "content_preview": "Xinyu Zhou"
+    },
+    {
+      "title": "Attention ResidualsTECHNICALREPORT",
+      "level": 2,
+      "line_num": 1258,
+      "content_preview": "Attention ResidualsTECHNICALREPORT"
+    },
+    {
+      "title": "B Optimized Inference I/O for Full Attention Residuals",
+      "level": 3,
+      "line_num": 1259,
+      "content_preview": "B Optimized Inference I/O for Full Attention Residuals"
+    },
+    {
+      "title": "Phase 1: Batched Inter-block Attention",
+      "level": 2,
+      "line_num": 1270,
+      "content_preview": "Phase 1: Batched Inter-block Attention"
+    },
+    {
+      "title": "Read(n)",
+      "level": 2,
+      "line_num": 1274,
+      "content_preview": "Read(n)"
+    },
+    {
+      "title": "Readinter =",
+      "level": 2,
+      "line_num": 1277,
+      "content_preview": "Readinter ="
+    },
+    {
+      "title": "Phase 1 also writes oned-dimensional output per layer, givingWrite (n)",
+      "level": 3,
+      "line_num": 1282,
+      "content_preview": "Phase 1 also writes oned-dimensional output per layer, givingWrite (n)"
+    },
+    {
+      "title": "Writeinter =Ld(13)",
+      "level": 2,
+      "line_num": 1284,
+      "content_preview": "Writeinter =Ld(13)"
+    },
+    {
+      "title": "Phase 2: Sequential Intra-block Attention",
+      "level": 3,
+      "line_num": 1286,
+      "content_preview": "Phase 2: Sequential Intra-block Attention"
+    },
+    {
+      "title": "Summing over one block:",
+      "level": 2,
+      "line_num": 1289,
+      "content_preview": "Summing over one block:"
+    },
+    {
+      "title": "Read(n)",
+      "level": 2,
+      "line_num": 1290,
+      "content_preview": "Read(n)"
+    },
+    {
+      "title": "Phase 2 also writes one output per layer, soWrite(n)",
+      "level": 3,
+      "line_num": 1295,
+      "content_preview": "Phase 2 also writes one output per layer, soWrite(n)"
+    },
+    {
+      "title": "Total Amortized I/O per Layer",
+      "level": 2,
+      "line_num": 1297,
+      "content_preview": "Total Amortized I/O per Layer"
+    },
+    {
+      "title": "Summing both phases over allNblocks:",
+      "level": 2,
+      "line_num": 1298,
+      "content_preview": "Summing both phases over allNblocks:"
+    }
+  ],
+  "line_count": 1306
+}

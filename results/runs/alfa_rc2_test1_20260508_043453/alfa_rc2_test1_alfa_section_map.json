@@ -1,0 +1,20 @@
+{
+  "document_id": "alfa_rc2_test1",
+  "source_path": "alfa_rc2_test1.md",
+  "section_count": 1,
+  "sections": [
+    {
+      "id": "sec_0237506",
+      "title": "Root",
+      "level": 1,
+      "line_start": 1,
+      "line_end": 4,
+      "hierarchy": [
+        "Root"
+      ],
+      "evidence_path": "alfa_rc2_test1.md > Root",
+      "content_preview": "Teza 1: System ALFA wymaga refaktoryzacji.\nTeza 2: Koszty spadły o 15%.\nRekomendacja: Wdrożenie Strict Gate przed końcem kwartału.\n",
+      "fallback_reason": "no_structural_headings_detected"
+    }
+  ]
+}

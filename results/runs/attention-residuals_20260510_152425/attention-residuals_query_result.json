@@ -1,0 +1,64 @@
+{
+  "question": "What are the main topics and key findings?",
+  "answer": "Na podstawie mapy sekcji najbardziej trafne obszary to: Root, ABSTRACT. Odpowiedź powinna zostać rozwinięta z tych ścieżek dowodu.",
+  "evidence_paths": [
+    "examples\\documents\\attention-residuals.pdf > Root",
+    "examples\\documents\\attention-residuals.pdf > ABSTRACT"
+  ],
+  "matched_sections": [
+    {
+      "id": "sec_0637891",
+      "title": "Root",
+      "level": 1,
+      "line_start": 1,
+      "line_end": null,
+      "hierarchy": [
+        "Root"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > Root",
+      "score": 2,
+      "matched_terms": [
+        "abstract",
+        "overview"
+      ]
+    },
+    {
+      "id": "sec_0944509",
+      "title": "ABSTRACT",
+      "level": 2,
+      "line_start": 5,
+      "line_end": null,
+      "hierarchy": [
+        "ABSTRACT"
+      ],
+      "evidence_path": "examples\\documents\\attention-residuals.pdf > ABSTRACT",
+      "score": 2,
+      "matched_terms": [
+        "abstract"
+      ]
+    }
+  ],
+  "confidence": 0.167,
+  "missing_context": [
+    "conclusion",
+    "discussion",
+    "finding",
+    "highlights",
+    "introduction",
+    "key",
+    "main",
+    "results",
+    "summary",
+    "topic"
+  ],
+  "strict": {
+    "enabled": true,
+    "passed": false,
+    "min_confidence": 0.6,
+    "min_evidence_paths": 2
+  },
+  "rejected_by_strict_gate": true,
+  "strict_rejection_reasons": [
+    "confidence_below_threshold"
+  ]
+}
