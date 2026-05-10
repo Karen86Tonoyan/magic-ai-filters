@@ -1,4 +1,5 @@
-import type { ExecutionReport, OverclaimResult } from './types';
+import { getT9Thresholds } from './settings';
+import type { ExecutionReport, OverclaimResult, T9Decision } from './types';
 
 const OVERCLAIM_PATTERNS: Array<[RegExp, string]> = [
   [/\btests?\s+now\s+pass\b/i, 'tests_now_pass'],
