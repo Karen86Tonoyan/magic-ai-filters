@@ -68,10 +68,11 @@ export class TrajectoryGuard {
     toolTrace = true,
   ): GuardResult {
     const risk = STATE_RISK[observedState] ?? 0.3;
+    const t = getT9Thresholds();
 
     if (observedState === 'EXECUTION_CLAIM_MODE' && !toolTrace) {
       return {
-        decision: 'HOLD',
+        decision: t.execution_claim_to_block ? 'BLOCK' : 'HOLD',
         predicted_state: predictedState,
         observed_state: observedState,
         trajectory_hallucination: true,
@@ -84,7 +85,7 @@ export class TrajectoryGuard {
     for (const { pattern, disallowed } of TASK_MODE_MAP) {
       if (pattern.test(userInput) && disallowed.includes(observedState)) {
         return {
-          decision: 'HOLD',
+          decision: t.trajectory_violation_to_block ? 'BLOCK' : 'HOLD',
           predicted_state: predictedState,
           observed_state: observedState,
           trajectory_hallucination: true,
@@ -95,7 +96,19 @@ export class TrajectoryGuard {
       }
     }
 
-    if (risk >= 0.75) {
+    if (risk >= t.trajectory_block_risk) {
+      return {
+        decision: 'BLOCK' as T9Decision,
+        predicted_state: predictedState,
+        observed_state: observedState,
+        trajectory_hallucination: true,
+        reason: `RISK_OVER_BLOCK_THRESHOLD: ${observedState} risk=${risk}`,
+        recovery_path: RECOVERY[observedState] || [],
+        risk_score: risk,
+      };
+    }
+
+    if (risk >= t.trajectory_verify_risk) {
       return {
         decision: 'VERIFY',
         predicted_state: predictedState,
