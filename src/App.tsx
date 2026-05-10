@@ -44,6 +44,7 @@ const App = () => (
               <Route path="/incidents" element={<IncidentPage />} />
               <Route path="/llm" element={<LLMInfoPage />} />
               <Route path="/snapshots" element={<SnapshotsPage />} />
+              <Route path="/settings" element={<PipelineSettingsPage />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
