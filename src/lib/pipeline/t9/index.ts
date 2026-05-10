@@ -11,7 +11,7 @@ import { TrajectoryGuard } from './trajectory-guard';
 import type { ExecutionReport, T9Decision, T9UnifiedResult, TrajectoryContract } from './types';
 
 export * from './types';
-export { T9Predictor, injectContract, TrajectoryGuard, OutputIntegrityGuard, FiltrTonoyana, HallucinationSnapshotDB, buildGraph };
+export { T9Predictor, injectContract, TrajectoryGuard, OutputIntegrityGuard, isExecutionTrusted, FiltrTonoyana, HallucinationSnapshotDB, buildGraph };
 
 const ORDER: T9Decision[] = ['PASS', 'VERIFY', 'HOLD', 'BLOCK'];
 const maxDecision = (ds: T9Decision[]): T9Decision =>
