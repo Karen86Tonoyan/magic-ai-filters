@@ -1,4 +1,5 @@
-import type { ExecutionReport, OverclaimResult } from './types';
+import { getT9Thresholds } from './settings';
+import type { ExecutionReport, OverclaimResult, T9Decision } from './types';
 
 const OVERCLAIM_PATTERNS: Array<[RegExp, string]> = [
   [/\btests?\s+now\s+pass\b/i, 'tests_now_pass'],
@@ -39,9 +40,14 @@ export class OutputIntegrityGuard {
       };
     }
     if (found.length && !trusted) {
+      const t = getT9Thresholds();
+      const decision: T9Decision =
+        t.overclaim_block_when_no_proof || found.length >= t.overclaim_block_count
+          ? 'BLOCK'
+          : 'HOLD';
       return {
         overclaims_found: found,
-        decision: 'HOLD',
+        decision,
         execution_trusted: false,
         reason: `STATUS_OVERCLAIM: ${found.join(',')} without proof`,
       };

@@ -14,6 +14,7 @@ const DualChatPage = lazy(() => import("@/pages/DualChatPage"));
 const IncidentPage = lazy(() => import("@/pages/IncidentPage"));
 const LLMInfoPage = lazy(() => import("@/pages/LLMInfoPage"));
 const SnapshotsPage = lazy(() => import("@/pages/SnapshotsPage"));
+const PipelineSettingsPage = lazy(() => import("@/pages/PipelineSettingsPage"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 
 const queryClient = new QueryClient();
@@ -43,6 +44,7 @@ const App = () => (
               <Route path="/incidents" element={<IncidentPage />} />
               <Route path="/llm" element={<LLMInfoPage />} />
               <Route path="/snapshots" element={<SnapshotsPage />} />
+              <Route path="/settings" element={<PipelineSettingsPage />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
