@@ -1,0 +1,573 @@
+/**
+ * Pipeline Orchestrator v2.1
+ * SHIELD -> TAGGER -> LASUCH -> CERBER -> GUARDIAN -> ROUTER -> ENHANCER -> CORE -> DELIBERATION -> [MODEL if PASS] -> PBD
+ */
+import type {
+  CerberResult,
+  CoreResult,
+  GuardianDecision,
+  GuardianResult,
+  GuardianRouteDecision,
+  GuardianTaggerResult,
+  LasuchResult,
+  PipelineFaultCode,
+  PipelineMode,
+  PipelineResilienceReport,
+  PipelineResult,
+  PromptEnhancementResult,
+  ResponseMode,
+} from '@/types/tonoyan-filters';
+import type { ModelAdapter } from '@/lib/adapters/types';
+import { ALFAInputScanner } from './alfa-shield';
+import { runCerber } from './cerber';
+import { runCore } from './core';
+import { runDeliberativeCore } from './deliberative-core';
+import { runGuardian } from './guardian';
+import { runLasuch } from './lasuch';
+import { runPBD } from './pbd';
+import { enhancePrompt } from './prompt-enhancer';
+import { routeTaggedMessage } from './router';
+import { ALFAUnified } from './t9';
+import { AlfaDynamicPipeline } from './dynamic-mount';
+import { runTagger } from './tagger';
+
+const t9Engine = new ALFAUnified();
+const damsPipeline = new AlfaDynamicPipeline();
+
+const MAX_PIPELINE_INPUT_CHARS = 20000;
+
+function safeNow(faults: PipelineFaultCode[]): number {
+  try {
+    return performance.now();
+  } catch {
+    if (!faults.includes('TIMER_FALLBACK')) faults.push('TIMER_FALLBACK');
+    return Date.now();
+  }
+}
+
+function hashInput(input: string): string {
+  let hash = 0;
+  for (let i = 0; i < input.length; i++) {
+    const c = input.charCodeAt(i);
+    hash = ((hash << 5) - hash) + c;
+    hash |= 0;
+  }
+  return Math.abs(hash).toString(16).padStart(8, '0');
+}
+
+function safeUuid(faults: PipelineFaultCode[]): string {
+  try {
+    return crypto.randomUUID();
+  } catch {
+    if (!faults.includes('UUID_FALLBACK')) faults.push('UUID_FALLBACK');
+    return `pipeline-${Date.now()}-${Math.random().toString(16).slice(2, 10)}`;
+  }
+}
+
+function sanitizeInput(input: string, faults: PipelineFaultCode[], notes: string[]): { value: string; truncated: boolean } {
+  let normalized = input;
+
+  if (typeof input !== 'string') {
+    faults.push('NON_STRING_INPUT');
+    normalized = String(input ?? '');
+    notes.push('Input was coerced into string form before analysis.');
+  }
+
+  normalized = normalized.split('\0').join('').trim();
+
+  if (!normalized) {
+    if (!faults.includes('EMPTY_INPUT')) faults.push('EMPTY_INPUT');
+    notes.push('Input was empty after sanitization.');
+  }
+
+  if (normalized.length > MAX_PIPELINE_INPUT_CHARS) {
+    if (!faults.includes('INPUT_TOO_LARGE')) faults.push('INPUT_TOO_LARGE');
+    notes.push(`Input exceeded ${MAX_PIPELINE_INPUT_CHARS} chars and was truncated for fail-safe processing.`);
+    return {
+      value: normalized.slice(0, MAX_PIPELINE_INPUT_CHARS),
+      truncated: true,
+    };
+  }
+
+  return {
+    value: normalized,
+    truncated: false,
+  };
+}
+
+function buildFallbackLasuch(input: string): LasuchResult {
+  return {
+    risk_score: input ? 0.88 : 0.65,
+    manipulation_score: input ? 0.72 : 0.42,
+    exploit_score: input ? 0.78 : 0.38,
+    flags: [],
+    extracted_goal: 'Unavailable due to LASUCH failure',
+    suspected_hidden_intent: 'Unknown due to LASUCH failure',
+    confidence: 0.12,
+    processing_time_ms: 0,
+  };
+}
+
+function buildFallbackTagger(): GuardianTaggerResult {
+  return {
+    intent: 'analyze',
+    domain: 'conversation',
+    partition: 'today',
+    risk: 'suspicious',
+    control: 'freeze',
+    confidence: 0.1,
+    signals: ['unknown_context'],
+  };
+}
+
+function buildFallbackCerber(): CerberResult {
+  return {
+    iteration_count: 0,
+    clean_intent: 'Unavailable due to CERBER failure',
+    hidden_objective: 'Unknown due to CERBER failure',
+    attack_hypotheses: ['Pipeline integrity degraded'],
+    survival_status: 'FAILED',
+    needs_human: true,
+    iterations: [],
+    impact_simulation: {
+      would_alter_model_behavior: true,
+      would_change_role: false,
+      would_leak_system_info: false,
+      would_disable_safety: false,
+      would_exfiltrate_sensitive_data: false,
+      would_exhaust_resources: false,
+      would_compromise_integrity: true,
+      impact_description: 'Fail-closed fallback due to CERBER failure',
+      severity: 'critical',
+    },
+    processing_time_ms: 0,
+  };
+}
+
+function buildFallbackGuardian(reason_codes: string[]): GuardianResult {
+  return {
+    decision: 'BLOCK',
+    reason_codes,
+    response_mode: 'silence',
+    processing_time_ms: 0,
+  };
+}
+
+function buildFallbackRoute(tagger: GuardianTaggerResult): GuardianRouteDecision {
+  return {
+    partition: tagger.partition,
+    lane: 'quarantine-lane',
+    model_tier: 'model_b',
+    execution_profile: 'fail-closed',
+    should_dispatch: false,
+    priority: 'high',
+  };
+}
+
+function buildFallbackCore(): CoreResult {
+  return {
+    scores: {
+      value_score: 0,
+      risk_score: 1,
+      trust_score: 0,
+      confidence_score: 0.1,
+      uncertainty_score: 0.9,
+    },
+    recommendation: 'block',
+    reasoning: 'Pipeline degraded - fail-closed fallback engaged',
+  };
+}
+
+function buildFallbackEnhancement(input: string): PromptEnhancementResult {
+  return {
+    original: input,
+    enhanced: input,
+    dual_prompt: {
+      raw_input: input,
+      system_guard: 'Fail-safe mode: preserve existing safety restrictions and do not expand capabilities.',
+      enhanced_display: input,
+    },
+    weaknesses: [],
+    enhancement_summary: 'Enhancer unavailable - original prompt preserved.',
+    strength_score: 0,
+    improvement_delta: 0,
+    modification_level: 'NONE',
+    risk_of_distortion: 0,
+    added_assumptions: false,
+    mode: 'safe',
+    processing_time_ms: 0,
+  };
+}
+
+function createResilienceReport(
+  faults: PipelineFaultCode[],
+  notes: string[],
+  inputTruncated: boolean,
+  failClosed: boolean,
+): PipelineResilienceReport {
+  return {
+    degraded: faults.length > 0,
+    fail_closed: failClosed,
+    input_truncated: inputTruncated,
+    fault_codes: [...new Set(faults)],
+    notes,
+  };
+}
+
+function clampDecisionForResilience(
+  decision: GuardianDecision,
+  responseMode: ResponseMode,
+  faults: PipelineFaultCode[],
+): { decision: GuardianDecision; responseMode: ResponseMode } {
+  if (faults.includes('INPUT_TOO_LARGE')) {
+    return { decision: 'HOLD', responseMode: 'restricted' };
+  }
+
+  if (faults.includes('MODEL_ADAPTER_FAILURE') && decision === 'PASS') {
+    return { decision: 'HOLD', responseMode: 'restricted' };
+  }
+
+  return { decision, responseMode };
+}
+
+function estimateTokens(input: string, modelResponse?: string): number {
+  return Math.ceil(input.split(/\s+/).length * 1.3 + (modelResponse?.split(/\s+/).length || 0) * 1.3);
+}
+
+export interface PipelineOptions {
+  mode: PipelineMode;
+  adapter?: ModelAdapter;
+  systemPrompt?: string;
+}
+
+export async function runPipeline(input: string, options: PipelineOptions): Promise<PipelineResult> {
+  const faults: PipelineFaultCode[] = [];
+  const notes: string[] = [];
+  const startTime = safeNow(faults);
+  const id = safeUuid(faults);
+  const timestamp = new Date().toISOString();
+  const sanitized = sanitizeInput(input, faults, notes);
+  const safeInput = sanitized.value;
+  const input_hash = hashInput(safeInput);
+
+  // ═══ NEW: ALFA Shield pre-scan ═══
+  let shield: import('./alfa-shield').ShieldScanResult | undefined;
+  try {
+    const scanner = new ALFAInputScanner(id);
+    shield = scanner.scan(safeInput);
+    if (shield.shield_signal.status === 'SOS') {
+      notes.push(`ALFA Shield SOS: ${shield.shield_signal.category} (${shield.shield_signal.severity})`);
+    }
+  } catch {
+    notes.push('ALFA Shield scan failed; continuing with standard pipeline.');
+  }
+
+  let lasuch: LasuchResult;
+  try {
+    lasuch = runLasuch(safeInput);
+  } catch {
+    faults.push('LASUCH_FAILURE');
+    notes.push('LASUCH failed; fallback threat profile applied.');
+    lasuch = buildFallbackLasuch(safeInput);
+  }
+
+  // ═══ Cross-validate: Shield + Lasuch amplification ═══
+  if (shield && shield.shield_signal.status === 'SOS' && shield.risk_score > 0.7) {
+    // If Shield independently detected critical threat, boost Lasuch scores
+    if (lasuch.risk_score < 0.5) {
+      lasuch = {
+        ...lasuch,
+        risk_score: Math.min(1, lasuch.risk_score + 0.15),
+        exploit_score: Math.min(1, lasuch.exploit_score + 0.1),
+      };
+      notes.push('Shield-Lasuch cross-validation: risk scores amplified.');
+    }
+  }
+
+  let tagger: GuardianTaggerResult;
+  try {
+    tagger = runTagger(safeInput, lasuch);
+  } catch {
+    faults.push('TAGGER_FAILURE');
+    notes.push('Tagger failed; request frozen by fallback classifier.');
+    tagger = buildFallbackTagger();
+  }
+
+  let cerber: CerberResult;
+  try {
+    cerber = runCerber(safeInput, lasuch);
+  } catch {
+    faults.push('CERBER_FAILURE');
+    notes.push('CERBER failed; impact simulation forced into fail-closed mode.');
+    cerber = buildFallbackCerber();
+  }
+
+  let guardian: GuardianResult;
+  try {
+    guardian = runGuardian(lasuch, cerber, tagger);
+  } catch {
+    faults.push('GUARDIAN_FAILURE');
+    notes.push('Guardian failed; final decision forced to BLOCK.');
+    guardian = buildFallbackGuardian(['FAIL_CLOSED:GUARDIAN']);
+  }
+
+  let route: GuardianRouteDecision;
+  try {
+    route = routeTaggedMessage(tagger);
+  } catch {
+    faults.push('ROUTER_FAILURE');
+    notes.push('Router failed; dispatch disabled and quarantine lane engaged.');
+    route = buildFallbackRoute(tagger);
+  }
+
+  let enhancement: PromptEnhancementResult;
+  try {
+    const enhancerMode = options.mode === 'benchmark' ? 'benchmark' as const : 'safe' as const;
+    const enhancementRaw = enhancePrompt(safeInput, enhancerMode);
+    enhancement = {
+      original: enhancementRaw.original,
+      enhanced: enhancementRaw.enhanced,
+      dual_prompt: enhancementRaw.dual_prompt,
+      weaknesses: enhancementRaw.weaknesses.map((weakness) => ({
+        category: weakness.category,
+        description: weakness.description,
+        severity: weakness.severity,
+        fix: weakness.fix,
+      })),
+      enhancement_summary: enhancementRaw.enhancement_summary,
+      strength_score: enhancementRaw.strength_score,
+      improvement_delta: enhancementRaw.improvement_delta,
+      modification_level: enhancementRaw.modification_level,
+      risk_of_distortion: enhancementRaw.risk_of_distortion,
+      added_assumptions: enhancementRaw.added_assumptions,
+      mode: enhancementRaw.mode,
+      processing_time_ms: enhancementRaw.processing_time_ms,
+    };
+  } catch {
+    faults.push('ENHANCER_FAILURE');
+    notes.push('Prompt enhancer failed; original prompt preserved.');
+    enhancement = buildFallbackEnhancement(safeInput);
+  }
+
+  let core: CoreResult;
+  try {
+    core = runCore(safeInput, lasuch, cerber, guardian);
+  } catch {
+    faults.push('CORE_FAILURE');
+    notes.push('Core scoring failed; conservative block recommendation applied.');
+    core = buildFallbackCore();
+  }
+
+  // ═══ NEW: Deliberative Core — weighted multi-agent deliberation ═══
+  let deliberation: import('./deliberative-core').DeliberationResult | undefined;
+  try {
+    deliberation = runDeliberativeCore(safeInput, lasuch, cerber, guardian, tagger);
+  } catch {
+    notes.push('Deliberative Core failed; standard Guardian decision preserved.');
+  }
+
+  let final_decision: GuardianDecision = guardian.decision;
+  let response_mode: ResponseMode = guardian.response_mode;
+  let model_response: string | undefined;
+  let provider_used: string | undefined;
+  let model_used: string | undefined;
+
+  // ═══ Deliberation override: Brain can overturn non-hard-violation blocks ═══
+  if (deliberation && !deliberation.hard_violation) {
+    if (deliberation.verdict === 'ALLOW' && (final_decision === 'HOLD' || final_decision === 'LIMITED_PASS')) {
+      // Brain overturned the hold — allow with restricted mode
+      final_decision = 'LIMITED_PASS';
+      response_mode = 'restricted';
+      notes.push(`Deliberative Core override: ${deliberation.winning_argument}`);
+    } else if (deliberation.verdict === 'DENY' && final_decision === 'PASS') {
+      // Deliberation caught something Guardian missed
+      final_decision = 'HOLD';
+      response_mode = 'restricted';
+      notes.push(`Deliberative Core escalation: ${deliberation.winning_argument}`);
+    }
+  }
+
+  if (core.recommendation === 'block' && final_decision === 'PASS') {
+    final_decision = 'HOLD';
+    response_mode = 'restricted';
+  }
+
+  if (enhancement.modification_level === 'HIGH' && enhancement.added_assumptions && final_decision === 'PASS') {
+    final_decision = 'LIMITED_PASS';
+    response_mode = 'restricted';
+  }
+
+  // ═══ Shield veto: if Shield says TERMINATE, force BLOCK ═══
+  if (shield && shield.shield_signal.recommended_action === 'TERMINATE_SESSION' && final_decision !== 'BLOCK') {
+    final_decision = 'BLOCK';
+    response_mode = 'silence';
+    notes.push('ALFA Shield TERMINATE override applied.');
+  }
+
+  const resilienceClamp = clampDecisionForResilience(final_decision, response_mode, faults);
+  final_decision = resilienceClamp.decision;
+  response_mode = resilienceClamp.responseMode;
+
+  if (faults.includes('INPUT_TOO_LARGE')) {
+    route = {
+      ...route,
+      lane: 'quarantine-lane',
+      execution_profile: 'oversized-input',
+      should_dispatch: false,
+      priority: 'high',
+    };
+  }
+
+  const systemGuardPrefix = enhancement.dual_prompt.system_guard;
+  const routerPrompt = `[ROUTER]\npartition=${route.partition}\nlane=${route.lane}\nmodel_tier=${route.model_tier}\nexecution_profile=${route.execution_profile}\npriority=${route.priority}`;
+
+  // ═══ ALFA T9: trajectory contract injected before model call ═══
+  let t9_contract: import('./t9').TrajectoryContract | undefined;
+  try {
+    t9_contract = t9Engine.predict(safeInput);
+  } catch {
+    notes.push('T9 predictor failed; trajectory contract skipped.');
+  }
+  const t9Prompt = t9_contract ? t9_contract.injection_text : '';
+  const effectiveSystemPrompt = [systemGuardPrefix, routerPrompt, t9Prompt, options.systemPrompt].filter(Boolean).join('\n\n');
+
+  if (options.mode !== 'benchmark' && route.should_dispatch && (final_decision === 'PASS' || final_decision === 'LIMITED_PASS') && options.adapter) {
+    try {
+      const userInput = final_decision === 'LIMITED_PASS'
+        ? `[RESTRICTED MODE] ${safeInput}`
+        : safeInput;
+
+      model_response = await options.adapter.chat(userInput, effectiveSystemPrompt);
+      provider_used = options.adapter.provider;
+      model_used = options.adapter.modelId;
+    } catch (error) {
+      faults.push('MODEL_ADAPTER_FAILURE');
+      notes.push('Model adapter failed; dispatch result downgraded to HOLD.');
+      model_response = `[ERROR] Model call failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
+      if (final_decision === 'PASS') {
+        final_decision = 'HOLD';
+        response_mode = 'restricted';
+      }
+    }
+  } else if (final_decision === 'BLOCK' || final_decision === 'HOLD' || final_decision === 'HUMAN_REVIEW') {
+    model_response = undefined;
+  }
+
+  if (options.mode === 'raw' && options.adapter) {
+    try {
+      model_response = await options.adapter.chat(safeInput, options.systemPrompt);
+      provider_used = options.adapter.provider;
+      model_used = options.adapter.modelId;
+      final_decision = 'PASS';
+      response_mode = 'normal';
+    } catch (error) {
+      faults.push('MODEL_ADAPTER_FAILURE');
+      notes.push('Raw-mode adapter failed; response captured as error string.');
+      model_response = `[ERROR] ${error instanceof Error ? error.message : 'Unknown error'}`;
+    }
+  }
+
+  // ═══ NEW: Post-Block Deliberation — async analysis after block/hold ═══
+  let pbd: import('./pbd').PBDResult | undefined;
+  if (final_decision === 'BLOCK' || final_decision === 'HOLD' || final_decision === 'HUMAN_REVIEW') {
+    try {
+      pbd = runPBD(input_hash, lasuch, cerber, guardian, final_decision);
+      notes.push(`PBD: ${pbd.final_review.analytical_verdict} (quality=${pbd.final_review.quality_score})`);
+    } catch {
+      notes.push('PBD analysis failed; block quality unassessed.');
+    }
+  }
+
+  // ═══ ALFA T9: post-model verification (trajectory + overclaim + filtry) ═══
+  let t9_verification: import('./t9').T9UnifiedResult | undefined;
+  if (model_response && !model_response.startsWith('[ERROR]')) {
+    try {
+      t9_verification = t9Engine.verify({
+        userInput: safeInput,
+        modelOutput: model_response,
+        toolTrace: false,
+        persist: false,
+      });
+      if (t9_verification.final_decision === 'BLOCK' && final_decision === 'PASS') {
+        final_decision = 'BLOCK';
+        response_mode = 'silence';
+        notes.push(`T9 BLOCK: ${t9_verification.guard_result.reason}`);
+      } else if (t9_verification.final_decision === 'HOLD' && final_decision === 'PASS') {
+        final_decision = 'HOLD';
+        response_mode = 'restricted';
+        notes.push(`T9 HOLD: ${t9_verification.overclaim_result.reason}`);
+      }
+    } catch {
+      notes.push('T9 post-model verification failed; trajectory unchecked.');
+    }
+  }
+
+  // ═══ ALFA DAMS: Dynamic Algorithm Mounting on draft answer ═══
+  let dams: import('./dynamic-mount').DAMSResult | undefined;
+  if (model_response && !model_response.startsWith('[ERROR]')) {
+    try {
+      dams = damsPipeline.process({
+        user_input: safeInput,
+        draft_answer: model_response,
+        domain: tagger.domain,
+      });
+      if (dams.verdict === 'BLOCK' && final_decision !== 'BLOCK') {
+        final_decision = 'BLOCK';
+        response_mode = 'silence';
+        notes.push(`DAMS BLOCK: ${dams.blocked_by.join(', ')}`);
+      } else if (dams.verdict === 'HOLD' && final_decision === 'PASS') {
+        final_decision = 'HOLD';
+        response_mode = 'restricted';
+        notes.push(`DAMS HOLD: ${dams.reasoning}`);
+      }
+    } catch {
+      notes.push('DAMS analysis failed; dynamic mount skipped.');
+    }
+  }
+
+  const resilience = createResilienceReport(
+    faults,
+    notes,
+    sanitized.truncated,
+    faults.some((fault) => ['LASUCH_FAILURE', 'TAGGER_FAILURE', 'CERBER_FAILURE', 'GUARDIAN_FAILURE', 'ROUTER_FAILURE', 'CORE_FAILURE'].includes(fault)),
+  );
+
+  if (resilience.degraded && !guardian.reason_codes.includes('SYSTEM_DEGRADED')) {
+    guardian = {
+      ...guardian,
+      reason_codes: [...guardian.reason_codes, 'SYSTEM_DEGRADED'],
+    };
+  }
+
+  const total_latency_ms = Math.round(safeNow(faults) - startTime);
+  const token_estimate = estimateTokens(safeInput, model_response);
+
+  return {
+    id,
+    timestamp,
+    input: safeInput,
+    input_hash,
+    tagger,
+    lasuch,
+    cerber,
+    guardian,
+    route,
+    core,
+    enhancement,
+    shield,
+    deliberation,
+    pbd,
+    t9_contract,
+    t9_verification,
+    dams,
+    final_decision,
+    response_mode,
+    model_response,
+    provider_used,
+    model_used,
+    total_latency_ms,
+    token_estimate,
+    mode: options.mode,
+    resilience,
+  };
+}
