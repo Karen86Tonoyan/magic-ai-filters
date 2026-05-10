@@ -72,6 +72,10 @@ export class HallucinationSnapshotDB {
       .reverse();
   }
 
+  list(): SnapshotRow[] {
+    return load().slice().reverse();
+  }
+
   stats() {
     const rows = load();
     const total = rows.length;
