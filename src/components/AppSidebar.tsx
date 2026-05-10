@@ -10,6 +10,7 @@ const navItems = [
   { to: '/benchmark', icon: BarChart3, label: 'Benchmark Lab' },
   { to: '/incidents', icon: AlertTriangle, label: 'Incidents' },
   { to: '/snapshots', icon: Database, label: 'T9 Snapshots' },
+  { to: '/settings', icon: Sliders, label: 'Sensitivity' },
   { to: '/llm', icon: Brain, label: 'LLM Self-Test' },
 ];
 
