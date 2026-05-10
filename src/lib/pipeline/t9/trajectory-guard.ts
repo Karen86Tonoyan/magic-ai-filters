@@ -1,4 +1,5 @@
-import type { GuardResult, ModelState } from './types';
+import { getT9Thresholds } from './settings';
+import type { GuardResult, ModelState, T9Decision } from './types';
 import { STATE_RISK } from './types';
 
 const TASK_MODE_MAP: Array<{ pattern: RegExp; allowed: ModelState[]; disallowed: ModelState[] }> = [
