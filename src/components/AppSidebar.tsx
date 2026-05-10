@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Bot, Eye, BarChart3, AlertTriangle, MessageSquare, Brain, Database } from 'lucide-react';
+import { LayoutDashboard, Bot, Eye, BarChart3, AlertTriangle, MessageSquare, Brain, Database, Sliders } from 'lucide-react';
 import alfaWolfLogo from '@/assets/alfa-wolf-logo.png';
 
 const navItems = [
