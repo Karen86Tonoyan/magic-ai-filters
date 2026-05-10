@@ -3,7 +3,7 @@ import type { T9UnifiedResult } from './types';
 const KEY = 'alfa_t9_snapshots_v1';
 const MAX = 500;
 
-interface SnapshotRow {
+export interface SnapshotRow {
   id: string;
   timestamp: string;
   user_input: string;
