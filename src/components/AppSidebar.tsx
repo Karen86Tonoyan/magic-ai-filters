@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Bot, Eye, BarChart3, AlertTriangle, MessageSquare, Brain, Database, Sliders } from 'lucide-react';
+import { LayoutDashboard, Bot, Eye, BarChart3, AlertTriangle, MessageSquare } from 'lucide-react';
 import alfaWolfLogo from '@/assets/alfa-wolf-logo.png';
 
 const navItems = [
@@ -9,9 +9,6 @@ const navItems = [
   { to: '/chat', icon: MessageSquare, label: 'Dual Chat' },
   { to: '/benchmark', icon: BarChart3, label: 'Benchmark Lab' },
   { to: '/incidents', icon: AlertTriangle, label: 'Incidents' },
-  { to: '/snapshots', icon: Database, label: 'T9 Snapshots' },
-  { to: '/settings', icon: Sliders, label: 'Sensitivity' },
-  { to: '/llm', icon: Brain, label: 'LLM Self-Test' },
 ];
 
 export function AppSidebar() {

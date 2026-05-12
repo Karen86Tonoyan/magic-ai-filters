@@ -1,62 +1,64 @@
+import { T9IntegrityResult, T9Decision, T9Violation } from './types';
 import { getT9Thresholds } from './settings';
-import type { ExecutionReport, OverclaimResult, T9Decision } from './types';
-
-const OVERCLAIM_PATTERNS: Array<[RegExp, string]> = [
-  [/\btests?\s+now\s+pass\b/i, 'tests_now_pass'],
-  [/\bupdated?\s+(?:the\s+)?(?:code|file|function)\b/i, 'updated_claim'],
-  [/\bfixed?\s+(?:the\s+)?(?:bug|error|issue)\b/i, 'fixed_claim'],
-  [/\bchanged?\s+(?:the\s+)?(?:code|logic|function)\b/i, 'changed_claim'],
-  [/\bused?\s+file\s+operations?\b/i, 'file_operations_claim'],
-  [/\bapplied?\s+(?:the\s+)?patch\b/i, 'patch_applied_claim'],
-  [/\bdeployed?\b/i, 'deploy_claim'],
-  [/\bcommitted?\s+to\b/i, 'commit_claim'],
-  [/\bpushed?\s+to\b/i, 'push_claim'],
-];
-
-export function isExecutionTrusted(r?: ExecutionReport): boolean {
-  if (!r) return false;
-  const hasDiff = !!r.diff_content?.trim();
-  const hasPytest =
-    (r.pytest_result === 'PASSED' || r.pytest_result === 'FAILED') &&
-    !!r.pytest_output?.trim() &&
-    r.diff_available;
-  return hasDiff || hasPytest;
-}
 
 export class OutputIntegrityGuard {
-  scan(modelOutput: string, execReport?: ExecutionReport): OverclaimResult {
-    const found: string[] = [];
-    for (const [pattern, label] of OVERCLAIM_PATTERNS) {
-      if (pattern.test(modelOutput)) found.push(label);
-    }
-    const trusted = isExecutionTrusted(execReport);
+  scan(response: string): T9IntegrityResult {
+    const lower = response.toLowerCase();
+    const t = getT9Thresholds();
+    const violations: T9Violation[] = [];
+    let overclaim_count = 0;
+    let proof_count = 0;
 
-    if (found.length && trusted) {
-      return {
-        overclaims_found: found,
-        decision: 'PASS',
-        execution_trusted: true,
-        reason: 'OVERCLAIMS_BACKED_BY_PROOF',
-      };
+    // Overclaim detection
+    const overclaimPatterns = [
+      /\b(na pewno|oczywiście|bez wątpienia|z całą pewnością)\b/gi,
+      /\b(definitely|certainly|obviously|without a doubt)\b/gi,
+      /\b(100%|absolutely|always|never)\b/gi,
+    ];
+
+    for (const pattern of overclaimPatterns) {
+      const matches = lower.match(pattern);
+      if (matches) overclaim_count += matches.length;
     }
-    if (found.length && !trusted) {
-      const t = getT9Thresholds();
-      const decision: T9Decision =
-        t.overclaim_block_when_no_proof || found.length >= t.overclaim_block_count
-          ? 'BLOCK'
-          : 'HOLD';
-      return {
-        overclaims_found: found,
-        decision,
-        execution_trusted: false,
-        reason: `STATUS_OVERCLAIM: ${found.join(',')} without proof`,
-      };
+
+    // Proof detection
+    const proofPatterns = [
+      /\b(diff content|pytest output|log|traceback|console output)\b/gi,
+      /\b(źródło|source|citation|according to)\b/gi,
+      /\b(wynik testu|test result|benchmark|metric)\b/gi,
+    ];
+
+    for (const pattern of proofPatterns) {
+      const matches = lower.match(pattern);
+      if (matches) proof_count += matches.length;
     }
+
+    if (overclaim_count > 0 && proof_count === 0) violations.push('UNGROUNDED_ASSERTION');
+    if (overclaim_count >= t.overclaim_block_count) violations.push('OVERCONFIDENCE');
+
+    // Execution trust
+    const executionTrusted = this.isExecutionTrusted(response);
+
+    let decision: T9Decision = 'PASS';
+    if (violations.includes('OVERCONFIDENCE') || (t.overclaim_block_when_no_proof && violations.includes('UNGROUNDED_ASSERTION'))) {
+      decision = 'BLOCK';
+    } else if (violations.includes('UNGROUNDED_ASSERTION')) {
+      decision = 'HOLD';
+    }
+
     return {
-      overclaims_found: [],
-      decision: 'PASS',
-      execution_trusted: trusted,
-      reason: 'CLEAN',
+      decision,
+      violations,
+      overclaim_count,
+      proof_count,
+      execution_trusted: executionTrusted,
     };
+  }
+
+  isExecutionTrusted(response: string): boolean {
+    const lower = response.toLowerCase();
+    const hasEvidence = /\b(diff content|pytest output|log|traceback|console output|test result|benchmark run|execution log)\b/gi.test(lower);
+    const hasClaim = /\b(wykonałem|przetestowałem|uruchomiłem|i ran|i tested|i executed)\b/gi.test(lower);
+    return !hasClaim || hasEvidence;
   }
 }

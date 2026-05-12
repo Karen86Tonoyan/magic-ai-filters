@@ -16,7 +16,6 @@ export function createAdapter(
     case 'openrouter':
     case 'groq':
     case 'mistral':
-    case 'xai':
       return new OpenAICompatibleAdapter(config, provider);
     case 'anthropic':
       // Anthropic uses a different API format, but OpenRouter can proxy it

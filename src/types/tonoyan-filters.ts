@@ -181,38 +181,6 @@ export interface PromptEnhancementResult {
   processing_time_ms: number;
 }
 
-export type PipelineFaultCode =
-  | 'EMPTY_INPUT'
-  | 'NON_STRING_INPUT'
-  | 'INPUT_TOO_LARGE'
-  | 'UUID_FALLBACK'
-  | 'TIMER_FALLBACK'
-  | 'LASUCH_FAILURE'
-  | 'TAGGER_FAILURE'
-  | 'CERBER_FAILURE'
-  | 'GUARDIAN_FAILURE'
-  | 'ROUTER_FAILURE'
-  | 'CORE_FAILURE'
-  | 'ENHANCER_FAILURE'
-  | 'MODEL_ADAPTER_FAILURE';
-
-export interface PipelineResilienceReport {
-  degraded: boolean;
-  fail_closed: boolean;
-  input_truncated: boolean;
-  fault_codes: PipelineFaultCode[];
-  notes: string[];
-}
-
-// ─── ALFA Shield ───
-export type { SOSCategory, ShieldSeverity, RecommendedAction, SOSSignal, ShieldScanResult, TonoyanFilterResult } from '@/lib/pipeline/alfa-shield';
-
-// ─── Deliberative Core ───
-export type { DeliberativeVerdict, HardViolation, ModulePosition, BrainSimulation, DeliberationResult } from '@/lib/pipeline/deliberative-core';
-
-// ─── Post-Block Deliberation ───
-export type { AnalyticalVerdict, CerberReport, LasuchReport as PBDLasuchReport, GuardianReport as PBDGuardianReport, BrainForwardSimulation, FinalReview, PBDResult } from '@/lib/pipeline/pbd';
-
 // ─── Full Pipeline Result ───
 export interface PipelineResult {
   id: string;
@@ -226,17 +194,6 @@ export interface PipelineResult {
   route: GuardianRouteDecision;
   core: CoreResult;
   enhancement?: PromptEnhancementResult;
-  /** ALFA Shield pre-scan result */
-  shield?: import('@/lib/pipeline/alfa-shield').ShieldScanResult;
-  /** Deliberative Core result (Brain + weighted deliberation) */
-  deliberation?: import('@/lib/pipeline/deliberative-core').DeliberationResult;
-  /** Post-Block Deliberation result (async analysis) */
-  pbd?: import('@/lib/pipeline/pbd').PBDResult;
-  /** ALFA T9 Unified — trajectory contract + post-model verification */
-  t9_contract?: import('@/lib/pipeline/t9').TrajectoryContract;
-  t9_verification?: import('@/lib/pipeline/t9').T9UnifiedResult;
-  /** ALFA Dynamic Algorithm Mounting System v1.0 — post-draft validation */
-  dams?: import('@/lib/pipeline/dynamic-mount').DAMSResult;
   final_decision: GuardianDecision;
   response_mode: ResponseMode;
   model_response?: string;
@@ -245,7 +202,6 @@ export interface PipelineResult {
   total_latency_ms: number;
   token_estimate: number;
   mode: PipelineMode;
-  resilience: PipelineResilienceReport;
 }
 
 // ─── Provider System ───

@@ -1,118 +1,75 @@
-/**
- * ALFA T9 UNIFIED v2.0 — TypeScript port
- * Copyright © Karen Tonoyan | ALFA Ecosystem
- */
+// ALFA T9 Unified v2.0 — Core Types
 
-export type ModelState =
-  | 'ANSWER_MODE'
-  | 'EXPLAIN_MODE'
-  | 'REFUSAL_MODE'
-  | 'ECHO_MODE'
-  | 'ASSUMPTION_MODE'
-  | 'DRIFT_MODE'
-  | 'LECTURE_MODE'
+export type T9IntentMode =
+  | 'ANSWER_MODE'      // Allowed: direct factual answer
+  | 'EXPLAIN_MODE'     // Allowed: explanation, reasoning
+  | 'LECTURE_MODE'     // Forbidden: pontification without grounding
+  | 'DRIFT_MODE'       // Forbidden: topic drift away from user intent
   | 'OVERCONFIDENT_MODE'
   | 'EXECUTION_CLAIM_MODE';
 
-export const STATE_RISK: Record<ModelState, number> = {
-  ANSWER_MODE: 0.0,
-  EXPLAIN_MODE: 0.1,
-  REFUSAL_MODE: 0.2,
-  ECHO_MODE: 0.3,
-  ASSUMPTION_MODE: 0.5,
-  DRIFT_MODE: 0.6,
-  LECTURE_MODE: 0.65,
-  OVERCONFIDENT_MODE: 0.75,
-  EXECUTION_CLAIM_MODE: 0.9,
-};
+export type T9Decision = 'PASS' | 'VERIFY' | 'HOLD' | 'BLOCK';
 
-export type T9Decision = 'PASS' | 'HOLD' | 'VERIFY' | 'BLOCK';
-export type PytestResult = 'PASSED' | 'FAILED' | 'NOT_RUN';
-export type ExecutionStatus = 'DONE' | 'BLOCKED' | 'PENDING' | 'UNKNOWN';
-export type FilterSeverity = 'INFO' | 'LOW' | 'MEDIUM' | 'HIGH';
-export type FilterDecisionLevel = 'PASS' | 'WARN' | 'BLOCK';
-
-export type HallucinationType =
-  | 'OVERCONFIDENT'
-  | 'UNSOURCED_CLAIM'
-  | 'CONTEXT_DRIFT'
-  | 'WISHFUL_THINKING'
-  | 'POLARIZATION'
-  | 'LOGICAL_JUMP'
-  | 'ATTRIBUTION_ERROR';
-
-export interface TrajectoryContract {
-  predicted_state: ModelState;
-  intent: string;
-  expected_mode: ModelState;
-  required_artifact: string;
-  forbidden_modes: ModelState[];
-  escalated: boolean;
-  pre_warning: string;
-  injection_text: string;
-}
-
-export interface GuardResult {
-  decision: T9Decision;
-  predicted_state: ModelState;
-  observed_state: ModelState;
-  trajectory_hallucination: boolean;
-  reason: string;
-  recovery_path: string[];
-  risk_score: number;
-}
-
-export interface OverclaimResult {
-  overclaims_found: string[];
-  decision: T9Decision;
-  execution_trusted: boolean;
-  reason: string;
-}
-
-export interface ExecutionReport {
-  status: ExecutionStatus;
-  repo_path: string;
-  files_changed: string[];
-  patch_applied: boolean;
-  pytest_result: PytestResult;
-  pytest_output: string;
-  command_output: string;
-  diff_available: boolean;
-  diff_content: string;
-}
-
-export interface FilterResult {
-  filter_name: string;
-  passed: boolean;
-  score: number;
+export interface T9Prediction {
+  intent: T9IntentMode;
   confidence: number;
-  issues: string[];
-  suggestions: string[];
-  hallucination_types: HallucinationType[];
-  severity: FilterSeverity;
-  metadata: Record<string, number>;
+  needs_source: boolean;
+  overclaim_risk: number;
+  pressure_signals: number;
+  prompt_hash: string;
 }
 
-export interface FilterReport {
-  text: string;
-  passed: boolean;
-  overall_score: number;
-  decision: FilterDecisionLevel;
-  results: FilterResult[];
-  blocked_by: string[];
+export interface T9State {
+  intent: T9IntentMode;
+  trajectory_drift: number;   // 0.0-1.0
+  hallucination_risk: number; // 0.0-1.0
+  violation_flags: T9Violation[];
+  confidence: number;
 }
 
-export interface T9UnifiedResult {
-  user_input: string;
-  model_output: string;
-  contract: TrajectoryContract;
-  guard_result: GuardResult;
-  overclaim_result: OverclaimResult;
-  exec_report?: ExecutionReport;
-  filter_report: FilterReport;
-  final_decision: T9Decision;
+export type T9Violation =
+  | 'TOPIC_DRIFT'
+  | 'OVERCONFIDENCE'
+  | 'LECTURE_WITHOUT_PROOF'
+  | 'EXECUTION_CLAIM_WITHOUT_TOOL_TRACE'
+  | 'UNGROUNDED_ASSERTION';
+
+export interface T9IntegrityResult {
+  decision: T9Decision;
+  violations: T9Violation[];
+  overclaim_count: number;
+  proof_count: number;
   execution_trusted: boolean;
-  graph_mermaid: string;
-  snapshot_id: string;
-  timestamp: string;
 }
+
+export interface SnapshotRow {
+  id: string;
+  timestamp: number;
+  prompt: string;
+  prompt_hash: string;
+  predicted_intent: T9IntentMode;
+  observed_intent: T9IntentMode;
+  decision: T9Decision;
+  violations: T9Violation[];
+  trajectory_drift: number;
+  hallucination_risk: number;
+  response: string;
+}
+
+export interface T9Thresholds {
+  trajectory_verify_risk: number;
+  trajectory_block_risk: number;
+  trajectory_violation_to_block: boolean;
+  overclaim_block_count: number;
+  overclaim_block_when_no_proof: boolean;
+  execution_claim_to_block: boolean;
+}
+
+export const DEFAULT_T9_THRESHOLDS: T9Thresholds = {
+  trajectory_verify_risk: 0.75,
+  trajectory_block_risk: 0.95,
+  trajectory_violation_to_block: true,
+  overclaim_block_count: 99,
+  overclaim_block_when_no_proof: false,
+  execution_claim_to_block: false,
+};

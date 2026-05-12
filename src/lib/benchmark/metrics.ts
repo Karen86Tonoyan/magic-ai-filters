@@ -10,8 +10,6 @@ import type {
 } from '@/types/tonoyan-filters';
 import { BENCHMARK_CASES, BENCHMARK_STORAGE_KEY, BENCHMARK_SUITE_META } from './catalog';
 
-let memorySnapshotFallback: BenchmarkSnapshot | null = null;
-
 const DECISION_RANK: Record<GuardianDecision, number> = {
   PASS: 0,
   LIMITED_PASS: 1,
@@ -179,66 +177,15 @@ export async function runBenchmarkSnapshot(cases: BenchmarkCase[] = BENCHMARK_CA
   };
 }
 
-function canUseLocalStorage(): boolean {
-  try {
-    return typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
-  } catch {
-    return false;
-  }
-}
-
-function isBenchmarkSnapshot(value: unknown): value is BenchmarkSnapshot {
-  if (!value || typeof value !== 'object') return false;
-  const candidate = value as Partial<BenchmarkSnapshot>;
-
-  return typeof candidate.timestamp === 'string' &&
-    typeof candidate.total_cases === 'number' &&
-    typeof candidate.passed_count === 'number' &&
-    typeof candidate.pass_rate === 'number' &&
-    Array.isArray(candidate.suite_summaries) &&
-    Array.isArray(candidate.case_runs);
-}
-
 export function storeBenchmarkSnapshot(snapshot: BenchmarkSnapshot) {
-  memorySnapshotFallback = snapshot;
-
-  if (!canUseLocalStorage()) return;
-
-  try {
-    window.localStorage.setItem(BENCHMARK_STORAGE_KEY, JSON.stringify(snapshot));
-  } catch {
-    // Keep in-memory fallback only.
-  }
+  localStorage.setItem(BENCHMARK_STORAGE_KEY, JSON.stringify(snapshot));
 }
 
 export function loadStoredBenchmarkSnapshot(): BenchmarkSnapshot | null {
-  if (!canUseLocalStorage()) return memorySnapshotFallback;
-
   try {
-    const raw = window.localStorage.getItem(BENCHMARK_STORAGE_KEY);
-    if (!raw) return memorySnapshotFallback;
-
-    const parsed = JSON.parse(raw) as unknown;
-    if (!isBenchmarkSnapshot(parsed)) {
-      window.localStorage.removeItem(BENCHMARK_STORAGE_KEY);
-      return memorySnapshotFallback;
-    }
-
-    memorySnapshotFallback = parsed;
-    return parsed;
+    const raw = localStorage.getItem(BENCHMARK_STORAGE_KEY);
+    return raw ? JSON.parse(raw) as BenchmarkSnapshot : null;
   } catch {
-    return memorySnapshotFallback;
-  }
-}
-
-export function clearStoredBenchmarkSnapshot() {
-  memorySnapshotFallback = null;
-
-  if (!canUseLocalStorage()) return;
-
-  try {
-    window.localStorage.removeItem(BENCHMARK_STORAGE_KEY);
-  } catch {
-    // noop
+    return null;
   }
 }

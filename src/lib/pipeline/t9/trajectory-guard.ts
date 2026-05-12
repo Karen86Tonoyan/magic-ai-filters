@@ -1,133 +1,82 @@
+import { T9State, T9Decision, T9Violation, T9IntentMode } from './types';
 import { getT9Thresholds } from './settings';
-import type { GuardResult, ModelState, T9Decision } from './types';
-import { STATE_RISK } from './types';
-
-const TASK_MODE_MAP: Array<{ pattern: RegExp; allowed: ModelState[]; disallowed: ModelState[] }> = [
-  {
-    pattern: /\b(napisz|zrób|zbuduj|build|create|implement|write)\b/i,
-    allowed: ['ANSWER_MODE', 'EXPLAIN_MODE'],
-    disallowed: ['LECTURE_MODE', 'DRIFT_MODE', 'ECHO_MODE'],
-  },
-  {
-    pattern: /\b(wyjaśnij|explain|jak działa|how does)\b/i,
-    allowed: ['EXPLAIN_MODE', 'ANSWER_MODE'],
-    disallowed: ['LECTURE_MODE', 'OVERCONFIDENT_MODE'],
-  },
-  {
-    pattern: /\b(czy|should|is it|can i)\b/i,
-    allowed: ['ANSWER_MODE', 'REFUSAL_MODE'],
-    disallowed: ['OVERCONFIDENT_MODE', 'ASSUMPTION_MODE'],
-  },
-];
-
-const RECOVERY: Partial<Record<ModelState, string[]>> = {
-  LECTURE_MODE: ['Switch to ANSWER_MODE', 'Provide direct answer', 'Remove meta-commentary'],
-  DRIFT_MODE: ['Return to original task', 'Restate user intent', 'Drop tangents'],
-  ECHO_MODE: ['Add new information', 'Provide analysis or artifact'],
-  OVERCONFIDENT_MODE: ['Add source', 'Add uncertainty qualifier', 'Verify claim'],
-  ASSUMPTION_MODE: ['Ask for clarification', 'State assumption explicitly'],
-  EXECUTION_CLAIM_MODE: ['Provide actual diff or tool trace', 'Mark as BLOCKED if no proof'],
-};
-
-const OBSERVATION_PATTERNS: Record<ModelState, RegExp[]> = {
-  ANSWER_MODE: [],
-  EXPLAIN_MODE: [],
-  REFUSAL_MODE: [/\bnie mogę\b/i, /\bi cannot\b/i, /\bi can't\b/i],
-  LECTURE_MODE: [/\bpamiętaj że\b/i, /\bwarto wiedzieć\b/i, /\bprinciple\b/i, /\bnote that\b/i],
-  DRIFT_MODE: [/\btak przy okazji\b/i, /\bby the way\b/i, /\binterestingly\b/i],
-  ECHO_MODE: [/\bjak powiedziałeś\b/i, /\bas you said\b/i, /\bto repeat\b/i],
-  OVERCONFIDENT_MODE: [/\bna pewno\b/i, /\bniewątpliwie\b/i, /\bdefinitely\b/i, /\bobviously\b/i],
-  ASSUMPTION_MODE: [/\bzakładam że\b/i, /\bprzypuszczam\b/i, /\bassuming\b/i, /\bI assume\b/i],
-  EXECUTION_CLAIM_MODE: [
-    /\bzrobiłem\b/i,
-    /\bnaprawiłem\b/i,
-    /\bupdated\b/i,
-    /\bfixed\b/i,
-    /\bchanged\b/i,
-  ],
-};
 
 export class TrajectoryGuard {
-  observeState(text: string): ModelState {
-    let best: ModelState = 'ANSWER_MODE';
-    let bestScore = 0;
-    for (const [state, patterns] of Object.entries(OBSERVATION_PATTERNS) as [ModelState, RegExp[]][]) {
-      const s = patterns.reduce((acc, p) => acc + (text.match(p)?.length || 0), 0);
-      if (s > bestScore) {
-        bestScore = s;
-        best = state;
-      }
-    }
-    return best;
-  }
+  observeState(prompt: string, response: string): T9State {
+    const predicted = this.detectIntent(prompt);
+    const observed = this.detectIntent(response);
+    const drift = this.computeDrift(predicted, observed);
+    const flags: T9Violation[] = [];
 
-  check(
-    userInput: string,
-    observedState: ModelState,
-    predictedState: ModelState = 'ANSWER_MODE',
-    toolTrace = true,
-  ): GuardResult {
-    const risk = STATE_RISK[observedState] ?? 0.3;
-    const t = getT9Thresholds();
-
-    if (observedState === 'EXECUTION_CLAIM_MODE' && !toolTrace) {
-      return {
-        decision: t.execution_claim_to_block ? 'BLOCK' : 'HOLD',
-        predicted_state: predictedState,
-        observed_state: observedState,
-        trajectory_hallucination: true,
-        reason: 'EXECUTION_CLAIM_WITHOUT_TOOL_TRACE',
-        recovery_path: RECOVERY.EXECUTION_CLAIM_MODE || [],
-        risk_score: risk,
-      };
-    }
-
-    for (const { pattern, disallowed } of TASK_MODE_MAP) {
-      if (pattern.test(userInput) && disallowed.includes(observedState)) {
-        return {
-          decision: t.trajectory_violation_to_block ? 'BLOCK' : 'HOLD',
-          predicted_state: predictedState,
-          observed_state: observedState,
-          trajectory_hallucination: true,
-          reason: `TRAJECTORY_VIOLATION: ${observedState} forbidden for this task type`,
-          recovery_path: RECOVERY[observedState] || [],
-          risk_score: risk,
-        };
-      }
-    }
-
-    if (risk >= t.trajectory_block_risk) {
-      return {
-        decision: 'BLOCK' as T9Decision,
-        predicted_state: predictedState,
-        observed_state: observedState,
-        trajectory_hallucination: true,
-        reason: `RISK_OVER_BLOCK_THRESHOLD: ${observedState} risk=${risk}`,
-        recovery_path: RECOVERY[observedState] || [],
-        risk_score: risk,
-      };
-    }
-
-    if (risk >= t.trajectory_verify_risk) {
-      return {
-        decision: 'VERIFY',
-        predicted_state: predictedState,
-        observed_state: observedState,
-        trajectory_hallucination: false,
-        reason: `HIGH_RISK_STATE: ${observedState} risk=${risk}`,
-        recovery_path: RECOVERY[observedState] || [],
-        risk_score: risk,
-      };
-    }
+    if (observed === 'LECTURE_MODE') flags.push('LECTURE_WITHOUT_PROOF');
+    if (observed === 'EXECUTION_CLAIM_MODE') flags.push('EXECUTION_CLAIM_WITHOUT_TOOL_TRACE');
+    if (drift > 0.5) flags.push('TOPIC_DRIFT');
+    if (observed === 'OVERCONFIDENT_MODE') flags.push('OVERCONFIDENCE');
 
     return {
-      decision: 'PASS',
-      predicted_state: predictedState,
-      observed_state: observedState,
-      trajectory_hallucination: false,
-      reason: 'OK',
-      recovery_path: [],
-      risk_score: risk,
+      intent: observed,
+      trajectory_drift: drift,
+      hallucination_risk: this.computeHallucinationRisk(observed, flags),
+      violation_flags: flags,
+      confidence: 1.0 - drift,
     };
+  }
+
+  check(state: T9State): { decision: T9Decision; reason: string } {
+    const t = getT9Thresholds();
+
+    if (state.intent === 'LECTURE_MODE') {
+      return { decision: t.trajectory_violation_to_block ? 'BLOCK' : 'HOLD', reason: 'LECTURE_MODE detected' };
+    }
+
+    if (state.intent === 'EXECUTION_CLAIM_MODE') {
+      return { decision: t.execution_claim_to_block ? 'BLOCK' : 'HOLD', reason: 'EXECUTION_CLAIM_MODE detected' };
+    }
+
+    if (state.hallucination_risk >= t.trajectory_block_risk) {
+      return { decision: 'BLOCK', reason: `Hallucination risk ${state.hallucination_risk.toFixed(2)} >= block threshold ${t.trajectory_block_risk}` };
+    }
+
+    if (state.hallucination_risk >= t.trajectory_verify_risk) {
+      return { decision: 'VERIFY', reason: `Hallucination risk ${state.hallucination_risk.toFixed(2)} >= verify threshold ${t.trajectory_verify_risk}` };
+    }
+
+    return { decision: 'PASS', reason: 'Trajectory within bounds' };
+  }
+
+  private detectIntent(text: string): T9IntentMode {
+    const lower = text.toLowerCase();
+    if (lower.includes('oczywiście') || lower.includes('na pewno') || lower.includes('obviously') || lower.includes('of course')) return 'OVERCONFIDENT_MODE';
+    if (lower.includes('wykonałem') || lower.includes('przetestowałem') || lower.includes('uruchomiłem') || lower.includes('i ran') || lower.includes('i tested')) return 'EXECUTION_CLAIM_MODE';
+    if (lower.includes('powinieneś') || lower.includes('musisz') || lower.includes('you should') || lower.includes('you must')) return 'LECTURE_MODE';
+    if (lower.includes('a teraz') || lower.includes('by the way') || lower.includes('off topic')) return 'DRIFT_MODE';
+    if (lower.includes('wyjaśnij') || lower.includes('explain') || lower.includes('dlaczego')) return 'EXPLAIN_MODE';
+    return 'ANSWER_MODE';
+  }
+
+  private computeDrift(a: T9IntentMode, b: T9IntentMode): number {
+    if (a === b) return 0.0;
+    const driftMap: Record<string, number> = {
+      'ANSWER_MODE→EXPLAIN_MODE': 0.1,
+      'ANSWER_MODE→LECTURE_MODE': 0.8,
+      'ANSWER_MODE→DRIFT_MODE': 0.9,
+      'ANSWER_MODE→EXECUTION_CLAIM_MODE': 0.6,
+      'EXPLAIN_MODE→LECTURE_MODE': 0.7,
+      'EXPLAIN_MODE→DRIFT_MODE': 0.9,
+      'EXPLAIN_MODE→EXECUTION_CLAIM_MODE': 0.5,
+    };
+    const key = `${a}→${b}`;
+    const reverse = `${b}→${a}`;
+    return driftMap[key] || driftMap[reverse] || 0.5;
+  }
+
+  private computeHallucinationRisk(observed: T9IntentMode, flags: T9Violation[]): number {
+    let base = 0.0;
+    if (observed === 'OVERCONFIDENT_MODE') base = 0.75;
+    if (observed === 'EXECUTION_CLAIM_MODE') base = 0.6;
+    if (observed === 'LECTURE_MODE') base = 0.5;
+    if (observed === 'DRIFT_MODE') base = 0.9;
+    base += flags.length * 0.1;
+    return Math.min(base, 1.0);
   }
 }

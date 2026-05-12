@@ -55,14 +55,10 @@ export class OllamaAdapter implements ModelAdapter {
 
   async testConnection(): Promise<boolean> {
     try {
-      const response = await fetch(`${this.baseUrl}/api/tags`, { method: 'GET' });
+      const response = await fetch(`${this.baseUrl}/api/tags`);
       return response.ok;
-    } catch (e) {
-      // Mixed-content (https preview -> http://localhost) or CORS blocks fetch
-      // Throw so UI can surface a helpful hint instead of silent false
-      throw new Error(
-        `Nie mozna polaczyc z ${this.baseUrl}. Mozliwe przyczyny: (1) Ollama nie dziala (uruchom 'ollama serve'). (2) Mixed-content: preview HTTPS blokuje HTTP localhost — otworz strone przez http://localhost lub uruchom Ollama z OLLAMA_ORIGINS='*' OLLAMA_HOST=0.0.0.0. (3) CORS — ustaw OLLAMA_ORIGINS=*. Blad: ${(e as Error)?.message || e}`
-      );
+    } catch {
+      return false;
     }
   }
 

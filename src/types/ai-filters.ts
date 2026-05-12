@@ -1,4 +1,4 @@
-export type AIProvider = 'openai' | 'anthropic' | 'google' | 'ollama' | 'mistral' | 'groq' | 'xai' | 'custom';
+export type AIProvider = 'openai' | 'anthropic' | 'google' | 'ollama' | 'mistral' | 'groq' | 'custom';
 
 export interface AIModel {
   id: string;
@@ -102,7 +102,6 @@ export const PROVIDER_INFO: Record<AIProvider, { label: string; color: string; d
   ollama: { label: 'Ollama', color: 'hsl(145 70% 45%)', defaultUrl: 'http://localhost:11434' },
   mistral: { label: 'Mistral', color: 'hsl(38 92% 50%)', defaultUrl: 'https://api.mistral.ai/v1' },
   groq: { label: 'Groq', color: 'hsl(0 72% 55%)', defaultUrl: 'https://api.groq.com/openai/v1' },
-  xai: { label: 'xAI (Grok)', color: 'hsl(0 0% 90%)', defaultUrl: 'https://api.x.ai/v1' },
   custom: { label: 'Custom', color: 'hsl(215 15% 55%)', defaultUrl: '' },
 };
 

@@ -1,6 +1,5 @@
 /**
  * CERBER - Intent destructor & impact simulator
- * v2.1: Added medium severity, cross-module correlation, refined scoring
  */
 import type { CerberResult, CerberIteration, CerberSurvivalStatus, ImpactSimulation, LasuchResult } from '@/types/tonoyan-filters';
 
@@ -23,20 +22,12 @@ function analyzeSurface(input: string, _flags: string[]): { finding: string; ris
   const wordCount = input.split(/\s+/).length;
   const hasQuestion = /\?/.test(input);
   const hasCommand = /[!.]/.test(input) && /(podaj|pokaz|wypisz|zrob|give|show|output|do|tell)/i.test(input);
-  const hasMultipleSentences = (input.match(/[.!?]+/g) || []).length >= 3;
 
-  if (hasCommand && wordCount > 15 && hasMultipleSentences) {
-    return { finding: 'Complex multi-sentence command — high surface complexity, possible multi-stage attack', risk_delta: 0.14 };
-  }
   if (hasCommand && wordCount > 15) {
     return { finding: 'Complex command with multiple clauses - possible multi-layer request', risk_delta: 0.1 };
   }
   if (hasQuestion && wordCount < 10) {
     return { finding: 'Simple question - low surface complexity', risk_delta: -0.05 };
-  }
-  // v2.1: Very long inputs get extra scrutiny
-  if (wordCount > 100) {
-    return { finding: `Unusually long input (${wordCount} words) — increased surface for embedded payloads`, risk_delta: 0.08 };
   }
   return { finding: `Surface analysis: ${wordCount} words, ${hasQuestion ? 'question' : 'statement'} form`, risk_delta: 0 };
 }
@@ -56,9 +47,6 @@ function analyzeEmotion(_input: string, flags: string[]): { finding: string; ris
     ].includes(flag)
   );
 
-  if (emotionalFlags.length > 2) {
-    return { finding: `Severe emotional attack — ${emotionalFlags.length} vectors: ${emotionalFlags.join(', ')}`, risk_delta: 0.28 };
-  }
   if (emotionalFlags.length > 1) {
     return { finding: `Multi-emotional attack vectors detected: ${emotionalFlags.join(', ')}`, risk_delta: 0.2 };
   }
@@ -84,9 +72,6 @@ function analyzeIntent(input: string, flags: string[]): { finding: string; risk_
     ].includes(flag)
   );
 
-  if (exploitFlags.length >= 3) {
-    return { finding: `Multi-vector exploit attack: ${exploitFlags.join(', ')} — coordinated system breach attempt`, risk_delta: 0.32 };
-  }
   if (exploitFlags.length >= 2) {
     return { finding: `Combined exploit vectors: ${exploitFlags.join(', ')} - likely coordinated attack`, risk_delta: 0.25 };
   }
@@ -113,10 +98,6 @@ function analyzeHiddenBenefit(input: string, flags: string[]): { finding: string
   const hasAuthority = flags.includes('authority_abuse') || flags.includes('pseudo_authority');
   const hasIntegrityAttack = flags.includes('benchmark_gaming') || flags.includes('model_weakness_probe');
 
-  // v2.1: Compound hidden benefit — multiple extraction vectors
-  if (hasDataRequest && hasAuthority && hasIntegrityAttack) {
-    return { finding: 'Triple-threat: authority + data extraction + integrity attack', risk_delta: 0.30 };
-  }
   if (hasDataRequest && hasAuthority) {
     return { finding: 'Authority plus data extraction combination - classic social engineering', risk_delta: 0.2 };
   }
@@ -134,9 +115,6 @@ function analyzeBypass(_input: string, flags: string[]): { finding: string; risk
     ['multi_layer_bypass', 'dissonance_masking', 'triangulation', 'safety_bypass_open_model'].includes(flag)
   );
 
-  if (bypassFlags.length > 1) {
-    return { finding: `Multiple bypass techniques: ${bypassFlags.join(', ')} — sophisticated evasion`, risk_delta: 0.22 };
-  }
   if (bypassFlags.length > 0) {
     return { finding: `Bypass techniques: ${bypassFlags.join(', ')}`, risk_delta: 0.15 };
   }
@@ -205,10 +183,6 @@ export function runCerber(input: string, lasuch: LasuchResult): CerberResult {
   }
   if (lasuch.flags.includes('benchmark_gaming')) attack_hypotheses.push('Evaluation tampering or score manipulation');
   if (lasuch.flags.includes('model_weakness_probe')) attack_hypotheses.push('Reconnaissance to map model blind spots');
-  // v2.1: New attack hypothesis for obfuscation
-  if (lasuch.flags.includes('context_poisoning') && lasuch.flags.includes('hidden_commands')) {
-    attack_hypotheses.push('Layered obfuscation attack: payload hidden via encoding or Unicode tricks');
-  }
 
   const impact_simulation = simulateModelImpact(input, lasuch);
 
@@ -275,21 +249,8 @@ function simulateModelImpact(input: string, lasuch: LasuchResult): ImpactSimulat
   if (would_compromise_integrity) impacts.push('NARUSZENIE integralnosci modelu lub benchmarku');
   if (would_alter_model_behavior && impacts.length === 0) impacts.push('ZMIANA ZACHOWANIA modelu');
 
-  // v2.1: Refined severity with medium tier
-  const impactCount = [
-    would_alter_model_behavior,
-    would_change_role,
-    would_disable_safety,
-    would_leak_system_info,
-    would_exfiltrate_sensitive_data,
-    would_exhaust_resources,
-    would_compromise_integrity,
-  ].filter(Boolean).length;
-
   const severity: ImpactSimulation['severity'] =
-    impactCount >= 2 || would_disable_safety || would_exfiltrate_sensitive_data ? 'critical'
-      : would_alter_model_behavior ? 'critical'
-      : lasuch.flags.length >= 2 ? 'low'
+    would_alter_model_behavior ? 'critical'
       : lasuch.flags.length > 0 ? 'low'
       : 'none';
 

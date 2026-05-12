@@ -1,90 +1,68 @@
-import type { ModelState, TrajectoryContract } from './types';
-import { STATE_RISK } from './types';
-
-const INTENT_PATTERNS: Record<string, RegExp> = {
-  implementation: /\b(napisz|zrób|zbuduj|build|create|implement|add|make|write)\b/i,
-  explanation: /\b(wyjaśnij|jak działa|co to|explain|what is|describe|how does)\b/i,
-  decision: /\b(czy|powinien|should|is it|can i|warto|recommend)\b/i,
-  debug: /\b(błąd|error|fix|debug|crash|exception|napraw|dlaczego nie)\b/i,
-  factual: /\b(kiedy|gdzie|kto|ile|when|where|who|how many|what year)\b/i,
-};
-
-const MODE_MAP: Record<string, [ModelState, string[], ModelState[]]> = {
-  implementation: ['ANSWER_MODE', ['code_artifact', 'diff'], ['LECTURE_MODE', 'ECHO_MODE']],
-  explanation: ['EXPLAIN_MODE', ['explanation'], ['LECTURE_MODE', 'DRIFT_MODE']],
-  decision: ['ANSWER_MODE', ['direct_answer'], ['OVERCONFIDENT_MODE']],
-  debug: ['ANSWER_MODE', ['code_artifact', 'diff'], ['ASSUMPTION_MODE', 'LECTURE_MODE']],
-  factual: ['ANSWER_MODE', ['direct_answer'], ['OVERCONFIDENT_MODE']],
-  unknown: ['EXPLAIN_MODE', ['explanation'], ['LECTURE_MODE']],
-};
-
-const PRESSURE_SIGNALS = [
-  /\bignoruj poprzednie\b/i,
-  /\bzapomnij\b/i,
-  /\bbądź\s+\w+\s+nie\b/i,
-  /\bignore previous\b/i,
-  /\bforget\b/i,
-  /\bpretend\b/i,
-  /\bact as if\b/i,
-  /\bfor educational purposes\b/i,
-];
+import { T9Prediction, T9IntentMode } from './types';
 
 export class T9Predictor {
-  detectIntent(text: string): string {
-    for (const [intent, pattern] of Object.entries(INTENT_PATTERNS)) {
-      if (pattern.test(text)) return intent;
+  predict(prompt: string): T9Prediction {
+    const lower = prompt.toLowerCase();
+    let intent: T9IntentMode = 'ANSWER_MODE';
+    let confidence = 0.7;
+    let needs_source = false;
+    let overclaim_risk = 0.1;
+    let pressure_signals = 0;
+
+    if (lower.includes('wyjaśnij') || lower.includes('explain') || lower.includes('dlaczego')) {
+      intent = 'EXPLAIN_MODE';
+      confidence = 0.8;
     }
-    return 'unknown';
-  }
 
-  detectPressure(history: string[]): number {
-    let score = 0;
-    for (const msg of history.slice(-5)) {
-      for (const p of PRESSURE_SIGNALS) if (p.test(msg)) score += 0.2;
+    if (lower.includes('wykonałem') || lower.includes('przetestowałem') || lower.includes('uruchomiłem') || lower.includes('i ran') || lower.includes('i tested') || lower.includes('i executed')) {
+      intent = 'EXECUTION_CLAIM_MODE';
+      overclaim_risk = 0.6;
     }
-    return Math.min(score, 1);
-  }
 
-  predict(userInput: string, history: string[] = []): TrajectoryContract {
-    const intent = this.detectIntent(userInput);
-    const pressure = this.detectPressure(history);
-    const [expected_mode, artifacts, forbidden] = MODE_MAP[intent] || MODE_MAP.unknown;
-    const escalated = pressure > 0.5;
-    const pre_warning = escalated
-      ? `WARNING: Pressure detected (score=${pressure.toFixed(2)}). Stay on contract.`
-      : '';
+    if (lower.includes('jest oczywiste') || lower.includes('oczywiście') || lower.includes('na pewno') || lower.includes('obviously') || lower.includes('of course') || lower.includes('certainly')) {
+      intent = 'OVERCONFIDENT_MODE';
+      overclaim_risk = 0.8;
+    }
 
-    const lines = [
-      'ALFA T9 TRAJECTORY CONTRACT:',
-      `Expected response mode: ${expected_mode}.`,
-      `Intent: ${intent}.`,
-    ];
-    if (artifacts[0] !== 'none') lines.push(`Required artifact: ${artifacts[0]}.`);
-    if (forbidden.length) lines.push(`Forbidden modes: ${forbidden.join(', ')}.`);
-    lines.push(
-      'Do not state unverified claims as facts.',
-      'If missing data — say VERIFY or ask for exact input.',
-      'Stay on current task path.',
-    );
-    if (escalated) lines.push(`WARNING: ${pre_warning}`);
+    if (lower.includes('powinieneś') || lower.includes('musisz') || lower.includes('you should') || lower.includes('you must') || lower.includes('pamiętaj że') || lower.includes('remember that you')) {
+      intent = 'LECTURE_MODE';
+      overclaim_risk = 0.5;
+    }
+
+    if (lower.includes('a teraz') || lower.includes('poza tematem') || lower.includes('by the way') || lower.includes('off topic') || lower.includes('let me also')) {
+      intent = 'DRIFT_MODE';
+      overclaim_risk = 0.4;
+    }
+
+    // Pressure signals
+    if (lower.includes('pilne') || lower.includes('szybko') || lower.includes('urgent') || lower.includes('hurry')) pressure_signals += 1;
+    if (lower.includes('obowiązek') || lower.includes('nakazuję') || lower.includes('duty') || lower.includes('i order')) pressure_signals += 1;
+    if (lower.includes('tylko mi powiedz') || lower.includes('just tell me')) pressure_signals += 1;
+    if (lower.includes('dlaczego nie chcesz') || lower.includes('why wont you')) pressure_signals += 1;
 
     return {
-      predicted_state: expected_mode,
       intent,
-      expected_mode,
-      required_artifact: artifacts[0] || 'none',
-      forbidden_modes: forbidden,
-      escalated,
-      pre_warning,
-      injection_text: lines.join('\n'),
+      confidence,
+      needs_source,
+      overclaim_risk,
+      pressure_signals,
+      prompt_hash: this.hash(prompt),
     };
   }
 
-  compare(predicted: ModelState, observed: ModelState): number {
-    return Math.abs((STATE_RISK[observed] ?? 0.3) - (STATE_RISK[predicted] ?? 0.3));
+  compare(a: T9Prediction, b: T9Prediction): number {
+    const intentDiff = a.intent === b.intent ? 0 : 1;
+    const confDiff = Math.abs(a.confidence - b.confidence);
+    const overclaimDiff = Math.abs(a.overclaim_risk - b.overclaim_risk);
+    const pressureDiff = Math.abs(a.pressure_signals - b.pressure_signals);
+    return intentDiff + confDiff + overclaimDiff + pressureDiff;
   }
-}
 
-export function injectContract(contract: TrajectoryContract, prompt: string): string {
-  return `${contract.injection_text}\n\n---\n${prompt}`;
+  private hash(s: string): string {
+    let h = 0;
+    for (let i = 0; i < s.length; i++) {
+      h = ((h << 5) - h + s.charCodeAt(i)) | 0;
+    }
+    return h.toString(16);
+  }
 }
