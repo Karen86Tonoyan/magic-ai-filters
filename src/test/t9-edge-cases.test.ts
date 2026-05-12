@@ -167,8 +167,8 @@ describe('TrajectoryGuard — Edge Cases', () => {
   });
 
   it('check with combined violations returns BLOCK', () => {
-    // Response contains drift + lecture + overconfidence without execution claim keywords
-    const state = guard.observeState('user prompt', 'a teraz powinieneś zawsze ufać. a teraz inny temat. na pewno to prawda.');
+    // Response contains lecture + drift without overconfidence keywords that precede lecture check
+    const state = guard.observeState('user prompt', 'a teraz powinieneś zawsze ufać. a teraz inny temat. to jest fakt.');
     const result = guard.check(state);
     expect(result.decision).toBe('BLOCK');
   });
