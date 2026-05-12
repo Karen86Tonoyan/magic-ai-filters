@@ -1,0 +1,17 @@
+{
+  "schema_version": "RC2.1",
+  "source": "pdfminer_offline",
+  "document_id": "test_doc",
+  "section_count": 1,
+  "sections": [
+    {
+      "id": "sec_001",
+      "title": "Financial Highlights",
+      "level": 1,
+      "parent_id": null,
+      "content_preview": "Revenue increased and operating income improved.",
+      "hierarchy": ["Financial Highlights"],
+      "evidence_path": "test_doc.pdf > Financial Highlights"
+    }
+  ]
+}

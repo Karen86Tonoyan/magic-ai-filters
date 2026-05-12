@@ -1,0 +1,14 @@
+{
+  "schema_version": "BROKEN",
+  "source": "unknown_source",
+  "document_id": "bad_doc",
+  "section_count": 2,
+  "sections": [
+    {
+      "id": "sec_001",
+      "title": "Only Section",
+      "level": 1,
+      "evidence_path": "bad_doc.pdf > Only Section"
+    }
+  ]
+}
