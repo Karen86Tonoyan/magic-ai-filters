@@ -1,0 +1,27 @@
+{
+  "run_id": "run_006",
+  "source": "pdfminer_offline",
+  "sections": [
+    {
+      "section_id": "S.6.1",
+      "title": "Section 6.1 — Evidence verification",
+      "parent": "S.6",
+      "depth": 2,
+      "content_preview": "…relevant excerpt about evidence verification establishing the claim with citation [1]…"
+    },
+    {
+      "section_id": "S.6.2",
+      "title": "Section 6.2 — Evidence verification",
+      "parent": "S.6",
+      "depth": 2,
+      "content_preview": "…relevant excerpt about evidence verification establishing the claim with citation [2]…"
+    },
+    {
+      "section_id": "S.6.3",
+      "title": "Section 6.3 — Evidence verification",
+      "parent": "S.6",
+      "depth": 2,
+      "content_preview": "…relevant excerpt about evidence verification establishing the claim with citation [3]…"
+    }
+  ]
+}

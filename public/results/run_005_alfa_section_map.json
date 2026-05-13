@@ -1,0 +1,13 @@
+{
+  "run_id": "run_005",
+  "source": "pageindex_online",
+  "sections": [
+    {
+      "section_id": "S.5.1",
+      "title": "Section 5.1 — Pipeline isolation",
+      "parent": "S.5",
+      "depth": 2,
+      "content_preview": "…relevant excerpt about pipeline isolation establishing the claim with citation [1]…"
+    }
+  ]
+}

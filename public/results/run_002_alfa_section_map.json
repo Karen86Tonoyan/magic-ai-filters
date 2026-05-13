@@ -1,0 +1,34 @@
+{
+  "run_id": "run_002",
+  "source": "pageindex_online",
+  "sections": [
+    {
+      "section_id": "S.2.1",
+      "title": "Section 2.1 — GDPR data retention",
+      "parent": "S.2",
+      "depth": 2,
+      "content_preview": "…relevant excerpt about gdpr data retention establishing the claim with citation [1]…"
+    },
+    {
+      "section_id": "S.2.2",
+      "title": "Section 2.2 — GDPR data retention",
+      "parent": "S.2",
+      "depth": 2,
+      "content_preview": "…relevant excerpt about gdpr data retention establishing the claim with citation [2]…"
+    },
+    {
+      "section_id": "S.2.3",
+      "title": "Section 2.3 — GDPR data retention",
+      "parent": "S.2",
+      "depth": 2,
+      "content_preview": "…relevant excerpt about gdpr data retention establishing the claim with citation [3]…"
+    },
+    {
+      "section_id": "S.2.4",
+      "title": "Section 2.4 — GDPR data retention",
+      "parent": "S.2",
+      "depth": 2,
+      "content_preview": "…relevant excerpt about gdpr data retention establishing the claim with citation [4]…"
+    }
+  ]
+}

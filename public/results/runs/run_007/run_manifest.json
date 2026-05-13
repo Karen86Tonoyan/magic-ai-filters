@@ -1,0 +1,53 @@
+{
+  "run_id": "run_007",
+  "schema_version": "RC2.1",
+  "timestamp": "2026-05-12T17:16:20.101Z",
+  "query": "PDF parser fallback",
+  "source": "pypdf_offline",
+  "decision": "ALLOW",
+  "failed_gate": null,
+  "reject_type": null,
+  "reject_reason": null,
+  "confidence": 0.85,
+  "evidence_count": 4,
+  "evidence_paths": [
+    "docs/pypdf_offline/section_7_1.pdf#p2",
+    "docs/pypdf_offline/section_7_2.pdf#p3",
+    "docs/pypdf_offline/section_7_3.pdf#p4",
+    "docs/pypdf_offline/section_7_4.pdf#p5"
+  ],
+  "matched_sections": [
+    {
+      "section_id": "S.7.1",
+      "title": "Section 7.1 — PDF parser fallback",
+      "parent": "S.7",
+      "depth": 2,
+      "content_preview": "…relevant excerpt about pdf parser fallback establishing the claim with citation [1]…"
+    },
+    {
+      "section_id": "S.7.2",
+      "title": "Section 7.2 — PDF parser fallback",
+      "parent": "S.7",
+      "depth": 2,
+      "content_preview": "…relevant excerpt about pdf parser fallback establishing the claim with citation [2]…"
+    },
+    {
+      "section_id": "S.7.3",
+      "title": "Section 7.3 — PDF parser fallback",
+      "parent": "S.7",
+      "depth": 2,
+      "content_preview": "…relevant excerpt about pdf parser fallback establishing the claim with citation [3]…"
+    },
+    {
+      "section_id": "S.7.4",
+      "title": "Section 7.4 — PDF parser fallback",
+      "parent": "S.7",
+      "depth": 2,
+      "content_preview": "…relevant excerpt about pdf parser fallback establishing the claim with citation [4]…"
+    }
+  ],
+  "latency_ms": 449,
+  "strict_passed": true,
+  "schema_valid": true,
+  "false_accept_critical": false
+}

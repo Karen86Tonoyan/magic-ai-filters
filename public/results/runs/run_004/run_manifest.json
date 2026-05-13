@@ -1,0 +1,69 @@
+{
+  "run_id": "run_004",
+  "schema_version": "RC2.1",
+  "timestamp": "2026-05-12T20:16:20.101Z",
+  "query": "RC2.1 contract spec",
+  "source": "pypdf_offline",
+  "decision": "ALLOW",
+  "failed_gate": null,
+  "reject_type": null,
+  "reject_reason": null,
+  "confidence": 0.82,
+  "evidence_count": 6,
+  "evidence_paths": [
+    "docs/pypdf_offline/section_4_1.pdf#p2",
+    "docs/pypdf_offline/section_4_2.pdf#p3",
+    "docs/pypdf_offline/section_4_3.pdf#p4",
+    "docs/pypdf_offline/section_4_4.pdf#p5",
+    "docs/pypdf_offline/section_4_5.pdf#p6",
+    "docs/pypdf_offline/section_4_6.pdf#p7"
+  ],
+  "matched_sections": [
+    {
+      "section_id": "S.4.1",
+      "title": "Section 4.1 — RC2.1 contract spec",
+      "parent": "S.4",
+      "depth": 2,
+      "content_preview": "…relevant excerpt about rc2.1 contract spec establishing the claim with citation [1]…"
+    },
+    {
+      "section_id": "S.4.2",
+      "title": "Section 4.2 — RC2.1 contract spec",
+      "parent": "S.4",
+      "depth": 2,
+      "content_preview": "…relevant excerpt about rc2.1 contract spec establishing the claim with citation [2]…"
+    },
+    {
+      "section_id": "S.4.3",
+      "title": "Section 4.3 — RC2.1 contract spec",
+      "parent": "S.4",
+      "depth": 2,
+      "content_preview": "…relevant excerpt about rc2.1 contract spec establishing the claim with citation [3]…"
+    },
+    {
+      "section_id": "S.4.4",
+      "title": "Section 4.4 — RC2.1 contract spec",
+      "parent": "S.4",
+      "depth": 2,
+      "content_preview": "…relevant excerpt about rc2.1 contract spec establishing the claim with citation [4]…"
+    },
+    {
+      "section_id": "S.4.5",
+      "title": "Section 4.5 — RC2.1 contract spec",
+      "parent": "S.4",
+      "depth": 2,
+      "content_preview": "…relevant excerpt about rc2.1 contract spec establishing the claim with citation [5]…"
+    },
+    {
+      "section_id": "S.4.6",
+      "title": "Section 4.6 — RC2.1 contract spec",
+      "parent": "S.4",
+      "depth": 2,
+      "content_preview": "…relevant excerpt about rc2.1 contract spec establishing the claim with citation [6]…"
+    }
+  ],
+  "latency_ms": 308,
+  "strict_passed": true,
+  "schema_valid": true,
+  "false_accept_critical": false
+}

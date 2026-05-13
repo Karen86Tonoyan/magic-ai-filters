@@ -1,0 +1,13 @@
+{
+  "run_id": "run_003",
+  "source": "pdfminer_offline",
+  "sections": [
+    {
+      "section_id": "S.3.1",
+      "title": "Section 3.1 — OWASP top 10",
+      "parent": "S.3",
+      "depth": 2,
+      "content_preview": "…relevant excerpt about owasp top 10 establishing the claim with citation [1]…"
+    }
+  ]
+}
