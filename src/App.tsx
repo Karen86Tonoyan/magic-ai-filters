@@ -42,6 +42,7 @@ const App = () => (
               <Route path="/benchmark" element={<BenchmarkPage />} />
               <Route path="/incidents" element={<IncidentPage />} />
               <Route path="/llm" element={<LLMInfoPage />} />
+              <Route path="/rc21" element={<RC21DashboardPage />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
