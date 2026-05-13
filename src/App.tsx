@@ -13,6 +13,7 @@ const BenchmarkPage = lazy(() => import("@/pages/BenchmarkPage"));
 const DualChatPage = lazy(() => import("@/pages/DualChatPage"));
 const IncidentPage = lazy(() => import("@/pages/IncidentPage"));
 const LLMInfoPage = lazy(() => import("@/pages/LLMInfoPage"));
+const RC21DashboardPage = lazy(() => import("@/pages/RC21DashboardPage"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 
 const queryClient = new QueryClient();
