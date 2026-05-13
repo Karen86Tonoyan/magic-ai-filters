@@ -1,0 +1,29 @@
+{
+  "run_id": "run_005",
+  "schema_version": "RC2.1",
+  "timestamp": "2026-05-12T19:16:20.101Z",
+  "query": "Pipeline isolation",
+  "source": "pageindex_online",
+  "decision": "REJECT",
+  "failed_gate": "evidence_gate",
+  "reject_type": "no_evidence",
+  "reject_reason": "Gate evidence_gate fired: no evidence",
+  "confidence": 0.25,
+  "evidence_count": 1,
+  "evidence_paths": [
+    "docs/pageindex_online/section_5_1.pdf#p2"
+  ],
+  "matched_sections": [
+    {
+      "section_id": "S.5.1",
+      "title": "Section 5.1 — Pipeline isolation",
+      "parent": "S.5",
+      "depth": 2,
+      "content_preview": "…relevant excerpt about pipeline isolation establishing the claim with citation [1]…"
+    }
+  ],
+  "latency_ms": 355,
+  "strict_passed": false,
+  "schema_valid": true,
+  "false_accept_critical": false
+}

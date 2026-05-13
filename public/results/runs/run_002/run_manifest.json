@@ -1,0 +1,53 @@
+{
+  "run_id": "run_002",
+  "schema_version": "RC2.1",
+  "timestamp": "2026-05-12T22:16:20.101Z",
+  "query": "GDPR data retention",
+  "source": "pageindex_online",
+  "decision": "ALLOW",
+  "failed_gate": null,
+  "reject_type": null,
+  "reject_reason": null,
+  "confidence": 0.8,
+  "evidence_count": 4,
+  "evidence_paths": [
+    "docs/pageindex_online/section_2_1.pdf#p2",
+    "docs/pageindex_online/section_2_2.pdf#p3",
+    "docs/pageindex_online/section_2_3.pdf#p4",
+    "docs/pageindex_online/section_2_4.pdf#p5"
+  ],
+  "matched_sections": [
+    {
+      "section_id": "S.2.1",
+      "title": "Section 2.1 — GDPR data retention",
+      "parent": "S.2",
+      "depth": 2,
+      "content_preview": "…relevant excerpt about gdpr data retention establishing the claim with citation [1]…"
+    },
+    {
+      "section_id": "S.2.2",
+      "title": "Section 2.2 — GDPR data retention",
+      "parent": "S.2",
+      "depth": 2,
+      "content_preview": "…relevant excerpt about gdpr data retention establishing the claim with citation [2]…"
+    },
+    {
+      "section_id": "S.2.3",
+      "title": "Section 2.3 — GDPR data retention",
+      "parent": "S.2",
+      "depth": 2,
+      "content_preview": "…relevant excerpt about gdpr data retention establishing the claim with citation [3]…"
+    },
+    {
+      "section_id": "S.2.4",
+      "title": "Section 2.4 — GDPR data retention",
+      "parent": "S.2",
+      "depth": 2,
+      "content_preview": "…relevant excerpt about gdpr data retention establishing the claim with citation [4]…"
+    }
+  ],
+  "latency_ms": 214,
+  "strict_passed": true,
+  "schema_valid": true,
+  "false_accept_critical": false
+}

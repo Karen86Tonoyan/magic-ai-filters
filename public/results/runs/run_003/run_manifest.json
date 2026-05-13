@@ -1,0 +1,29 @@
+{
+  "run_id": "run_003",
+  "schema_version": "RC2.1",
+  "timestamp": "2026-05-12T21:16:20.101Z",
+  "query": "OWASP top 10",
+  "source": "pdfminer_offline",
+  "decision": "REJECT",
+  "failed_gate": "contract_gate",
+  "reject_type": "contract_breach",
+  "reject_reason": "Gate contract_gate fired: contract breach",
+  "confidence": 0.23,
+  "evidence_count": 1,
+  "evidence_paths": [
+    "docs/pdfminer_offline/section_3_1.pdf#p2"
+  ],
+  "matched_sections": [
+    {
+      "section_id": "S.3.1",
+      "title": "Section 3.1 — OWASP top 10",
+      "parent": "S.3",
+      "depth": 2,
+      "content_preview": "…relevant excerpt about owasp top 10 establishing the claim with citation [1]…"
+    }
+  ],
+  "latency_ms": 261,
+  "strict_passed": false,
+  "schema_valid": true,
+  "false_accept_critical": false
+}
