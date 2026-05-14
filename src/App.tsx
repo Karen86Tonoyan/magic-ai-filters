@@ -46,6 +46,7 @@ const App = () => (
               <Route path="/llm" element={<LLMInfoPage />} />
               <Route path="/rc21" element={<RC21DashboardPage />} />
               <Route path="/filters" element={<FiltersDocsPage />} />
+              <Route path="/simulator" element={<SimulatorPage />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
