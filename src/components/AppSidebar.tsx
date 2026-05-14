@@ -1,11 +1,12 @@
 import { NavLink, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Bot, Eye, BarChart3, AlertTriangle, MessageSquare, Brain, ShieldCheck, Filter } from 'lucide-react';
+import { LayoutDashboard, Bot, Eye, BarChart3, AlertTriangle, MessageSquare, Brain, ShieldCheck, Filter, Sparkles } from 'lucide-react';
 import alfaWolfLogo from '@/assets/alfa-wolf-logo.png';
 
 const navItems = [
   { to: '/', icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/rc21', icon: ShieldCheck, label: 'RC2.1 Safety' },
   { to: '/filters', icon: Filter, label: 'Filtry — Docs' },
+  { to: '/simulator', icon: Sparkles, label: 'Symulator & NDI' },
   { to: '/models', icon: Bot, label: 'Provider Manager' },
   { to: '/analysis', icon: Eye, label: 'Live Analysis' },
   { to: '/chat', icon: MessageSquare, label: 'Dual Chat' },
