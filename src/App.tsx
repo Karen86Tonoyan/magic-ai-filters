@@ -15,6 +15,7 @@ const IncidentPage = lazy(() => import("@/pages/IncidentPage"));
 const LLMInfoPage = lazy(() => import("@/pages/LLMInfoPage"));
 const RC21DashboardPage = lazy(() => import("@/pages/RC21DashboardPage"));
 const FiltersDocsPage = lazy(() => import("@/pages/FiltersDocsPage"));
+const SimulatorPage = lazy(() => import("@/pages/SimulatorPage"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 
 const queryClient = new QueryClient();
