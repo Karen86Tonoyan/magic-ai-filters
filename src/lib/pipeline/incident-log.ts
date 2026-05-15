@@ -67,9 +67,35 @@ export interface ThreatAnalysis {
 
 const INCIDENTS_KEY = 'alfa_incident_log';
 const BANNED_KEY = 'alfa_banned_users';
-const ADMIN_CREDENTIALS = { login: 'alfa_admin', password: 'AlfaShield2024!' };
 const ADMIN_SESSION_KEY = 'alfa_admin_session';
 const ADMIN_SESSION_TIMEOUT_MS = 30 * 60 * 1000; // 30 min
+
+// Admin login is configured at build/deploy time via env vars. NO plaintext
+// credentials are ever shipped in the bundle. The password is compared against
+// a SHA-256 hash provided through `VITE_ADMIN_PASSWORD_SHA256` (hex). If no
+// hash is configured, the admin panel is disabled.
+//
+// IMPORTANT: This is still client-side authentication and must not be relied
+// on as a real security boundary — it only obscures access for casual users.
+// For production-grade access control, move admin operations behind an
+// authenticated backend (edge function) and validate the session there.
+const ADMIN_LOGIN = (import.meta.env.VITE_ADMIN_LOGIN as string | undefined) ?? '';
+const ADMIN_PASSWORD_SHA256 = (import.meta.env.VITE_ADMIN_PASSWORD_SHA256 as string | undefined) ?? '';
+
+async function sha256Hex(input: string): Promise<string> {
+  const data = new TextEncoder().encode(input);
+  const digest = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(digest))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
+function timingSafeEqualHex(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let mismatch = 0;
+  for (let i = 0; i < a.length; i++) mismatch |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return mismatch === 0;
+}
 
 // ─── INCIDENT LOG ───────────────────────────────────────────
 
@@ -313,13 +339,22 @@ export function exportAsCSV(incidents: IncidentRecord[]): string {
   return [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
 }
 
-/** Admin login with credentials */
-export function adminLogin(login: string, password: string): boolean {
-  if (login === ADMIN_CREDENTIALS.login && password === ADMIN_CREDENTIALS.password) {
-    sessionStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify({ ts: Date.now() }));
-    return true;
+/** Admin login with credentials. Returns false if admin auth is not configured. */
+export async function adminLogin(login: string, password: string): Promise<boolean> {
+  if (!ADMIN_LOGIN || !ADMIN_PASSWORD_SHA256) {
+    // Admin not configured — refuse all logins.
+    return false;
   }
-  return false;
+  if (login !== ADMIN_LOGIN) return false;
+  const hashed = await sha256Hex(password);
+  if (!timingSafeEqualHex(hashed, ADMIN_PASSWORD_SHA256.toLowerCase())) return false;
+  sessionStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify({ ts: Date.now() }));
+  return true;
+}
+
+/** True when admin credentials are configured for this build. */
+export function isAdminConfigured(): boolean {
+  return Boolean(ADMIN_LOGIN && ADMIN_PASSWORD_SHA256);
 }
 
 /** Check if admin session is still valid (30 min timeout) */
@@ -346,7 +381,7 @@ export function adminLogout(): void {
 }
 
 /** @deprecated Use adminLogin instead */
-export function verifyAdminAccess(pin: string): boolean {
+export function verifyAdminAccess(pin: string): Promise<boolean> {
   return adminLogin(pin, pin);
 }
 

@@ -1124,8 +1124,8 @@ export default function LiveAnalysisPage() {
                   placeholder="Login" className="bg-secondary border-border text-sm" autoComplete="username" />
                 <Input type="password" value={adminPass} onChange={e => setAdminPass(e.target.value)}
                   placeholder="Hasło" className="bg-secondary border-border text-sm" autoComplete="current-password"
-                  onKeyDown={e => { if (e.key === 'Enter') {
-                    if (adminLogin(adminLogin_, adminPass)) {
+                  onKeyDown={async e => { if (e.key === 'Enter') {
+                    if (await adminLogin(adminLogin_, adminPass)) {
                       setAdminMode(true);
                       refreshIncidents();
                     } else {
@@ -1133,8 +1133,8 @@ export default function LiveAnalysisPage() {
                       setTimeout(() => setBanAlert(null), 3000);
                     }
                   }}} />
-                <Button onClick={() => {
-                  if (adminLogin(adminLogin_, adminPass)) {
+                <Button onClick={async () => {
+                  if (await adminLogin(adminLogin_, adminPass)) {
                     setAdminMode(true);
                     refreshIncidents();
                   } else {
