@@ -1,8 +1,11 @@
-import { BookOpen, Shield, Layers, AlertCircle } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { BookOpen, Shield, Layers, AlertCircle, Download, FileText } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { MermaidDiagram } from '@/components/MermaidDiagram';
+import { toast } from '@/hooks/use-toast';
 
 const PIPELINE = `flowchart LR
   IN[User Input] --> T[TAGGER / ROUTER]
