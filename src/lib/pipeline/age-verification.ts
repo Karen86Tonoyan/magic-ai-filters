@@ -64,11 +64,19 @@ const linkStore = new Map<string, VerificationLink>();
 
 function generateToken(): string {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let token = 'avt_';
-  for (let i = 0; i < 32; i++) {
-    token += chars.charAt(Math.floor(Math.random() * chars.length));
+  // Use cryptographically secure RNG; reject biased bytes (>= 252) so the
+  // modulo into a 62-char alphabet stays uniform.
+  const out: string[] = ['avt_'];
+  const buf = new Uint8Array(64);
+  while (out.length - 1 < 32) {
+    crypto.getRandomValues(buf);
+    for (let i = 0; i < buf.length && out.length - 1 < 32; i++) {
+      const b = buf[i];
+      if (b >= 252) continue;
+      out.push(chars[b % chars.length]);
+    }
   }
-  return token;
+  return out.join('');
 }
 
 function isClaimValid(claim: UserSafetyClaims): boolean {
