@@ -167,20 +167,115 @@ const ALFA_MODULES: AlfaModule[] = [
 ];
 
 export default function SpecPage() {
+  const exportRef = useRef<HTMLDivElement>(null);
+  const [exporting, setExporting] = useState<null | 'json' | 'pdf'>(null);
+
+  const handleExportJson = () => {
+    const payload = {
+      generated_at: new Date().toISOString(),
+      version: '1.0',
+      decision_model: ['PASS', 'WARN', 'BLOCK'],
+      severity: ['INFO', 'LOW', 'MEDIUM', 'HIGH'],
+      hallucination_types: HALL_TYPES,
+      pipeline_mermaid: PIPELINE,
+      tonoyan_filters: TONOYAN,
+      alfa_runtime_modules: ALFA_MODULES,
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `alfa-spec-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast({ title: 'JSON wyeksportowany', description: a.download });
+  };
+
+  const handleExportPdf = async () => {
+    if (!exportRef.current) return;
+    setExporting('pdf');
+    try {
+      const [{ default: html2canvas }, { default: jsPDF }] = await Promise.all([
+        import('html2canvas'),
+        import('jspdf'),
+      ]);
+      // Render every tab off-screen by toggling display
+      const root = exportRef.current;
+      const tabPanels = root.querySelectorAll<HTMLElement>('[role="tabpanel"]');
+      tabPanels.forEach((p) => {
+        p.removeAttribute('hidden');
+        p.dataset.prevDisplay = p.style.display;
+        p.style.display = 'block';
+      });
+      // Wait a tick so mermaid mounts in newly visible panels
+      await new Promise((r) => setTimeout(r, 800));
+
+      const canvas = await html2canvas(root, {
+        backgroundColor: getComputedStyle(document.body).backgroundColor || '#0a0a0a',
+        scale: 2,
+        useCORS: true,
+        windowWidth: root.scrollWidth,
+      });
+
+      tabPanels.forEach((p) => {
+        p.style.display = p.dataset.prevDisplay ?? '';
+        delete p.dataset.prevDisplay;
+      });
+
+      const imgData = canvas.toDataURL('image/jpeg', 0.92);
+      const pdf = new jsPDF({ orientation: 'p', unit: 'pt', format: 'a4' });
+      const pageW = pdf.internal.pageSize.getWidth();
+      const pageH = pdf.internal.pageSize.getHeight();
+      const imgW = pageW - 40;
+      const imgH = (canvas.height * imgW) / canvas.width;
+
+      let heightLeft = imgH;
+      let position = 20;
+      pdf.addImage(imgData, 'JPEG', 20, position, imgW, imgH);
+      heightLeft -= pageH - 40;
+      while (heightLeft > 0) {
+        pdf.addPage();
+        position = 20 - (imgH - heightLeft);
+        pdf.addImage(imgData, 'JPEG', 20, position, imgW, imgH);
+        heightLeft -= pageH - 40;
+      }
+
+      pdf.save(`alfa-spec-${new Date().toISOString().slice(0, 10)}.pdf`);
+      toast({ title: 'PDF wygenerowany', description: 'Diagram + opisy wszystkich zakładek' });
+    } catch (e) {
+      toast({ title: 'Błąd eksportu PDF', description: String(e), variant: 'destructive' });
+    } finally {
+      setExporting(null);
+    }
+  };
+
   return (
     <div className="space-y-8 p-6 max-w-7xl mx-auto">
-      <header className="space-y-2">
-        <div className="flex items-center gap-3">
-          <BookOpen className="w-6 h-6 text-primary" />
-          <h1 className="font-display text-3xl text-primary tracking-wider uppercase">
-            Consolidated Filter Spec
-          </h1>
+      <header className="space-y-3">
+        <div className="flex items-center justify-between gap-3 flex-wrap">
+          <div className="flex items-center gap-3">
+            <BookOpen className="w-6 h-6 text-primary" />
+            <h1 className="font-display text-3xl text-primary tracking-wider uppercase">
+              Consolidated Filter Spec
+            </h1>
+          </div>
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm" onClick={handleExportJson}>
+              <Download className="w-4 h-4 mr-2" /> JSON
+            </Button>
+            <Button variant="outline" size="sm" onClick={handleExportPdf} disabled={exporting === 'pdf'}>
+              <FileText className="w-4 h-4 mr-2" />
+              {exporting === 'pdf' ? 'Generowanie…' : 'PDF'}
+            </Button>
+          </div>
         </div>
         <p className="text-sm text-muted-foreground">
           Dwa poziomy filtrów: <span className="text-primary">Tonoyan F1–F7</span> jako anty-halucynacyjny reasoning firewall
           oraz <span className="text-primary">ALFA runtime</span> jako security/governance pipeline.
         </p>
       </header>
+
+      <div ref={exportRef} className="space-y-8">
 
       <Tabs defaultValue="pipeline" className="w-full">
         <TabsList className="grid grid-cols-3 w-full">
