@@ -16,6 +16,7 @@ const LLMInfoPage = lazy(() => import("@/pages/LLMInfoPage"));
 const RC21DashboardPage = lazy(() => import("@/pages/RC21DashboardPage"));
 const FiltersDocsPage = lazy(() => import("@/pages/FiltersDocsPage"));
 const SimulatorPage = lazy(() => import("@/pages/SimulatorPage"));
+const SpecPage = lazy(() => import("@/pages/SpecPage"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 
 const queryClient = new QueryClient();
@@ -47,6 +48,7 @@ const App = () => (
               <Route path="/rc21" element={<RC21DashboardPage />} />
               <Route path="/filters" element={<FiltersDocsPage />} />
               <Route path="/simulator" element={<SimulatorPage />} />
+              <Route path="/spec" element={<SpecPage />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
