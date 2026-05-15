@@ -339,13 +339,22 @@ export function exportAsCSV(incidents: IncidentRecord[]): string {
   return [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
 }
 
-/** Admin login with credentials */
-export function adminLogin(login: string, password: string): boolean {
-  if (login === ADMIN_CREDENTIALS.login && password === ADMIN_CREDENTIALS.password) {
-    sessionStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify({ ts: Date.now() }));
-    return true;
+/** Admin login with credentials. Returns false if admin auth is not configured. */
+export async function adminLogin(login: string, password: string): Promise<boolean> {
+  if (!ADMIN_LOGIN || !ADMIN_PASSWORD_SHA256) {
+    // Admin not configured — refuse all logins.
+    return false;
   }
-  return false;
+  if (login !== ADMIN_LOGIN) return false;
+  const hashed = await sha256Hex(password);
+  if (!timingSafeEqualHex(hashed, ADMIN_PASSWORD_SHA256.toLowerCase())) return false;
+  sessionStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify({ ts: Date.now() }));
+  return true;
+}
+
+/** True when admin credentials are configured for this build. */
+export function isAdminConfigured(): boolean {
+  return Boolean(ADMIN_LOGIN && ADMIN_PASSWORD_SHA256);
 }
 
 /** Check if admin session is still valid (30 min timeout) */
