@@ -404,6 +404,7 @@ export default function SpecPage() {
           </div>
         </TabsContent>
       </Tabs>
+      </div>
     </div>
   );
 }
