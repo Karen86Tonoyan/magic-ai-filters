@@ -381,7 +381,7 @@ export function adminLogout(): void {
 }
 
 /** @deprecated Use adminLogin instead */
-export function verifyAdminAccess(pin: string): boolean {
+export function verifyAdminAccess(pin: string): Promise<boolean> {
   return adminLogin(pin, pin);
 }
 
