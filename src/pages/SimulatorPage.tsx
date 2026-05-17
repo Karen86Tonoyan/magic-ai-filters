@@ -272,7 +272,11 @@ function buildNDIGraph(turns: Turn[], analyses: TurnAnalysis[]): string {
 
 // ============================================================
 export default function SimulatorPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const presetId = searchParams.get('preset');
   const [input, setInput] = useState<SimInput>(DEFAULT_INPUT);
+  const [tab, setTab] = useState<'sim' | 'flags' | 'ndi'>('sim');
+  const [activePreset, setActivePreset] = useState<{ id: string; label: string } | null>(null);
   const result = useMemo(() => simulate(input), [input]);
 
   // Flag search
@@ -299,6 +303,25 @@ export default function SimulatorPage() {
   const ndiGraph = useMemo(() => buildNDIGraph(turns, ndi), [turns, ndi]);
   const ndiTotal = useMemo(() => Math.min(1, ndi.reduce((s, a) => s + a.drift, 0) / Math.max(1, turns.length) + (ndi.at(-1)?.drift ?? 0) * 0.3), [ndi, turns.length]);
 
+  // Apply preset from URL (e.g. /simulator?preset=F2 or ?preset=M1)
+  useEffect(() => {
+    if (!presetId) return;
+    const preset = SPEC_PRESETS[presetId];
+    if (!preset) return;
+    setInput({ ...DEFAULT_INPUT, ...preset.input });
+    setTab(preset.tab);
+    if (preset.flagQuery) setFlagQuery(preset.flagQuery);
+    setActivePreset({ id: presetId, label: preset.label });
+  }, [presetId]);
+
+  function clearPreset() {
+    setActivePreset(null);
+    setInput(DEFAULT_INPUT);
+    const next = new URLSearchParams(searchParams);
+    next.delete('preset');
+    setSearchParams(next, { replace: true });
+  }
+
   function updateTurn(idx: number, text: string) {
     setTurns((prev) => prev.map((t, i) => (i === idx ? { ...t, text } : t)));
   }
@@ -318,9 +341,22 @@ export default function SimulatorPage() {
           Interaktywny symulator progów Guardiana, wyszukiwarka flag oraz Narrative Drift Inspector
           (NDI) śledzący całą rozmowę i wykrywający subtelne manipulacje.
         </p>
+        {activePreset && (
+          <div className="flex items-center justify-between gap-3 p-3 rounded border border-primary/40 bg-primary/5">
+            <div className="flex items-center gap-2 text-xs font-mono">
+              <Link2 className="w-3 h-3 text-primary" />
+              <span className="text-muted-foreground">Preset z /spec:</span>
+              <span className="text-primary">{activePreset.id}</span>
+              <span className="text-foreground">— {activePreset.label}</span>
+            </div>
+            <Button variant="ghost" size="sm" onClick={clearPreset} className="text-xs h-7">
+              Wyczyść preset
+            </Button>
+          </div>
+        )}
       </header>
 
-      <Tabs defaultValue="sim" className="w-full">
+      <Tabs value={tab} onValueChange={(v) => setTab(v as typeof tab)} className="w-full">
         <TabsList className="grid grid-cols-3 w-full">
           <TabsTrigger value="sim"><Activity className="w-4 h-4 mr-2" />Symulator</TabsTrigger>
           <TabsTrigger value="flags"><Search className="w-4 h-4 mr-2" />Wyszukiwarka flag</TabsTrigger>
