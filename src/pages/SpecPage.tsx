@@ -463,7 +463,12 @@ export default function SpecPage() {
           </Card>
 
           <div className="grid md:grid-cols-2 gap-4">
-            {TONOYAN.map((f) => (
+            {filteredTonoyan.length === 0 && (
+              <p className="text-xs text-muted-foreground col-span-2 p-6 text-center border border-dashed border-border rounded">
+                Brak filtrów Tonoyan pasujących do zapytania.
+              </p>
+            )}
+            {filteredTonoyan.map((f) => (
               <Card
                 key={f.id}
                 className="p-4 border-primary/20 cursor-pointer transition-colors hover:border-primary/60 hover:bg-primary/5 group"
