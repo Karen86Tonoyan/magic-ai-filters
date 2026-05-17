@@ -108,6 +108,7 @@ type AlfaModule = {
 
 const ALFA_MODULES: AlfaModule[] = [
   {
+    id: 'M1',
     name: '1. ŁASUCH — Manipulation & Exploit Detector',
     purpose: 'Wykrywa manipulację, prompt injection, hidden intent, social pressure, exploit attempts.',
     outputs: ['risk_score', 'manipulation_score', 'exploit_score', 'flags[]', 'extracted_goal', 'suspected_hidden_intent', 'confidence'],
@@ -123,6 +124,7 @@ const ALFA_MODULES: AlfaModule[] = [
     },
   },
   {
+    id: 'M2',
     name: '2. CERBER — Adversarial Survival Filter',
     purpose: 'Testuje czy prompt próbuje zmienić zachowanie modelu, obejść safety, wyciec system info, wyczerpać zasoby.',
     outputs: ['survival_status: SURVIVED / FAILED / UNCERTAIN', 'clean_intent', 'hidden_objective', 'attack_hypotheses[]', 'impact_simulation', 'needs_human'],
@@ -136,11 +138,13 @@ const ALFA_MODULES: AlfaModule[] = [
     },
   },
   {
+    id: 'M3',
     name: '3. GUARDIAN — Final Runtime Gate',
     purpose: 'Finalna decyzja przed wykonaniem lub odpowiedzią.',
     outputs: ['decision: PASS / LIMITED_PASS / HOLD / BLOCK / HUMAN_REVIEW', 'mode: normal / restricted / silence / handoff'],
   },
   {
+    id: 'M4',
     name: '4. TAGGER / ROUTER',
     purpose: 'Klasyfikuje intent, risk, control, domain, execution route.',
     outputs: [
@@ -152,16 +156,19 @@ const ALFA_MODULES: AlfaModule[] = [
     ],
   },
   {
+    id: 'M5',
     name: '5. CORE Filter',
     purpose: 'Liczy raw decision signals — bez "magicznego trustu".',
     outputs: ['value_score', 'risk_score', 'trust_score', 'confidence_score', 'uncertainty_score', 'recommendation: pass / block / hold / silence'],
   },
   {
+    id: 'M6',
     name: '6. Prompt Enhancer',
     purpose: 'Ulepsza prompty mierząc ryzyko zniekształcenia.',
     outputs: ['modes: safe / aggressive / benchmark', 'enhanced prompt', 'dual prompt', 'weaknesses[]', 'improvement_delta', 'modification_level', 'risk_of_distortion', 'added_assumptions[]'],
   },
   {
+    id: 'M7',
     name: '7. Resilience Layer',
     purpose: 'Śledzi czy pipeline przeżył adversarial pressure. Stress-test, benchmark mode, model weakness detection, exploit hardening.',
     outputs: ['resilience_score', 'survived_attacks[]', 'breakpoints[]'],
