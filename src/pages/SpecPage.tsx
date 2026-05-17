@@ -402,8 +402,19 @@ export default function SpecPage() {
 
           <div className="space-y-4">
             {ALFA_MODULES.map((m) => (
-              <Card key={m.name} className="p-5 border-primary/20">
-                <h3 className="font-display text-primary tracking-wider mb-1">{m.name}</h3>
+              <Card
+                key={m.id}
+                className="p-5 border-primary/20 cursor-pointer transition-colors hover:border-primary/60 hover:bg-primary/5 group"
+                onClick={() => openInSimulator(m.id)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openInSimulator(m.id); } }}
+                title={`Otwórz ${m.id} w symulatorze`}
+              >
+                <div className="flex items-start justify-between gap-2 mb-1">
+                  <h3 className="font-display text-primary tracking-wider">{m.name}</h3>
+                  <Badge variant="outline" className="font-mono text-[10px] border-primary/40 text-primary shrink-0">{m.id}</Badge>
+                </div>
                 <p className="text-xs text-muted-foreground mb-3">{m.purpose}</p>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
@@ -424,6 +435,10 @@ export default function SpecPage() {
                       </div>
                     </div>
                   )}
+                </div>
+                <div className="pt-3 mt-3 border-t border-border/50 flex items-center gap-1.5 text-primary opacity-70 group-hover:opacity-100 transition-opacity">
+                  <Play className="w-3 h-3" />
+                  <span className="font-mono text-[10px] uppercase tracking-wider">Uruchom w symulatorze →</span>
                 </div>
               </Card>
             ))}
