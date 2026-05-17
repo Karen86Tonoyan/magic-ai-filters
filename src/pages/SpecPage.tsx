@@ -99,6 +99,7 @@ const TONOYAN: Tonoyan[] = [
 const HALL_TYPES = ['OVERCONFIDENT', 'UNSOURCED_CLAIM', 'CONTEXT_DRIFT', 'WISHFUL_THINKING', 'POLARIZATION', 'LOGICAL_JUMP', 'ATTRIBUTION_ERROR'];
 
 type AlfaModule = {
+  id: string;
   name: string;
   purpose: string;
   outputs: string[];
