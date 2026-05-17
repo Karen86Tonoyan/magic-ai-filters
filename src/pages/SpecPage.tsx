@@ -185,6 +185,45 @@ export default function SpecPage() {
     navigate(`/simulator?preset=${id}`);
   };
 
+  // ----- Search & filter state -----
+  const [query, setQuery] = useState('');
+  const [hallFilter, setHallFilter] = useState<string | null>(null);
+  const [moduleFilter, setModuleFilter] = useState<string | null>(null);
+
+  const q = query.trim().toLowerCase();
+
+  const filteredTonoyan = useMemo(() => {
+    return TONOYAN.filter((f) => {
+      if (hallFilter && f.failure !== hallFilter) return false;
+      if (!q) return true;
+      return (
+        f.id.toLowerCase().includes(q) ||
+        f.name.toLowerCase().includes(q) ||
+        f.purpose.toLowerCase().includes(q) ||
+        f.failure.toLowerCase().includes(q) ||
+        f.action.toLowerCase().includes(q) ||
+        f.detects.some((d) => d.toLowerCase().includes(q))
+      );
+    });
+  }, [q, hallFilter]);
+
+  const filteredAlfa = useMemo(() => {
+    return ALFA_MODULES.filter((m) => {
+      if (moduleFilter && m.id !== moduleFilter) return false;
+      if (!q) return true;
+      return (
+        m.id.toLowerCase().includes(q) ||
+        m.name.toLowerCase().includes(q) ||
+        m.purpose.toLowerCase().includes(q) ||
+        m.outputs.some((o) => o.toLowerCase().includes(q)) ||
+        (m.extra?.items.some((i) => i.toLowerCase().includes(q)) ?? false)
+      );
+    });
+  }, [q, moduleFilter]);
+
+  const filtersActive = Boolean(q || hallFilter || moduleFilter);
+  const clearFilters = () => { setQuery(''); setHallFilter(null); setModuleFilter(null); };
+
   const handleExportJson = () => {
     const payload = {
       generated_at: new Date().toISOString(),
