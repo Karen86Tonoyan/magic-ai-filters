@@ -347,7 +347,15 @@ export default function SpecPage() {
 
           <div className="grid md:grid-cols-2 gap-4">
             {TONOYAN.map((f) => (
-              <Card key={f.id} className="p-4 border-primary/20">
+              <Card
+                key={f.id}
+                className="p-4 border-primary/20 cursor-pointer transition-colors hover:border-primary/60 hover:bg-primary/5 group"
+                onClick={() => openInSimulator(f.id)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openInSimulator(f.id); } }}
+                title={`Otwórz ${f.id} w symulatorze`}
+              >
                 <div className="flex items-start justify-between gap-2 mb-2">
                   <div className="flex items-center gap-2">
                     <span className="font-display text-primary text-lg tracking-wider">{f.id}</span>
@@ -372,6 +380,10 @@ export default function SpecPage() {
                   <div>
                     <span className="font-mono text-muted-foreground">Action: </span>
                     <span className="text-foreground">{f.action}</span>
+                  </div>
+                  <div className="pt-2 flex items-center gap-1.5 text-primary opacity-70 group-hover:opacity-100 transition-opacity">
+                    <Play className="w-3 h-3" />
+                    <span className="font-mono text-[10px] uppercase tracking-wider">Uruchom w symulatorze →</span>
                   </div>
                 </div>
               </Card>
