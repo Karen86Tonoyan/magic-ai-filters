@@ -176,8 +176,13 @@ const ALFA_MODULES: AlfaModule[] = [
 ];
 
 export default function SpecPage() {
+  const navigate = useNavigate();
   const exportRef = useRef<HTMLDivElement>(null);
   const [exporting, setExporting] = useState<null | 'json' | 'pdf'>(null);
+
+  const openInSimulator = (id: string) => {
+    navigate(`/simulator?preset=${id}`);
+  };
 
   const handleExportJson = () => {
     const payload = {
