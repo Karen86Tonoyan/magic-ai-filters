@@ -523,7 +523,12 @@ export default function SpecPage() {
           </Card>
 
           <div className="space-y-4">
-            {ALFA_MODULES.map((m) => (
+            {filteredAlfa.length === 0 && (
+              <p className="text-xs text-muted-foreground p-6 text-center border border-dashed border-border rounded">
+                Brak modułów ALFA pasujących do zapytania.
+              </p>
+            )}
+            {filteredAlfa.map((m) => (
               <Card
                 key={m.id}
                 className="p-5 border-primary/20 cursor-pointer transition-colors hover:border-primary/60 hover:bg-primary/5 group"
