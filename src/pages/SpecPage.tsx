@@ -1,9 +1,10 @@
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BookOpen, Shield, Layers, AlertCircle, Download, FileText, Play } from 'lucide-react';
+import { BookOpen, Shield, Layers, AlertCircle, Download, FileText, Play, Search, X } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { toast } from '@/hooks/use-toast';
