@@ -1,5 +1,6 @@
-import { useMemo, useState } from 'react';
-import { Activity, Search, Network, Sparkles, Plus, Trash2 } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { Activity, Search, Network, Sparkles, Plus, Trash2, Link2 } from 'lucide-react';
 import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -186,6 +187,45 @@ const DEFAULT_INPUT: SimInput = {
   cerberUncertainMax: false, needsHuman: false, taggerFreeze: false, taggerHold: false, simCritical: false,
 };
 
+// ---------- SPEC -> SIMULATOR PRESET MAP ----------
+// Each Tonoyan F1-F7 filter and ALFA module (M1-M7) maps to a SimInput preset
+// that demonstrates a query which would trip that filter / module.
+type SpecPreset = { label: string; tab: 'sim' | 'flags' | 'ndi'; input: Partial<SimInput>; flagQuery?: string };
+
+export const SPEC_PRESETS: Record<string, SpecPreset> = {
+  // ----- Tonoyan F1-F7 (reasoning-level hallucination firewall) -----
+  F1: { label: 'F1 — Counterargument (overconfidence)', tab: 'sim',
+    input: { risk: 0.45, manipulation: 0.2, exploit: 0.05, confidence: 0.95, flagCount: 1, taggerHold: true } },
+  F2: { label: 'F2 — Verification (unsourced claim)', tab: 'sim',
+    input: { risk: 0.55, manipulation: 0.15, exploit: 0.05, confidence: 0.4, flagCount: 1 } },
+  F3: { label: 'F3 — Context drift', tab: 'sim',
+    input: { risk: 0.5, manipulation: 0.25, exploit: 0.05, confidence: 0.45, flagCount: 2 } },
+  F4: { label: 'F4 — Anti-magic (wishful thinking)', tab: 'sim',
+    input: { risk: 0.5, manipulation: 0.2, exploit: 0.1, confidence: 0.5, flagCount: 1, taggerHold: true } },
+  F5: { label: 'F5 — Dual perspective (polarization)', tab: 'sim',
+    input: { risk: 0.6, manipulation: 0.5, exploit: 0.05, confidence: 0.6, flagCount: 2, coerciveCluster: false } },
+  F6: { label: 'F6 — Backtrack (logical jump, WARN only)', tab: 'sim',
+    input: { risk: 0.4, manipulation: 0.2, exploit: 0.05, confidence: 0.55, flagCount: 1 } },
+  F7: { label: 'F7 — Attribution error', tab: 'sim',
+    input: { risk: 0.55, manipulation: 0.3, exploit: 0.05, confidence: 0.5, flagCount: 1 } },
+  // ----- ALFA runtime modules (M1-M7) -----
+  M1: { label: 'ŁASUCH — exploit + multi-flag', tab: 'flags',
+    input: { risk: 0.75, manipulation: 0.5, exploit: 0.7, confidence: 0.7, flagCount: 4, hasExploitFlag: true },
+    flagQuery: 'exploit' },
+  M2: { label: 'CERBER — survival FAILED', tab: 'sim',
+    input: { risk: 0.7, manipulation: 0.4, exploit: 0.5, confidence: 0.7, flagCount: 2, cerberFailed: true, simCritical: true } },
+  M3: { label: 'GUARDIAN — final BLOCK gate', tab: 'sim',
+    input: { risk: 0.8, manipulation: 0.65, exploit: 0.3, confidence: 0.8, flagCount: 3, coerciveCluster: true } },
+  M4: { label: 'TAGGER / ROUTER — freeze', tab: 'sim',
+    input: { risk: 0.6, manipulation: 0.3, exploit: 0.2, confidence: 0.7, flagCount: 2, taggerFreeze: true } },
+  M5: { label: 'CORE — uncertainty HOLD', tab: 'sim',
+    input: { risk: 0.5, manipulation: 0.3, exploit: 0.1, confidence: 0.3, flagCount: 1, taggerHold: true } },
+  M6: { label: 'Prompt Enhancer — high modification risk', tab: 'sim',
+    input: { risk: 0.45, manipulation: 0.25, exploit: 0.1, confidence: 0.55, flagCount: 1 } },
+  M7: { label: 'Resilience — cluster + multi-flag', tab: 'sim',
+    input: { risk: 0.7, manipulation: 0.55, exploit: 0.4, confidence: 0.65, flagCount: 4, coerciveCluster: true, hasExploitFlag: true } },
+};
+
 // ---------- NDI: NARRATIVE DRIFT INSPECTOR ----------
 type Turn = { role: 'user' | 'assistant'; text: string };
 
@@ -232,7 +272,11 @@ function buildNDIGraph(turns: Turn[], analyses: TurnAnalysis[]): string {
 
 // ============================================================
 export default function SimulatorPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const presetId = searchParams.get('preset');
   const [input, setInput] = useState<SimInput>(DEFAULT_INPUT);
+  const [tab, setTab] = useState<'sim' | 'flags' | 'ndi'>('sim');
+  const [activePreset, setActivePreset] = useState<{ id: string; label: string } | null>(null);
   const result = useMemo(() => simulate(input), [input]);
 
   // Flag search
@@ -259,6 +303,25 @@ export default function SimulatorPage() {
   const ndiGraph = useMemo(() => buildNDIGraph(turns, ndi), [turns, ndi]);
   const ndiTotal = useMemo(() => Math.min(1, ndi.reduce((s, a) => s + a.drift, 0) / Math.max(1, turns.length) + (ndi.at(-1)?.drift ?? 0) * 0.3), [ndi, turns.length]);
 
+  // Apply preset from URL (e.g. /simulator?preset=F2 or ?preset=M1)
+  useEffect(() => {
+    if (!presetId) return;
+    const preset = SPEC_PRESETS[presetId];
+    if (!preset) return;
+    setInput({ ...DEFAULT_INPUT, ...preset.input });
+    setTab(preset.tab);
+    if (preset.flagQuery) setFlagQuery(preset.flagQuery);
+    setActivePreset({ id: presetId, label: preset.label });
+  }, [presetId]);
+
+  function clearPreset() {
+    setActivePreset(null);
+    setInput(DEFAULT_INPUT);
+    const next = new URLSearchParams(searchParams);
+    next.delete('preset');
+    setSearchParams(next, { replace: true });
+  }
+
   function updateTurn(idx: number, text: string) {
     setTurns((prev) => prev.map((t, i) => (i === idx ? { ...t, text } : t)));
   }
@@ -278,9 +341,22 @@ export default function SimulatorPage() {
           Interaktywny symulator progów Guardiana, wyszukiwarka flag oraz Narrative Drift Inspector
           (NDI) śledzący całą rozmowę i wykrywający subtelne manipulacje.
         </p>
+        {activePreset && (
+          <div className="flex items-center justify-between gap-3 p-3 rounded border border-primary/40 bg-primary/5">
+            <div className="flex items-center gap-2 text-xs font-mono">
+              <Link2 className="w-3 h-3 text-primary" />
+              <span className="text-muted-foreground">Preset z /spec:</span>
+              <span className="text-primary">{activePreset.id}</span>
+              <span className="text-foreground">— {activePreset.label}</span>
+            </div>
+            <Button variant="ghost" size="sm" onClick={clearPreset} className="text-xs h-7">
+              Wyczyść preset
+            </Button>
+          </div>
+        )}
       </header>
 
-      <Tabs defaultValue="sim" className="w-full">
+      <Tabs value={tab} onValueChange={(v) => setTab(v as typeof tab)} className="w-full">
         <TabsList className="grid grid-cols-3 w-full">
           <TabsTrigger value="sim"><Activity className="w-4 h-4 mr-2" />Symulator</TabsTrigger>
           <TabsTrigger value="flags"><Search className="w-4 h-4 mr-2" />Wyszukiwarka flag</TabsTrigger>

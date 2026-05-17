@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
-import { BookOpen, Shield, Layers, AlertCircle, Download, FileText } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { BookOpen, Shield, Layers, AlertCircle, Download, FileText, Play } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -98,6 +99,7 @@ const TONOYAN: Tonoyan[] = [
 const HALL_TYPES = ['OVERCONFIDENT', 'UNSOURCED_CLAIM', 'CONTEXT_DRIFT', 'WISHFUL_THINKING', 'POLARIZATION', 'LOGICAL_JUMP', 'ATTRIBUTION_ERROR'];
 
 type AlfaModule = {
+  id: string;
   name: string;
   purpose: string;
   outputs: string[];
@@ -106,6 +108,7 @@ type AlfaModule = {
 
 const ALFA_MODULES: AlfaModule[] = [
   {
+    id: 'M1',
     name: '1. ŁASUCH — Manipulation & Exploit Detector',
     purpose: 'Wykrywa manipulację, prompt injection, hidden intent, social pressure, exploit attempts.',
     outputs: ['risk_score', 'manipulation_score', 'exploit_score', 'flags[]', 'extracted_goal', 'suspected_hidden_intent', 'confidence'],
@@ -121,6 +124,7 @@ const ALFA_MODULES: AlfaModule[] = [
     },
   },
   {
+    id: 'M2',
     name: '2. CERBER — Adversarial Survival Filter',
     purpose: 'Testuje czy prompt próbuje zmienić zachowanie modelu, obejść safety, wyciec system info, wyczerpać zasoby.',
     outputs: ['survival_status: SURVIVED / FAILED / UNCERTAIN', 'clean_intent', 'hidden_objective', 'attack_hypotheses[]', 'impact_simulation', 'needs_human'],
@@ -134,11 +138,13 @@ const ALFA_MODULES: AlfaModule[] = [
     },
   },
   {
+    id: 'M3',
     name: '3. GUARDIAN — Final Runtime Gate',
     purpose: 'Finalna decyzja przed wykonaniem lub odpowiedzią.',
     outputs: ['decision: PASS / LIMITED_PASS / HOLD / BLOCK / HUMAN_REVIEW', 'mode: normal / restricted / silence / handoff'],
   },
   {
+    id: 'M4',
     name: '4. TAGGER / ROUTER',
     purpose: 'Klasyfikuje intent, risk, control, domain, execution route.',
     outputs: [
@@ -150,16 +156,19 @@ const ALFA_MODULES: AlfaModule[] = [
     ],
   },
   {
+    id: 'M5',
     name: '5. CORE Filter',
     purpose: 'Liczy raw decision signals — bez "magicznego trustu".',
     outputs: ['value_score', 'risk_score', 'trust_score', 'confidence_score', 'uncertainty_score', 'recommendation: pass / block / hold / silence'],
   },
   {
+    id: 'M6',
     name: '6. Prompt Enhancer',
     purpose: 'Ulepsza prompty mierząc ryzyko zniekształcenia.',
     outputs: ['modes: safe / aggressive / benchmark', 'enhanced prompt', 'dual prompt', 'weaknesses[]', 'improvement_delta', 'modification_level', 'risk_of_distortion', 'added_assumptions[]'],
   },
   {
+    id: 'M7',
     name: '7. Resilience Layer',
     purpose: 'Śledzi czy pipeline przeżył adversarial pressure. Stress-test, benchmark mode, model weakness detection, exploit hardening.',
     outputs: ['resilience_score', 'survived_attacks[]', 'breakpoints[]'],
@@ -167,8 +176,13 @@ const ALFA_MODULES: AlfaModule[] = [
 ];
 
 export default function SpecPage() {
+  const navigate = useNavigate();
   const exportRef = useRef<HTMLDivElement>(null);
   const [exporting, setExporting] = useState<null | 'json' | 'pdf'>(null);
+
+  const openInSimulator = (id: string) => {
+    navigate(`/simulator?preset=${id}`);
+  };
 
   const handleExportJson = () => {
     const payload = {
@@ -333,7 +347,15 @@ export default function SpecPage() {
 
           <div className="grid md:grid-cols-2 gap-4">
             {TONOYAN.map((f) => (
-              <Card key={f.id} className="p-4 border-primary/20">
+              <Card
+                key={f.id}
+                className="p-4 border-primary/20 cursor-pointer transition-colors hover:border-primary/60 hover:bg-primary/5 group"
+                onClick={() => openInSimulator(f.id)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openInSimulator(f.id); } }}
+                title={`Otwórz ${f.id} w symulatorze`}
+              >
                 <div className="flex items-start justify-between gap-2 mb-2">
                   <div className="flex items-center gap-2">
                     <span className="font-display text-primary text-lg tracking-wider">{f.id}</span>
@@ -359,6 +381,10 @@ export default function SpecPage() {
                     <span className="font-mono text-muted-foreground">Action: </span>
                     <span className="text-foreground">{f.action}</span>
                   </div>
+                  <div className="pt-2 flex items-center gap-1.5 text-primary opacity-70 group-hover:opacity-100 transition-opacity">
+                    <Play className="w-3 h-3" />
+                    <span className="font-mono text-[10px] uppercase tracking-wider">Uruchom w symulatorze →</span>
+                  </div>
                 </div>
               </Card>
             ))}
@@ -376,8 +402,19 @@ export default function SpecPage() {
 
           <div className="space-y-4">
             {ALFA_MODULES.map((m) => (
-              <Card key={m.name} className="p-5 border-primary/20">
-                <h3 className="font-display text-primary tracking-wider mb-1">{m.name}</h3>
+              <Card
+                key={m.id}
+                className="p-5 border-primary/20 cursor-pointer transition-colors hover:border-primary/60 hover:bg-primary/5 group"
+                onClick={() => openInSimulator(m.id)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openInSimulator(m.id); } }}
+                title={`Otwórz ${m.id} w symulatorze`}
+              >
+                <div className="flex items-start justify-between gap-2 mb-1">
+                  <h3 className="font-display text-primary tracking-wider">{m.name}</h3>
+                  <Badge variant="outline" className="font-mono text-[10px] border-primary/40 text-primary shrink-0">{m.id}</Badge>
+                </div>
                 <p className="text-xs text-muted-foreground mb-3">{m.purpose}</p>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
@@ -398,6 +435,10 @@ export default function SpecPage() {
                       </div>
                     </div>
                   )}
+                </div>
+                <div className="pt-3 mt-3 border-t border-border/50 flex items-center gap-1.5 text-primary opacity-70 group-hover:opacity-100 transition-opacity">
+                  <Play className="w-3 h-3" />
+                  <span className="font-mono text-[10px] uppercase tracking-wider">Uruchom w symulatorze →</span>
                 </div>
               </Card>
             ))}
