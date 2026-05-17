@@ -1,5 +1,6 @@
-import { useMemo, useState } from 'react';
-import { Activity, Search, Network, Sparkles, Plus, Trash2 } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { Activity, Search, Network, Sparkles, Plus, Trash2, Link2 } from 'lucide-react';
 import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
