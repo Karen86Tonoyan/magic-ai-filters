@@ -1,9 +1,10 @@
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BookOpen, Shield, Layers, AlertCircle, Download, FileText, Play } from 'lucide-react';
+import { BookOpen, Shield, Layers, AlertCircle, Download, FileText, Play, Search, X } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { toast } from '@/hooks/use-toast';
@@ -184,6 +185,45 @@ export default function SpecPage() {
     navigate(`/simulator?preset=${id}`);
   };
 
+  // ----- Search & filter state -----
+  const [query, setQuery] = useState('');
+  const [hallFilter, setHallFilter] = useState<string | null>(null);
+  const [moduleFilter, setModuleFilter] = useState<string | null>(null);
+
+  const q = query.trim().toLowerCase();
+
+  const filteredTonoyan = useMemo(() => {
+    return TONOYAN.filter((f) => {
+      if (hallFilter && f.failure !== hallFilter) return false;
+      if (!q) return true;
+      return (
+        f.id.toLowerCase().includes(q) ||
+        f.name.toLowerCase().includes(q) ||
+        f.purpose.toLowerCase().includes(q) ||
+        f.failure.toLowerCase().includes(q) ||
+        f.action.toLowerCase().includes(q) ||
+        f.detects.some((d) => d.toLowerCase().includes(q))
+      );
+    });
+  }, [q, hallFilter]);
+
+  const filteredAlfa = useMemo(() => {
+    return ALFA_MODULES.filter((m) => {
+      if (moduleFilter && m.id !== moduleFilter) return false;
+      if (!q) return true;
+      return (
+        m.id.toLowerCase().includes(q) ||
+        m.name.toLowerCase().includes(q) ||
+        m.purpose.toLowerCase().includes(q) ||
+        m.outputs.some((o) => o.toLowerCase().includes(q)) ||
+        (m.extra?.items.some((i) => i.toLowerCase().includes(q)) ?? false)
+      );
+    });
+  }, [q, moduleFilter]);
+
+  const filtersActive = Boolean(q || hallFilter || moduleFilter);
+  const clearFilters = () => { setQuery(''); setHallFilter(null); setModuleFilter(null); };
+
   const handleExportJson = () => {
     const payload = {
       generated_at: new Date().toISOString(),
@@ -287,6 +327,83 @@ export default function SpecPage() {
           Dwa poziomy filtrów: <span className="text-primary">Tonoyan F1–F7</span> jako anty-halucynacyjny reasoning firewall
           oraz <span className="text-primary">ALFA runtime</span> jako security/governance pipeline.
         </p>
+
+        {/* ===== SEARCH & FACET FILTERS ===== */}
+        <Card className="p-4 space-y-3 border-primary/20">
+          <div className="flex items-center gap-2">
+            <Search className="w-4 h-4 text-primary shrink-0" />
+            <Input
+              placeholder="Szukaj po id, nazwie, opisie, wzorcach, outputach, flagach..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="font-mono text-xs h-8"
+            />
+            {filtersActive && (
+              <Button variant="ghost" size="sm" onClick={clearFilters} className="h-8 text-xs">
+                <X className="w-3 h-3 mr-1" /> Wyczyść
+              </Button>
+            )}
+          </div>
+
+          <div className="space-y-1.5">
+            <div className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
+              Hallucination type (Tonoyan F1–F7)
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {HALL_TYPES.map((t) => {
+                const active = hallFilter === t;
+                return (
+                  <button
+                    key={t}
+                    type="button"
+                    onClick={() => setHallFilter(active ? null : t)}
+                    className={`text-[10px] font-mono px-2 py-1 rounded border transition-colors ${
+                      active
+                        ? 'border-warning bg-warning/20 text-warning'
+                        : 'border-warning/30 bg-warning/5 text-warning/80 hover:border-warning/60'
+                    }`}
+                  >
+                    {t}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="space-y-1.5">
+            <div className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
+              ALFA module
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {ALFA_MODULES.map((m) => {
+                const active = moduleFilter === m.id;
+                const short = m.name.replace(/^\d+\.\s*/, '').split('—')[0].trim();
+                return (
+                  <button
+                    key={m.id}
+                    type="button"
+                    onClick={() => setModuleFilter(active ? null : m.id)}
+                    className={`text-[10px] font-mono px-2 py-1 rounded border transition-colors ${
+                      active
+                        ? 'border-primary bg-primary/20 text-primary'
+                        : 'border-primary/30 bg-primary/5 text-primary/80 hover:border-primary/60'
+                    }`}
+                    title={m.name}
+                  >
+                    {m.id} · {short}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {filtersActive && (
+            <div className="text-[10px] font-mono text-muted-foreground pt-1 border-t border-border/40">
+              Pasuje: <span className="text-warning">{filteredTonoyan.length}</span>/{TONOYAN.length} Tonoyan ·{' '}
+              <span className="text-primary">{filteredAlfa.length}</span>/{ALFA_MODULES.length} ALFA
+            </div>
+          )}
+        </Card>
       </header>
 
       <div ref={exportRef} className="space-y-8">
@@ -346,7 +463,12 @@ export default function SpecPage() {
           </Card>
 
           <div className="grid md:grid-cols-2 gap-4">
-            {TONOYAN.map((f) => (
+            {filteredTonoyan.length === 0 && (
+              <p className="text-xs text-muted-foreground col-span-2 p-6 text-center border border-dashed border-border rounded">
+                Brak filtrów Tonoyan pasujących do zapytania.
+              </p>
+            )}
+            {filteredTonoyan.map((f) => (
               <Card
                 key={f.id}
                 className="p-4 border-primary/20 cursor-pointer transition-colors hover:border-primary/60 hover:bg-primary/5 group"
@@ -401,7 +523,12 @@ export default function SpecPage() {
           </Card>
 
           <div className="space-y-4">
-            {ALFA_MODULES.map((m) => (
+            {filteredAlfa.length === 0 && (
+              <p className="text-xs text-muted-foreground p-6 text-center border border-dashed border-border rounded">
+                Brak modułów ALFA pasujących do zapytania.
+              </p>
+            )}
+            {filteredAlfa.map((m) => (
               <Card
                 key={m.id}
                 className="p-5 border-primary/20 cursor-pointer transition-colors hover:border-primary/60 hover:bg-primary/5 group"
