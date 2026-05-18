@@ -298,7 +298,7 @@ const DEFAULT_ROWS: FilterRow[] = F_FILTERS.map((f) => ({
 
 const SEVERITY_RANK: Record<FSeverity, number> = { INFO: 0, LOW: 1, MEDIUM: 2, HIGH: 3 };
 
-export type FCalcResult = {
+type FCalcResult = {
   decision: FVerdict;
   reasons: string[];
   counts: { pass: number; warn: number; block: number };
