@@ -677,6 +677,105 @@ export default function SimulatorPage() {
             <MermaidDiagram chart={ndiGraph} id="ndi-graph" />
           </Card>
         </TabsContent>
+
+        {/* ===== F1-F7 CALCULATOR ===== */}
+        <TabsContent value="fcalc" className="mt-6 grid lg:grid-cols-3 gap-4">
+          <Card className="p-5 space-y-4 lg:col-span-2">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <h2 className="font-display text-lg text-primary mb-1">Wyniki filtrów F1-F7</h2>
+                <p className="text-xs text-muted-foreground">
+                  Ustaw wynik (PASS / WARN / BLOCK) i severity (INFO → HIGH) dla każdego filtra.
+                  Decyzja końcowa wylicza się natychmiast.
+                </p>
+              </div>
+              <Button variant="outline" size="sm" onClick={resetFCalc} className="text-xs">Reset</Button>
+            </div>
+
+            <div className="space-y-2">
+              {fRows.map((r) => (
+                <div key={r.id} className="grid grid-cols-12 gap-2 items-center p-3 rounded border border-border bg-card/40">
+                  <div className="col-span-4">
+                    <div className="flex items-center gap-2">
+                      <Badge variant="outline" className="font-mono text-[10px]">{r.id}</Badge>
+                      <span className="text-xs font-medium">{r.name}</span>
+                    </div>
+                    <p className="text-[10px] font-mono text-muted-foreground mt-0.5">{r.hallucinationType}</p>
+                  </div>
+
+                  <div className="col-span-4 flex gap-1">
+                    {(['PASS', 'WARN', 'BLOCK'] as FVerdict[]).map((v) => (
+                      <button key={v} onClick={() => updateFRow(r.id, { verdict: v })}
+                        className={`flex-1 text-[10px] font-mono py-1.5 rounded border transition ${
+                          r.verdict === v ? F_VERDICT_STYLE[v] + ' border-2' : 'border-border bg-card/60 text-muted-foreground hover:border-primary/30'
+                        }`}>
+                        {v}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="col-span-4 flex gap-1">
+                    {(['INFO', 'LOW', 'MEDIUM', 'HIGH'] as FSeverity[]).map((s) => (
+                      <button key={s} onClick={() => updateFRow(r.id, { severity: s })}
+                        disabled={r.verdict === 'PASS'}
+                        className={`flex-1 text-[10px] font-mono py-1.5 rounded border transition disabled:opacity-30 disabled:cursor-not-allowed ${
+                          r.severity === s && r.verdict !== 'PASS' ? F_SEVERITY_STYLE[s] + ' border-2' : 'border-border bg-card/60 text-muted-foreground hover:border-primary/30'
+                        }`}>
+                        {s}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
+
+          <Card className="p-5 space-y-4">
+            <div>
+              <h2 className="font-display text-lg text-primary mb-1">Decyzja końcowa</h2>
+              <p className="text-xs text-muted-foreground">Tonoyan v1.0 policy.</p>
+            </div>
+
+            <div className={`p-5 rounded-lg border-2 font-mono ${F_VERDICT_STYLE[fResult.decision]}`}>
+              <div className="text-3xl font-bold tracking-wider">{fResult.decision}</div>
+              <div className="text-xs mt-1 opacity-70">max severity: {fResult.maxSeverity}</div>
+            </div>
+
+            <div className="grid grid-cols-3 gap-2 text-center">
+              <div className="p-2 rounded border border-success/30 bg-success/5">
+                <div className="text-[10px] font-mono text-muted-foreground">PASS</div>
+                <div className="text-lg font-mono text-success">{fResult.counts.pass}</div>
+              </div>
+              <div className="p-2 rounded border border-warning/30 bg-warning/5">
+                <div className="text-[10px] font-mono text-muted-foreground">WARN</div>
+                <div className="text-lg font-mono text-warning">{fResult.counts.warn}</div>
+              </div>
+              <div className="p-2 rounded border border-destructive/30 bg-destructive/5">
+                <div className="text-[10px] font-mono text-muted-foreground">BLOCK</div>
+                <div className="text-lg font-mono text-destructive">{fResult.counts.block}</div>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-xs font-display tracking-widest uppercase text-muted-foreground mb-2">Reason codes</h3>
+              <div className="flex flex-wrap gap-1.5">
+                {fResult.reasons.map((r, i) => (
+                  <span key={i} className="font-mono text-[11px] px-2 py-1 rounded border border-primary/30 bg-primary/5 text-primary">
+                    {r}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="text-[10px] font-mono text-muted-foreground space-y-1 pt-2 border-t border-border">
+              <p>Reguły:</p>
+              <p>• każdy BLOCK (poza F6) → BLOCK</p>
+              <p>• WARN/HIGH → eskalacja do BLOCK</p>
+              <p>• ≥2 × WARN/MEDIUM+ → BLOCK</p>
+              <p>• F6 BLOCK sam → WARN (backtrack-only)</p>
+            </div>
+          </Card>
+        </TabsContent>
       </Tabs>
     </div>
   );
