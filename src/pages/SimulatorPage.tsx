@@ -481,8 +481,9 @@ export default function SimulatorPage() {
       </header>
 
       <Tabs value={tab} onValueChange={(v) => setTab(v as typeof tab)} className="w-full">
-        <TabsList className="grid grid-cols-3 w-full">
+        <TabsList className="grid grid-cols-4 w-full">
           <TabsTrigger value="sim"><Activity className="w-4 h-4 mr-2" />Symulator</TabsTrigger>
+          <TabsTrigger value="fcalc"><Calculator className="w-4 h-4 mr-2" />Kalkulator F1-F7</TabsTrigger>
           <TabsTrigger value="flags"><Search className="w-4 h-4 mr-2" />Wyszukiwarka flag</TabsTrigger>
           <TabsTrigger value="ndi"><Network className="w-4 h-4 mr-2" />NDI rozmowy</TabsTrigger>
         </TabsList>
