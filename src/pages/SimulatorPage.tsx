@@ -271,10 +271,10 @@ function buildNDIGraph(turns: Turn[], analyses: TurnAnalysis[]): string {
 }
 
 // ---------- F1-F7 PASS/WARN/BLOCK CALCULATOR ----------
-export type FVerdict = 'PASS' | 'WARN' | 'BLOCK';
-export type FSeverity = 'INFO' | 'LOW' | 'MEDIUM' | 'HIGH';
+type FVerdict = 'PASS' | 'WARN' | 'BLOCK';
+type FSeverity = 'INFO' | 'LOW' | 'MEDIUM' | 'HIGH';
 
-export type FilterRow = {
+type FilterRow = {
   id: 'F1' | 'F2' | 'F3' | 'F4' | 'F5' | 'F6' | 'F7';
   name: string;
   hallucinationType: string;
