@@ -418,6 +418,15 @@ export default function SimulatorPage() {
   const ndiGraph = useMemo(() => buildNDIGraph(turns, ndi), [turns, ndi]);
   const ndiTotal = useMemo(() => Math.min(1, ndi.reduce((s, a) => s + a.drift, 0) / Math.max(1, turns.length) + (ndi.at(-1)?.drift ?? 0) * 0.3), [ndi, turns.length]);
 
+  // F1-F7 calculator state
+  const [fRows, setFRows] = useState<FilterRow[]>(DEFAULT_ROWS);
+  const fResult = useMemo(() => calculateFVerdict(fRows), [fRows]);
+  function updateFRow(id: FilterRow['id'], patch: Partial<FilterRow>) {
+    setFRows((prev) => prev.map((r) => (r.id === id ? { ...r, ...patch } : r)));
+  }
+  function resetFCalc() { setFRows(DEFAULT_ROWS); }
+
+
   // Apply preset from URL (e.g. /simulator?preset=F2 or ?preset=M1)
   useEffect(() => {
     if (!presetId) return;
