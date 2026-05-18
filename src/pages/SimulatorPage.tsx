@@ -192,7 +192,7 @@ const DEFAULT_INPUT: SimInput = {
 // that demonstrates a query which would trip that filter / module.
 type SpecPreset = { label: string; tab: 'sim' | 'flags' | 'ndi'; input: Partial<SimInput>; flagQuery?: string };
 
-export const SPEC_PRESETS: Record<string, SpecPreset> = {
+const SPEC_PRESETS: Record<string, SpecPreset> = {
   // ----- Tonoyan F1-F7 (reasoning-level hallucination firewall) -----
   F1: { label: 'F1 — Counterargument (overconfidence)', tab: 'sim',
     input: { risk: 0.45, manipulation: 0.2, exploit: 0.05, confidence: 0.95, flagCount: 1, taggerHold: true } },
