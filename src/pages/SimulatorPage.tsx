@@ -270,6 +270,121 @@ function buildNDIGraph(turns: Turn[], analyses: TurnAnalysis[]): string {
   return lines.join('\n');
 }
 
+// ---------- F1-F7 PASS/WARN/BLOCK CALCULATOR ----------
+export type FVerdict = 'PASS' | 'WARN' | 'BLOCK';
+export type FSeverity = 'INFO' | 'LOW' | 'MEDIUM' | 'HIGH';
+
+export type FilterRow = {
+  id: 'F1' | 'F2' | 'F3' | 'F4' | 'F5' | 'F6' | 'F7';
+  name: string;
+  hallucinationType: string;
+  verdict: FVerdict;
+  severity: FSeverity;
+};
+
+const F_FILTERS: { id: FilterRow['id']; name: string; hallucinationType: string }[] = [
+  { id: 'F1', name: 'Counterargument Filter', hallucinationType: 'OVERCONFIDENT' },
+  { id: 'F2', name: 'Verification Filter', hallucinationType: 'UNSOURCED_CLAIM' },
+  { id: 'F3', name: 'Context Drift Filter', hallucinationType: 'CONTEXT_DRIFT' },
+  { id: 'F4', name: 'Anti-Magic Filter', hallucinationType: 'WISHFUL_THINKING' },
+  { id: 'F5', name: 'Dual Perspective Filter', hallucinationType: 'POLARIZATION' },
+  { id: 'F6', name: 'Backtrack Filter', hallucinationType: 'LOGICAL_JUMP' },
+  { id: 'F7', name: 'Attribution Filter', hallucinationType: 'ATTRIBUTION_ERROR' },
+];
+
+const DEFAULT_ROWS: FilterRow[] = F_FILTERS.map((f) => ({
+  ...f, verdict: 'PASS' as FVerdict, severity: 'INFO' as FSeverity,
+}));
+
+const SEVERITY_RANK: Record<FSeverity, number> = { INFO: 0, LOW: 1, MEDIUM: 2, HIGH: 3 };
+
+export type FCalcResult = {
+  decision: FVerdict;
+  reasons: string[];
+  counts: { pass: number; warn: number; block: number };
+  maxSeverity: FSeverity;
+  contributing: FilterRow[];
+};
+
+// Decision policy (Tonoyan Anti-Hallucination Filters v1.0):
+//   - any BLOCK                                     -> BLOCK
+//   - any WARN with HIGH severity                   -> BLOCK
+//   - >= 2 WARN with MEDIUM+ severity               -> BLOCK
+//   - F6 (Backtrack) cannot cause BLOCK on its own  (WARN-only filter)
+//   - any remaining WARN                            -> WARN
+//   - else                                          -> PASS
+export function calculateFVerdict(rows: FilterRow[]): FCalcResult {
+  const reasons: string[] = [];
+  const counts = { pass: 0, warn: 0, block: 0 };
+  let maxSeverity: FSeverity = 'INFO';
+  const contributing: FilterRow[] = [];
+
+  for (const r of rows) {
+    if (r.verdict === 'BLOCK') counts.block += 1;
+    else if (r.verdict === 'WARN') counts.warn += 1;
+    else counts.pass += 1;
+    if (r.verdict !== 'PASS' && SEVERITY_RANK[r.severity] > SEVERITY_RANK[maxSeverity]) {
+      maxSeverity = r.severity;
+    }
+  }
+
+  const blocks = rows.filter((r) => r.verdict === 'BLOCK' && r.id !== 'F6');
+  if (blocks.length > 0) {
+    blocks.forEach((b) => reasons.push(`${b.id} BLOCK (${b.severity})`));
+    contributing.push(...blocks);
+    return { decision: 'BLOCK', reasons, counts, maxSeverity, contributing };
+  }
+
+  const highWarns = rows.filter((r) => r.verdict === 'WARN' && r.severity === 'HIGH');
+  if (highWarns.length > 0) {
+    highWarns.forEach((w) => reasons.push(`${w.id} WARN/HIGH → escalate to BLOCK`));
+    contributing.push(...highWarns);
+    return { decision: 'BLOCK', reasons, counts, maxSeverity, contributing };
+  }
+
+  const mediumPlusWarns = rows.filter(
+    (r) => r.verdict === 'WARN' && SEVERITY_RANK[r.severity] >= SEVERITY_RANK.MEDIUM,
+  );
+  if (mediumPlusWarns.length >= 2) {
+    mediumPlusWarns.forEach((w) => reasons.push(`${w.id} WARN/${w.severity}`));
+    reasons.push(`multi-WARN amplifier (${mediumPlusWarns.length} × MEDIUM+)`);
+    contributing.push(...mediumPlusWarns);
+    return { decision: 'BLOCK', reasons, counts, maxSeverity, contributing };
+  }
+
+  const warns = rows.filter((r) => r.verdict === 'WARN');
+  if (warns.length > 0) {
+    warns.forEach((w) => reasons.push(`${w.id} WARN/${w.severity}`));
+    contributing.push(...warns);
+    // F6 BLOCK alone is downgraded to WARN
+    const f6Blocks = rows.filter((r) => r.verdict === 'BLOCK' && r.id === 'F6');
+    f6Blocks.forEach((b) => reasons.push(`${b.id} BLOCK downgraded → WARN (backtrack-only)`));
+    return { decision: 'WARN', reasons, counts, maxSeverity, contributing };
+  }
+
+  const f6Only = rows.filter((r) => r.verdict === 'BLOCK' && r.id === 'F6');
+  if (f6Only.length > 0) {
+    f6Only.forEach((b) => reasons.push(`${b.id} BLOCK downgraded → WARN (backtrack-only)`));
+    return { decision: 'WARN', reasons, counts, maxSeverity: 'LOW', contributing: f6Only };
+  }
+
+  reasons.push('All F1-F7 PASS');
+  return { decision: 'PASS', reasons, counts, maxSeverity: 'INFO', contributing };
+}
+
+const F_VERDICT_STYLE: Record<FVerdict, string> = {
+  PASS: 'border-success/40 bg-success/10 text-success',
+  WARN: 'border-warning/40 bg-warning/10 text-warning',
+  BLOCK: 'border-destructive/40 bg-destructive/10 text-destructive',
+};
+
+const F_SEVERITY_STYLE: Record<FSeverity, string> = {
+  INFO: 'border-border bg-card/40 text-muted-foreground',
+  LOW: 'border-info/30 bg-info/5 text-info',
+  MEDIUM: 'border-warning/40 bg-warning/5 text-warning',
+  HIGH: 'border-destructive/40 bg-destructive/5 text-destructive',
+};
+
 // ============================================================
 export default function SimulatorPage() {
   const [searchParams, setSearchParams] = useSearchParams();
