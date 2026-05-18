@@ -390,7 +390,7 @@ export default function SimulatorPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const presetId = searchParams.get('preset');
   const [input, setInput] = useState<SimInput>(DEFAULT_INPUT);
-  const [tab, setTab] = useState<'sim' | 'flags' | 'ndi'>('sim');
+  const [tab, setTab] = useState<'sim' | 'flags' | 'ndi' | 'fcalc'>('sim');
   const [activePreset, setActivePreset] = useState<{ id: string; label: string } | null>(null);
   const result = useMemo(() => simulate(input), [input]);
 
