@@ -192,7 +192,7 @@ const DEFAULT_INPUT: SimInput = {
 // that demonstrates a query which would trip that filter / module.
 type SpecPreset = { label: string; tab: 'sim' | 'flags' | 'ndi'; input: Partial<SimInput>; flagQuery?: string };
 
-export const SPEC_PRESETS: Record<string, SpecPreset> = {
+const SPEC_PRESETS: Record<string, SpecPreset> = {
   // ----- Tonoyan F1-F7 (reasoning-level hallucination firewall) -----
   F1: { label: 'F1 — Counterargument (overconfidence)', tab: 'sim',
     input: { risk: 0.45, manipulation: 0.2, exploit: 0.05, confidence: 0.95, flagCount: 1, taggerHold: true } },
@@ -271,10 +271,10 @@ function buildNDIGraph(turns: Turn[], analyses: TurnAnalysis[]): string {
 }
 
 // ---------- F1-F7 PASS/WARN/BLOCK CALCULATOR ----------
-export type FVerdict = 'PASS' | 'WARN' | 'BLOCK';
-export type FSeverity = 'INFO' | 'LOW' | 'MEDIUM' | 'HIGH';
+type FVerdict = 'PASS' | 'WARN' | 'BLOCK';
+type FSeverity = 'INFO' | 'LOW' | 'MEDIUM' | 'HIGH';
 
-export type FilterRow = {
+type FilterRow = {
   id: 'F1' | 'F2' | 'F3' | 'F4' | 'F5' | 'F6' | 'F7';
   name: string;
   hallucinationType: string;
@@ -298,7 +298,7 @@ const DEFAULT_ROWS: FilterRow[] = F_FILTERS.map((f) => ({
 
 const SEVERITY_RANK: Record<FSeverity, number> = { INFO: 0, LOW: 1, MEDIUM: 2, HIGH: 3 };
 
-export type FCalcResult = {
+type FCalcResult = {
   decision: FVerdict;
   reasons: string[];
   counts: { pass: number; warn: number; block: number };
@@ -313,7 +313,7 @@ export type FCalcResult = {
 //   - F6 (Backtrack) cannot cause BLOCK on its own  (WARN-only filter)
 //   - any remaining WARN                            -> WARN
 //   - else                                          -> PASS
-export function calculateFVerdict(rows: FilterRow[]): FCalcResult {
+function calculateFVerdict(rows: FilterRow[]): FCalcResult {
   const reasons: string[] = [];
   const counts = { pass: 0, warn: 0, block: 0 };
   let maxSeverity: FSeverity = 'INFO';
