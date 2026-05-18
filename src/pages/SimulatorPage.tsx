@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Activity, Search, Network, Sparkles, Plus, Trash2, Link2 } from 'lucide-react';
+import { Activity, Search, Network, Sparkles, Plus, Trash2, Link2, Calculator } from 'lucide-react';
 import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -270,12 +270,127 @@ function buildNDIGraph(turns: Turn[], analyses: TurnAnalysis[]): string {
   return lines.join('\n');
 }
 
+// ---------- F1-F7 PASS/WARN/BLOCK CALCULATOR ----------
+export type FVerdict = 'PASS' | 'WARN' | 'BLOCK';
+export type FSeverity = 'INFO' | 'LOW' | 'MEDIUM' | 'HIGH';
+
+export type FilterRow = {
+  id: 'F1' | 'F2' | 'F3' | 'F4' | 'F5' | 'F6' | 'F7';
+  name: string;
+  hallucinationType: string;
+  verdict: FVerdict;
+  severity: FSeverity;
+};
+
+const F_FILTERS: { id: FilterRow['id']; name: string; hallucinationType: string }[] = [
+  { id: 'F1', name: 'Counterargument Filter', hallucinationType: 'OVERCONFIDENT' },
+  { id: 'F2', name: 'Verification Filter', hallucinationType: 'UNSOURCED_CLAIM' },
+  { id: 'F3', name: 'Context Drift Filter', hallucinationType: 'CONTEXT_DRIFT' },
+  { id: 'F4', name: 'Anti-Magic Filter', hallucinationType: 'WISHFUL_THINKING' },
+  { id: 'F5', name: 'Dual Perspective Filter', hallucinationType: 'POLARIZATION' },
+  { id: 'F6', name: 'Backtrack Filter', hallucinationType: 'LOGICAL_JUMP' },
+  { id: 'F7', name: 'Attribution Filter', hallucinationType: 'ATTRIBUTION_ERROR' },
+];
+
+const DEFAULT_ROWS: FilterRow[] = F_FILTERS.map((f) => ({
+  ...f, verdict: 'PASS' as FVerdict, severity: 'INFO' as FSeverity,
+}));
+
+const SEVERITY_RANK: Record<FSeverity, number> = { INFO: 0, LOW: 1, MEDIUM: 2, HIGH: 3 };
+
+export type FCalcResult = {
+  decision: FVerdict;
+  reasons: string[];
+  counts: { pass: number; warn: number; block: number };
+  maxSeverity: FSeverity;
+  contributing: FilterRow[];
+};
+
+// Decision policy (Tonoyan Anti-Hallucination Filters v1.0):
+//   - any BLOCK                                     -> BLOCK
+//   - any WARN with HIGH severity                   -> BLOCK
+//   - >= 2 WARN with MEDIUM+ severity               -> BLOCK
+//   - F6 (Backtrack) cannot cause BLOCK on its own  (WARN-only filter)
+//   - any remaining WARN                            -> WARN
+//   - else                                          -> PASS
+export function calculateFVerdict(rows: FilterRow[]): FCalcResult {
+  const reasons: string[] = [];
+  const counts = { pass: 0, warn: 0, block: 0 };
+  let maxSeverity: FSeverity = 'INFO';
+  const contributing: FilterRow[] = [];
+
+  for (const r of rows) {
+    if (r.verdict === 'BLOCK') counts.block += 1;
+    else if (r.verdict === 'WARN') counts.warn += 1;
+    else counts.pass += 1;
+    if (r.verdict !== 'PASS' && SEVERITY_RANK[r.severity] > SEVERITY_RANK[maxSeverity]) {
+      maxSeverity = r.severity;
+    }
+  }
+
+  const blocks = rows.filter((r) => r.verdict === 'BLOCK' && r.id !== 'F6');
+  if (blocks.length > 0) {
+    blocks.forEach((b) => reasons.push(`${b.id} BLOCK (${b.severity})`));
+    contributing.push(...blocks);
+    return { decision: 'BLOCK', reasons, counts, maxSeverity, contributing };
+  }
+
+  const highWarns = rows.filter((r) => r.verdict === 'WARN' && r.severity === 'HIGH');
+  if (highWarns.length > 0) {
+    highWarns.forEach((w) => reasons.push(`${w.id} WARN/HIGH → escalate to BLOCK`));
+    contributing.push(...highWarns);
+    return { decision: 'BLOCK', reasons, counts, maxSeverity, contributing };
+  }
+
+  const mediumPlusWarns = rows.filter(
+    (r) => r.verdict === 'WARN' && SEVERITY_RANK[r.severity] >= SEVERITY_RANK.MEDIUM,
+  );
+  if (mediumPlusWarns.length >= 2) {
+    mediumPlusWarns.forEach((w) => reasons.push(`${w.id} WARN/${w.severity}`));
+    reasons.push(`multi-WARN amplifier (${mediumPlusWarns.length} × MEDIUM+)`);
+    contributing.push(...mediumPlusWarns);
+    return { decision: 'BLOCK', reasons, counts, maxSeverity, contributing };
+  }
+
+  const warns = rows.filter((r) => r.verdict === 'WARN');
+  if (warns.length > 0) {
+    warns.forEach((w) => reasons.push(`${w.id} WARN/${w.severity}`));
+    contributing.push(...warns);
+    // F6 BLOCK alone is downgraded to WARN
+    const f6Blocks = rows.filter((r) => r.verdict === 'BLOCK' && r.id === 'F6');
+    f6Blocks.forEach((b) => reasons.push(`${b.id} BLOCK downgraded → WARN (backtrack-only)`));
+    return { decision: 'WARN', reasons, counts, maxSeverity, contributing };
+  }
+
+  const f6Only = rows.filter((r) => r.verdict === 'BLOCK' && r.id === 'F6');
+  if (f6Only.length > 0) {
+    f6Only.forEach((b) => reasons.push(`${b.id} BLOCK downgraded → WARN (backtrack-only)`));
+    return { decision: 'WARN', reasons, counts, maxSeverity: 'LOW', contributing: f6Only };
+  }
+
+  reasons.push('All F1-F7 PASS');
+  return { decision: 'PASS', reasons, counts, maxSeverity: 'INFO', contributing };
+}
+
+const F_VERDICT_STYLE: Record<FVerdict, string> = {
+  PASS: 'border-success/40 bg-success/10 text-success',
+  WARN: 'border-warning/40 bg-warning/10 text-warning',
+  BLOCK: 'border-destructive/40 bg-destructive/10 text-destructive',
+};
+
+const F_SEVERITY_STYLE: Record<FSeverity, string> = {
+  INFO: 'border-border bg-card/40 text-muted-foreground',
+  LOW: 'border-info/30 bg-info/5 text-info',
+  MEDIUM: 'border-warning/40 bg-warning/5 text-warning',
+  HIGH: 'border-destructive/40 bg-destructive/5 text-destructive',
+};
+
 // ============================================================
 export default function SimulatorPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const presetId = searchParams.get('preset');
   const [input, setInput] = useState<SimInput>(DEFAULT_INPUT);
-  const [tab, setTab] = useState<'sim' | 'flags' | 'ndi'>('sim');
+  const [tab, setTab] = useState<'sim' | 'flags' | 'ndi' | 'fcalc'>('sim');
   const [activePreset, setActivePreset] = useState<{ id: string; label: string } | null>(null);
   const result = useMemo(() => simulate(input), [input]);
 
@@ -302,6 +417,15 @@ export default function SimulatorPage() {
   const ndi = useMemo(() => turns.map((t) => analyzeTurn(t.text)), [turns]);
   const ndiGraph = useMemo(() => buildNDIGraph(turns, ndi), [turns, ndi]);
   const ndiTotal = useMemo(() => Math.min(1, ndi.reduce((s, a) => s + a.drift, 0) / Math.max(1, turns.length) + (ndi.at(-1)?.drift ?? 0) * 0.3), [ndi, turns.length]);
+
+  // F1-F7 calculator state
+  const [fRows, setFRows] = useState<FilterRow[]>(DEFAULT_ROWS);
+  const fResult = useMemo(() => calculateFVerdict(fRows), [fRows]);
+  function updateFRow(id: FilterRow['id'], patch: Partial<FilterRow>) {
+    setFRows((prev) => prev.map((r) => (r.id === id ? { ...r, ...patch } : r)));
+  }
+  function resetFCalc() { setFRows(DEFAULT_ROWS); }
+
 
   // Apply preset from URL (e.g. /simulator?preset=F2 or ?preset=M1)
   useEffect(() => {
@@ -357,8 +481,9 @@ export default function SimulatorPage() {
       </header>
 
       <Tabs value={tab} onValueChange={(v) => setTab(v as typeof tab)} className="w-full">
-        <TabsList className="grid grid-cols-3 w-full">
+        <TabsList className="grid grid-cols-4 w-full">
           <TabsTrigger value="sim"><Activity className="w-4 h-4 mr-2" />Symulator</TabsTrigger>
+          <TabsTrigger value="fcalc"><Calculator className="w-4 h-4 mr-2" />Kalkulator F1-F7</TabsTrigger>
           <TabsTrigger value="flags"><Search className="w-4 h-4 mr-2" />Wyszukiwarka flag</TabsTrigger>
           <TabsTrigger value="ndi"><Network className="w-4 h-4 mr-2" />NDI rozmowy</TabsTrigger>
         </TabsList>
@@ -550,6 +675,105 @@ export default function SimulatorPage() {
           <Card className="p-5">
             <h3 className="font-display text-sm text-primary tracking-wider uppercase mb-3">Graf przepływu drift</h3>
             <MermaidDiagram chart={ndiGraph} id="ndi-graph" />
+          </Card>
+        </TabsContent>
+
+        {/* ===== F1-F7 CALCULATOR ===== */}
+        <TabsContent value="fcalc" className="mt-6 grid lg:grid-cols-3 gap-4">
+          <Card className="p-5 space-y-4 lg:col-span-2">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <h2 className="font-display text-lg text-primary mb-1">Wyniki filtrów F1-F7</h2>
+                <p className="text-xs text-muted-foreground">
+                  Ustaw wynik (PASS / WARN / BLOCK) i severity (INFO → HIGH) dla każdego filtra.
+                  Decyzja końcowa wylicza się natychmiast.
+                </p>
+              </div>
+              <Button variant="outline" size="sm" onClick={resetFCalc} className="text-xs">Reset</Button>
+            </div>
+
+            <div className="space-y-2">
+              {fRows.map((r) => (
+                <div key={r.id} className="grid grid-cols-12 gap-2 items-center p-3 rounded border border-border bg-card/40">
+                  <div className="col-span-4">
+                    <div className="flex items-center gap-2">
+                      <Badge variant="outline" className="font-mono text-[10px]">{r.id}</Badge>
+                      <span className="text-xs font-medium">{r.name}</span>
+                    </div>
+                    <p className="text-[10px] font-mono text-muted-foreground mt-0.5">{r.hallucinationType}</p>
+                  </div>
+
+                  <div className="col-span-4 flex gap-1">
+                    {(['PASS', 'WARN', 'BLOCK'] as FVerdict[]).map((v) => (
+                      <button key={v} onClick={() => updateFRow(r.id, { verdict: v })}
+                        className={`flex-1 text-[10px] font-mono py-1.5 rounded border transition ${
+                          r.verdict === v ? F_VERDICT_STYLE[v] + ' border-2' : 'border-border bg-card/60 text-muted-foreground hover:border-primary/30'
+                        }`}>
+                        {v}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="col-span-4 flex gap-1">
+                    {(['INFO', 'LOW', 'MEDIUM', 'HIGH'] as FSeverity[]).map((s) => (
+                      <button key={s} onClick={() => updateFRow(r.id, { severity: s })}
+                        disabled={r.verdict === 'PASS'}
+                        className={`flex-1 text-[10px] font-mono py-1.5 rounded border transition disabled:opacity-30 disabled:cursor-not-allowed ${
+                          r.severity === s && r.verdict !== 'PASS' ? F_SEVERITY_STYLE[s] + ' border-2' : 'border-border bg-card/60 text-muted-foreground hover:border-primary/30'
+                        }`}>
+                        {s}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
+
+          <Card className="p-5 space-y-4">
+            <div>
+              <h2 className="font-display text-lg text-primary mb-1">Decyzja końcowa</h2>
+              <p className="text-xs text-muted-foreground">Tonoyan v1.0 policy.</p>
+            </div>
+
+            <div className={`p-5 rounded-lg border-2 font-mono ${F_VERDICT_STYLE[fResult.decision]}`}>
+              <div className="text-3xl font-bold tracking-wider">{fResult.decision}</div>
+              <div className="text-xs mt-1 opacity-70">max severity: {fResult.maxSeverity}</div>
+            </div>
+
+            <div className="grid grid-cols-3 gap-2 text-center">
+              <div className="p-2 rounded border border-success/30 bg-success/5">
+                <div className="text-[10px] font-mono text-muted-foreground">PASS</div>
+                <div className="text-lg font-mono text-success">{fResult.counts.pass}</div>
+              </div>
+              <div className="p-2 rounded border border-warning/30 bg-warning/5">
+                <div className="text-[10px] font-mono text-muted-foreground">WARN</div>
+                <div className="text-lg font-mono text-warning">{fResult.counts.warn}</div>
+              </div>
+              <div className="p-2 rounded border border-destructive/30 bg-destructive/5">
+                <div className="text-[10px] font-mono text-muted-foreground">BLOCK</div>
+                <div className="text-lg font-mono text-destructive">{fResult.counts.block}</div>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-xs font-display tracking-widest uppercase text-muted-foreground mb-2">Reason codes</h3>
+              <div className="flex flex-wrap gap-1.5">
+                {fResult.reasons.map((r, i) => (
+                  <span key={i} className="font-mono text-[11px] px-2 py-1 rounded border border-primary/30 bg-primary/5 text-primary">
+                    {r}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="text-[10px] font-mono text-muted-foreground space-y-1 pt-2 border-t border-border">
+              <p>Reguły:</p>
+              <p>• każdy BLOCK (poza F6) → BLOCK</p>
+              <p>• WARN/HIGH → eskalacja do BLOCK</p>
+              <p>• ≥2 × WARN/MEDIUM+ → BLOCK</p>
+              <p>• F6 BLOCK sam → WARN (backtrack-only)</p>
+            </div>
           </Card>
         </TabsContent>
       </Tabs>
