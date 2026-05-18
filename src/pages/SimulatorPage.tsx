@@ -313,7 +313,7 @@ type FCalcResult = {
 //   - F6 (Backtrack) cannot cause BLOCK on its own  (WARN-only filter)
 //   - any remaining WARN                            -> WARN
 //   - else                                          -> PASS
-export function calculateFVerdict(rows: FilterRow[]): FCalcResult {
+function calculateFVerdict(rows: FilterRow[]): FCalcResult {
   const reasons: string[] = [];
   const counts = { pass: 0, warn: 0, block: 0 };
   let maxSeverity: FSeverity = 'INFO';
