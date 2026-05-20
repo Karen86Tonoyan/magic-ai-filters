@@ -26,8 +26,22 @@ export default function DiagnosticsPage() {
   const [filter, setFilter] = useState<DiagSeverity | 'ALL'>('ALL');
   const [debug, setDebug] = useState<boolean>(() => isLazyDebugEnabled());
   const [stats, setStats] = useState(() => getLazyStats());
+  const [highlightedId, setHighlightedId] = useState<string | null>(null);
 
-  useEffect(() => subscribeDiagnostics((next) => { setItems(next); setStats(getLazyStats()); }), []);
+  useEffect(() => {
+    subscribeDiagnostics((next) => { setItems(next); setStats(getLazyStats()); });
+  }, []);
+
+  useEffect(() => {
+    const hash = window.location.hash.replace('#', '');
+    if (hash && items.some((i) => i.id === hash)) {
+      setHighlightedId(hash);
+      requestAnimationFrame(() => {
+        const el = document.getElementById(hash);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    }
+  }, [items]);
 
   const filtered = filter === 'ALL' ? items : items.filter((i) => i.severity === filter);
   const counts = items.reduce(
@@ -126,7 +140,13 @@ export default function DiagnosticsPage() {
           </div>
         ) : (
           filtered.map((entry) => (
-            <div key={entry.id} className="rounded-xl border border-border bg-card p-4 space-y-2">
+            <div
+              key={entry.id}
+              id={entry.id}
+              className={`rounded-xl border bg-card p-4 space-y-2 transition-all ${
+                entry.id === highlightedId ? 'ring-2 ring-destructive/50 bg-destructive/5' : ''
+              }`}
+            >
               <div className="flex items-start justify-between gap-3 flex-wrap">
                 <div className="flex items-center gap-2 flex-wrap">
                   <Badge variant="outline" className={`text-[10px] font-mono ${SEVERITY_STYLES[entry.severity]}`}>
