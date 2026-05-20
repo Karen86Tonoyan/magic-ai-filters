@@ -1,6 +1,7 @@
 import { Component, ErrorInfo, ReactNode } from 'react';
 import { AlertTriangle, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { logDiagnostic } from '@/lib/diagnostics';
 
 interface Props {
   children: ReactNode;
@@ -20,6 +21,13 @@ export class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, info: ErrorInfo) {
     console.error('[ALFA ErrorBoundary]', error, info);
+    logDiagnostic({
+      severity: 'ERROR',
+      source: 'error-boundary',
+      message: error.message,
+      stack: error.stack,
+      meta: { componentStack: info.componentStack },
+    });
   }
 
   handleRetry = () => {

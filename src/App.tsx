@@ -5,19 +5,21 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AppLayout } from "@/components/AppLayout";
+import { instrumentedLazyImport } from "@/lib/diagnostics";
 
-const DashboardPage = lazy(() => import("@/pages/DashboardPage"));
-const ModelsPage = lazy(() => import("@/pages/ModelsPage"));
-const LiveAnalysisPage = lazy(() => import("@/pages/LiveAnalysisPage"));
-const BenchmarkPage = lazy(() => import("@/pages/BenchmarkPage"));
-const DualChatPage = lazy(() => import("@/pages/DualChatPage"));
-const IncidentPage = lazy(() => import("@/pages/IncidentPage"));
-const LLMInfoPage = lazy(() => import("@/pages/LLMInfoPage"));
-const RC21DashboardPage = lazy(() => import("@/pages/RC21DashboardPage"));
-const FiltersDocsPage = lazy(() => import("@/pages/FiltersDocsPage"));
-const SimulatorPage = lazy(() => import("@/pages/SimulatorPage"));
-const SpecPage = lazy(() => import("@/pages/SpecPage"));
-const NotFound = lazy(() => import("./pages/NotFound.tsx"));
+const DashboardPage = lazy(instrumentedLazyImport("DashboardPage", () => import("@/pages/DashboardPage")));
+const ModelsPage = lazy(instrumentedLazyImport("ModelsPage", () => import("@/pages/ModelsPage")));
+const LiveAnalysisPage = lazy(instrumentedLazyImport("LiveAnalysisPage", () => import("@/pages/LiveAnalysisPage")));
+const BenchmarkPage = lazy(instrumentedLazyImport("BenchmarkPage", () => import("@/pages/BenchmarkPage")));
+const DualChatPage = lazy(instrumentedLazyImport("DualChatPage", () => import("@/pages/DualChatPage")));
+const IncidentPage = lazy(instrumentedLazyImport("IncidentPage", () => import("@/pages/IncidentPage")));
+const LLMInfoPage = lazy(instrumentedLazyImport("LLMInfoPage", () => import("@/pages/LLMInfoPage")));
+const RC21DashboardPage = lazy(instrumentedLazyImport("RC21DashboardPage", () => import("@/pages/RC21DashboardPage")));
+const FiltersDocsPage = lazy(instrumentedLazyImport("FiltersDocsPage", () => import("@/pages/FiltersDocsPage")));
+const SimulatorPage = lazy(instrumentedLazyImport("SimulatorPage", () => import("@/pages/SimulatorPage")));
+const SpecPage = lazy(instrumentedLazyImport("SpecPage", () => import("@/pages/SpecPage")));
+const DiagnosticsPage = lazy(instrumentedLazyImport("DiagnosticsPage", () => import("@/pages/DiagnosticsPage")));
+const NotFound = lazy(instrumentedLazyImport("NotFound", () => import("./pages/NotFound.tsx")));
 
 const queryClient = new QueryClient();
 
@@ -49,6 +51,7 @@ const App = () => (
               <Route path="/filters" element={<FiltersDocsPage />} />
               <Route path="/simulator" element={<SimulatorPage />} />
               <Route path="/spec" element={<SpecPage />} />
+              <Route path="/diagnostics" element={<DiagnosticsPage />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
