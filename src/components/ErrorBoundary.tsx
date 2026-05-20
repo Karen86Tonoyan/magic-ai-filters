@@ -21,6 +21,13 @@ export class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, info: ErrorInfo) {
     console.error('[ALFA ErrorBoundary]', error, info);
+    logDiagnostic({
+      severity: 'ERROR',
+      source: 'error-boundary',
+      message: error.message,
+      stack: error.stack,
+      meta: { componentStack: info.componentStack },
+    });
   }
 
   handleRetry = () => {
