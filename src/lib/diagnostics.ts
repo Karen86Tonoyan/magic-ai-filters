@@ -98,23 +98,89 @@ export function subscribeDiagnostics(fn: (items: DiagEntry[]) => void): () => vo
   return () => listeners.delete(fn);
 }
 
+const DEBUG_FLAG_KEY = 'alfa:diagnostics:debug-lazy';
+
+export function isLazyDebugEnabled(): boolean {
+  if (typeof window === 'undefined') return false;
+  try { return window.localStorage.getItem(DEBUG_FLAG_KEY) === '1'; } catch { return false; }
+}
+
+export function setLazyDebugEnabled(on: boolean) {
+  if (typeof window === 'undefined') return;
+  try { window.localStorage.setItem(DEBUG_FLAG_KEY, on ? '1' : '0'); } catch { /* ignore */ }
+  emit();
+}
+
+export interface LazyModuleStats {
+  name: string;
+  attempts: number;
+  retries: number;
+  successes: number;
+  failures: number;
+  lastStart?: number;
+  lastFinish?: number;
+  lastDurationMs?: number;
+  totalDurationMs: number;
+}
+
+const lazyStats = new Map<string, LazyModuleStats>();
+export function getLazyStats(): LazyModuleStats[] {
+  return Array.from(lazyStats.values()).sort((a, b) => a.name.localeCompare(b.name));
+}
+
+function statFor(name: string): LazyModuleStats {
+  let s = lazyStats.get(name);
+  if (!s) {
+    s = { name, attempts: 0, retries: 0, successes: 0, failures: 0, totalDurationMs: 0 };
+    lazyStats.set(name, s);
+  }
+  return s;
+}
+
 /**
  * Wrap a React.lazy() dynamic import factory with diagnostics.
- * Logs URL, status (best-effort), and stack on failure; success entry on first load.
+ * When "Debug lazy imports" is enabled, attaches extra metadata:
+ * start/finish timestamps, retry counter, attempt number, success/failure counts.
  */
 export function instrumentedLazyImport<T>(name: string, factory: () => Promise<T>): () => Promise<T> {
   return async () => {
-    const started = performance.now();
+    const stat = statFor(name);
+    stat.attempts += 1;
+    if (stat.attempts > 1) stat.retries += 1;
+    const attempt = stat.attempts;
+    const startedPerf = performance.now();
+    const startedWall = Date.now();
+    stat.lastStart = startedWall;
+    const debug = isLazyDebugEnabled();
+    const debugMeta = () => ({
+      name,
+      attempt,
+      retries: stat.retries,
+      started_at: new Date(startedWall).toISOString(),
+      finished_at: stat.lastFinish ? new Date(stat.lastFinish).toISOString() : undefined,
+      successes: stat.successes,
+      failures: stat.failures,
+    });
     try {
       const mod = await factory();
+      const duration = Math.round(performance.now() - startedPerf);
+      stat.successes += 1;
+      stat.lastFinish = Date.now();
+      stat.lastDurationMs = duration;
+      stat.totalDurationMs += duration;
       logDiagnostic({
         severity: 'INFO',
         source: 'lazy-import',
-        message: `Module loaded: ${name}`,
-        meta: { name, duration_ms: Math.round(performance.now() - started) },
+        message: `Module loaded: ${name}${attempt > 1 ? ` (retry #${stat.retries})` : ''}`,
+        meta: debug ? { ...debugMeta(), duration_ms: duration } : { name, duration_ms: duration },
       });
       return mod;
     } catch (err) {
+      const duration = Math.round(performance.now() - startedPerf);
+      stat.failures += 1;
+      stat.lastFinish = Date.now();
+      stat.lastDurationMs = duration;
+      stat.totalDurationMs += duration;
       const e = err as Error & { url?: string };
       const urlMatch = /https?:\/\/[^\s"')]+/.exec(e?.message ?? '');
       const url = e.url ?? urlMatch?.[0];
@@ -130,11 +196,13 @@ export function instrumentedLazyImport<T>(name: string, factory: () => Promise<T
       logDiagnostic({
         severity: 'ERROR',
         source: 'lazy-import',
-        message: `Failed to load module ${name}: ${e?.message ?? 'unknown error'}`,
+        message: `Failed to load module ${name}: ${e?.message ?? 'unknown error'} (attempt ${attempt}, retries ${stat.retries})`,
         url,
         status,
         stack: e?.stack,
-        meta: { name, duration_ms: Math.round(performance.now() - started) },
+        meta: debug
+          ? { ...debugMeta(), duration_ms: duration }
+          : { name, duration_ms: duration, attempt, retries: stat.retries },
       });
       throw err;
     }
