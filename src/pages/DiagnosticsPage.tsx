@@ -24,8 +24,10 @@ const SEVERITY_STYLES: Record<DiagSeverity, string> = {
 export default function DiagnosticsPage() {
   const [items, setItems] = useState<DiagEntry[]>(() => getDiagnostics());
   const [filter, setFilter] = useState<DiagSeverity | 'ALL'>('ALL');
+  const [debug, setDebug] = useState<boolean>(() => isLazyDebugEnabled());
+  const [stats, setStats] = useState(() => getLazyStats());
 
-  useEffect(() => subscribeDiagnostics(setItems), []);
+  useEffect(() => subscribeDiagnostics((next) => { setItems(next); setStats(getLazyStats()); }), []);
 
   const filtered = filter === 'ALL' ? items : items.filter((i) => i.severity === filter);
   const counts = items.reduce(
