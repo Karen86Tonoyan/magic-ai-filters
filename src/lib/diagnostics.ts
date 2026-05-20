@@ -70,11 +70,12 @@ export function logDiagnostic(entry: Omit<DiagEntry, 'id' | 'timestamp'> & { tim
   if (full.severity === 'ERROR') {
     console.error(tag, full.message, payload);
     if (!hadErrorBefore && typeof window !== 'undefined') {
-      toast.error('ALFA Diagnostics: ERROR w buforze', {
-        description: full.message,
+      const statusPart = full.status !== undefined ? ` | status: ${full.status}` : '';
+      toast.error(`ALFA Diagnostics: ERROR [${full.source}]`, {
+        description: `${full.message}${statusPart}`,
         action: {
-          label: 'Diagnostyka',
-          onClick: () => { window.location.href = '/diagnostics'; },
+          label: 'Zobacz wpis',
+          onClick: () => { window.location.href = `/diagnostics#${full.id}`; },
         },
       });
     }
