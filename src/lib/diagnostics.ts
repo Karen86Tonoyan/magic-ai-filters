@@ -49,6 +49,7 @@ function emit() {
 }
 
 export function logDiagnostic(entry: Omit<DiagEntry, 'id' | 'timestamp'> & { timestamp?: number }) {
+  const hadErrorBefore = entries.some(e => e.severity === 'ERROR');
   const full: DiagEntry = {
     id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     timestamp: entry.timestamp ?? Date.now(),
@@ -66,7 +67,18 @@ export function logDiagnostic(entry: Omit<DiagEntry, 'id' | 'timestamp'> & { tim
 
   const tag = `[ALFA Diag][${full.source}]`;
   const payload = { url: full.url, status: full.status, meta: full.meta, stack: full.stack };
-  if (full.severity === 'ERROR') console.error(tag, full.message, payload);
+  if (full.severity === 'ERROR') {
+    console.error(tag, full.message, payload);
+    if (!hadErrorBefore && typeof window !== 'undefined') {
+      toast.error('ALFA Diagnostics: ERROR w buforze', {
+        description: full.message,
+        action: {
+          label: 'Diagnostyka',
+          onClick: () => { window.location.href = '/diagnostics'; },
+        },
+      });
+    }
+  }
   else if (full.severity === 'WARN') console.warn(tag, full.message, payload);
   else console.info(tag, full.message, payload);
 }
