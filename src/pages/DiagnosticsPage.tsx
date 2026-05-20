@@ -66,6 +66,59 @@ export default function DiagnosticsPage() {
         <StatTile label="Info" value={counts.INFO ?? 0} icon={Activity} variant="info" active={filter === 'INFO'} onClick={() => setFilter('INFO')} />
       </div>
 
+      <div className="rounded-xl border border-primary/20 bg-card p-4 space-y-3">
+        <div className="flex items-center justify-between gap-3 flex-wrap">
+          <div className="flex items-center gap-2">
+            <Bug className="w-4 h-4 text-primary" />
+            <Label htmlFor="lazy-debug" className="text-sm font-display tracking-wider text-primary cursor-pointer">
+              DEBUG LAZY IMPORTÓW
+            </Label>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] text-muted-foreground font-mono">
+              {debug ? 'ON — meta: start/finish/retry' : 'OFF — minimalna telemetria'}
+            </span>
+            <Switch
+              id="lazy-debug"
+              checked={debug}
+              onCheckedChange={(v) => { setLazyDebugEnabled(v); setDebug(v); }}
+            />
+          </div>
+        </div>
+        {stats.length > 0 && (
+          <div className="overflow-x-auto">
+            <table className="w-full text-[11px] font-mono">
+              <thead>
+                <tr className="text-left text-muted-foreground border-b border-border">
+                  <th className="py-1 pr-3">Moduł</th>
+                  <th className="py-1 pr-3">Att</th>
+                  <th className="py-1 pr-3">Retry</th>
+                  <th className="py-1 pr-3">OK</th>
+                  <th className="py-1 pr-3">Fail</th>
+                  <th className="py-1 pr-3">Last ms</th>
+                  <th className="py-1 pr-3">Start</th>
+                  <th className="py-1 pr-3">Finish</th>
+                </tr>
+              </thead>
+              <tbody>
+                {stats.map((s) => (
+                  <tr key={s.name} className="border-b border-border/40">
+                    <td className="py-1 pr-3 text-foreground">{s.name}</td>
+                    <td className="py-1 pr-3">{s.attempts}</td>
+                    <td className={`py-1 pr-3 ${s.retries > 0 ? 'text-warning' : ''}`}>{s.retries}</td>
+                    <td className="py-1 pr-3 text-info">{s.successes}</td>
+                    <td className={`py-1 pr-3 ${s.failures > 0 ? 'text-destructive' : ''}`}>{s.failures}</td>
+                    <td className="py-1 pr-3">{s.lastDurationMs ?? '—'}</td>
+                    <td className="py-1 pr-3 text-muted-foreground">{s.lastStart ? new Date(s.lastStart).toLocaleTimeString() : '—'}</td>
+                    <td className="py-1 pr-3 text-muted-foreground">{s.lastFinish ? new Date(s.lastFinish).toLocaleTimeString() : '—'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+
       <div className="space-y-3">
         {filtered.length === 0 ? (
           <div className="rounded-xl border border-border bg-card p-8 text-center text-sm text-muted-foreground">
