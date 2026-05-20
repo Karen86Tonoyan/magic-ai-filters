@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Bot, Eye, BarChart3, AlertTriangle, MessageSquare, Brain, ShieldCheck, Filter, Sparkles, BookOpen } from 'lucide-react';
+import { LayoutDashboard, Bot, Eye, BarChart3, AlertTriangle, MessageSquare, Brain, ShieldCheck, Filter, Sparkles, BookOpen, Activity } from 'lucide-react';
 import alfaWolfLogo from '@/assets/alfa-wolf-logo.png';
 
 const navItems = [
@@ -14,6 +14,7 @@ const navItems = [
   { to: '/benchmark', icon: BarChart3, label: 'Benchmark Lab' },
   { to: '/incidents', icon: AlertTriangle, label: 'Incidents' },
   { to: '/llm', icon: Brain, label: 'LLM Self-Test' },
+  { to: '/diagnostics', icon: Activity, label: 'Diagnostyka' },
 ];
 
 export function AppSidebar() {
