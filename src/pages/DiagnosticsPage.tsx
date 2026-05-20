@@ -1,11 +1,16 @@
 import { useEffect, useState } from 'react';
-import { AlertTriangle, Trash2, RefreshCw, Activity } from 'lucide-react';
+import { AlertTriangle, Trash2, RefreshCw, Activity, Bug } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 import {
   clearDiagnostics,
   getDiagnostics,
   subscribeDiagnostics,
+  isLazyDebugEnabled,
+  setLazyDebugEnabled,
+  getLazyStats,
   type DiagEntry,
   type DiagSeverity,
 } from '@/lib/diagnostics';
