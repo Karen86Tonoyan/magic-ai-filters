@@ -159,7 +159,24 @@ export default function DiagnosticsPage() {
             </Select>
           </div>
         </div>
-        {stats.length > 0 && (
+        <div className="flex items-center justify-between gap-3 flex-wrap">
+          <div className="flex items-center gap-2">
+            <Navigation className={`w-4 h-4 ${autoRedirect ? 'text-destructive' : 'text-primary'}`} />
+            <Label htmlFor="auto-redirect" className="text-sm font-display tracking-wider text-primary cursor-pointer">
+              AUTOPRZEKIEROWANIE PO ERROR
+            </Label>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] text-muted-foreground font-mono">
+              {autoRedirect ? 'ON — /diagnostics za 5s (Anuluj w toaście)' : 'OFF — bez przekierowania'}
+            </span>
+            <Switch
+              id="auto-redirect"
+              checked={autoRedirect}
+              onCheckedChange={(v) => { setAutoRedirectEnabled(v); setAutoRedirect(v); }}
+            />
+          </div>
+        </div>
           <div className="overflow-x-auto">
             <table className="w-full text-[11px] font-mono">
               <thead>
