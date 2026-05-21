@@ -37,6 +37,7 @@ export default function DiagnosticsPage() {
   const [filter, setFilter] = useState<DiagSeverity | 'ALL'>('ALL');
   const [debug, setDebug] = useState<boolean>(() => isLazyDebugEnabled());
   const [silent, setSilent] = useState<boolean>(() => isSilentModeEnabled());
+  const [threshold, setThreshold] = useState<number>(() => getErrorThreshold());
   const [stats, setStats] = useState(() => getLazyStats());
   const [highlightedId, setHighlightedId] = useState<string | null>(null);
 
