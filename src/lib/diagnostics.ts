@@ -50,7 +50,7 @@ function emit() {
 }
 
 export function logDiagnostic(entry: Omit<DiagEntry, 'id' | 'timestamp'> & { timestamp?: number }) {
-  const hadErrorBefore = entries.some(e => e.severity === 'ERROR');
+  const prevErrorCount = entries.filter(e => e.severity === 'ERROR').length;
   const full: DiagEntry = {
     id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     timestamp: entry.timestamp ?? Date.now(),
@@ -70,7 +70,9 @@ export function logDiagnostic(entry: Omit<DiagEntry, 'id' | 'timestamp'> & { tim
   const payload = { url: full.url, status: full.status, meta: full.meta, stack: full.stack };
   if (full.severity === 'ERROR') {
     console.error(tag, full.message, payload);
-    if (!hadErrorBefore && typeof window !== 'undefined' && !isSilentModeEnabled()) {
+    const newErrorCount = prevErrorCount + 1;
+    const threshold = getErrorThreshold();
+    if (typeof window !== 'undefined' && !isSilentModeEnabled() && newErrorCount >= threshold && prevErrorCount < threshold) {
       const statusPart = full.status !== undefined ? ` | status: ${full.status}` : '';
       toast.error(`ALFA Diagnostics: ERROR [${full.source}]`, {
         description: `${full.message}${statusPart}`,
