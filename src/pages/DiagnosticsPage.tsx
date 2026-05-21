@@ -130,6 +130,32 @@ export default function DiagnosticsPage() {
             />
           </div>
         </div>
+        <div className="flex items-center justify-between gap-3 flex-wrap">
+          <div className="flex items-center gap-2">
+            <Bell className="w-4 h-4 text-primary" />
+            <Label htmlFor="error-threshold" className="text-sm font-display tracking-wider text-primary cursor-pointer">
+              PRÓG TOAST — ERROR
+            </Label>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] text-muted-foreground font-mono">
+              toast po {threshold} ERROR
+            </span>
+            <Select
+              value={String(threshold)}
+              onValueChange={(v) => { const n = parseInt(v, 10); setErrorThreshold(n); setThreshold(n); }}
+            >
+              <SelectTrigger id="error-threshold" className="w-[80px] h-7 text-[11px] font-mono">
+                <SelectValue placeholder="1" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="1">1</SelectItem>
+                <SelectItem value="3">3</SelectItem>
+                <SelectItem value="5">5</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
         {stats.length > 0 && (
           <div className="overflow-x-auto">
             <table className="w-full text-[11px] font-mono">
