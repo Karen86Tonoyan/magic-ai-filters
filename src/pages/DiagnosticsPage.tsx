@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { AlertTriangle, Trash2, RefreshCw, Activity, Bug, Volume2, VolumeX, Bell } from 'lucide-react';
+import { AlertTriangle, Trash2, RefreshCw, Activity, Bug, Volume2, VolumeX, Bell, Navigation } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
@@ -19,6 +19,8 @@ import {
   setLazyDebugEnabled,
   isSilentModeEnabled,
   setSilentModeEnabled,
+  isAutoRedirectEnabled,
+  setAutoRedirectEnabled,
   getErrorThreshold,
   setErrorThreshold,
   getLazyStats,
@@ -38,6 +40,7 @@ export default function DiagnosticsPage() {
   const [debug, setDebug] = useState<boolean>(() => isLazyDebugEnabled());
   const [silent, setSilent] = useState<boolean>(() => isSilentModeEnabled());
   const [threshold, setThreshold] = useState<number>(() => getErrorThreshold());
+  const [autoRedirect, setAutoRedirect] = useState<boolean>(() => isAutoRedirectEnabled());
   const [stats, setStats] = useState(() => getLazyStats());
   const [highlightedId, setHighlightedId] = useState<string | null>(null);
 
