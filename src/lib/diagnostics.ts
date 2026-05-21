@@ -2,6 +2,7 @@ import { toast } from 'sonner';
 
 // Lightweight in-memory diagnostics store for dynamic module loading & runtime errors.
 // Pre-Model Firewall principle: log everything, hide nothing, no silent failures.
+// Silent mode: suppresses UI toasts but keeps all entries in the buffer.
 
 export type DiagSeverity = 'INFO' | 'WARN' | 'ERROR';
 
