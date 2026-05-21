@@ -113,6 +113,18 @@ export function setLazyDebugEnabled(on: boolean) {
   emit();
 }
 
+const SILENT_MODE_KEY = 'alfa:diagnostics:silent';
+
+export function isSilentModeEnabled(): boolean {
+  if (typeof window === 'undefined') return false;
+  try { return window.localStorage.getItem(SILENT_MODE_KEY) === '1'; } catch { return false; }
+}
+
+export function setSilentModeEnabled(on: boolean) {
+  if (typeof window === 'undefined') return;
+  try { window.localStorage.setItem(SILENT_MODE_KEY, on ? '1' : '0'); } catch { /* ignore */ }
+}
+
 export interface LazyModuleStats {
   name: string;
   attempts: number;
