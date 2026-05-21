@@ -70,7 +70,7 @@ export function logDiagnostic(entry: Omit<DiagEntry, 'id' | 'timestamp'> & { tim
   const payload = { url: full.url, status: full.status, meta: full.meta, stack: full.stack };
   if (full.severity === 'ERROR') {
     console.error(tag, full.message, payload);
-    if (!hadErrorBefore && typeof window !== 'undefined') {
+    if (!hadErrorBefore && typeof window !== 'undefined' && !isSilentModeEnabled()) {
       const statusPart = full.status !== undefined ? ` | status: ${full.status}` : '';
       toast.error(`ALFA Diagnostics: ERROR [${full.source}]`, {
         description: `${full.message}${statusPart}`,
