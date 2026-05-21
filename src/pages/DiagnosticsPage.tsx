@@ -177,6 +177,7 @@ export default function DiagnosticsPage() {
             />
           </div>
         </div>
+        {stats.length > 0 && (
           <div className="overflow-x-auto">
             <table className="w-full text-[11px] font-mono">
               <thead>
