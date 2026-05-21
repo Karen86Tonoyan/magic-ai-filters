@@ -10,6 +10,8 @@ import {
   subscribeDiagnostics,
   isLazyDebugEnabled,
   setLazyDebugEnabled,
+  isSilentModeEnabled,
+  setSilentModeEnabled,
   getLazyStats,
   type DiagEntry,
   type DiagSeverity,
