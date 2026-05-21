@@ -68,6 +68,32 @@ export function setErrorThreshold(val: number) {
   } catch { /* ignore */ }
 }
 
+const DEDUP_WINDOW_KEY = 'alfa:diagnostics:dedup-window-ms';
+const DEFAULT_DEDUP_WINDOW_MS = 30_000;
+const ALLOWED_DEDUP_WINDOWS = [0, 10_000, 30_000, 60_000, 300_000];
+const lastToastBySignature = new Map<string, number>();
+
+export function getDedupWindowMs(): number {
+  if (typeof window === 'undefined') return DEFAULT_DEDUP_WINDOW_MS;
+  try {
+    const raw = window.localStorage.getItem(DEDUP_WINDOW_KEY);
+    const val = raw ? parseInt(raw, 10) : DEFAULT_DEDUP_WINDOW_MS;
+    return ALLOWED_DEDUP_WINDOWS.includes(val) ? val : DEFAULT_DEDUP_WINDOW_MS;
+  } catch { return DEFAULT_DEDUP_WINDOW_MS; }
+}
+
+export function setDedupWindowMs(val: number) {
+  if (typeof window === 'undefined') return;
+  try {
+    const safe = ALLOWED_DEDUP_WINDOWS.includes(val) ? val : DEFAULT_DEDUP_WINDOW_MS;
+    window.localStorage.setItem(DEDUP_WINDOW_KEY, String(safe));
+  } catch { /* ignore */ }
+}
+
+export function resetToastDedup() {
+  lastToastBySignature.clear();
+}
+
 export function logDiagnostic(entry: Omit<DiagEntry, 'id' | 'timestamp'> & { timestamp?: number }) {
   const prevErrorCount = entries.filter(e => e.severity === 'ERROR').length;
   const full: DiagEntry = {
@@ -91,7 +117,14 @@ export function logDiagnostic(entry: Omit<DiagEntry, 'id' | 'timestamp'> & { tim
     console.error(tag, full.message, payload);
     const newErrorCount = prevErrorCount + 1;
     const threshold = getErrorThreshold();
-    if (typeof window !== 'undefined' && !isSilentModeEnabled() && newErrorCount >= threshold && prevErrorCount < threshold) {
+    const sig = `${full.source}::${full.message}::${full.status ?? ''}`;
+    const now = Date.now();
+    const lastShown = lastToastBySignature.get(sig) ?? 0;
+    const windowMs = getDedupWindowMs();
+    const dedupSkip = windowMs > 0 && now - lastShown < windowMs;
+
+    if (typeof window !== 'undefined' && !isSilentModeEnabled() && newErrorCount >= threshold && prevErrorCount < threshold && !dedupSkip) {
+      lastToastBySignature.set(sig, now);
       const statusPart = full.status !== undefined ? ` | status: ${full.status}` : '';
       const autoRedirect = isAutoRedirectEnabled();
       const target = `/diagnostics#${full.id}`;
@@ -103,6 +136,7 @@ export function logDiagnostic(entry: Omit<DiagEntry, 'id' | 'timestamp'> & { tim
           if (!cancelled) window.location.href = target;
         }, 5000);
         toast.error(`ALFA Diagnostics: ERROR [${full.source}]`, {
+          id: `alfa-diag-${sig}`,
           description: `${full.message}${statusPart} — autoprzekierowanie za 5s.`,
           duration: 5000,
           action: {
@@ -112,6 +146,7 @@ export function logDiagnostic(entry: Omit<DiagEntry, 'id' | 'timestamp'> & { tim
         });
       } else {
         toast.error(`ALFA Diagnostics: ERROR [${full.source}]`, {
+          id: `alfa-diag-${sig}`,
           description: `${full.message}${statusPart}`,
           action: {
             label: 'Zobacz wpis',
@@ -119,6 +154,8 @@ export function logDiagnostic(entry: Omit<DiagEntry, 'id' | 'timestamp'> & { tim
           },
         });
       }
+    } else if (dedupSkip) {
+      console.info(`${tag} [dedup] toast suppressed for ${Math.round((windowMs - (now - lastShown)) / 1000)}s`, { sig });
     }
   }
   else if (full.severity === 'WARN') console.warn(tag, full.message, payload);
