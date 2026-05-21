@@ -102,6 +102,24 @@ export default function DiagnosticsPage() {
             />
           </div>
         </div>
+        <div className="flex items-center justify-between gap-3 flex-wrap">
+          <div className="flex items-center gap-2">
+            {silent ? <VolumeX className="w-4 h-4 text-destructive" /> : <Volume2 className="w-4 h-4 text-primary" />}
+            <Label htmlFor="silent-mode" className="text-sm font-display tracking-wider text-primary cursor-pointer">
+              TRYB CICHA DIAGNOSTYKA
+            </Label>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] text-muted-foreground font-mono">
+              {silent ? 'ON — toasty wyciszone, zapis działa' : 'OFF — toasty aktywne'}
+            </span>
+            <Switch
+              id="silent-mode"
+              checked={silent}
+              onCheckedChange={(v) => { setSilentModeEnabled(v); setSilent(v); }}
+            />
+          </div>
+        </div>
         {stats.length > 0 && (
           <div className="overflow-x-auto">
             <table className="w-full text-[11px] font-mono">
