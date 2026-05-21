@@ -1,9 +1,16 @@
 import { useEffect, useState } from 'react';
-import { AlertTriangle, Trash2, RefreshCw, Activity, Bug, Volume2, VolumeX } from 'lucide-react';
+import { AlertTriangle, Trash2, RefreshCw, Activity, Bug, Volume2, VolumeX, Bell } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import {
   clearDiagnostics,
   getDiagnostics,
@@ -12,6 +19,8 @@ import {
   setLazyDebugEnabled,
   isSilentModeEnabled,
   setSilentModeEnabled,
+  getErrorThreshold,
+  setErrorThreshold,
   getLazyStats,
   type DiagEntry,
   type DiagSeverity,
@@ -28,6 +37,7 @@ export default function DiagnosticsPage() {
   const [filter, setFilter] = useState<DiagSeverity | 'ALL'>('ALL');
   const [debug, setDebug] = useState<boolean>(() => isLazyDebugEnabled());
   const [silent, setSilent] = useState<boolean>(() => isSilentModeEnabled());
+  const [threshold, setThreshold] = useState<number>(() => getErrorThreshold());
   const [stats, setStats] = useState(() => getLazyStats());
   const [highlightedId, setHighlightedId] = useState<string | null>(null);
 
@@ -118,6 +128,32 @@ export default function DiagnosticsPage() {
               checked={silent}
               onCheckedChange={(v) => { setSilentModeEnabled(v); setSilent(v); }}
             />
+          </div>
+        </div>
+        <div className="flex items-center justify-between gap-3 flex-wrap">
+          <div className="flex items-center gap-2">
+            <Bell className="w-4 h-4 text-primary" />
+            <Label htmlFor="error-threshold" className="text-sm font-display tracking-wider text-primary cursor-pointer">
+              PRÓG TOAST — ERROR
+            </Label>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] text-muted-foreground font-mono">
+              toast po {threshold} ERROR
+            </span>
+            <Select
+              value={String(threshold)}
+              onValueChange={(v) => { const n = parseInt(v, 10); setErrorThreshold(n); setThreshold(n); }}
+            >
+              <SelectTrigger id="error-threshold" className="w-[80px] h-7 text-[11px] font-mono">
+                <SelectValue placeholder="1" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="1">1</SelectItem>
+                <SelectItem value="3">3</SelectItem>
+                <SelectItem value="5">5</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
         {stats.length > 0 && (

@@ -49,8 +49,27 @@ function emit() {
   for (const fn of listeners) fn(entries);
 }
 
+const ERROR_THRESHOLD_KEY = 'alfa:diagnostics:error-threshold';
+
+export function getErrorThreshold(): number {
+  if (typeof window === 'undefined') return 1;
+  try {
+    const raw = window.localStorage.getItem(ERROR_THRESHOLD_KEY);
+    const val = raw ? parseInt(raw, 10) : 1;
+    return [1, 3, 5].includes(val) ? val : 1;
+  } catch { return 1; }
+}
+
+export function setErrorThreshold(val: number) {
+  if (typeof window === 'undefined') return;
+  try {
+    const safe = [1, 3, 5].includes(val) ? val : 1;
+    window.localStorage.setItem(ERROR_THRESHOLD_KEY, String(safe));
+  } catch { /* ignore */ }
+}
+
 export function logDiagnostic(entry: Omit<DiagEntry, 'id' | 'timestamp'> & { timestamp?: number }) {
-  const hadErrorBefore = entries.some(e => e.severity === 'ERROR');
+  const prevErrorCount = entries.filter(e => e.severity === 'ERROR').length;
   const full: DiagEntry = {
     id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     timestamp: entry.timestamp ?? Date.now(),
@@ -70,7 +89,9 @@ export function logDiagnostic(entry: Omit<DiagEntry, 'id' | 'timestamp'> & { tim
   const payload = { url: full.url, status: full.status, meta: full.meta, stack: full.stack };
   if (full.severity === 'ERROR') {
     console.error(tag, full.message, payload);
-    if (!hadErrorBefore && typeof window !== 'undefined' && !isSilentModeEnabled()) {
+    const newErrorCount = prevErrorCount + 1;
+    const threshold = getErrorThreshold();
+    if (typeof window !== 'undefined' && !isSilentModeEnabled() && newErrorCount >= threshold && prevErrorCount < threshold) {
       const statusPart = full.status !== undefined ? ` | status: ${full.status}` : '';
       toast.error(`ALFA Diagnostics: ERROR [${full.source}]`, {
         description: `${full.message}${statusPart}`,
