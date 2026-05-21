@@ -181,6 +181,37 @@ export default function DiagnosticsPage() {
             />
           </div>
         </div>
+        <div className="flex items-center justify-between gap-3 flex-wrap">
+          <div className="flex items-center gap-2">
+            <Copy className="w-4 h-4 text-primary" />
+            <Label htmlFor="dedup-window" className="text-sm font-display tracking-wider text-primary cursor-pointer">
+              DEDUPLIKACJA TOASTÓW
+            </Label>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] text-muted-foreground font-mono">
+              {dedupMs === 0 ? 'OFF — każdy ERROR osobno' : `okno ${Math.round(dedupMs / 1000)}s`}
+            </span>
+            <Select
+              value={String(dedupMs)}
+              onValueChange={(v) => { const n = parseInt(v, 10); setDedupWindowMs(n); setDedupMs(n); }}
+            >
+              <SelectTrigger id="dedup-window" className="w-[110px] h-7 text-[11px] font-mono">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="0">OFF</SelectItem>
+                <SelectItem value="10000">10s</SelectItem>
+                <SelectItem value="30000">30s</SelectItem>
+                <SelectItem value="60000">60s</SelectItem>
+                <SelectItem value="300000">5min</SelectItem>
+              </SelectContent>
+            </Select>
+            <Button variant="outline" size="sm" className="h-7 text-[11px]" onClick={() => resetToastDedup()}>
+              Reset
+            </Button>
+          </div>
+        </div>
         {stats.length > 0 && (
           <div className="overflow-x-auto">
             <table className="w-full text-[11px] font-mono">
