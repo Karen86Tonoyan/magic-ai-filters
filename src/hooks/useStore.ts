@@ -15,9 +15,16 @@ function saveToStorage<T>(key: string, value: T) {
 }
 
 export function useModels() {
-  const [models, setModels] = useState<AIModel[]>(() => loadFromStorage('ai_models', []));
+  // Migration: strip any apiKey field saved by older builds — provider keys now live in Lovable Cloud secrets.
+  const [models, setModels] = useState<AIModel[]>(() => {
+    const loaded = loadFromStorage<AIModel[]>('ai_models', []);
+    return loaded.map(m => ({ ...m, apiKey: '' }));
+  });
 
-  useEffect(() => saveToStorage('ai_models', models), [models]);
+  useEffect(() => {
+    const sanitized = models.map(m => ({ ...m, apiKey: '' }));
+    saveToStorage('ai_models', sanitized);
+  }, [models]);
 
   const addModel = useCallback((model: Omit<AIModel, 'id' | 'createdAt'>) => {
     const newModel: AIModel = { ...model, id: crypto.randomUUID(), createdAt: new Date().toISOString() };

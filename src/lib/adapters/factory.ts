@@ -1,30 +1,15 @@
 /**
- * Adapter Factory — creates the right adapter based on provider type
+ * Adapter Factory — Ollama stays local; every other provider is proxied
+ * server-side so API keys never reach the browser.
  */
 import type { ModelAdapter, AdapterConfig } from './types';
 import { OllamaAdapter } from './ollama';
-import { OpenAICompatibleAdapter } from './openai-compatible';
+import { ProxyAdapter } from './proxy';
 
 export function createAdapter(
   provider: string,
   config: AdapterConfig
 ): ModelAdapter {
-  switch (provider) {
-    case 'ollama':
-      return new OllamaAdapter(config);
-    case 'openai':
-    case 'openrouter':
-    case 'groq':
-    case 'mistral':
-    case 'xai':
-      return new OpenAICompatibleAdapter(config, provider);
-    case 'anthropic':
-      // Anthropic uses a different API format, but OpenRouter can proxy it
-      return new OpenAICompatibleAdapter(config, 'anthropic');
-    case 'google':
-      // Google uses OpenAI-compatible format via their newer API
-      return new OpenAICompatibleAdapter(config, 'google');
-    default:
-      return new OpenAICompatibleAdapter(config, provider);
-  }
+  if (provider === 'ollama') return new OllamaAdapter(config);
+  return new ProxyAdapter(config, provider);
 }

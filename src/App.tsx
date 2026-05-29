@@ -19,6 +19,7 @@ const FiltersDocsPage = lazy(instrumentedLazyImport("FiltersDocsPage", () => imp
 const SimulatorPage = lazy(instrumentedLazyImport("SimulatorPage", () => import("@/pages/SimulatorPage")));
 const SpecPage = lazy(instrumentedLazyImport("SpecPage", () => import("@/pages/SpecPage")));
 const DiagnosticsPage = lazy(instrumentedLazyImport("DiagnosticsPage", () => import("@/pages/DiagnosticsPage")));
+const AuthPage = lazy(instrumentedLazyImport("AuthPage", () => import("@/pages/AuthPage")));
 const NotFound = lazy(instrumentedLazyImport("NotFound", () => import("./pages/NotFound.tsx")));
 
 const queryClient = new QueryClient();
@@ -52,6 +53,7 @@ const App = () => (
               <Route path="/simulator" element={<SimulatorPage />} />
               <Route path="/spec" element={<SpecPage />} />
               <Route path="/diagnostics" element={<DiagnosticsPage />} />
+              <Route path="/auth" element={<AuthPage />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>

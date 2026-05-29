@@ -87,7 +87,12 @@ const POPULAR_MODELS: Record<string, { id: string; label: string }[]> = {
 function loadConfig(): LLMConfig {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw);
+    if (raw) {
+      const parsed = JSON.parse(raw) as LLMConfig;
+      // Migration: never keep raw API keys in localStorage.
+      parsed.apiKey = '';
+      return parsed;
+    }
   } catch {
     return DEFAULT_CONFIG;
   }
@@ -95,7 +100,9 @@ function loadConfig(): LLMConfig {
 }
 
 function saveConfig(config: LLMConfig) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
+  // Always strip apiKey before persisting — provider keys live in Lovable Cloud secrets.
+  const safe = { ...config, apiKey: '' };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(safe));
 }
 
 interface Props {
@@ -305,17 +312,13 @@ export function LLMConnectionPanel({ onAdapterChange }: Props) {
           </div>
 
           {needsApiKey && (
-            <div>
-              <Label className="text-muted-foreground text-xs mb-1 block">API Key</Label>
-              <Input
-                type="password"
-                value={config.apiKey}
-                onChange={e => updateConfig({ apiKey: e.target.value })}
-                placeholder="sk-..."
-                className="bg-secondary border-border font-mono text-sm"
-              />
+            <div className="text-[11px] font-mono text-muted-foreground bg-secondary/40 border border-border rounded p-2 leading-relaxed">
+              Klucz API dla providera <strong>{PROVIDER_INFO[config.provider]?.label}</strong> jest przechowywany w sekretach Lovable Cloud
+              (zmienna <code>{config.provider.toUpperCase()}_API_KEY</code>) i NIE jest wysylany z przegladarki.
+              Skonfiguruj go w ustawieniach backendu. Wszystkie wywolania ida przez edge function <code>llm-proxy</code>.
             </div>
           )}
+
 
           <div>
             <Label className="text-muted-foreground text-xs mb-1 block">Base URL</Label>
@@ -332,7 +335,7 @@ export function LLMConnectionPanel({ onAdapterChange }: Props) {
               size="sm"
               variant="outline"
               onClick={testConnection}
-              disabled={testing || (needsApiKey && !config.apiKey)}
+              disabled={testing}
               className="gap-2"
             >
               {testing ? <Loader2 className="w-3 h-3 animate-spin" /> : <Wifi className="w-3 h-3" />}

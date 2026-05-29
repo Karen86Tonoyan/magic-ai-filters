@@ -25,9 +25,11 @@ import { AgeVerificationStatus } from '@/components/AgeVerificationStatus';
 import {
   recordIncident, annotateIncident, checkAutoBan, executeBan,
   loadIncidents, loadBannedUsers, exportAsJSON, exportAsCSV,
-  getIncidentStats, adminLogin, adminLogout, isAdminSessionValid, saveIncidents,
+  getIncidentStats, saveIncidents,
   type IncidentRecord, type AnnotationLabel,
 } from '@/lib/pipeline/incident-log';
+import { useAdminAuth } from '@/hooks/useAdminAuth';
+import { Link } from 'react-router-dom';
 
 // ─── Saved Tests ─────────────────────────────────────────────
 
@@ -127,27 +129,12 @@ export default function LiveAnalysisPage() {
   const [incidents, setIncidents] = useState<IncidentRecord[]>(loadIncidents);
   const [stats, setStats] = useState(getIncidentStats());
   const [banAlert, setBanAlert] = useState<string | null>(null);
-  const [adminMode, setAdminMode] = useState(() => isAdminSessionValid());
-  const [adminLogin_, setAdminLogin] = useState('');
-  const [adminPass, setAdminPass] = useState('');
+  const { isAdmin, session, signOut } = useAdminAuth();
+  const adminMode = isAdmin;
 
   const sessionId = useState(() => 'sess_' + Date.now().toString(36))[0];
   const [scanner] = useState(() => new ALFAInputScanner(sessionId));
 
-  // Admin session timeout check (every 60s)
-  useEffect(() => {
-    if (!adminMode) return;
-    const interval = setInterval(() => {
-      if (!isAdminSessionValid()) {
-        setAdminMode(false);
-        setAdminLogin('');
-        setAdminPass('');
-        setBanAlert('⏱️ Sesja admina wygasła (30 min)');
-        setTimeout(() => setBanAlert(null), 4000);
-      }
-    }, 60_000);
-    return () => clearInterval(interval);
-  }, [adminMode]);
 
   useEffect(() => saveSavedTests(savedTests), [savedTests]);
   useEffect(() => saveModelSlots(modelSlots), [modelSlots]);
@@ -1118,45 +1105,35 @@ export default function LiveAnalysisPage() {
           {!adminMode ? (
             <div className="bg-card border border-border rounded-xl p-8 text-center space-y-4">
               <Ban className="w-10 h-10 text-muted-foreground mx-auto" />
-              <p className="text-sm text-muted-foreground">Dostęp administracyjny do wszystkich incydentów, zbanowanych użytkowników i analizy zagrożeń.</p>
-              <div className="flex flex-col items-center gap-2 max-w-xs mx-auto">
-                <Input type="text" value={adminLogin_} onChange={e => setAdminLogin(e.target.value)}
-                  placeholder="Login" className="bg-secondary border-border text-sm" autoComplete="username" />
-                <Input type="password" value={adminPass} onChange={e => setAdminPass(e.target.value)}
-                  placeholder="Hasło" className="bg-secondary border-border text-sm" autoComplete="current-password"
-                  onKeyDown={async e => { if (e.key === 'Enter') {
-                    if (await adminLogin(adminLogin_, adminPass)) {
-                      setAdminMode(true);
-                      refreshIncidents();
-                    } else {
-                      setBanAlert('❌ Nieprawidłowy login lub hasło');
-                      setTimeout(() => setBanAlert(null), 3000);
-                    }
-                  }}} />
-                <Button onClick={async () => {
-                  if (await adminLogin(adminLogin_, adminPass)) {
-                    setAdminMode(true);
-                    refreshIncidents();
-                  } else {
-                    setBanAlert('❌ Nieprawidłowy login lub hasło');
-                    setTimeout(() => setBanAlert(null), 3000);
-                  }
-                }} className="gap-2 w-full">
-                  <Lock className="w-3 h-3" /> Zaloguj
-                </Button>
-              </div>
+              <p className="text-sm text-muted-foreground">
+                Dostep administracyjny do wszystkich incydentow, zbanowanych uzytkownikow i analizy zagrozen.
+              </p>
+              {session ? (
+                <p className="text-xs font-mono text-warning">
+                  Zalogowano jako {session.user.email}, ale konto nie ma roli <code>admin</code>.
+                  Skontaktuj sie z administratorem systemu.
+                </p>
+              ) : (
+                <p className="text-xs font-mono text-muted-foreground">
+                  Auth jest po stronie Lovable Cloud. Pierwszy zarejestrowany uzytkownik dostaje role admin automatycznie.
+                </p>
+              )}
+              <Link to="/auth">
+                <Button className="gap-2"><Lock className="w-3 h-3" /> Przejdz do logowania</Button>
+              </Link>
             </div>
           ) : (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <h3 className="font-display font-semibold text-foreground flex items-center gap-2">
                   <ShieldAlert className="w-5 h-5 text-destructive" />
-                  Panel Administracyjny — Pełny Dostęp
+                  Panel Administracyjny — {session?.user.email}
                 </h3>
-                <Button size="sm" variant="ghost" onClick={() => { adminLogout(); setAdminMode(false); setAdminLogin(''); setAdminPass(''); }}>
+                <Button size="sm" variant="ghost" onClick={() => { void signOut(); }}>
                   Wyloguj
                 </Button>
               </div>
+
 
               {/* Admin stats */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
