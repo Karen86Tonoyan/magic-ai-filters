@@ -25,9 +25,11 @@ import { AgeVerificationStatus } from '@/components/AgeVerificationStatus';
 import {
   recordIncident, annotateIncident, checkAutoBan, executeBan,
   loadIncidents, loadBannedUsers, exportAsJSON, exportAsCSV,
-  getIncidentStats, adminLogin, adminLogout, isAdminSessionValid, saveIncidents,
+  getIncidentStats, saveIncidents,
   type IncidentRecord, type AnnotationLabel,
 } from '@/lib/pipeline/incident-log';
+import { useAdminAuth } from '@/hooks/useAdminAuth';
+import { Link } from 'react-router-dom';
 
 // ─── Saved Tests ─────────────────────────────────────────────
 
@@ -127,27 +129,12 @@ export default function LiveAnalysisPage() {
   const [incidents, setIncidents] = useState<IncidentRecord[]>(loadIncidents);
   const [stats, setStats] = useState(getIncidentStats());
   const [banAlert, setBanAlert] = useState<string | null>(null);
-  const [adminMode, setAdminMode] = useState(() => isAdminSessionValid());
-  const [adminLogin_, setAdminLogin] = useState('');
-  const [adminPass, setAdminPass] = useState('');
+  const { isAdmin, session, signOut } = useAdminAuth();
+  const adminMode = isAdmin;
 
   const sessionId = useState(() => 'sess_' + Date.now().toString(36))[0];
   const [scanner] = useState(() => new ALFAInputScanner(sessionId));
 
-  // Admin session timeout check (every 60s)
-  useEffect(() => {
-    if (!adminMode) return;
-    const interval = setInterval(() => {
-      if (!isAdminSessionValid()) {
-        setAdminMode(false);
-        setAdminLogin('');
-        setAdminPass('');
-        setBanAlert('⏱️ Sesja admina wygasła (30 min)');
-        setTimeout(() => setBanAlert(null), 4000);
-      }
-    }, 60_000);
-    return () => clearInterval(interval);
-  }, [adminMode]);
 
   useEffect(() => saveSavedTests(savedTests), [savedTests]);
   useEffect(() => saveModelSlots(modelSlots), [modelSlots]);
