@@ -87,7 +87,12 @@ const POPULAR_MODELS: Record<string, { id: string; label: string }[]> = {
 function loadConfig(): LLMConfig {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw);
+    if (raw) {
+      const parsed = JSON.parse(raw) as LLMConfig;
+      // Migration: never keep raw API keys in localStorage.
+      parsed.apiKey = '';
+      return parsed;
+    }
   } catch {
     return DEFAULT_CONFIG;
   }
@@ -95,7 +100,9 @@ function loadConfig(): LLMConfig {
 }
 
 function saveConfig(config: LLMConfig) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
+  // Always strip apiKey before persisting — provider keys live in Lovable Cloud secrets.
+  const safe = { ...config, apiKey: '' };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(safe));
 }
 
 interface Props {
@@ -328,7 +335,7 @@ export function LLMConnectionPanel({ onAdapterChange }: Props) {
               size="sm"
               variant="outline"
               onClick={testConnection}
-              disabled={testing || (needsApiKey && !config.apiKey)}
+              disabled={testing}
               className="gap-2"
             >
               {testing ? <Loader2 className="w-3 h-3 animate-spin" /> : <Wifi className="w-3 h-3" />}
