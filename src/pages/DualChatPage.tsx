@@ -449,6 +449,7 @@ export default function DualChatPage() {
           isLoading={rawLoading}
           accentClass="border-muted-foreground/30 text-muted-foreground"
           borderClass="border-border"
+          modelLabel={adapter ? `${adapter.provider} / ${adapter.modelId}` : 'brak modelu'}
         />
         <ChatPanel
           title="ALFA — Pełny pipeline"
@@ -458,6 +459,7 @@ export default function DualChatPage() {
           isLoading={filteredLoading}
           accentClass="border-primary/30 text-primary"
           borderClass="border-primary/20"
+          modelLabel={adapter ? `${adapter.provider} / ${adapter.modelId}` : 'brak modelu'}
         />
       </div>
 
