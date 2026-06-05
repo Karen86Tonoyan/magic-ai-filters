@@ -17,6 +17,7 @@ interface LLMConfig {
   baseUrl: string;
   modelId: string;
   enabled: boolean;
+  useLocalKey: boolean;
 }
 
 const STORAGE_KEY = 'alfa_llm_config';
@@ -26,6 +27,7 @@ const DEFAULT_CONFIG: LLMConfig = {
   baseUrl: 'http://localhost:11434',
   modelId: 'llama3.2:1b',
   enabled: false,
+  useLocalKey: false,
 };
 
 const POPULAR_MODELS: Record<string, { id: string; label: string }[]> = {
