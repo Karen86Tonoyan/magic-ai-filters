@@ -163,7 +163,7 @@ export function LLMConnectionPanel({ onAdapterChange }: Props) {
         baseUrl: config.baseUrl || PROVIDER_INFO[config.provider]?.defaultUrl || '',
         apiKey: config.apiKey,
         modelId: config.modelId,
-      });
+      }, { useLocalKey: config.useLocalKey });
       const ok = await adapter.testConnection();
       setStatus(ok ? 'connected' : 'error');
       if (!ok) setErrorMsg('Endpoint odpowiedzial bledem (sprawdz API key / URL).');
