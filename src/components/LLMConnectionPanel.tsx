@@ -90,9 +90,9 @@ function loadConfig(): LLMConfig {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
-      const parsed = JSON.parse(raw) as LLMConfig;
-      // Migration: never keep raw API keys in localStorage.
-      parsed.apiKey = '';
+      const parsed = { ...DEFAULT_CONFIG, ...(JSON.parse(raw) as Partial<LLMConfig>) };
+      // Only keep apiKey in localStorage when user opted into local mode.
+      if (!parsed.useLocalKey) parsed.apiKey = '';
       return parsed;
     }
   } catch {
@@ -102,8 +102,10 @@ function loadConfig(): LLMConfig {
 }
 
 function saveConfig(config: LLMConfig) {
-  // Always strip apiKey before persisting — provider keys live in Lovable Cloud secrets.
-  const safe = { ...config, apiKey: '' };
+  // Persist apiKey only if user explicitly chose local mode.
+  const safe = config.useLocalKey
+    ? config
+    : { ...config, apiKey: '' };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(safe));
 }
 
