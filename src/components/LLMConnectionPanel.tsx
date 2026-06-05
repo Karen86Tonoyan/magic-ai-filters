@@ -133,7 +133,7 @@ export function LLMConnectionPanel({ onAdapterChange }: Props) {
         baseUrl: config.baseUrl || PROVIDER_INFO[config.provider]?.defaultUrl || '',
         apiKey: config.apiKey,
         modelId: config.modelId,
-      });
+      }, { useLocalKey: config.useLocalKey });
       onAdapterChange(adapter);
     } else {
       onAdapterChange(null);
