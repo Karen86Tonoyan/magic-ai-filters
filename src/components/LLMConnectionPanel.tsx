@@ -17,6 +17,7 @@ interface LLMConfig {
   baseUrl: string;
   modelId: string;
   enabled: boolean;
+  useLocalKey: boolean;
 }
 
 const STORAGE_KEY = 'alfa_llm_config';
@@ -26,6 +27,7 @@ const DEFAULT_CONFIG: LLMConfig = {
   baseUrl: 'http://localhost:11434',
   modelId: 'llama3.2:1b',
   enabled: false,
+  useLocalKey: false,
 };
 
 const POPULAR_MODELS: Record<string, { id: string; label: string }[]> = {
@@ -88,9 +90,9 @@ function loadConfig(): LLMConfig {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
-      const parsed = JSON.parse(raw) as LLMConfig;
-      // Migration: never keep raw API keys in localStorage.
-      parsed.apiKey = '';
+      const parsed = { ...DEFAULT_CONFIG, ...(JSON.parse(raw) as Partial<LLMConfig>) };
+      // Only keep apiKey in localStorage when user opted into local mode.
+      if (!parsed.useLocalKey) parsed.apiKey = '';
       return parsed;
     }
   } catch {
@@ -100,8 +102,10 @@ function loadConfig(): LLMConfig {
 }
 
 function saveConfig(config: LLMConfig) {
-  // Always strip apiKey before persisting — provider keys live in Lovable Cloud secrets.
-  const safe = { ...config, apiKey: '' };
+  // Persist apiKey only if user explicitly chose local mode.
+  const safe = config.useLocalKey
+    ? config
+    : { ...config, apiKey: '' };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(safe));
 }
 
@@ -129,7 +133,7 @@ export function LLMConnectionPanel({ onAdapterChange }: Props) {
         baseUrl: config.baseUrl || PROVIDER_INFO[config.provider]?.defaultUrl || '',
         apiKey: config.apiKey,
         modelId: config.modelId,
-      });
+      }, { useLocalKey: config.useLocalKey });
       onAdapterChange(adapter);
     } else {
       onAdapterChange(null);
@@ -159,7 +163,7 @@ export function LLMConnectionPanel({ onAdapterChange }: Props) {
         baseUrl: config.baseUrl || PROVIDER_INFO[config.provider]?.defaultUrl || '',
         apiKey: config.apiKey,
         modelId: config.modelId,
-      });
+      }, { useLocalKey: config.useLocalKey });
       const ok = await adapter.testConnection();
       setStatus(ok ? 'connected' : 'error');
       if (!ok) setErrorMsg('Endpoint odpowiedzial bledem (sprawdz API key / URL).');
@@ -312,10 +316,44 @@ export function LLMConnectionPanel({ onAdapterChange }: Props) {
           </div>
 
           {needsApiKey && (
-            <div className="text-[11px] font-mono text-muted-foreground bg-secondary/40 border border-border rounded p-2 leading-relaxed">
-              Klucz API dla providera <strong>{PROVIDER_INFO[config.provider]?.label}</strong> jest przechowywany w sekretach Lovable Cloud
-              (zmienna <code>{config.provider.toUpperCase()}_API_KEY</code>) i NIE jest wysylany z przegladarki.
-              Skonfiguruj go w ustawieniach backendu. Wszystkie wywolania ida przez edge function <code>llm-proxy</code>.
+            <div className="space-y-2">
+              <div className="flex items-center justify-between bg-secondary/40 border border-border rounded p-2">
+                <div className="flex flex-col">
+                  <Label className="text-xs text-foreground">Lokalny klucz API (przegladarka)</Label>
+                  <span className="text-[10px] text-muted-foreground font-mono">
+                    {config.useLocalKey
+                      ? 'Klucz trzymany w localStorage, fetch leci bezposrednio z przegladarki.'
+                      : 'Domyslnie: klucz po stronie Lovable Cloud, wywolania przez edge function llm-proxy.'}
+                  </span>
+                </div>
+                <Switch
+                  checked={config.useLocalKey}
+                  onCheckedChange={v => updateConfig({ useLocalKey: v, apiKey: v ? config.apiKey : '' })}
+                />
+              </div>
+              {config.useLocalKey ? (
+                <div>
+                  <Label className="text-muted-foreground text-xs mb-1 block">
+                    Klucz API ({PROVIDER_INFO[config.provider]?.label})
+                  </Label>
+                  <Input
+                    type="password"
+                    value={config.apiKey}
+                    onChange={e => updateConfig({ apiKey: e.target.value })}
+                    placeholder="sk-..."
+                    className="bg-secondary border-border font-mono text-sm"
+                    autoComplete="off"
+                  />
+                  <p className="text-[10px] font-mono text-warning mt-1">
+                    ⚠ Klucz lezy w localStorage tej przegladarki. Uzywaj tylko na zaufanym urzadzeniu.
+                  </p>
+                </div>
+              ) : (
+                <div className="text-[11px] font-mono text-muted-foreground bg-secondary/40 border border-border rounded p-2 leading-relaxed">
+                  Skonfiguruj sekret <code>{config.provider.toUpperCase()}_API_KEY</code> w Lovable Cloud.
+                  Wszystkie wywolania ida przez edge function <code>llm-proxy</code> (klucz nie opuszcza backendu).
+                </div>
+              )}
             </div>
           )}
 
