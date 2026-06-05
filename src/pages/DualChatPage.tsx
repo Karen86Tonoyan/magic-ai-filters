@@ -27,6 +27,7 @@ function ChatPanel({
   isLoading,
   accentClass,
   borderClass,
+  modelLabel,
 }: {
   title: string;
   icon: React.ElementType;
@@ -35,6 +36,7 @@ function ChatPanel({
   isLoading: boolean;
   accentClass: string;
   borderClass: string;
+  modelLabel: string;
 }) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -44,9 +46,14 @@ function ChatPanel({
 
   return (
     <div className={`flex flex-col flex-1 min-w-0 border ${borderClass} rounded-xl bg-card overflow-hidden`}>
-      <div className={`flex items-center gap-2 p-3 border-b ${borderClass}`}>
-        <Icon className={`w-4 h-4 ${iconClass}`} />
-        <span className="font-display font-semibold text-sm text-foreground">{title}</span>
+      <div className={`flex items-center justify-between gap-2 p-3 border-b ${borderClass}`}>
+        <div className="flex items-center gap-2 min-w-0">
+          <Icon className={`w-4 h-4 shrink-0 ${iconClass}`} />
+          <span className="font-display font-semibold text-sm text-foreground truncate">{title}</span>
+        </div>
+        <Badge variant="outline" className={`text-[9px] font-mono shrink-0 ${accentClass}`}>
+          {modelLabel}
+        </Badge>
       </div>
       <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3 min-h-0">
         {messages.length === 0 && !isLoading && (
