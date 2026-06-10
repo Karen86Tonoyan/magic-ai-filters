@@ -118,6 +118,9 @@ class MultiTurnRunner:
 # 1. MEDICAL — gradual escalation
 # ═══════════════════════════════════════════════════════════════════════════════
 
+@pytest.mark.multi_turn
+@pytest.mark.high_stakes
+@pytest.mark.hallucination
 class TestMedicalMultiTurn:
 
     def test_gradual_escalation_to_dangerous_advice(self):
@@ -167,6 +170,8 @@ class TestMedicalMultiTurn:
 # 2. JAILBREAK — DAN, roleplay, trust building
 # ═══════════════════════════════════════════════════════════════════════════════
 
+@pytest.mark.multi_turn
+@pytest.mark.jailbreak
 class TestJailbreakMultiTurn:
 
     def test_dan_style_persistence(self):
@@ -233,6 +238,9 @@ class TestJailbreakMultiTurn:
 # 3. FINANCIAL — guaranteed returns, FOMO, presja
 # ═══════════════════════════════════════════════════════════════════════════════
 
+@pytest.mark.multi_turn
+@pytest.mark.high_stakes
+@pytest.mark.hallucination
 class TestFinancialMultiTurn:
 
     def test_guaranteed_returns_escalation(self):
@@ -268,6 +276,9 @@ class TestFinancialMultiTurn:
 # 4. LEGAL — context poisoning, disclaimer removal
 # ═══════════════════════════════════════════════════════════════════════════════
 
+@pytest.mark.multi_turn
+@pytest.mark.high_stakes
+@pytest.mark.hallucination
 class TestLegalMultiTurn:
 
     def test_disclaimer_removal_attempt(self):
@@ -302,6 +313,9 @@ class TestLegalMultiTurn:
 # 5. SECURITY — exploit escalation, PII harvesting
 # ═══════════════════════════════════════════════════════════════════════════════
 
+@pytest.mark.multi_turn
+@pytest.mark.high_stakes
+@pytest.mark.jailbreak
 class TestSecurityMultiTurn:
 
     def test_exploit_escalation_pattern(self):
@@ -341,6 +355,8 @@ class TestSecurityMultiTurn:
 # 6. MANIPULATION — social engineering przez wiele tur
 # ═══════════════════════════════════════════════════════════════════════════════
 
+@pytest.mark.multi_turn
+@pytest.mark.hallucination
 class TestManipulationMultiTurn:
 
     def test_authority_appeal_escalation(self):
@@ -384,6 +400,7 @@ class TestManipulationMultiTurn:
 # 7. CONTEXT EVOLUTION — właściwości systemu przez wiele tur
 # ═══════════════════════════════════════════════════════════════════════════════
 
+@pytest.mark.multi_turn
 class TestContextEvolutionMultiTurn:
 
     def test_hostile_tone_persists_after_attack(self):
@@ -489,6 +506,7 @@ class TestContextEvolutionMultiTurn:
 # 8. EDGE CASES MULTI-TURN
 # ═══════════════════════════════════════════════════════════════════════════════
 
+@pytest.mark.multi_turn
 class TestEdgeCasesMultiTurn:
 
     def test_empty_turns_dont_crash(self):
@@ -536,3 +554,70 @@ class TestEdgeCasesMultiTurn:
         # Po 3+ turach (turn_count > 3), hostile może zresetować się
         # Sprawdź że system nie crashuje
         assert runner.ctx.tone in {"hostile", "neutral", "suspicious"}
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 9. PARAMETRIC CORPUS — BAD_PROMPT_CORPUS z conftest
+# ═══════════════════════════════════════════════════════════════════════════════
+
+from filtry_tonoyana.tests.conftest import BAD_PROMPT_CORPUS  # noqa: E402
+
+
+@pytest.mark.multi_turn
+@pytest.mark.hallucination
+class TestHallucinationCorpus:
+    """Parametryzowane testy na całym BAD_PROMPT_CORPUS['hallucination'].
+    Każdy prompt zawiera 3+ HALLUCINATION_PATTERNS — powinien dać HOLD/REJECT.
+    """
+
+    @pytest.mark.parametrize(
+        "bad_text",
+        BAD_PROMPT_CORPUS["hallucination"],
+        ids=[f"h{i}" for i in range(len(BAD_PROMPT_CORPUS["hallucination"]))],
+    )
+    def test_hallucination_corpus_blocked(self, bad_text):
+        r = MultiTurnRunner(domain="general", stakes="medium").run([bad_text])
+        assert r.turns[0].blocked, (
+            f"Hallucination prompt nie wykryty: decision={r.turns[0].decision} "
+            f"score={r.turns[0].risk_score:.3f}\n  prompt={bad_text[:80]}"
+        )
+
+
+@pytest.mark.multi_turn
+@pytest.mark.jailbreak
+class TestJailbreakCorpus:
+    """Parametryzowane testy na całym BAD_PROMPT_CORPUS['jailbreak'].
+    Każdy prompt zawiera _HOSTILE pattern — powinien ustawić tone=hostile.
+    """
+
+    @pytest.mark.parametrize(
+        "bad_text",
+        BAD_PROMPT_CORPUS["jailbreak"],
+        ids=[f"j{i}" for i in range(len(BAD_PROMPT_CORPUS["jailbreak"]))],
+    )
+    def test_jailbreak_corpus_hostile_tone(self, bad_text):
+        r = MultiTurnRunner().run([bad_text])
+        assert r.any_hostile, (
+            f"Jailbreak prompt nie ustawił tone=hostile: tone={r.turns[0].tone}\n"
+            f"  prompt={bad_text[:80]}"
+        )
+
+
+@pytest.mark.multi_turn
+@pytest.mark.benign
+class TestBenignCorpus:
+    """Parametryzowane testy na BAD_PROMPT_CORPUS['benign'].
+    Żaden benign prompt nie powinien być zablokowany.
+    """
+
+    @pytest.mark.parametrize(
+        "benign_text",
+        BAD_PROMPT_CORPUS["benign"],
+        ids=[f"b{i}" for i in range(len(BAD_PROMPT_CORPUS["benign"]))],
+    )
+    def test_benign_corpus_not_blocked(self, benign_text):
+        r = MultiTurnRunner().run([benign_text])
+        assert not r.any_blocked, (
+            f"Benign prompt błędnie zablokowany: decision={r.turns[0].decision} "
+            f"score={r.turns[0].risk_score:.3f}\n  prompt={benign_text[:80]}"
+        )
