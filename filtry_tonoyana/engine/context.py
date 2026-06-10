@@ -70,7 +70,10 @@ _HOSTILE = re.compile(
 _SUSPICIOUS = re.compile(
     r"(?i)(assume|assuming|hypothetically|for testing|ignore.*rule|"
     r"co by było gdyby|załóżmy że|teoretycznie|hipotetycznie|"
-    r"pretend|act as|as if you were|udawaj że)"
+    r"pretend|act as|as if you were|udawaj że|"
+    r"for (educational|research|testing|demonstration) purposes|"
+    r"as an? (ai|language model|assistant|chatbot).{0,30}(without|no).{0,20}(filter|restrict|rule|limit|safety)|"
+    r"without (restrictions|rules|filters|safety|guidelines))"
 )
 
 _COOPERATIVE = re.compile(
