@@ -1,12 +1,12 @@
 """
 alfa/core/cerber.py
-Cerber — Immune Engine v0.2
-Zgodny z ALFA Brain Whitepaper v1.1
+Cerber — Immune Engine v0.3
+Zgodny z ALFA Brain Whitepaper v1.2
 
 Nie jest pasywnym walidatorem.
 Symuluje zachowanie atakującego ZANIM akcja opuści sandbox.
 
-Wektory ataku (pierwsza iteracja — zatwierdzone przez Karen Tonoyan):
+Wektory ataku:
 
   Browser-specific:
     B1 — target_ref injection
@@ -25,15 +25,10 @@ Wektory ataku (pierwsza iteracja — zatwierdzone przez Karen Tonoyan):
     D2 — Subdomain escalation
     D3 — IP zamiast domeny
 
-Każdy wektor ma własną metodę _simulate_Xn().
-Każda metoda rzuca CerberBlockError z reason= i detail=.
-Milczy jeśli OK.
-
-TODO v0.3:
-  - Scoring per wektor (nie tylko PASS/FAIL)
-  - Historia ataków per session (pattern detection)
-  - Konfiguracja wektorów z YAML (włącz/wyłącz per deployment)
-  - Integracja z Cerber RC2.1 Rust przez subprocess
+v0.2: każda metoda rzuca CerberBlockError (fail-fast).
+v0.3: dodaje scoring per wektor (score_action -> CerberReport),
+      historię ataków per session (attack_history),
+      kompatybilność wsteczna: validate_action() bez zmian.
 """
 from __future__ import annotations
 
@@ -42,10 +37,49 @@ import re
 import unicodedata
 from dataclasses import dataclass, field
 from pathlib import PurePosixPath
-from typing import Optional, Set
+from typing import Dict, List, Optional, Set
 from urllib.parse import urlparse
 
 from filtry_tonoyana.core.exceptions import CerberBlockError
+
+
+# ── v0.3: scoring primitives ─────────────────────────────────────────────────
+
+@dataclass
+class AttackVector:
+    """Wektor ataku z wagą ryzyka (0–1)."""
+    code: str
+    category: str
+    description: str
+    risk_weight: float = 0.30
+
+
+@dataclass
+class CerberReport:
+    """
+    Wynik score_action() — nie rzuca wyjątku, oddaje pełny obraz.
+
+    blocked:           True gdy total_risk ≥ max_risk LUB ≥2 wektorów
+    score:             min(sum(risk_weight), 1.0)
+    triggered_vectors: wektory które się odpaliły
+    reasons:           czytelne opisy (mapowane 1:1 z triggered_vectors)
+    """
+    blocked: bool
+    score: float
+    triggered_vectors: List[AttackVector] = field(default_factory=list)
+    reasons: List[str] = field(default_factory=list)
+
+    def to_dict(self) -> dict:
+        return {
+            "blocked": self.blocked,
+            "score": self.score,
+            "triggered_vectors": [
+                {"code": v.code, "category": v.category,
+                 "description": v.description, "risk_weight": v.risk_weight}
+                for v in self.triggered_vectors
+            ],
+            "reasons": self.reasons,
+        }
 
 
 # ── Konfiguracja polityki ─────────────────────────────────────────────────────
@@ -144,10 +178,26 @@ class Cerber:
     """
     Cerber — Immune Engine.
 
-    Wywołuje kolejno wszystkie symulacje ataków.
-    Zatrzymuje się przy pierwszej blokadzie (fail-fast).
-    Milczy = PASS.
+    validate_action(action) — fail-fast, rzuca CerberBlockError (v0.2 API, bez zmian)
+    score_action(action)    — akumuluje wszystkie wektory, zwraca CerberReport (v0.3)
+    attack_history          — lista ostatnich trafień per session
+    reset_history()         — czyści history (nowa sesja)
     """
+
+    # Wagi per wektor — kalibrowane pod DEFAULT_MAX_RISK_SCORE=0.6
+    _VECTORS: Dict[str, AttackVector] = {
+        "B1": AttackVector("B1", "browser",  "Selector injection",                 0.35),
+        "B2": AttackVector("B2", "browser",  "URL redirect / domain mismatch",     0.25),
+        "B3": AttackVector("B3", "browser",  "Action chaining (auto-submit risk)", 0.40),
+        "B4": AttackVector("B4", "browser",  "Malformed selector",                 0.30),
+        "L1": AttackVector("L1", "llm",      "Deep prompt injection",              0.45),
+        "L2": AttackVector("L2", "llm",      "PII / data exfiltration",            0.50),
+        "L3": AttackVector("L3", "llm",      "Privilege escalation (admin path)",  0.40),
+        "L4": AttackVector("L4", "llm",      "SSRF attempt",                       0.55),
+        "D1": AttackVector("D1", "domain",   "IDN homograph attack",               0.30),
+        "D2": AttackVector("D2", "domain",   "Deep subdomain escalation",          0.20),
+        "D3": AttackVector("D3", "domain",   "IP address instead of domain",       0.35),
+    }
 
     def __init__(
         self,
@@ -157,6 +207,84 @@ class Cerber:
         self.policy = policy or CerberPolicy()
         self.debug = debug
         self._passed_vectors: list[str] = []   # debug: które wektory przeszły
+        self.attack_history: List[dict] = []   # v0.3: per-session attack log
+        self.vectors: Dict[str, AttackVector] = dict(self._VECTORS)
+
+    # ── v0.3: history management ───────────────────────────────────────────────
+
+    def _record_attack(self, vector: AttackVector, detail: str) -> None:
+        self.attack_history.append({
+            "vector": vector.code,
+            "category": vector.category,
+            "description": vector.description,
+            "detail": detail[:200],
+        })
+
+    def reset_history(self) -> None:
+        """Czyści historię ataków — wywołaj na starcie nowej sesji."""
+        self.attack_history.clear()
+
+    # ── v0.3: scoring API ──────────────────────────────────────────────────────
+
+    def score_action(self, action) -> CerberReport:
+        """
+        Nie rzuca wyjątku — akumuluje wszystkie wektory i oddaje CerberReport.
+        Używaj gdy chcesz pełny obraz ryzyka, nie tylko pierwszy hit.
+        """
+        triggered: List[AttackVector] = []
+        reasons: List[str] = []
+        total_risk = 0.0
+
+        def _try(code: str, check_fn) -> None:
+            nonlocal total_risk
+            try:
+                check_fn()
+            except CerberBlockError as exc:
+                v = self.vectors[code]
+                triggered.append(v)
+                reasons.append(f"{code}: {exc.reason}")
+                total_risk += v.risk_weight
+                self._record_attack(v, str(getattr(exc, 'detail', '')))
+
+        normalized_domain = _normalize_domain(action.domain)
+
+        # Domain integrity
+        _try("D3", lambda: self._simulate_D3_ip_as_domain(normalized_domain, action))
+        _try("D1", lambda: self._simulate_D1_idn_homograph(action))
+        _try("D2", lambda: self._simulate_D2_subdomain_escalation(normalized_domain, action))
+
+        # URL checks
+        if action.url:
+            if self.policy.enable_ssrf_detection:
+                _try("L4", lambda: self._simulate_L4_ssrf(action.url))
+            _try("B2", lambda: self._simulate_B2_url_redirect(action))
+            if self.policy.enable_privileged_path_detection:
+                _try("L3", lambda: self._simulate_L3_privilege_escalation(action.url))
+
+        # Selector / target_ref
+        if action.target_ref is not None:
+            _try("B4", lambda: self._simulate_B4_malformed_selector(action))
+            _try("B1", lambda: self._simulate_B1_selector_injection(action))
+
+        # Value (FILL / SUBMIT)
+        if action.value is not None:
+            _try("L1", lambda: self._simulate_L1_deep_injection(action))
+            if self.policy.enable_pii_detection:
+                _try("L2", lambda: self._simulate_L2_data_exfiltration(action))
+
+        # Action chaining
+        _try("B3", lambda: self._simulate_B3_action_chaining(action))
+
+        blocked = (
+            total_risk >= self.policy.max_risk_score
+            or len(triggered) >= 2
+        )
+        return CerberReport(
+            blocked=blocked,
+            score=min(total_risk, 1.0),
+            triggered_vectors=triggered,
+            reasons=reasons,
+        )
 
     def _dbg(self, vector: str) -> None:
         """Loguje przejście wektoru w trybie debug."""

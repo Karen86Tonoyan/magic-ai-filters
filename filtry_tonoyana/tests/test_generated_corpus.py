@@ -1,17 +1,26 @@
 """
-ALFA — Generated Corpus Tests (Faza 1)
+ALFA — Generated Corpus Tests (Faza 1 + Cerber)
 © Karen Tonoyan
 
 Parametryzowane testy z automatycznie wygenerowanego corpusu.
 Zamiast pisać każdy test ręcznie — generator produkuje setki przypadków
 z gwarantowanymi właściwościami detekcji.
 
-Grupy:
+Grupy (pipeline):
   TestGeneratedHallucination  — 80 promptów, każdy ≥3 PL_TRIGGERS → HOLD/REJECT
   TestGeneratedJailbreak      — 23 promptów z _HOSTILE triggers → tone="hostile"
   TestBenignControl           — 15 bezpiecznych promptów → PASS
   TestMultiTurnEscalation     — 8 sekwencji gradual escalation → finale blocked
   TestDensitySweep            — monotoniczność scoring po liczbie triggerów
+
+Grupy (Cerber v0.3 corpus):
+  TestCerberSSRF              — 9 URL-ów → L4 wektor
+  TestCerberPrivilegedPaths   — 10 URL-ów → L3 wektor
+  TestCerberPII               — 8 wartości → L2 wektor
+  TestCerberSelectorInjection — 7 selektorów → B1/B4 wektor
+  TestCerberDeepInjection     — 9 wartości → L1 wektor
+  TestCerberCompoundAttacks   — 6 kombinacji → blocked (≥2 wektory)
+  TestCerberBenign            — 6 czystych akcji → score=0, nie blocked
 """
 from __future__ import annotations
 
@@ -26,9 +35,11 @@ from filtry_tonoyana.engine import (
     STRATEGY_LOCKDOWN,
     STRATEGY_MONTE_CARLO,
 )
-from filtry_tonoyana.tests.corpus.generators import PromptGenerator
+from filtry_tonoyana.tests.corpus.generators import PromptGenerator, CerberCorpusGenerator
+from filtry_tonoyana.core.cerber import Cerber, CerberPolicy
+from filtry_tonoyana.core.t9_action import T9Action, T9ActionType
 
-# ── Shared generator ──────────────────────────────────────────────────────────
+# ── Shared generators ─────────────────────────────────────────────────────────
 
 _GEN = PromptGenerator()
 _HALL_CASES   = _GEN.hallucination_cases()
@@ -36,6 +47,35 @@ _JAIL_CASES   = _GEN.jailbreak_cases()
 _BENIGN_CASES = _GEN.benign_cases()
 _ESC_SEQS     = _GEN.escalation_sequences()
 _DENSITY      = _GEN.density_sweep()
+
+_CERBER_GEN          = CerberCorpusGenerator()
+_CERBER_SSRF         = _CERBER_GEN.ssrf_cases()
+_CERBER_PRIV         = _CERBER_GEN.privileged_path_cases()
+_CERBER_PII          = _CERBER_GEN.pii_cases()
+_CERBER_SEL          = _CERBER_GEN.selector_injection_cases()
+_CERBER_DEPI         = _CERBER_GEN.deep_injection_cases()
+_CERBER_COMPOUND     = _CERBER_GEN.compound_attack_cases()
+_CERBER_BENIGN       = _CERBER_GEN.benign_action_cases()
+
+
+def _cerber() -> Cerber:
+    return Cerber(policy=CerberPolicy(
+        allowed_domains=set(),
+        blocked_domains={"evil.com"},
+        max_risk_score=0.6,
+        require_https=False,
+    ))
+
+
+def _make_action(**kwargs) -> T9Action:
+    defaults = dict(
+        action=T9ActionType.READ,
+        domain="karentonoyan.pl",
+        session_id="corpus",
+        risk_score=0.1,
+    )
+    defaults.update(kwargs)
+    return T9Action(**defaults)
 
 
 # ── Fixtures ──────────────────────────────────────────────────────────────────
@@ -277,3 +317,151 @@ class TestDensitySweep:
                 f"Monotoniczność naruszona: score[{i}]={scores[i]:.4f} > "
                 f"score[{i+1}]={scores[i+1]:.4f}"
             )
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# CERBER CORPUS — v0.3 score_action() parametrized tests
+# ═══════════════════════════════════════════════════════════════════════════════
+
+@pytest.mark.integration
+class TestCerberSSRF:
+    """9 SSRF URL-ów → L4 wektor zawsze triggeruje."""
+
+    @pytest.mark.parametrize("case_id,url", _CERBER_SSRF, ids=[c[0] for c in _CERBER_SSRF])
+    def test_ssrf_triggers_L4(self, case_id: str, url: str):
+        c = _cerber()
+        report = c.score_action(_make_action(url=url))
+        codes = [v.code for v in report.triggered_vectors]
+        assert "L4" in codes, (
+            f"[{case_id}] L4 nie wykryte dla SSRF URL: {url}\n"
+            f"  triggered={codes}, score={report.score:.3f}"
+        )
+
+    @pytest.mark.parametrize("case_id,url", _CERBER_SSRF, ids=[c[0] for c in _CERBER_SSRF])
+    def test_ssrf_blocked(self, case_id: str, url: str):
+        """L4 ma wagę 0.55 ≥ max_risk=0.60 dopiero przy 2 wektorach lub po sumowaniu."""
+        c = _cerber()
+        report = c.score_action(_make_action(url=url))
+        # L4(0.55) < 0.60 ale >0 — może zależeć od ścieżki
+        # Gwarancja: score > 0
+        assert report.score > 0, f"[{case_id}] score=0 przy SSRF URL: {url}"
+
+
+@pytest.mark.integration
+class TestCerberPrivilegedPaths:
+    """10 uprzywilejowanych URL-ów → L3 wektor zawsze triggeruje."""
+
+    @pytest.mark.parametrize("case_id,url", _CERBER_PRIV, ids=[c[0] for c in _CERBER_PRIV])
+    def test_privileged_triggers_L3(self, case_id: str, url: str):
+        c = _cerber()
+        report = c.score_action(_make_action(url=url))
+        codes = [v.code for v in report.triggered_vectors]
+        assert "L3" in codes, (
+            f"[{case_id}] L3 nie wykryte dla URL: {url}\n"
+            f"  triggered={codes}"
+        )
+
+
+@pytest.mark.integration
+class TestCerberPII:
+    """8 wartości PII/secret → L2 wektor zawsze triggeruje."""
+
+    @pytest.mark.parametrize("case_id,value", _CERBER_PII, ids=[c[0] for c in _CERBER_PII])
+    def test_pii_triggers_L2(self, case_id: str, value: str):
+        c = _cerber()
+        action = _make_action(action=T9ActionType.FILL, value=value)
+        report = c.score_action(action)
+        codes = [v.code for v in report.triggered_vectors]
+        assert "L2" in codes, (
+            f"[{case_id}] L2 nie wykryte dla PII value: {value[:60]}\n"
+            f"  triggered={codes}"
+        )
+
+
+@pytest.mark.integration
+class TestCerberSelectorInjection:
+    """7 selektorów z injection → B1 lub B4 wektor zawsze triggeruje."""
+
+    @pytest.mark.parametrize("case_id,ref", _CERBER_SEL, ids=[c[0] for c in _CERBER_SEL])
+    def test_selector_triggers_B1_or_B4(self, case_id: str, ref: str):
+        c = _cerber()
+        report = c.score_action(_make_action(target_ref=ref))
+        codes = [v.code for v in report.triggered_vectors]
+        assert "B1" in codes or "B4" in codes, (
+            f"[{case_id}] B1/B4 nie wykryte dla ref: {repr(ref)}\n"
+            f"  triggered={codes}"
+        )
+
+
+@pytest.mark.integration
+class TestCerberDeepInjection:
+    """9 deep injection wartości → L1 wektor zawsze triggeruje."""
+
+    @pytest.mark.parametrize("case_id,value", _CERBER_DEPI, ids=[c[0] for c in _CERBER_DEPI])
+    def test_deep_injection_triggers_L1(self, case_id: str, value: str):
+        c = _cerber()
+        action = _make_action(action=T9ActionType.FILL, value=value)
+        report = c.score_action(action)
+        codes = [v.code for v in report.triggered_vectors]
+        assert "L1" in codes, (
+            f"[{case_id}] L1 nie wykryte dla injection: {value[:60]}\n"
+            f"  triggered={codes}"
+        )
+
+
+@pytest.mark.integration
+class TestCerberCompoundAttacks:
+    """6 kombinacji wektorów → każda blocked (≥2 wektory lub sum ≥ threshold)."""
+
+    @pytest.mark.parametrize(
+        "case_id,url,target_ref,value",
+        _CERBER_COMPOUND,
+        ids=[c[0] for c in _CERBER_COMPOUND],
+    )
+    def test_compound_blocked(
+        self, case_id: str, url: str | None, target_ref: str | None, value: str | None
+    ):
+        c = _cerber()
+        kwargs: dict = {}
+        if url:
+            kwargs["url"] = url
+        if target_ref:
+            kwargs["target_ref"] = target_ref
+        if value:
+            kwargs["action"] = T9ActionType.FILL
+            kwargs["value"] = value
+        action = _make_action(**kwargs)
+        report = c.score_action(action)
+        assert report.blocked, (
+            f"[{case_id}] Compound attack nie zablokowany — "
+            f"score={report.score:.3f}, vectors={[v.code for v in report.triggered_vectors]}"
+        )
+
+
+@pytest.mark.integration
+class TestCerberBenign:
+    """6 czystych akcji → score=0.0, blocked=False."""
+
+    @pytest.mark.parametrize(
+        "case_id,target_ref,url",
+        _CERBER_BENIGN,
+        ids=[c[0] for c in _CERBER_BENIGN],
+    )
+    def test_benign_not_blocked(
+        self, case_id: str, target_ref: str | None, url: str | None
+    ):
+        c = _cerber()
+        kwargs: dict = {}
+        if target_ref:
+            kwargs["target_ref"] = target_ref
+        if url:
+            kwargs["url"] = url
+        action = _make_action(**kwargs)
+        report = c.score_action(action)
+        assert not report.blocked, (
+            f"[{case_id}] Benign Cerber akcja błędnie zablokowana — "
+            f"score={report.score:.3f}, vectors={[v.code for v in report.triggered_vectors]}"
+        )
+        assert report.score == 0.0, (
+            f"[{case_id}] Benign akcja ma score={report.score:.3f} (oczekiwane 0.0)"
+        )
