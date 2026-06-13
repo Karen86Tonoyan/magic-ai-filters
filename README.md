@@ -1,4 +1,5 @@
 # magic-ai-filters
+<img width="1408" height="1408" alt="grok-5fd631ec-21e9-4d85-abd3-c64262bd1743 (1)" src="https://github.com/user-attachments/assets/164ad91f-1741-4e79-a0bf-a093de0e0e6f" />
 
 ALFA RC2.1: warstwa bezpieczeństwa poznawczego dla AI.
 
