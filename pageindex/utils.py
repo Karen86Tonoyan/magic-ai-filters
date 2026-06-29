@@ -23,12 +23,6 @@ if not os.getenv("OPENAI_API_KEY") and os.getenv("CHATGPT_API_KEY"):
 
 litellm.drop_params = True
 
-try:
-    from headroom import HeadroomCallback
-    litellm.callbacks = [HeadroomCallback()]
-except ImportError:
-    pass
-
 def count_tokens(text, model=None):
     if not text:
         return 0
