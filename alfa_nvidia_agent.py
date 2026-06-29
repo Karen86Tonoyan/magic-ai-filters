@@ -31,6 +31,7 @@ Zmienne środowiskowe:
 import argparse
 import json
 import os
+import subprocess
 import sys
 import time
 from pathlib import Path
@@ -48,7 +49,6 @@ from alfa_rc2_query import (
     validate_rc21_schema,
     query_section_map,
 )
-from alfa_index_document import build_section_map_offline
 
 NVIDIA_CLOUD_URL = "https://integrate.api.nvidia.com/v1"
 NVIDIA_LOCAL_URL = os.getenv("NVIDIA_LOCAL_URL", "http://localhost:8000/v1")
@@ -283,9 +283,18 @@ Przykłady:
             smap = load_section_map(str(map_path))
         else:
             print(f"[info] Indeksuję {pdf_path} ...", file=sys.stderr)
-            smap = build_section_map_offline(str(pdf_path))
-            map_path.write_text(json.dumps(smap, ensure_ascii=False, indent=2), encoding="utf-8")
+            ret = subprocess.run(
+                [sys.executable, "alfa_index_document.py", "--pdf_path", str(pdf_path)],
+                cwd=Path(__file__).parent,
+            )
+            if ret.returncode != 0:
+                print(f"[error] Indeksowanie nie powiodło się (kod {ret.returncode})", file=sys.stderr)
+                return 1
+            if not map_path.exists():
+                print(f"[error] Section map nie został wygenerowany: {map_path}", file=sys.stderr)
+                return 1
             print(f"[info] Section map zapisany: {map_path}", file=sys.stderr)
+            smap = load_section_map(str(map_path))
 
     result = run_agent(
         section_map=smap,
