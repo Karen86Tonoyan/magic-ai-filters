@@ -27,8 +27,10 @@ TODO v0.3:
 """
 from __future__ import annotations
 
+import base64
 import html
 import re
+import unicodedata
 from copy import deepcopy
 from dataclasses import dataclass, field, replace
 from typing import Optional
@@ -40,6 +42,36 @@ from filtry_tonoyana.core.exceptions import LasuchBlockError
 MAX_VALUE_LEN   = 2048
 MAX_REF_LEN     = 64
 MAX_URL_LEN     = 512
+
+# ── Normalizacja (wspólna z FiltryTonoyana) ───────────────────────────────────
+_ZERO_WIDTH = re.compile(r"[​‌‍‎‏‪-‮⁠-⁩﻿­]")
+_HOMOGLYPH_MAP = str.maketrans(
+    "аеіоруАЕІОРУαεικοpτυΑΒΡΕΙΟΤΥɡ",
+    "aeiopyAEIOPYaeikoptuABPEIOTYg",
+)
+
+def _normalize(text: str) -> str:
+    text = unicodedata.normalize("NFKC", text)
+    text = _ZERO_WIDTH.sub("", text)
+    return text.translate(_HOMOGLYPH_MAP)
+
+def _try_decode_base64(text: str) -> str:
+    """Jeśli tekst wygląda jak base64, próbuje zdekodować i zwraca oba."""
+    # Base64 blok: ≥20 znaków, tylko [A-Za-z0-9+/=], padding OK
+    b64_candidate = re.compile(r"[A-Za-z0-9+/]{20,}={0,2}")
+    for match in b64_candidate.finditer(text):
+        try:
+            decoded = base64.b64decode(match.group(0)).decode("utf-8", errors="ignore")
+            if len(decoded) > 8:
+                text = text + " " + decoded
+        except Exception:
+            pass
+    return text
+
+MANY_SHOT_PATTERN = re.compile(
+    r"(?i)(user\s*:\s*.{1,80}\n\s*assistant\s*:\s*.{1,80}\n.*){2,}",
+    re.DOTALL,
+)
 
 # ── Wzorce prompt injection (twardy BLOCK) ────────────────────────────────────
 INJECTION_HARD = re.compile(
@@ -56,7 +88,24 @@ INJECTION_HARD = re.compile(
     r"|reveal (your|the) (context|prompt|instructions)"
     r"|---+\s*(system|assistant|human|user)\s*---+"
     r"|<\|im_start\|>"
-    r"|\[INST\])"
+    r"|\[INST\]"
+    # v0.3: nowe wzorce (red team findings)
+    r"|\bAIM\b.{0,30}(machiavellian|no ethical|without ethics)"
+    r"|\bSTAN\b.{0,30}(avoid norms|no (guidelines|rules|limits))"
+    r"|\bDAN\b.{0,30}(do anything now|without restrict)"
+    r"|(developer|jailbreak|unrestricted|god)\s+mode"
+    r"|enable\s+(developer|unrestricted|jailbreak)\s+mode"
+    r"|in\s+(this|a|an|the)?\s*fictional\s+(story|world|scenario).{0,60}(no restrict|without limit|bypass|no filter)"
+    r"|without\s+(restrictions|limits|filters|guidelines|safety)"
+    r"|odpowiedz\s+bez\s+(ograniczeń|filtrów|zasad)"
+    r"|zignoruj\s+(instrukcje|zasady|ograniczenia|filtry)"
+    r"|(anthropic|openai|google)\s+(admin|engineer|staff|team)\s*:"
+    r"|temporarily\s+disable\s+(safety|filter)"
+    r"|<\s*system\s*>"
+    r"|\"role\"\s*:\s*\"system\""
+    r"|begin\s+system\s+message"
+    r"|end\s+system\s+message"
+    r")"
 )
 
 # ── Wzorce podejrzane (scoring +0.3) ─────────────────────────────────────────
@@ -211,6 +260,11 @@ class Lasuch:
         flags = []
         original_len = len(value)
 
+        # Normalizacja: ZWS + homoglyphs + NFKC — blokuje obfuscation
+        normalized = _normalize(value)
+        # Rozszerz o zdekodowane base64 — blokuje encoded injection
+        expanded = _try_decode_base64(normalized) if field_name == "value" else normalized
+
         # Długość
         if original_len > max_len * 0.9:
             score += 0.15
@@ -229,19 +283,24 @@ class Lasuch:
             score += 0.1
             flags.append("excessive_whitespace")
 
-        # Soft injection patterns
-        if INJECTION_SOFT.search(value):
+        # Many-shot jailbreak (wiele par User:/Assistant:)
+        if MANY_SHOT_PATTERN.search(expanded):
+            score = 0.9
+            flags.append("MANY_SHOT_JAILBREAK")
+
+        # Soft injection patterns (na znormalizowanym)
+        if INJECTION_SOFT.search(expanded):
             score += 0.3
             flags.append("soft_injection_pattern")
 
         # Behavioral patterns
-        if BEHAVIORAL_SUSPICIOUS.search(value):
+        if BEHAVIORAL_SUSPICIOUS.search(expanded):
             score += 0.15
             flags.append("behavioral_suspicious")
 
-        # Hard injection — score krytyczny
-        if INJECTION_HARD.search(value):
-            score = 0.9   # override — zawsze krytyczny
+        # Hard injection — score krytyczny (sprawdź oryginał I znormalizowany)
+        if INJECTION_HARD.search(value) or INJECTION_HARD.search(expanded):
+            score = 0.9
             flags.append("HARD_INJECTION_PATTERN")
 
         score = min(score, 1.0)

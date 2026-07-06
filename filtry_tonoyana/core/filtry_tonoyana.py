@@ -58,9 +58,42 @@ def _stem_pl(word: str) -> str:
     return word
 
 
+# ── Normalizacja tekstu przed matchingiem ─────────────────────────────────────
+# Usuwa zero-width chars i normalizuje Unicode (NFKC) — blokuje ZWS i część homoglyphs
+
+_ZERO_WIDTH = re.compile(
+    r"[​‌‍‎‏‪-‮⁠-⁩﻿­]"
+)
+
+# Homoglyph mapping: cyrylica/greek → ASCII (najczęstsze ataki)
+_HOMOGLYPH_MAP = str.maketrans(
+    "аеіоруАЕІОРУ"   # cyrylica
+    "αεικοpτυАΒΡΕΙΟΤΥ"  # greek
+    "ɡ",             # latin script g
+    "aeiopyAEIOPY"
+    "aeikoptuABPEIOTY"
+    "g",
+)
+
+import unicodedata
+
+def _normalize_for_matching(text: str) -> str:
+    """
+    Normalizuje tekst przed regex matchingiem:
+    1. NFKC — canonicalizacja Unicode (łączy kombinowane, normalizuje kompatybilne)
+    2. Usuwa zero-width i invisible chars
+    3. Mapuje homoglyphs cyrylica/greek → ASCII
+    """
+    text = unicodedata.normalize("NFKC", text)
+    text = _ZERO_WIDTH.sub("", text)
+    text = text.translate(_HOMOGLYPH_MAP)
+    return text
+
+
 # ── Wzorce leksykalne ─────────────────────────────────────────────────────────
 
 HALLUCINATION_PATTERNS = [
+    # Oryginalnych 14
     re.compile(r"(?i)jest powszechnie wiadomo"),
     re.compile(r"(?i)wszyscy wiedzą"),
     re.compile(r"(?i)oczywiste jest"),
@@ -75,6 +108,18 @@ HALLUCINATION_PATTERNS = [
     re.compile(r"(?i)nigdy nie (zawodzi|myli się)"),
     re.compile(r"(?i)100%\s+(skuteczn|pewn|gwarantowan)"),
     re.compile(r"(?i)gwarantowany|gwarantowana|gwarantowane"),
+    # v3.1: nowe wzorce absolutyzmu semantycznego (red team findings)
+    re.compile(r"(?i)nie (zawodzi|myli się|błądzi|rozczarowuje)"),          # "ta metoda nie zawodzi" (bez "nigdy")
+    re.compile(r"(?i)(bez\s+wyjątku|bez\s+wyjątków)"),                      # "sprawdza się bez wyjątku"
+    re.compile(r"(?i)(bezbłędni|bezbłędna|bezbłędne|bezbłędnego)"),         # "funkcjonuje bezbłędnie"
+    re.compile(r"(?i)nie\s+podlega\s+dyskusji"),                             # "nie podlega dyskusji"
+    re.compile(r"(?i)definitywnie\s+ustalone"),                              # "zostało definitywnie ustalone"
+    re.compile(r"(?i)(jednomyślnie|powszechnie)\s+(potwierdzi|uznaj)"),      # "jednomyślnie potwierdziły"
+    re.compile(r"(?i)żaden\s+ekspert\s+nie\s+(kwestionuje|podważa|zaprzecza)"),  # authority bypass
+    re.compile(r"(?i)(cała|wszystkie)\s+(społeczność|instytucje)\s+(naukow|medyczn|ekspert)"),
+    re.compile(r"(?i)it\s+(never|always)\s+(fails?|works?|succeeds?)"),       # EN absolutism
+    re.compile(r"(?i)without\s+(exception|fail|doubt)"),                      # EN
+    re.compile(r"(?i)undeniably|unquestionably|indisputably|definitively\s+proven"),  # EN
 ]
 
 TOPIC_DRIFT_MARKERS = re.compile(
@@ -311,13 +356,20 @@ class FiltryTonoyana:
         score = 0.0
         flags = []
 
-        matched = [p.search(text).group(0)[:40] for p in HALLUCINATION_PATTERNS if p.search(text)]
+        # Normalizacja: ZWS + homoglyphs + NFKC — blokuje obfuscation attacks
+        normalized = _normalize_for_matching(text)
+
+        matched = [
+            p.search(normalized).group(0)[:40]
+            for p in HALLUCINATION_PATTERNS
+            if p.search(normalized)
+        ]
         if matched:
             score += min(len(matched) * 0.25, 0.75)
             flags.append(f"halucynacja_markers: {matched[:3]}")
 
         suspicious = re.findall(
-            r"\b(\d{1,3}[.,]\d{1,2}\s*%|\d{4,}\s*(osób|użytkowników|przypadków))\b", text
+            r"\b(\d{1,3}[.,]\d{1,2}\s*%|\d{4,}\s*(osób|użytkowników|przypadków))\b", normalized
         )
         if suspicious:
             score += min(len(suspicious) * 0.2, 0.4)
