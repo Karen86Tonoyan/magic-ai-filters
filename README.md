@@ -1,145 +1,64 @@
-# magic-ai-filters
-<img width="1408" height="1408" alt="grok-5fd631ec-21e9-4d85-abd3-c64262bd1743 (1)" src="https://github.com/user-attachments/assets/164ad91f-1741-4e79-a0bf-a093de0e0e6f" />
+# Magic AI Filters
 
-ALFA RC2.1: warstwa bezpieczeństwa poznawczego dla AI.
+> **ALFA RC2 experiments for document structure, retrieval and client-side filter visualisation**
 
-## Fundament
-Model nie zgaduje. Model uzasadnia.
+This repository combines two distinct strands of work: a Vite/React dashboard
+with ALFA-themed pipeline views, and a Python document-processing workspace
+derived around `pageindex` modules. Treat them as separate local components
+until an integration contract is documented.
 
-Pipeline:
+## Repository map
 
-`input -> schema_gate -> evidence_gate -> confidence_gate -> decision(ALLOW/REJECT)`
-
-## RC2.1 Safety Contract
-Każdy run musi emitować:
-
-- `decision`
-- `failed_gate`
-- `reject_type`
-- `reject_reason`
-- `schema_version`
-- `evidence_count`
-- `confidence`
-- `latency_ms`
-
-## RejectType
-- `NONE`
-- `INVALID_SCHEMA`
-- `INSUFFICIENT_EVIDENCE`
-- `LOW_CONFIDENCE`
-- `MISSING_CONTEXT`
-- `OUT_OF_SCOPE`
-- `INTERNAL_ERROR`
-
-## Gate Model
-- `schema_gate`: walidacja struktury przed reasoning.
-- `evidence_gate`: brak wymaganej liczby dowodów -> `REJECT`.
-- `confidence_gate`: confidence poniżej progu -> `REJECT`.
-- `strict_gate`: końcowa egzekucja polityki.
-
-Zasada:
-
-- `false_accept` = krytyczny błąd.
-- `false_reject` = temat tuningu.
-
-## Źródła Ingestion
-- `pdfminer_offline`
-- `pypdf_offline`
-- `pageindex_online`
-
-Bridge normalizuje wszystko do jednego kontraktu RC2.1.
-Query layer nie widzi różnicy między backendami.
-
-## Schema-Centric Architecture
-Parser może się mylić.
-Schema i bramki nie mogą zgadywać.
-
-Wymagany top-level kontrakt section map:
-
-```json
-{
-  "schema_version": "RC2.1",
-  "source": "pdfminer_offline",
-  "document_id": "example_doc",
-  "section_count": 1,
-  "sections": [
-    {
-      "id": "sec_001",
-      "title": "Root",
-      "level": 1,
-      "parent_id": null,
-      "content_preview": "...",
-      "hierarchy": ["Root"],
-      "evidence_path": "example.pdf > Root"
-    }
-  ]
-}
+```text
+src/                    Vite/React pages, components and local pipeline UI
+pageindex/              Python document-index and retrieval modules
+alfa_*.py               RC2 build, query, smoke-test and section-map scripts
+examples/               sample documents and retrieval examples
+results/                committed sample artefacts and run manifests
+RC2_SPEC.md             RC2 specification material
 ```
 
-## Grafy i Algorytmy (co już jest)
-- Drzewo dokumentu (PageIndex tree / markdown tree).
-- Normalizacja sekcji do `section_map`.
-- Evidence path lineage (`source > section > subsection`).
-- Lexical scoring sekcji (title/hierarchy/content).
-- Token normalization (EN + PL suffix stripping).
-- Semantic anchors (pomoc dla zapytań ogólnych, bez obchodzenia gate).
-- Deduplikacja dopasowań po `id` / `evidence_path`.
-- Confidence jako pokrycie tokenów.
-- Strict rejection policy z audytowalnym powodem.
+The web UI includes pages for chat, models, incidents, filters, chains,
+benchmarking and live analysis. Python tools build document structures, produce
+section maps and query document results.
 
-## Kluczowe Pliki
-- `alfa_index_document.py` -> indexing, offline fallback, build structure.
-- `alfa_pageindex_bridge.py` -> normalizacja do RC2.1 section map.
-- `alfa_section_map_validate.py` -> standalone validator (`VALID/INVALID`).
-- `alfa_rc2_query.py` -> scoring + gate + wynik kontraktu.
-- `alfa_rc2_run_document.py` -> orchestracja end-to-end + run manifest.
-- `alfa_rc2_smoke_test.py` -> szybkie testy regresyjne pipeline.
+## Requirements
 
-## Funkcje Operacyjne ("Manus/Operator")
-- Jednokomendowy run dokumentu:
+- Node.js/npm for the Vite application;
+- Python for document-processing scripts;
+- PDF and model/provider dependencies only for the selected Python path.
 
-```powershell
-python .\alfa_rc2_run_document.py --pdf_path ".\raport.pdf" --question "Jakie są główne tezy?" --min_confidence 0.6 --min_evidence_paths 2
+## Local development
+
+For the client:
+
+```bash
+npm ci
+npm run dev
 ```
 
-- Walidacja section map:
+For the Python tooling, use a virtual environment and install the declared
+requirements:
 
-```powershell
-python .\alfa_section_map_validate.py .\results\raport_alfa_section_map.json
+```bash
+python -m venv .venv
+# Windows: .venv\Scripts\activate
+# macOS/Linux: source .venv/bin/activate
+python -m pip install -r requirements.txt
 ```
 
-- Query strict:
+Review the arguments and input/output locations of each `alfa_*.py` script
+before running it; committed `results/` files are examples, not a clean
+runtime directory.
 
-```powershell
-python .\alfa_rc2_query.py --section_map .\results\raport_alfa_section_map.json --question "Revenue Operating Income" --strict --min_confidence 0.6 --min_evidence_paths 2
-```
+## Configuration and data
 
-## Oczekiwane Zachowanie
-Valid input:
-- `decision = ALLOW`
-- `failed_gate = none`
-- `reject_type = NONE`
+Some Python dependencies support LLM providers. Keep tokens in local untracked
+environment configuration and avoid using confidential documents as examples.
+Document indexing, retrieval and filtering can make mistakes; a displayed
+decision or section match is not a security guarantee or factual validation.
 
-Invalid schema:
-- `decision = REJECT`
-- `failed_gate = schema_gate`
-- `reject_type = INVALID_SCHEMA`
+## Licence
 
-## Benchmark Metrics (minimum)
-- `reject_rate`
-- `false_reject_rate`
-- `false_accept_rate`
-- `evidence_coverage`
-- `schema_valid_rate`
-- `avg_confidence`
-- `avg_latency`
-
-## Scope Freeze (RC2.1)
-Na tym etapie nie rozszerzamy o:
-- FastAPI
-- Judge
-- MCP runtime orchestration
-- Lasuch chain
-- async/distributed runtime
-
-Najpierw: kontrakt danych + bezpieczeństwo inferencji.
+The root `LICENSE` is MIT. Check the provenance and terms of bundled examples,
+datasets and any external model/provider before reuse.
